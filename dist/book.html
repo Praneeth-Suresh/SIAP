@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Structure and Interpretation of Agentic Patterns</title>
+  <style>body {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  color: #1f2933;
+  background: #f8fafc;
+  line-height: 1.7;
+}
+
+.site-header,
+.site-footer {
+  background: #0b3c5d;
+  color: #fff;
+  padding: 1rem 2rem;
+}
+
+.site-header a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.layout {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.sidebar {
+  position: sticky;
+  top: 1rem;
+  height: fit-content;
+  background: #ffffff;
+  border: 1px solid #d9e2ec;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.sidebar a {
+  display: block;
+  margin: 0.2rem 0;
+  color: #334e68;
+  text-decoration: none;
+}
+
+.sidebar a.active {
+  font-weight: bold;
+  color: #0b3c5d;
+}
+
+.content {
+  background: #ffffff;
+  border: 1px solid #d9e2ec;
+  border-radius: 8px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3 {
+  color: #102a43;
+  line-height: 1.3;
+}
+
+blockquote {
+  border-left: 4px solid #0b3c5d;
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
+  background: #f0f4f8;
+}
+
+code {
+  background: #f0f4f8;
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+}
+
+pre {
+  background: #102a43;
+  color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+th,
+td {
+  border: 1px solid #bcccdc;
+  padding: 0.6rem;
+  text-align: left;
+}
+
+.pdf-content {
+  max-width: 920px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 2rem;
+}
+
+@media (max-width: 960px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+  <article class="content pdf-content">
+  <h1 id="structure-and-interpretation-of-agentic-patterns">Structure and Interpretation of Agentic Patterns</h1>
+<blockquote>
+<p>A text for those who suspect that orchestration is not a bag of tricks, but a branch of science with its own laws, invariants, and delightful surprises.</p>
+</blockquote>
+<p>This draft is organized to mirror the pedagogical arc that made classic CS texts durable: from primitives, to interpreters, to systems, to society.</p>
+<h2 id="chapter-map">Chapter map</h2>
+<ol>
+<li><a href="chapters/01-foundations-of-agency/index.html">Chapter 1 - Foundations of Agency</a></li>
+<li><a href="chapters/02-reasoning-architectures/index.html">Chapter 2 - Reasoning Architectures</a></li>
+<li><a href="chapters/03-tool-use-and-embodiment/index.html">Chapter 3 - Tool Use and Embodiment</a></li>
+<li><a href="chapters/04-multi-agent-systems/index.html">Chapter 4 - Multi-Agent Systems</a></li>
+</ol>
+<h2 id="how-to-read-this-draft">How to read this draft</h2>
+<ul>
+<li>Each topic file is the current primary narrative.</li>
+<li>Each <code>*-notes.md</code> companion file contains revision ideas plus at least one alternative rewrite.</li>
+<li>Citations use clickable numeric references like [<a href="references.html#ref-1">1</a>].</li>
+</ul>
+<h2 id="throughline">Throughline</h2>
+<p>The central claim of this project is that agentic AI is a science of interaction and orchestration, not merely API plumbing. We seek principles that are testable, compositional, and programmable.</p>
+<hr />
+<h1 id="chapter-1-foundations-of-agency">Chapter 1: Foundations of Agency</h1>
+<p>Agency begins with a deceptively simple triad: <strong>goals</strong>, <strong>environments</strong>, and <strong>actions</strong>. We formalize that triad, then progressively add uncertainty, representation, and control.</p>
+<h2 id="topics">Topics</h2>
+<ol>
+<li><a href="topic-01-goals-environments-actions.html">Goals, Environments, and Actions</a></li>
+<li><a href="topic-02-belief-uncertainty-and-decision.html">Belief, Uncertainty, and Decision</a></li>
+<li><a href="topic-03-world-models-and-state-abstractions.html">World Models and State Abstractions</a></li>
+<li><a href="topic-04-policies-value-and-control.html">Policies, Value, and Control</a></li>
+</ol>
+<hr />
+<h1 id="chapter-2-reasoning-architectures">Chapter 2: Reasoning Architectures</h1>
+<p>This chapter treats reasoning systems as interpreters: they execute loops over thought, memory, action, and critique.</p>
+<h2 id="topics_1">Topics</h2>
+<ol>
+<li><a href="topic-01-reasoning-loops-as-interpreters.html">Reasoning Loops as Interpreters</a></li>
+<li><a href="topic-02-deliberation-planning-and-search.html">Deliberation, Planning, and Search</a></li>
+<li><a href="topic-03-memory-systems-context-and-retrieval.html">Memory Systems, Context, and Retrieval</a></li>
+<li><a href="topic-04-evaluating-and-debugging-reasoners.html">Evaluating and Debugging Reasoners</a></li>
+</ol>
+<hr />
+<h1 id="chapter-3-tool-use-and-embodiment">Chapter 3: Tool Use and Embodiment</h1>
+<p>Intelligence without interfaces is monologue. This chapter turns reasoning into action through APIs, retrieval, and environment-coupled feedback.</p>
+<h2 id="topics_2">Topics</h2>
+<ol>
+<li><a href="topic-01-tool-interfaces-and-function-calling.html">Tool Interfaces and Function Calling</a></li>
+<li><a href="topic-02-retrieval-augmented-tooling.html">Retrieval-Augmented Tooling</a></li>
+<li><a href="topic-03-embodiment-sensors-actuators-and-feedback.html">Embodiment: Sensors, Actuators, and Feedback</a></li>
+<li><a href="topic-04-safety-constraints-and-guardrails.html">Safety Constraints and Guardrails</a></li>
+</ol>
+<hr />
+<h1 id="chapter-4-multi-agent-systems">Chapter 4: Multi-Agent Systems</h1>
+<p>When one agent is uncertain, we consult evidence. When many agents are uncertain, we need institutions.</p>
+<h2 id="topics_3">Topics</h2>
+<ol>
+<li><a href="topic-01-coordination-protocols-and-communication.html">Coordination Protocols and Communication</a></li>
+<li><a href="topic-02-negotiation-and-mechanism-design.html">Negotiation and Mechanism Design</a></li>
+<li><a href="topic-03-equilibria-self-play-and-learning-dynamics.html">Equilibria, Self-Play, and Learning Dynamics</a></li>
+<li><a href="topic-04-neural-ensembles-and-orchestration.html">Neural Ensembles and Orchestration</a></li>
+</ol>
+<hr />
+<h1 id="goals-environments-and-actions">Goals, Environments, and Actions</h1>
+<p>An agentic system can be defined as a process that maps observations to actions in pursuit of a goal [<a href="../../references.html#ref-2">2</a>]. The form looks innocent, but this mapping hides assumptions about what the world is, what can be sensed, and what counts as success.</p>
+<p>In practical LLM systems, goals often begin as natural language instructions. To engineer them rigorously, we translate instructions into objective functions, constraints, and stopping criteria [<a href="../../references.html#ref-1">1</a>] [<a href="../../references.html#ref-3">3</a>].</p>
+<p>Environment modeling is where toy demos become science: open-loop prompting assumes a frozen world, while real agents operate in partially observable, changing environments [<a href="../../references.html#ref-7">7</a>]. Actions then become interventions that alter future observations, not just outputs for a log file.</p>
+<h2 id="minimal-formal-sketch">Minimal formal sketch</h2>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(s_t)</td>
+<td>latent world state</td>
+</tr>
+<tr>
+<td>(o_t)</td>
+<td>observation at time (t)</td>
+</tr>
+<tr>
+<td>(a_t)</td>
+<td>action chosen at time (t)</td>
+</tr>
+<tr>
+<td>(G)</td>
+<td>goal/objective functional</td>
+</tr>
+</tbody>
+</table>
+<p>The engineering principle is to keep this sketch explicit in code and docs, so architecture decisions can be audited against a shared formal target.</p>
+<hr />
+<h1 id="belief-uncertainty-and-decision">Belief, Uncertainty, and Decision</h1>
+<p>Agentic systems rarely act with complete state information. The practical object is not certainty but calibrated belief: a probability distribution over plausible world states [<a href="../../references.html#ref-4">4</a>] [<a href="../../references.html#ref-7">7</a>].</p>
+<p>This immediately reframes prompt engineering as decision theory. A prompt does not merely elicit text; it changes posterior belief and therefore downstream policy quality [<a href="../../references.html#ref-5">5</a>].</p>
+<p>Bayesian framing is especially useful for tool-using agents. Retrieval queries, API calls, and test executions can be interpreted as information-gathering actions whose value depends on uncertainty reduction and action cost [<a href="../../references.html#ref-6">6</a>] [<a href="../../references.html#ref-14">14</a>].</p>
+<p>The design takeaway is blunt: systems that do not model uncertainty explicitly tend to overconfidently fail in exactly the regimes where autonomy matters most.</p>
+<hr />
+<h1 id="world-models-and-state-abstractions">World Models and State Abstractions</h1>
+<p>An agent that stores everything stores nothing usefully. State abstraction decides what history is compressed into a control-relevant representation [<a href="../../references.html#ref-2">2</a>] [<a href="../../references.html#ref-4">4</a>].</p>
+<p>In modern LLM stacks, this appears as schema design: what lives in short-term context, long-term memory, vector stores, and external structured state [<a href="../../references.html#ref-16">16</a>]. The abstraction boundary determines whether plans can be reused or must be reinvented each turn.</p>
+<p>Causal structure matters. If a model cannot distinguish correlation from intervention, it plans with confidence and acts with confusion [<a href="../../references.html#ref-6">6</a>]. Effective abstractions preserve variables that support counterfactual reasoning and tool selection.</p>
+<p>A good chapter-level heuristic: each state field should answer either “what matters for next action?” or “what matters for post-hoc accountability?”</p>
+<hr />
+<h1 id="policies-value-and-control">Policies, Value, and Control</h1>
+<p>The policy is the operational constitution of an agent: a rule for selecting actions from state. Value functions estimate long-term consequences and stabilize decision-making under delayed outcomes [<a href="../../references.html#ref-3">3</a>] [<a href="../../references.html#ref-5">5</a>].</p>
+<p>For LLM agents, policy often combines model proposals with explicit control layers: validators, rankers, budget constraints, and termination logic. This hybridization mirrors classic control decomposition between planner and controller [<a href="../../references.html#ref-4">4</a>].</p>
+<p>A practical implementation pattern is to separate:
+1. proposal policy (what actions are suggested),
+2. adjudication policy (which suggestion survives),
+3. oversight policy (when to escalate or halt).</p>
+<p>This decomposition supports measurable guarantees and creates interfaces where formal analysis can enter an otherwise stochastic system.</p>
+<hr />
+<h1 id="reasoning-loops-as-interpreters">Reasoning Loops as Interpreters</h1>
+<p>A modern agent loop resembles a small interpreter: parse context, evaluate candidate actions, execute one, update state, repeat [<a href="../../references.html#ref-1">1</a>] [<a href="../../references.html#ref-11">11</a>].</p>
+<p>The key move is to make loop semantics explicit. Which variables are mutable? Which transitions are legal? Which errors are recoverable? Without these declarations, “autonomy” degenerates into optimistic recursion.</p>
+<p>The interpreter lens also makes compositionality tractable. We can define loop combinators (plan-then-act, act-then-reflect, branch-and-vote) and reason about their invariants, costs, and failure modes [<a href="../../references.html#ref-2">2</a>].</p>
+<p>In this framing, prompt text is only one layer. The loop itself is the machine.</p>
+<hr />
+<h1 id="deliberation-planning-and-search">Deliberation, Planning, and Search</h1>
+<p>Planning gives agents temporal coherence: actions are selected for trajectory quality, not local plausibility [<a href="../../references.html#ref-8">8</a>] [<a href="../../references.html#ref-9">9</a>] [<a href="../../references.html#ref-10">10</a>].</p>
+<p>LLM agents often blend symbolic planning with learned heuristics. A search tree may be explicit (tool calls, simulation branches) while scoring is neural and context-dependent [<a href="../../references.html#ref-11">11</a>].</p>
+<p>Three planning modes are practical in orchestration:
+1. one-shot plan then execute,
+2. interleaved plan/act/replan,
+3. speculative branching with pruning.</p>
+<p>The correct mode depends on environment volatility, tool latency, and the cost of wrong irreversible actions.</p>
+<hr />
+<h1 id="memory-systems-context-and-retrieval">Memory Systems, Context, and Retrieval</h1>
+<p>Memory is not “everything ever said.” Memory is a policy over what to retain, compress, retrieve, and forget [<a href="../../references.html#ref-16">16</a>].</p>
+<p>RAG systems operationalize episodic and semantic recall: dense retrieval locates external facts while the model synthesizes them into current reasoning [<a href="../../references.html#ref-14">14</a>] [<a href="../../references.html#ref-15">15</a>].</p>
+<p>A useful architecture has at least three memory strata:</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Working context</td>
+<td>immediate decision state</td>
+</tr>
+<tr>
+<td>Episodic log</td>
+<td>recent trajectories and failures</td>
+</tr>
+<tr>
+<td>Semantic store</td>
+<td>durable concepts and references</td>
+</tr>
+</tbody>
+</table>
+<p>The retrieval policy should be explicit and testable, because memory errors usually appear as reasoning errors one layer later.</p>
+<hr />
+<h1 id="evaluating-and-debugging-reasoners">Evaluating and Debugging Reasoners</h1>
+<p>An agent that seems eloquent may still be strategically inept. Evaluation must target trajectories, not just final text outputs [<a href="../../references.html#ref-30">30</a>].</p>
+<p>Reasoning QA should include:
+1. success rate on goal completion,
+2. tool-use correctness,
+3. calibration under uncertainty,
+4. failure recoverability.</p>
+<p>Trace-based diagnostics are especially valuable: each loop iteration is an observable state transition that can be inspected, replayed, and scored [<a href="../../references.html#ref-24">24</a>].</p>
+<p>The practical doctrine is harsh and useful: if you cannot replay and score a reasoning path, you are optimizing anecdotes.</p>
+<hr />
+<h1 id="tool-interfaces-and-function-calling">Tool Interfaces and Function Calling</h1>
+<p>Tool use converts language competence into environmental leverage. The core abstraction is a typed function interface with explicit argument schema, preconditions, and postconditions [<a href="../../references.html#ref-12">12</a>] [<a href="../../references.html#ref-13">13</a>].</p>
+<p>In robust systems, tools are not mere plugins; they are contracts. Contracts let planners reason about side effects, costs, retries, and irreversibility.</p>
+<p>This design choice also improves interpretability. Tool calls become machine-checkable events in execution traces, enabling post-hoc audits and policy learning.</p>
+<p>A minimal practical recommendation: every tool definition should include semantic purpose, latency class, failure modes, and rollback strategy.</p>
+<hr />
+<h1 id="retrieval-augmented-tooling">Retrieval-Augmented Tooling</h1>
+<p>RAG is best understood as a tool chain: query formulation, retrieval, ranking, synthesis, and citation. Each stage is a controllable component with separate error surfaces [<a href="../../references.html#ref-14">14</a>] [<a href="../../references.html#ref-15">15</a>].</p>
+<p>For agentic workflows, retrieval should be demand-driven by planner uncertainty, not indiscriminately invoked every turn. This keeps latency and context load aligned with epistemic need.</p>
+<p>A practical architecture:
+1. detect information gap,
+2. issue retrieval query,
+3. validate source quality,
+4. ground generated claims to retrieved evidence.</p>
+<p>The result is not merely better answers; it is better accountability.</p>
+<hr />
+<h1 id="embodiment-sensors-actuators-and-feedback">Embodiment: Sensors, Actuators, and Feedback</h1>
+<p>Embodiment means the agent’s actions alter a world that pushes back. Even purely software agents are embodied in infrastructures: APIs rate-limit, files mutate, humans respond, and markets move.</p>
+<p>Classical control and RL provide the language for this feedback geometry: observations, actions, transition dynamics, and reward signals [<a href="../../references.html#ref-3">3</a>] [<a href="../../references.html#ref-4">4</a>].</p>
+<p>In production systems, embodiment design includes:
+1. sensor fidelity (what can be observed),
+2. actuator safety (what can be changed),
+3. feedback delay (when outcomes are known).</p>
+<p>Ignoring these constraints yields an “intelligent” agent that is mathematically under-informed and operationally overconfident.</p>
+<hr />
+<h1 id="safety-constraints-and-guardrails">Safety Constraints and Guardrails</h1>
+<p>Agent safety is best modeled as constrained optimization: maximize utility subject to policy and risk constraints [<a href="../../references.html#ref-29">29</a>] [<a href="../../references.html#ref-30">30</a>].</p>
+<p>Guardrails should exist at multiple layers:
+1. prompt-level behavioral constraints,
+2. tool-level argument validation,
+3. runtime-level permission and budget controls,
+4. human escalation paths.</p>
+<p>This layered design reduces single-point safety failure and aligns with the principle that oversight should be external to the model’s own narrative confidence.</p>
+<p>Constraint-aware orchestration is not anti-autonomy; it is the precondition for trustworthy autonomy.</p>
+<hr />
+<h1 id="coordination-protocols-and-communication">Coordination Protocols and Communication</h1>
+<p>Multi-agent systems succeed or fail on protocol quality. Communication is not free-form chatter; it is structured information exchange under timing and trust constraints [<a href="../../references.html#ref-17">17</a>] [<a href="../../references.html#ref-18">18</a>].</p>
+<p>Common coordination patterns include blackboard systems, planner-executor splits, and committee voting. Each pattern defines who may propose, who may veto, and how conflicts are resolved.</p>
+<p>For LLM agents, explicit message schemas and role contracts reduce ambiguity and improve debuggability [<a href="../../references.html#ref-24">24</a>].</p>
+<p>The key principle: coordination logic should be encoded as system rules, not inferred ad hoc from conversational style.</p>
+<hr />
+<h1 id="negotiation-and-mechanism-design">Negotiation and Mechanism Design</h1>
+<p>Negotiation is algorithmic governance over competing objectives. Mechanism design asks how to set rules so rational local behavior induces desirable global outcomes [<a href="../../references.html#ref-18">18</a>] [<a href="../../references.html#ref-19">19</a>].</p>
+<p>In agent engineering, this appears in budget allocation, task assignment, conflict arbitration, and shared memory updates.</p>
+<p>Useful mechanism primitives include:
+1. voting with tie-break policy,
+2. auction-style allocation,
+3. contract-net bidding for task delegation.</p>
+<p>The point is not to imitate economics for style; it is to prevent hidden power dynamics in orchestration graphs.</p>
+<hr />
+<h1 id="equilibria-self-play-and-learning-dynamics">Equilibria, Self-Play, and Learning Dynamics</h1>
+<p>Nash equilibrium provides a fixed-point concept for strategic stability: no agent benefits from unilateral deviation [<a href="../../references.html#ref-19">19</a>]. In practice, equilibrium is less destination than diagnostic.</p>
+<p>Self-play and Markov game formulations show how competitive and cooperative policies co-evolve under repeated interaction [<a href="../../references.html#ref-20">20</a>] [<a href="../../references.html#ref-21">21</a>].</p>
+<p>For orchestrated LLM systems, equilibrium thinking helps answer:
+- Will specialized agents collapse to redundant behavior?
+- Do incentives promote truthful intermediate outputs?
+- Does local optimization destabilize global task quality?</p>
+<p>The engineering value is predictive: equilibrium analysis reveals failure regimes before expensive deployment.</p>
+<hr />
+<h1 id="neural-ensembles-and-orchestration">Neural Ensembles and Orchestration</h1>
+<p>Neural ensembles improve robustness by aggregating diverse predictors rather than trusting a single brittle model [<a href="../../references.html#ref-26">26</a>].</p>
+<p>Mixture-of-experts architecture extends this idea with sparse specialization and routing policies [<a href="../../references.html#ref-25">25</a>]. At the orchestration layer, this suggests agent societies where specialists debate, vote, and escalate.</p>
+<p>The conceptual bridge to classic “society of mind” is direct: intelligence emerges from coordinated partial competencies [<a href="../../references.html#ref-27">27</a>].</p>
+<p>Modern surveys of LLM multi-agent systems indicate this pattern is now practical at software scale, with measurable gains in reliability and decomposition quality [<a href="../../references.html#ref-23">23</a>].</p>
+<p>The chapter’s thesis culmination is therefore precise: agentic power comes from designed interaction topology, not from model size alone.</p>
+<hr />
+<h1 id="references">References</h1>
+<ol>
+<li><a id="ref-1"></a>Abelson, H., Sussman, G. J., &amp; Sussman, J. (1996). <em>Structure and Interpretation of Computer Programs</em> (2nd ed.). MIT Press. https://mitpress.mit.edu/9780262510875/</li>
+<li><a id="ref-2"></a>Russell, S., &amp; Norvig, P. (2021). <em>Artificial Intelligence: A Modern Approach</em> (4th ed.). Pearson. https://aima.cs.berkeley.edu/</li>
+<li><a id="ref-3"></a>Sutton, R. S., &amp; Barto, A. G. (2018). <em>Reinforcement Learning: An Introduction</em> (2nd ed.). MIT Press. http://incompleteideas.net/book/the-book-2nd.html</li>
+<li><a id="ref-4"></a>Puterman, M. L. (1994). <em>Markov Decision Processes</em>. Wiley. https://onlinelibrary.wiley.com/doi/book/10.1002/9780470316887</li>
+<li><a id="ref-5"></a>Bellman, R. (1957). <em>Dynamic Programming</em>. Princeton University Press. https://press.princeton.edu/books/hardcover/9780691651873/dynamic-programming</li>
+<li><a id="ref-6"></a>Pearl, J. (2009). <em>Causality</em> (2nd ed.). Cambridge University Press. https://www.cambridge.org/core/books/causality/94D5B8E8B2A5E0D970AA4A8DE3A2F5DD</li>
+<li><a id="ref-7"></a>Kaelbling, L. P., Littman, M. L., &amp; Cassandra, A. R. (1998). Planning and acting in partially observable stochastic domains. <em>AI</em>, 101(1-2), 99-134. https://www.sciencedirect.com/science/article/pii/S000437029800023X</li>
+<li><a id="ref-8"></a>Hart, P. E., Nilsson, N. J., &amp; Raphael, B. (1968). A formal basis for A<em> search. </em>IEEE TSSC*, 4(2), 100-107. https://ieeexplore.ieee.org/document/4082128</li>
+<li><a id="ref-9"></a>Fikes, R. E., &amp; Nilsson, N. J. (1971). STRIPS. <em>AI</em>, 2(3-4), 189-208. https://www.sciencedirect.com/science/article/pii/0004370271900105</li>
+<li><a id="ref-10"></a>Ghallab, M., Nau, D., &amp; Traverso, P. (2004). <em>Automated Planning</em>. Elsevier. https://shop.elsevier.com/books/automated-planning/ghallab/978-1-55860-856-6</li>
+<li><a id="ref-11"></a>Yao, S., et al. (2022). ReAct: Synergizing reasoning and acting in language models. https://arxiv.org/abs/2210.03629</li>
+<li><a id="ref-12"></a>Schick, T., et al. (2023). Toolformer: Language models can teach themselves to use tools. https://arxiv.org/abs/2302.04761</li>
+<li><a id="ref-13"></a>OpenAI. Function calling guide. https://platform.openai.com/docs/guides/function-calling</li>
+<li><a id="ref-14"></a>Lewis, P., et al. (2020). Retrieval-augmented generation for knowledge-intensive NLP tasks. <em>NeurIPS 2020</em>. https://arxiv.org/abs/2005.11401</li>
+<li><a id="ref-15"></a>Karpukhin, V., et al. (2020). Dense passage retrieval. <em>EMNLP 2020</em>. https://arxiv.org/abs/2004.04906</li>
+<li><a id="ref-16"></a>Packer, C., et al. (2023). MemGPT: Towards LLMs as operating systems. https://arxiv.org/abs/2310.08560</li>
+<li><a id="ref-17"></a>Wooldridge, M. (2009). <em>An Introduction to MultiAgent Systems</em> (2nd ed.). Wiley. https://www.wiley.com/en-us/An+Introduction+to+MultiAgent+Systems%2C+2nd+Edition-p-9780470519462</li>
+<li><a id="ref-18"></a>Shoham, Y., &amp; Leyton-Brown, K. (2009). <em>Multiagent Systems</em>. Cambridge University Press. https://www.cs.ubc.ca/~kevinlb/MAS/</li>
+<li><a id="ref-19"></a>Nash, J. (1950). Equilibrium points in n-person games. <em>PNAS</em>, 36(1), 48-49. https://www.pnas.org/doi/10.1073/pnas.36.1.48</li>
+<li><a id="ref-20"></a>Littman, M. L. (1994). Markov games as a framework for multi-agent RL. <em>ICML 1994</em>. https://www.cs.rutgers.edu/~mlittman/papers/ml94-final.pdf</li>
+<li><a id="ref-21"></a>Silver, D., et al. (2016). Mastering the game of Go with deep neural networks and tree search. <em>Nature</em>, 529, 484-489. https://www.nature.com/articles/nature16961</li>
+<li><a id="ref-22"></a>Oliehoek, F. A., &amp; Amato, C. (2016). <em>A Concise Introduction to Dec-POMDPs</em>. Springer. https://link.springer.com/book/10.1007/978-3-319-28929-8</li>
+<li><a id="ref-23"></a>Cambria, E., et al. (2025). Survey of LLM-based multi-agent systems. https://arxiv.org/abs/2402.01680</li>
+<li><a id="ref-24"></a>Wu, Q., et al. (2023). AutoGen: Enabling next-gen LLM applications via multi-agent conversation. https://arxiv.org/abs/2308.08155</li>
+<li><a id="ref-25"></a>Shazeer, N., et al. (2017). Outrageously large neural networks: The sparsely-gated mixture-of-experts layer. https://arxiv.org/abs/1701.06538</li>
+<li><a id="ref-26"></a>Lakshminarayanan, B., Pritzel, A., &amp; Blundell, C. (2017). Simple and scalable predictive uncertainty estimation using deep ensembles. <em>NeurIPS 2017</em>. https://arxiv.org/abs/1612.01474</li>
+<li><a id="ref-27"></a>Minsky, M. (1988). <em>The Society of Mind</em>. Simon &amp; Schuster. https://www.amazon.com/Society-Mind-Marvin-Minsky/dp/0671657135</li>
+<li><a id="ref-28"></a>Kahneman, D. (2011). <em>Thinking, Fast and Slow</em>. Farrar, Straus and Giroux. https://us.macmillan.com/books/9780374533557/thinkingfastandslow</li>
+<li><a id="ref-29"></a>Anthropic. (2022). Constitutional AI. https://arxiv.org/abs/2212.08073</li>
+<li><a id="ref-30"></a>OpenAI. (2023). GPT-4 Technical Report. https://arxiv.org/abs/2303.08774</li>
+<li><a id="ref-31"></a>WeasyPrint documentation. https://doc.courtbouillon.org/weasyprint/stable/</li>
+<li><a id="ref-32"></a>GitHub Pages documentation. https://docs.github.com/pages</li>
+</ol>
+  </article>
+</body>
+</html>
