@@ -25,10 +25,27 @@
 </ul>
 <h2 id="alternative-rewrite">Alternative rewrite</h2>
 <p>Suppose an agent wakes each turn, peers at a sliver of reality, and must choose one irrevocable move. If we cannot state what it wants, what it can see, and what it can do, then we do not have an architecture; we have vibes. The disciplined path is to name the goal, model the environment class, and enumerate valid actions before discussing prompts or frameworks.</p>
+<h2 id="pass-1-migrated-ideas-from-current-main-topic">Pass 1 - Migrated ideas from current main topic</h2>
+<p>The current topic frames agency as a formal covenant between objectives and interventions: define (\mathcal{M}=(\mathcal{S},\mathcal{O},\mathcal{A},T,\Omega,R,C,\gamma)), optimize discounted return under constraints, and treat natural-language goals as specifications that must be compiled into explicit reward, cost, and stopping structures. The three-theory braid currently combines expected-utility foundations, sequential decision theory (MDP/POMDP), and feedback control, then closes with an evaluation protocol based on constrained return, regret, and violation rates.</p>
+<h2 id="pass-1-storyline-outline-paragraph-by-paragraph">Pass 1 - Storyline outline (paragraph-by-paragraph)</h2>
+<p>Paragraph 1 opens with a navigator in fog: every intelligent act is a wager, and the first responsibility of design is to decide what “north” means before setting sail.</p>
+<p>Paragraph 2 introduces expected utility as the compass needle, translating preference and uncertainty into a scalar objective so the question “what should I do?” becomes operational rather than rhetorical.</p>
+<p>Paragraph 3 broadens to sequential worlds, where action is not a point decision but a trajectory commitment, and MDP/POMDP structure explains why foresight is a computational necessity rather than academic ornament.</p>
+<p>Paragraph 4 introduces feedback control as the art of staying honest to reality, showing how closed-loop correction turns brittle plans into resilient behavior under disturbance.</p>
+<p>Paragraph 5 braids the three strands into a design ethic: intelligence is not certainty, but disciplined adaptation guided by utility, dynamics, and correction.</p>
+<h2 id="pass-2-research-synthesis-equations-theories-and-connective-tissue">Pass 2 - Research synthesis: equations, theories, and connective tissue</h2>
+<p>Canonical equation set to anchor this narrative: expected utility as (a^*=\arg\max_{a\in\mathcal{A}}\sum_s p(s\mid a)u(s)) (decision-theoretic baseline from von Neumann-Morgenstern/Savage formulations; see <a href="https://plato.stanford.edu/entries/decision-theory/">Stanford Encyclopedia</a> and <a href="https://en.wikipedia.org/wiki/Expected_utility_hypothesis">expected utility overview</a>); sequential objective as (\max_\pi \mathbb{E}<em t="0">\pi[\sum</em>P(s'\mid s,a)V^*(s')}) (MDP/Bellman structure from }^\infty \gamma^t r_t]) with Bellman recursion (V^*(s)=\max_a{R(s,a)+\gamma\sum_{s'<a href="https://en.wikipedia.org/wiki/Markov_decision_process">MDP</a>, <a href="https://en.wikipedia.org/wiki/Bellman_equation">Bellman equation</a>, and control notes in <a href="https://underactuated.mit.edu/dp.html">Underactuated DP</a>); partial observability upgrade through belief dynamics (b'(s')=\eta\,O(o\mid s',a)\sum_s P(s'\mid s,a)b(s)) (POMDP formalization in <a href="https://en.wikipedia.org/wiki/Partially_observable_Markov_decision_process">POMDP</a> and <a href="https://underactuated.mit.edu/belief.html">belief-space derivation</a>); and feedback correction through state-space control (x_{t+1}=f(x_t,u_t)+w_t,\; y_t=g(x_t)+v_t) with linear feedback (u_t=-Kx_t) as an interpretable closed-loop archetype (Kalman/control framing in <a href="https://en.wikipedia.org/wiki/Kalman_filter">Kalman filter</a> and <a href="https://underactuated.mit.edu/state_estimation.html">Underactuated state estimation</a>). The connective logic to emphasize is: expected utility defines <strong>what</strong> is worth pursuing, dynamic programming defines <strong>when</strong> and <strong>how</strong> actions propagate value through time, and feedback control defines <strong>how</strong> plans survive contact with noisy reality.</p>
+<h2 id="additional-alternate-approaches-for-this-rewrite">Additional alternate approaches for this rewrite</h2>
+<ol>
+<li>Build the full topic around one continuous case study (a coding agent shipping a patch under uncertainty), introducing each theory exactly at the moment the case study demands it.</li>
+<li>Start with a historical arc (Bernoulli to Bellman to Kalman) and then reinterpret each milestone through modern LLM-agent orchestration.</li>
+<li>Use a contrast structure: first show a “clever but fragile” prompt-only system, then progressively formalize it into a robust agent using the three-theory braid.</li>
+<li>Frame the topic as a courtroom argument where each theory serves as a different kind of evidence for what constitutes rational action.</li>
+</ol>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-04-23 06:51 UTC
+      Last generated: 2026-04-23 07:34 UTC
     </footer>
   </body>
 </html>
