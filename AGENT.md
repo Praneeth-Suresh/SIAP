@@ -71,3 +71,21 @@ This file defines the durable principles and operating instructions for future a
   - explicit guidance for formal empirical study.
 - Bibliography expanded substantially in `book/references.md` with additional authoritative papers/books.
 - LaTeX rendering pipeline added via `scripts/build_latex_pdf.py` to produce math-clean PDF artifacts.
+
+## Active rewrite protocol: Chapter 1 three-pass expansion
+
+- For each Chapter 1 topic, run exactly three passes:
+  1. **Pass 1 (notes-first migration + storyline design):**
+     - move current main-topic ideas into the corresponding `*-notes.md`,
+     - draft storyline development in prose paragraphs (each part as a separate paragraph),
+     - append a list of alternative execution approaches at the end of the notes file.
+  2. **Pass 2 (research and equation harvest):**
+     - perform extensive web research on canonical equations and formalism,
+     - append theory descriptions, equation sets, and connection logic beneath Pass 1 material in notes.
+  3. **Pass 3 (main text synthesis via subagents):**
+     - use subagents to transform notes into polished primary topic text,
+     - produce narrative-driven prose that braids theory with explicit mathematics.
+- Narrative target for Chapter 1 rewrites:
+  - present the three-theory braid as a living architecture of decision-making,
+  - make intelligence read as interplay between foresight, responsiveness, and resilience,
+  - maintain scholarly clarity while inviting curiosity and reflection.

@@ -40,3 +40,9 @@ Thumbs.db
 *.log
 tmp/
 temp/
+
+# Agent Artefacts
+AGENT.md
+AGENTS.md
+plan.md
+prompt.md

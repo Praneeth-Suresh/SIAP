@@ -17,27 +17,70 @@
       </aside>
       <article class="content">
         <h1 id="world-models-and-state-abstractions">World Models and State Abstractions</h1>
-<p>To model a world is to choose what to forget without forgetting what matters. Abstraction is compression under decision pressure.</p>
+<p>A world model is a map drawn during a storm: if you sketch every raindrop, you never choose a road; if you sketch only the horizon, you drive into a lake. State abstraction is that disciplined cartography—selective forgetting in service of competent action, where elegance is measured not by compression ratio alone, but by whether the agent still reaches the right future.</p>
 <h2 id="formalization">Formalization</h2>
-<p>Let (\phi:\mathcal{S}\to\mathcal{Z}) map ground states to abstract states. A homomorphic abstraction preserves control-relevant structure:
+<p>Let the ground control problem be an MDP ((\mathcal S,\mathcal A,T,R,\gamma)) [<a href="../../references.html#ref-4">4</a>] [<a href="../../references.html#ref-5">5</a>], and let (\phi:\mathcal S\to\mathcal Z) be an abstraction map. Exact homomorphism requires reward and transition consistency [<a href="../../references.html#ref-37">37</a>]:
 [
-R(s,a)=\bar{R}(\phi(s),a),\qquad
-\sum_{s':\phi(s')=z'} T(s'\mid s,a)=\bar{T}(z'\mid \phi(s),a).
+R(s,a)=\bar R(\phi(s),a),\qquad
+\sum_{s':\phi(s')=z'}T(s'\mid s,a)=\bar T(z'\mid \phi(s),a).
 ]
-Then planning in (\mathcal{Z}) approximates planning in (\mathcal{S}), with error bounded by abstraction distortion.</p>
-<p>For causal world models, variables (X) follow structural equations (X_i=f_i(\mathrm{Pa}(X_i),U_i)). Interventions (\mathrm{do}(X_j=x)) define action semantics beyond passive prediction [<a href="../../references.html#ref-6">6</a>].</p>
+Then planning may occur in the compressed space via
+[
+\bar V^{<em>}(z)=\max_{a\in\mathcal A}\Big[\bar R(z,a)+\gamma\sum_{z'}\bar T(z'\mid z,a)\bar V^{</em>}(z')\Big],
+]
+and the lifted policy (\pi(s)=\bar\pi(\phi(s))) preserves optimal control structure in the original system [<a href="../../references.html#ref-37">37</a>]. In approximate abstractions, if reward and transition mismatches are bounded by (\varepsilon_R) and (\varepsilon_P), a standard simulation-style bound is
+[
+|V^{<em>}-\bar V^{</em>}!\circ\phi|<em _max="\max">\infty \lesssim \frac{\varepsilon_R}{1-\gamma}+\frac{\gamma R</em>\varepsilon_P,
+]
+which makes the central bargain explicit: every saved byte must pay rent in decision quality [}}{(1-\gamma)^2<a href="../../references.html#ref-37">37</a>] [<a href="../../references.html#ref-39">39</a>].</p>
+<p>Bisimulation metrics refine this bargain by turning “close enough” into geometry [<a href="../../references.html#ref-38">38</a>]:
+[
+d(s,s')=\max_{a\in\mathcal A}\Big(|R(s,a)-R(s',a)|+\gamma\,W_d\big(T(\cdot\mid s,a),T(\cdot\mid s',a)\big)\Big),
+]
+with (W_d) the Kantorovich lift induced by (d). If (d(s,s')) is small, the states are behaviorally interchangeable up to a quantified tolerance.</p>
+<p>And because agents act on worlds rather than merely describing them, causal world models encode mechanism, not just association [<a href="../../references.html#ref-6">6</a>]:
+[
+X_i=f_i(\mathrm{Pa}(X_i),U_i),\qquad P(x_1,\dots,x_n)=\prod_i P(x_i\mid \mathrm{pa}<em i_neq="i\neq" j="j">i),
+]
+while intervention semantics replace observation with surgery:
+[
+P(x_1,\dots,x_n\mid \mathrm{do}(X_j=x))=\mathbf{1}[x_j=x]\prod</em>_i).
+]
+That is the mathematical line between “I saw this happen” and “I can make this happen.”}P(x_i\mid \mathrm{pa</p>
+<h2 id="code-facing-pattern-logs-are-archives-state-is-policy-fuel">Code-facing pattern: logs are archives, state is policy fuel</h2>
+<p>A practical pattern is to separate <strong>observation logs</strong> (high-volume, append-only) from <strong>decision state</strong> (small, control-sufficient summary):</p>
+<pre><code class="language-python">from dataclasses import dataclass
+
+@dataclass
+class AgentMemory:
+    event_log: list[dict]          # full transcript / telemetry archive
+    decision_state: dict           # compact features used by planner
+
+
+def ingest(observation: dict, mem: AgentMemory) -&gt; AgentMemory:
+    mem.event_log.append(observation)
+    mem.decision_state = update_belief(mem.decision_state, observation)
+    return mem
+
+
+def act(mem: AgentMemory):
+    return policy(mem.decision_state)
+</code></pre>
+<p>Use the log for audit and targeted retrieval, but let the policy read only (z_t=\psi(h_t)), a compressed sufficient statistic. In Chapter 2’s memory controller framing (see <a href="../02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval.html">Memory Systems, Context, and Retrieval</a>), retrieval should be a gated action with explicit cost, not an always-on reflex.</p>
+<h2 id="cautionary-case-when-memory-abundance-became-planning-starvation">Cautionary case: when memory abundance became planning starvation</h2>
+<p>One common failure mode is transcript maximalism: define state as (s'<em t_1="t+1">t=(s_t,\ell_t)), where (\ell_t) is a long raw interaction log, then wonder why planning quality collapses. The planner now optimizes over irrelevant detail, value estimates become noisier, and action ranking destabilizes under tiny prompt perturbations. Formally, the right requirement is conditional sufficiency,
+[
+P(s</em>,r_t\mid z_t,a_t),\qquad z_t=\psi(h_t),
+]
+not archival completeness. If your state remembers everything except what the next decision needs, you have built a luxury memory palace with no steering wheel.},r_t\mid h_t,a_t)=P(s_{t+1</p>
 <h2 id="three-theory-braid">Three-theory braid</h2>
-<ol>
-<li><strong>State abstraction in MDPs.</strong> Homomorphisms characterize when compressed states retain optimal-control content [<a href="../../references.html#ref-37">37</a>].</li>
-<li><strong>Bisimulation metrics.</strong> Behavioral similarity can be quantified continuously, giving principled abstraction error control [<a href="../../references.html#ref-38">38</a>].</li>
-<li><strong>Causal modeling.</strong> Structural causal models distinguish observation from intervention, crucial for tool-using agents that change their environment [<a href="../../references.html#ref-6">6</a>].</li>
-</ol>
+<p>State abstraction tells us how to compress without lying to control, bisimulation metrics tell us exactly how much behavioral truth was lost in that compression, and causal modeling tells us whether the compressed model still answers intervention questions rather than merely replaying correlations; together they define a disciplined pipeline in which action is still chosen by expected utility (a_t^{<em>}=\arg\max_a\mathbb E[U(a,S_t)\mid z_t]) [<a href="../../references.html#ref-34">34</a>], long-horizon consequences are propagated through Bellman recursion (V^{</em>}(z)=\max_a{\bar R(z,a)+\gamma\sum_{z'}\bar T(z'\mid z,a)V^{*}(z')}) [<a href="../../references.html#ref-5">5</a>] [<a href="../../references.html#ref-39">39</a>], and execution closes the loop through feedback laws such as (u_t=-K\hat x_t), where estimation and control co-govern real behavior [<a href="../../references.html#ref-36">36</a>] [<a href="../../references.html#ref-41">41</a>]; the moral is wonderfully unforgiving: a useful world model must be compact enough to think with, faithful enough to plan with, and causal enough to intervene with, or else the agent remains a brilliant spectator of consequences it cannot reliably shape [<a href="../../references.html#ref-37">37</a>] [<a href="../../references.html#ref-38">38</a>] [<a href="../../references.html#ref-6">6</a>].</p>
 <h2 id="how-to-study-this-formally">How to study this formally</h2>
-<p>Estimate value-loss (\Delta V = |V^{<em>} - \tilde{V}^{</em>}\circ\phi|), intervention accuracy under held-out counterfactuals, and policy robustness to distribution shift. In short: if abstraction gains speed but loses action relevance, you have invented a beautifully efficient hallucination engine.</p>
+<p>Benchmark abstractions by (i) value loss (\Delta_V=|V^{<em>}-\tilde V^{</em>}\circ\phi|_\infty), (ii) intervention fidelity gaps on counterfactual test sets (compare (P(Y\mid \mathrm{do}(X=x))) predictions to observed outcomes), and (iii) robustness under distribution shift when retrieval budgets are constrained. Then run an ablation where you increase raw memory exposure while holding task and compute fixed; if extra memory hurts return, your agent is not under-informed—it is over-narrated.</p>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-04-23 06:51 UTC
+      Last generated: 2026-04-23 07:34 UTC
     </footer>
   </body>
 </html>
