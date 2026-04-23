@@ -1,9 +1,24 @@
 # World Models and State Abstractions
 
-An agent that stores everything stores nothing usefully. State abstraction decides what history is compressed into a control-relevant representation [[2](../../references.md#ref-2)] [[4](../../references.md#ref-4)].
+To model a world is to choose what to forget without forgetting what matters. Abstraction is compression under decision pressure.
 
-In modern LLM stacks, this appears as schema design: what lives in short-term context, long-term memory, vector stores, and external structured state [[16](../../references.md#ref-16)]. The abstraction boundary determines whether plans can be reused or must be reinvented each turn.
+## Formalization
 
-Causal structure matters. If a model cannot distinguish correlation from intervention, it plans with confidence and acts with confusion [[6](../../references.md#ref-6)]. Effective abstractions preserve variables that support counterfactual reasoning and tool selection.
+Let \(\phi:\mathcal{S}\to\mathcal{Z}\) map ground states to abstract states. A homomorphic abstraction preserves control-relevant structure:
+\[
+R(s,a)=\bar{R}(\phi(s),a),\qquad
+\sum_{s':\phi(s')=z'} T(s'\mid s,a)=\bar{T}(z'\mid \phi(s),a).
+\]
+Then planning in \(\mathcal{Z}\) approximates planning in \(\mathcal{S}\), with error bounded by abstraction distortion.
 
-A good chapter-level heuristic: each state field should answer either “what matters for next action?” or “what matters for post-hoc accountability?”
+For causal world models, variables \(X\) follow structural equations \(X_i=f_i(\mathrm{Pa}(X_i),U_i)\). Interventions \(\mathrm{do}(X_j=x)\) define action semantics beyond passive prediction [[6](../../references.md#ref-6)].
+
+## Three-theory braid
+
+1. **State abstraction in MDPs.** Homomorphisms characterize when compressed states retain optimal-control content [[37](../../references.md#ref-37)].
+2. **Bisimulation metrics.** Behavioral similarity can be quantified continuously, giving principled abstraction error control [[38](../../references.md#ref-38)].
+3. **Causal modeling.** Structural causal models distinguish observation from intervention, crucial for tool-using agents that change their environment [[6](../../references.md#ref-6)].
+
+## How to study this formally
+
+Estimate value-loss \(\Delta V = \|V^{*} - \tilde{V}^{*}\circ\phi\|\), intervention accuracy under held-out counterfactuals, and policy robustness to distribution shift. In short: if abstraction gains speed but loses action relevance, you have invented a beautifully efficient hallucination engine.

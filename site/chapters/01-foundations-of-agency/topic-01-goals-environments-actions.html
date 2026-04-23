@@ -17,41 +17,32 @@
       </aside>
       <article class="content">
         <h1 id="goals-environments-and-actions">Goals, Environments, and Actions</h1>
-<p>An agentic system can be defined as a process that maps observations to actions in pursuit of a goal [<a href="../../references.html#ref-2">2</a>]. The form looks innocent, but this mapping hides assumptions about what the world is, what can be sensed, and what counts as success.</p>
-<p>In practical LLM systems, goals often begin as natural language instructions. To engineer them rigorously, we translate instructions into objective functions, constraints, and stopping criteria [<a href="../../references.html#ref-1">1</a>] [<a href="../../references.html#ref-3">3</a>].</p>
-<p>Environment modeling is where toy demos become science: open-loop prompting assumes a frozen world, while real agents operate in partially observable, changing environments [<a href="../../references.html#ref-7">7</a>]. Actions then become interventions that alter future observations, not just outputs for a log file.</p>
-<h2 id="minimal-formal-sketch">Minimal formal sketch</h2>
-<table>
-<thead>
-<tr>
-<th>Symbol</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>(s_t)</td>
-<td>latent world state</td>
-</tr>
-<tr>
-<td>(o_t)</td>
-<td>observation at time (t)</td>
-</tr>
-<tr>
-<td>(a_t)</td>
-<td>action chosen at time (t)</td>
-</tr>
-<tr>
-<td>(G)</td>
-<td>goal/objective functional</td>
-</tr>
-</tbody>
-</table>
-<p>The engineering principle is to keep this sketch explicit in code and docs, so architecture decisions can be audited against a shared formal target.</p>
+<p>Agency begins with a compact covenant: choose actions that push a world toward a goal. The covenant sounds poetic until we formalize it, at which point it becomes testable engineering [<a href="../../references.html#ref-2">2</a>].</p>
+<h2 id="formal-model">Formal model</h2>
+<p>Let an agent-environment system be
+[
+\mathcal{M} = (\mathcal{S}, \mathcal{O}, \mathcal{A}, T, \Omega, R, C, \gamma),
+]
+where (T(s' \mid s,a)) is transition dynamics, (\Omega(o \mid s)) is observation dynamics, (R) is task reward, (C) is a constraint vector (cost, risk, budget), and (\gamma \in (0,1)) is discount.</p>
+<p>A policy (\pi(a\mid h_t)), with history (h_t=(o_{0:t},a_{0:t-1})), seeks
+[
+\max_{\pi}\ \mathbb{E}<em t="0">{\pi,T,\Omega}!\left[\sum</em>\gamma^t R(s_t,a_t)\right]
+\quad\text{s.t.}\quad
+\mathbb{E}}^{\infty<em t="0">{\pi}!\left[\sum</em>\gamma^t C_j(s_t,a_t)\right] \le \kappa_j.
+]
+Natural-language goals are therefore specifications that must be compiled into (R), (C), and termination conditions.}^{\infty</p>
+<h2 id="three-theory-braid">Three-theory braid</h2>
+<ol>
+<li><strong>Expected-utility foundations.</strong> Rational preference under uncertainty is represented by utility maximization; this turns “what should I do?” into a mathematical objective [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>].</li>
+<li><strong>Sequential decision theory.</strong> MDP/POMDP formalisms model how present action sculpts future opportunity, not just immediate text quality [<a href="../../references.html#ref-4">4</a>] [<a href="../../references.html#ref-7">7</a>].</li>
+<li><strong>Feedback control.</strong> In open worlds, behavior is closed-loop: observations update state estimates, which update action, which perturbs the world again [<a href="../../references.html#ref-36">36</a>] [<a href="../../references.html#ref-39">39</a>].</li>
+</ol>
+<h2 id="how-to-study-this-formally">How to study this formally</h2>
+<p>Define benchmark tasks with explicit ((R,C)), estimate transition uncertainty, and compare policies by constrained return, regret, and violation rate. If a system cannot state its objective and constraints mathematically, it has not yet earned the title “agent”; it is still a very articulate reflex.</p>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-04-22 13:35 UTC
+      Last generated: 2026-04-23 06:51 UTC
     </footer>
   </body>
 </html>

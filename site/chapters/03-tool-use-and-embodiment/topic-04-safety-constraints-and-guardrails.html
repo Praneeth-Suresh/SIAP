@@ -17,18 +17,31 @@
       </aside>
       <article class="content">
         <h1 id="safety-constraints-and-guardrails">Safety Constraints and Guardrails</h1>
-<p>Agent safety is best modeled as constrained optimization: maximize utility subject to policy and risk constraints [<a href="../../references.html#ref-29">29</a>] [<a href="../../references.html#ref-30">30</a>].</p>
-<p>Guardrails should exist at multiple layers:
-1. prompt-level behavioral constraints,
-2. tool-level argument validation,
-3. runtime-level permission and budget controls,
-4. human escalation paths.</p>
-<p>This layered design reduces single-point safety failure and aligns with the principle that oversight should be external to the model’s own narrative confidence.</p>
-<p>Constraint-aware orchestration is not anti-autonomy; it is the precondition for trustworthy autonomy.</p>
+<p>Safety is not a postscript to capability; it is constrained optimization from first principles.</p>
+<h2 id="constrained-control-formalization">Constrained control formalization</h2>
+<p>Model policy selection as a constrained MDP:
+[
+\max_{\pi}\ J_R(\pi)=\mathbb{E}<em C_j="C_j">\pi!\left[\sum_t\gamma^t r_t\right]
+\quad\text{s.t.}\quad
+J</em>}(\pi)=\mathbb{E<em j_t="j,t">\pi!\left[\sum_t\gamma^t c</em>\right]\le d_j.
+]
+The Lagrangian form
+[
+\mathcal{L}(\pi,\lambda)=J_R(\pi)-\sum_j\lambda_j\big(J_{C_j}(\pi)-d_j\big)
+]
+supports dual optimization and transparent trade-off tuning.</p>
+<h2 id="three-theory-braid">Three-theory braid</h2>
+<ol>
+<li><strong>Constrained MDP theory.</strong> Utility-safety trade-offs become explicit and optimizable [<a href="../../references.html#ref-51">51</a>].</li>
+<li><strong>Control barrier functions (CBFs).</strong> Safety can be imposed as forward-invariance constraints (h(x)\ge0) at runtime [<a href="../../references.html#ref-52">52</a>].</li>
+<li><strong>Normative governance frameworks.</strong> Constitutional and risk-management frameworks encode institution-level constraints beyond model internals [<a href="../../references.html#ref-29">29</a>] [<a href="../../references.html#ref-53">53</a>].</li>
+</ol>
+<h2 id="how-to-study-this-formally">How to study this formally</h2>
+<p>Report Pareto fronts of task return versus violation probability, plus time-to-escalation under unsafe trajectories. Layered guardrails should be tested for correlated failure modes, not in isolation. Constraint-aware autonomy is not anti-innovation; it is innovation that survives contact with reality.</p>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-04-22 13:35 UTC
+      Last generated: 2026-04-23 06:51 UTC
     </footer>
   </body>
 </html>

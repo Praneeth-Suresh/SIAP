@@ -17,14 +17,29 @@
       </aside>
       <article class="content">
         <h1 id="tool-interfaces-and-function-calling">Tool Interfaces and Function Calling</h1>
-<p>Tool use converts language competence into environmental leverage. The core abstraction is a typed function interface with explicit argument schema, preconditions, and postconditions [<a href="../../references.html#ref-12">12</a>] [<a href="../../references.html#ref-13">13</a>].</p>
-<p>In robust systems, tools are not mere plugins; they are contracts. Contracts let planners reason about side effects, costs, retries, and irreversibility.</p>
-<p>This design choice also improves interpretability. Tool calls become machine-checkable events in execution traces, enabling post-hoc audits and policy learning.</p>
-<p>A minimal practical recommendation: every tool definition should include semantic purpose, latency class, failure modes, and rollback strategy.</p>
+<p>Tool use is where language stops narrating and starts doing. The central artifact is not the prompt—it is the contract.</p>
+<h2 id="formal-contract-model">Formal contract model</h2>
+<p>Represent tool (f) by
+[
+f : X \to Y,\quad \text{with } \texttt{Pre}<em u="u">f(x),\ \texttt{Post}_f(x,y),\ \texttt{Cost}_f(x),\ \texttt{Risk}_f(x).
+]
+An invocation is legal iff (\texttt{Pre}_f(x)=\texttt{true}).<br />
+A planner selects tool call (u_t=(f_t,x_t)) by maximizing expected utility under cost/risk constraints:
+[
+u_t^{*} = \arg\max</em>(u).
+]} \ \mathbb{E}[Q(\sigma_t,u)] - \lambda_c \texttt{Cost}(u) - \lambda_r \texttt{Risk</p>
+<h2 id="three-theory-braid">Three-theory braid</h2>
+<ol>
+<li><strong>Schema-typed interfaces.</strong> Function-calling schemas convert natural-language intent into machine-checkable arguments [<a href="../../references.html#ref-13">13</a>].</li>
+<li><strong>Self-supervised tool-use learning.</strong> Toolformer-style training demonstrates that models can internalize tool-selection policies from weak supervision [<a href="../../references.html#ref-12">12</a>].</li>
+<li><strong>Compositional action semantics.</strong> Reason-act trajectories make tool calls first-class state transitions suitable for replay and policy improvement [<a href="../../references.html#ref-11">11</a>].</li>
+</ol>
+<h2 id="how-to-study-this-formally">How to study this formally</h2>
+<p>Track precondition violation rate, postcondition success, rollback frequency, and utility gain per call. A tool interface is mature when failures are classifiable by contract violation rather than “the model seemed confused.”</p>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-04-22 13:35 UTC
+      Last generated: 2026-04-23 06:51 UTC
     </footer>
   </body>
 </html>

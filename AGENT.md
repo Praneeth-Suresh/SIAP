@@ -51,9 +51,10 @@ This file defines the durable principles and operating instructions for future a
   - `uv pip install -r requirements.txt`
   - `uv run python scripts/build_site.py`
   - `uv run python scripts/build_pdf.py`
+  - `uv run python scripts/build_latex_pdf.py`
 - Generated outputs:
   - `site/` for static web deployment
-  - `dist/book.html` and `dist/book.pdf` for print/web artifacts
+  - `dist/book.html`, `dist/book.pdf`, `dist/book.tex`, and `dist/book-latex.pdf` for print/web artifacts
 - GitHub Pages deploy workflow: `.github/workflows/deploy-pages.yml`
 
 ## Session workflow rules
@@ -61,3 +62,12 @@ This file defines the durable principles and operating instructions for future a
 - Keep chapter flow coherent unless a research-backed restructuring improves pedagogy.
 - Preserve citation density and link integrity whenever content changes.
 - Keep the project plan in `plan.md`; update it at meaningful milestones.
+
+## Progress update (current milestone)
+
+- Task 1 formalization pass completed across all primary topic files:
+  - each topic now includes mathematical formalization where applicable,
+  - a three-theory braid grounded in research literature,
+  - explicit guidance for formal empirical study.
+- Bibliography expanded substantially in `book/references.md` with additional authoritative papers/books.
+- LaTeX rendering pipeline added via `scripts/build_latex_pdf.py` to produce math-clean PDF artifacts.

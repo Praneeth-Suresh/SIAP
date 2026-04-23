@@ -20,7 +20,7 @@ This repository is a workshop for a somewhat audacious goal: to do for agentic s
 | Path | Purpose |
 |---|---|
 | `book/` | Chapter and topic markdown sources, rewrite-notes companions, references, and stylesheet |
-| `scripts/` | Python build scripts for website and PDF generation |
+| `scripts/` | Python build scripts for website, HTML/CSS PDF, and LaTeX PDF generation |
 | `templates/` | HTML page template used by the site builder |
 | `site/` | Generated static website (deployment artifact) |
 | `dist/` | Generated print artifacts (`book.html`, `book.pdf`) |
@@ -32,9 +32,18 @@ uv venv
 uv pip install -r requirements.txt
 uv run python scripts/build_site.py
 uv run python scripts/build_pdf.py
+uv run python scripts/build_latex_pdf.py
 ```
 
-The site output in `site/` is GitHub Pages-compatible. The print outputs are emitted to `dist/`.
+The site output in `site/` is GitHub Pages-compatible. Print outputs are emitted to `dist/`:
+- `book.pdf` (WeasyPrint from HTML/CSS)
+- `book-latex.pdf` and `book.tex` (Pandoc + LaTeX engine for cleaner math)
+
+For the LaTeX build, install system binaries:
+
+```bash
+sudo apt-get install pandoc tectonic
+```
 
 ## Writing conventions
 

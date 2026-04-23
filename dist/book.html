@@ -180,177 +180,337 @@ td {
 </ol>
 <hr />
 <h1 id="goals-environments-and-actions">Goals, Environments, and Actions</h1>
-<p>An agentic system can be defined as a process that maps observations to actions in pursuit of a goal [<a href="../../references.html#ref-2">2</a>]. The form looks innocent, but this mapping hides assumptions about what the world is, what can be sensed, and what counts as success.</p>
-<p>In practical LLM systems, goals often begin as natural language instructions. To engineer them rigorously, we translate instructions into objective functions, constraints, and stopping criteria [<a href="../../references.html#ref-1">1</a>] [<a href="../../references.html#ref-3">3</a>].</p>
-<p>Environment modeling is where toy demos become science: open-loop prompting assumes a frozen world, while real agents operate in partially observable, changing environments [<a href="../../references.html#ref-7">7</a>]. Actions then become interventions that alter future observations, not just outputs for a log file.</p>
-<h2 id="minimal-formal-sketch">Minimal formal sketch</h2>
-<table>
-<thead>
-<tr>
-<th>Symbol</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>(s_t)</td>
-<td>latent world state</td>
-</tr>
-<tr>
-<td>(o_t)</td>
-<td>observation at time (t)</td>
-</tr>
-<tr>
-<td>(a_t)</td>
-<td>action chosen at time (t)</td>
-</tr>
-<tr>
-<td>(G)</td>
-<td>goal/objective functional</td>
-</tr>
-</tbody>
-</table>
-<p>The engineering principle is to keep this sketch explicit in code and docs, so architecture decisions can be audited against a shared formal target.</p>
+<p>Agency begins with a compact covenant: choose actions that push a world toward a goal. The covenant sounds poetic until we formalize it, at which point it becomes testable engineering [<a href="../../references.html#ref-2">2</a>].</p>
+<h2 id="formal-model">Formal model</h2>
+<p>Let an agent-environment system be
+[
+\mathcal{M} = (\mathcal{S}, \mathcal{O}, \mathcal{A}, T, \Omega, R, C, \gamma),
+]
+where (T(s' \mid s,a)) is transition dynamics, (\Omega(o \mid s)) is observation dynamics, (R) is task reward, (C) is a constraint vector (cost, risk, budget), and (\gamma \in (0,1)) is discount.</p>
+<p>A policy (\pi(a\mid h_t)), with history (h_t=(o_{0:t},a_{0:t-1})), seeks
+[
+\max_{\pi}\ \mathbb{E}<em t="0">{\pi,T,\Omega}!\left[\sum</em>\gamma^t R(s_t,a_t)\right]
+\quad\text{s.t.}\quad
+\mathbb{E}}^{\infty<em t="0">{\pi}!\left[\sum</em>\gamma^t C_j(s_t,a_t)\right] \le \kappa_j.
+]
+Natural-language goals are therefore specifications that must be compiled into (R), (C), and termination conditions.}^{\infty</p>
+<h2 id="three-theory-braid">Three-theory braid</h2>
+<ol>
+<li><strong>Expected-utility foundations.</strong> Rational preference under uncertainty is represented by utility maximization; this turns “what should I do?” into a mathematical objective [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>].</li>
+<li><strong>Sequential decision theory.</strong> MDP/POMDP formalisms model how present action sculpts future opportunity, not just immediate text quality [<a href="../../references.html#ref-4">4</a>] [<a href="../../references.html#ref-7">7</a>].</li>
+<li><strong>Feedback control.</strong> In open worlds, behavior is closed-loop: observations update state estimates, which update action, which perturbs the world again [<a href="../../references.html#ref-36">36</a>] [<a href="../../references.html#ref-39">39</a>].</li>
+</ol>
+<h2 id="how-to-study-this-formally">How to study this formally</h2>
+<p>Define benchmark tasks with explicit ((R,C)), estimate transition uncertainty, and compare policies by constrained return, regret, and violation rate. If a system cannot state its objective and constraints mathematically, it has not yet earned the title “agent”; it is still a very articulate reflex.</p>
 <hr />
 <h1 id="belief-uncertainty-and-decision">Belief, Uncertainty, and Decision</h1>
-<p>Agentic systems rarely act with complete state information. The practical object is not certainty but calibrated belief: a probability distribution over plausible world states [<a href="../../references.html#ref-4">4</a>] [<a href="../../references.html#ref-7">7</a>].</p>
-<p>This immediately reframes prompt engineering as decision theory. A prompt does not merely elicit text; it changes posterior belief and therefore downstream policy quality [<a href="../../references.html#ref-5">5</a>].</p>
-<p>Bayesian framing is especially useful for tool-using agents. Retrieval queries, API calls, and test executions can be interpreted as information-gathering actions whose value depends on uncertainty reduction and action cost [<a href="../../references.html#ref-6">6</a>] [<a href="../../references.html#ref-14">14</a>].</p>
-<p>The design takeaway is blunt: systems that do not model uncertainty explicitly tend to overconfidently fail in exactly the regimes where autonomy matters most.</p>
+<p>The competent agent does not worship certainty; it manages uncertainty with discipline. Belief is a computational object, not a mood.</p>
+<h2 id="bayesian-formalization">Bayesian formalization</h2>
+<p>With latent state (s_t), history (h_t), and belief (b_t(s)=P(s_t=s\mid h_t)), updates follow
+[
+b_{t+1}(s') = \eta\,\Omega(o_{t+1}\mid s')\sum_{s}T(s'\mid s,a_t)b_t(s),
+]
+where (\eta) normalizes. Decision quality is evaluated through belief-state value:
+[
+V^\pi(b)=\mathbb{E}!\left[\sum_{t\ge 0}\gamma^t R(s_t,a_t)\mid b_0=b,\pi\right].
+]</p>
+<p>Information gathering is itself an action. The value of information for query (q) is
+[
+\operatorname{VoI}(q)=\mathbb{E}!\left[\max_a \mathbb{E}[U(a,s)\mid h_t,q]\right]
+\;-\;\max_a \mathbb{E}[U(a,s)\mid h_t].
+]</p>
+<h2 id="three-theory-braid_1">Three-theory braid</h2>
+<ol>
+<li><strong>Bayesian decision theory.</strong> Rational action under uncertainty is posterior-weighted expected utility [<a href="../../references.html#ref-34">34</a>] [<a href="../../references.html#ref-7">7</a>].</li>
+<li><strong>Information theory.</strong> Entropy and mutual information quantify epistemic uncertainty and expected reduction from sensing/retrieval actions [<a href="../../references.html#ref-35">35</a>].</li>
+<li><strong>Proper scoring and calibration.</strong> Probabilistic outputs must be evaluated with strictly proper rules to avoid overconfident nonsense dressed as confidence [<a href="../../references.html#ref-49">49</a>].</li>
+</ol>
+<h2 id="how-to-study-this-formally_1">How to study this formally</h2>
+<p>Run ablations where retrieval, tool probes, or clarification questions are treated as costly information actions. Measure calibration (ECE/Brier), downstream utility, and VoI realized per unit latency/token cost. If epistemic actions do not improve calibrated decision quality, the loop is decorative, not deliberative.</p>
 <hr />
 <h1 id="world-models-and-state-abstractions">World Models and State Abstractions</h1>
-<p>An agent that stores everything stores nothing usefully. State abstraction decides what history is compressed into a control-relevant representation [<a href="../../references.html#ref-2">2</a>] [<a href="../../references.html#ref-4">4</a>].</p>
-<p>In modern LLM stacks, this appears as schema design: what lives in short-term context, long-term memory, vector stores, and external structured state [<a href="../../references.html#ref-16">16</a>]. The abstraction boundary determines whether plans can be reused or must be reinvented each turn.</p>
-<p>Causal structure matters. If a model cannot distinguish correlation from intervention, it plans with confidence and acts with confusion [<a href="../../references.html#ref-6">6</a>]. Effective abstractions preserve variables that support counterfactual reasoning and tool selection.</p>
-<p>A good chapter-level heuristic: each state field should answer either “what matters for next action?” or “what matters for post-hoc accountability?”</p>
+<p>To model a world is to choose what to forget without forgetting what matters. Abstraction is compression under decision pressure.</p>
+<h2 id="formalization">Formalization</h2>
+<p>Let (\phi:\mathcal{S}\to\mathcal{Z}) map ground states to abstract states. A homomorphic abstraction preserves control-relevant structure:
+[
+R(s,a)=\bar{R}(\phi(s),a),\qquad
+\sum_{s':\phi(s')=z'} T(s'\mid s,a)=\bar{T}(z'\mid \phi(s),a).
+]
+Then planning in (\mathcal{Z}) approximates planning in (\mathcal{S}), with error bounded by abstraction distortion.</p>
+<p>For causal world models, variables (X) follow structural equations (X_i=f_i(\mathrm{Pa}(X_i),U_i)). Interventions (\mathrm{do}(X_j=x)) define action semantics beyond passive prediction [<a href="../../references.html#ref-6">6</a>].</p>
+<h2 id="three-theory-braid_2">Three-theory braid</h2>
+<ol>
+<li><strong>State abstraction in MDPs.</strong> Homomorphisms characterize when compressed states retain optimal-control content [<a href="../../references.html#ref-37">37</a>].</li>
+<li><strong>Bisimulation metrics.</strong> Behavioral similarity can be quantified continuously, giving principled abstraction error control [<a href="../../references.html#ref-38">38</a>].</li>
+<li><strong>Causal modeling.</strong> Structural causal models distinguish observation from intervention, crucial for tool-using agents that change their environment [<a href="../../references.html#ref-6">6</a>].</li>
+</ol>
+<h2 id="how-to-study-this-formally_2">How to study this formally</h2>
+<p>Estimate value-loss (\Delta V = |V^{<em>} - \tilde{V}^{</em>}\circ\phi|), intervention accuracy under held-out counterfactuals, and policy robustness to distribution shift. In short: if abstraction gains speed but loses action relevance, you have invented a beautifully efficient hallucination engine.</p>
 <hr />
 <h1 id="policies-value-and-control">Policies, Value, and Control</h1>
-<p>The policy is the operational constitution of an agent: a rule for selecting actions from state. Value functions estimate long-term consequences and stabilize decision-making under delayed outcomes [<a href="../../references.html#ref-3">3</a>] [<a href="../../references.html#ref-5">5</a>].</p>
-<p>For LLM agents, policy often combines model proposals with explicit control layers: validators, rankers, budget constraints, and termination logic. This hybridization mirrors classic control decomposition between planner and controller [<a href="../../references.html#ref-4">4</a>].</p>
-<p>A practical implementation pattern is to separate:
-1. proposal policy (what actions are suggested),
-2. adjudication policy (which suggestion survives),
-3. oversight policy (when to escalate or halt).</p>
-<p>This decomposition supports measurable guarantees and creates interfaces where formal analysis can enter an otherwise stochastic system.</p>
+<p>A policy is not merely “what the model says next”; it is the constitution that governs action under uncertainty, delay, and cost.</p>
+<h2 id="core-equations">Core equations</h2>
+<p>For policy (\pi),
+[
+V^\pi(s)=\mathbb{E}<em t_ge0="t\ge0">\pi!\left[\sum</em>\gamma^t r_t\mid s_0=s\right],\qquad
+Q^\pi(s,a)=\mathbb{E}<em t_ge0="t\ge0">\pi!\left[\sum</em>\gamma^t r_t\mid s_0=s,a_0=a\right].
+]
+Optimality obeys Bellman recursion:
+[
+V^{<em>}(s)=\max_a\left{R(s,a)+\gamma\sum_{s'}T(s'\mid s,a)V^{</em>}(s')\right}.
+]</p>
+<p>When policies are parameterized by (\theta), gradient ascent uses
+[
+\nabla_\theta J(\theta)=\mathbb{E}<em>{\pi</em>\theta}!\left[\nabla_\theta \log \pi_\theta(a\mid s)\,Q^{\pi_\theta}(s,a)\right].
+]</p>
+<h2 id="three-theory-braid_3">Three-theory braid</h2>
+<ol>
+<li><strong>Dynamic programming.</strong> Bellman equations provide exact structure for value and control decomposition [<a href="../../references.html#ref-5">5</a>] [<a href="../../references.html#ref-39">39</a>].</li>
+<li><strong>Policy-gradient methods.</strong> Stochastic policies can be optimized directly with unbiased gradient estimators [<a href="../../references.html#ref-40">40</a>].</li>
+<li><strong>Model predictive control (MPC).</strong> Receding-horizon optimization handles constraints and changing dynamics in real deployments [<a href="../../references.html#ref-41">41</a>].</li>
+</ol>
+<h2 id="how-to-study-this-formally_3">How to study this formally</h2>
+<p>Treat orchestration as layered control: proposal policy, adjudication policy, and oversight policy. Compare designs on return, stability, and safety-constraint adherence under perturbations. A policy that looks brilliant on one trajectory but violates constraints under mild shift is theater, not control.</p>
 <hr />
 <h1 id="reasoning-loops-as-interpreters">Reasoning Loops as Interpreters</h1>
-<p>A modern agent loop resembles a small interpreter: parse context, evaluate candidate actions, execute one, update state, repeat [<a href="../../references.html#ref-1">1</a>] [<a href="../../references.html#ref-11">11</a>].</p>
-<p>The key move is to make loop semantics explicit. Which variables are mutable? Which transitions are legal? Which errors are recoverable? Without these declarations, “autonomy” degenerates into optimistic recursion.</p>
-<p>The interpreter lens also makes compositionality tractable. We can define loop combinators (plan-then-act, act-then-reflect, branch-and-vote) and reason about their invariants, costs, and failure modes [<a href="../../references.html#ref-2">2</a>].</p>
-<p>In this framing, prompt text is only one layer. The loop itself is the machine.</p>
+<p>An agent loop is an interpreter wearing orchestration clothing. Once we say this out loud, semantics, invariants, and proofs become available to us.</p>
+<h2 id="small-step-semantics">Small-step semantics</h2>
+<p>Define machine state (\sigma=(m, h, b, \tau)): memory (m), interaction history (h), belief state (b), and tool context (\tau).<br />
+Transitions are relations (\sigma \xrightarrow{\ell} \sigma') labeled by step kind (\ell \in {\texttt{think},\texttt{act},\texttt{observe},\texttt{reflect}}).</p>
+<p>An agent loop is the least fixed point of a transition functional:
+[
+\mathcal{L}(\sigma)=
+\begin{cases}
+\sigma &amp; \text{if }\texttt{halt}(\sigma)\
+\mathcal{L}(F(\sigma)) &amp; \text{otherwise}
+\end{cases}
+]
+where (F) is one semantic step.</p>
+<h2 id="three-theory-braid_4">Three-theory braid</h2>
+<ol>
+<li><strong>Structural operational semantics (SOS).</strong> Behavior is specified via transition rules, making legal/illegal steps explicit [<a href="../../references.html#ref-42">42</a>].</li>
+<li><strong>Abstract interpretation.</strong> We reason soundly about large state spaces using abstract domains and transfer functions [<a href="../../references.html#ref-43">43</a>].</li>
+<li><strong>Reason-act coupling in LLM agents.</strong> ReAct-style trajectories instantiate interpreter steps over tool-mediated environments [<a href="../../references.html#ref-11">11</a>].</li>
+</ol>
+<h2 id="how-to-study-this-formally_4">How to study this formally</h2>
+<p>Prove step invariants (schema validity, budget monotonicity), termination conditions, and recovery properties from error states. If you cannot define your loop semantics, you cannot debug your loop semantics; you can only squint at transcripts and hope.</p>
 <hr />
 <h1 id="deliberation-planning-and-search">Deliberation, Planning, and Search</h1>
-<p>Planning gives agents temporal coherence: actions are selected for trajectory quality, not local plausibility [<a href="../../references.html#ref-8">8</a>] [<a href="../../references.html#ref-9">9</a>] [<a href="../../references.html#ref-10">10</a>].</p>
-<p>LLM agents often blend symbolic planning with learned heuristics. A search tree may be explicit (tool calls, simulation branches) while scoring is neural and context-dependent [<a href="../../references.html#ref-11">11</a>].</p>
-<p>Three planning modes are practical in orchestration:
-1. one-shot plan then execute,
-2. interleaved plan/act/replan,
-3. speculative branching with pruning.</p>
-<p>The correct mode depends on environment volatility, tool latency, and the cost of wrong irreversible actions.</p>
+<p>Deliberation is the art of spending computation now to avoid regret later.</p>
+<h2 id="formal-planning-frame">Formal planning frame</h2>
+<p>Let (G=(V,E)) be a search graph over decision states. A plan is a path (p=(v_0,\dots,v_T)) minimizing
+[
+J(p)=\sum_{t=0}^{T-1} c(v_t,v_{t+1}) + \Phi(v_T),
+]
+with admissible heuristic (h(v)\le h^{<em>}(v)) for A</em> optimality.</p>
+<p>In stochastic domains, planning becomes belief-space optimization or Monte Carlo tree search over sampled rollouts.</p>
+<h2 id="three-theory-braid_5">Three-theory braid</h2>
+<ol>
+<li><strong>Heuristic graph search.</strong> A* gives optimality guarantees under admissibility/consistency assumptions [<a href="../../references.html#ref-8">8</a>].</li>
+<li><strong>Symbolic planning.</strong> STRIPS-style operators and planning-domain models encode action preconditions/effects for compositional plan construction [<a href="../../references.html#ref-9">9</a>] [<a href="../../references.html#ref-10">10</a>].</li>
+<li><strong>Anytime and tree-search control.</strong> UCT/MCTS and anytime planning trade compute for solution quality under real-time budgets [<a href="../../references.html#ref-44">44</a>] [<a href="../../references.html#ref-45">45</a>].</li>
+</ol>
+<h2 id="how-to-study-this-formally_5">How to study this formally</h2>
+<p>Benchmark plan quality against compute budget, replan frequency, and irreversible-error rate. Analyze sensitivity to heuristic misspecification and environment volatility. The best planner is not the one with the fanciest tree; it is the one whose assumptions fail gracefully.</p>
 <hr />
 <h1 id="memory-systems-context-and-retrieval">Memory Systems, Context, and Retrieval</h1>
-<p>Memory is not “everything ever said.” Memory is a policy over what to retain, compress, retrieve, and forget [<a href="../../references.html#ref-16">16</a>].</p>
-<p>RAG systems operationalize episodic and semantic recall: dense retrieval locates external facts while the model synthesizes them into current reasoning [<a href="../../references.html#ref-14">14</a>] [<a href="../../references.html#ref-15">15</a>].</p>
-<p>A useful architecture has at least three memory strata:</p>
-<table>
-<thead>
-<tr>
-<th>Layer</th>
-<th>Role</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Working context</td>
-<td>immediate decision state</td>
-</tr>
-<tr>
-<td>Episodic log</td>
-<td>recent trajectories and failures</td>
-</tr>
-<tr>
-<td>Semantic store</td>
-<td>durable concepts and references</td>
-</tr>
-</tbody>
-</table>
-<p>The retrieval policy should be explicit and testable, because memory errors usually appear as reasoning errors one layer later.</p>
+<p>Memory is policy, not pile: retain, compress, retrieve, forget. The trick is to optimize this policy under context-window scarcity.</p>
+<h2 id="formal-memory-policy">Formal memory policy</h2>
+<p>Let memory state be (m_t=(w_t,e_t,s_t)): working, episodic, and semantic stores.<br />
+A memory controller chooses operations (u_t \in {\texttt{write},\texttt{compress},\texttt{retrieve},\texttt{evict}}) by
+[
+u_t = \mu_\theta(m_t,h_t),
+]
+to optimize
+[
+\max_\mu\ \mathbb{E}!\left[\sum_t \gamma^t \big(\text{task_utility}_t - \lambda_1\text{latency}_t - \lambda_2\text{token_load}_t\big)\right].
+]</p>
+<h2 id="three-theory-braid_6">Three-theory braid</h2>
+<ol>
+<li><strong>Cognitive multi-store theory.</strong> Distinct working/episodic/semantic strata suggest principled architectural separation [<a href="../../references.html#ref-48">48</a>].</li>
+<li><strong>Information-theoretic compression.</strong> Retention is a rate-distortion tradeoff: keep bits that preserve decision value [<a href="../../references.html#ref-35">35</a>].</li>
+<li><strong>Modern retrieval theory.</strong> Sparse/dense indexing and RAG latent-document models define end-to-end evidence pipelines [<a href="../../references.html#ref-14">14</a>] [<a href="../../references.html#ref-15">15</a>] [<a href="../../references.html#ref-46">46</a>] [<a href="../../references.html#ref-47">47</a>].</li>
+</ol>
+<h2 id="how-to-study-this-formally_6">How to study this formally</h2>
+<p>Evaluate retrieval precision/recall, downstream answer faithfulness, and regret from memory eviction decisions. Stress-test long-horizon tasks with adversarial distractors. If memory policy cannot be audited quantitatively, “long context” is just expensive amnesia.</p>
 <hr />
 <h1 id="evaluating-and-debugging-reasoners">Evaluating and Debugging Reasoners</h1>
-<p>An agent that seems eloquent may still be strategically inept. Evaluation must target trajectories, not just final text outputs [<a href="../../references.html#ref-30">30</a>].</p>
-<p>Reasoning QA should include:
-1. success rate on goal completion,
-2. tool-use correctness,
-3. calibration under uncertainty,
-4. failure recoverability.</p>
-<p>Trace-based diagnostics are especially valuable: each loop iteration is an observable state transition that can be inspected, replayed, and scored [<a href="../../references.html#ref-24">24</a>].</p>
-<p>The practical doctrine is harsh and useful: if you cannot replay and score a reasoning path, you are optimizing anecdotes.</p>
+<p>If you only score final answers, you reward lucky shortcuts and miss systematic failure. Reasoners must be judged as stochastic processes over trajectories.</p>
+<h2 id="formal-evaluation-object">Formal evaluation object</h2>
+<p>Let trajectory (\tau=(\sigma_0,a_0,\dots,\sigma_T)\sim p_\pi(\tau)).<br />
+Define task utility (U(\tau)), safety cost (C(\tau)), and calibration score (S(\tau)).<br />
+Evaluation is multi-objective:
+[
+\max_\pi \ \mathbb{E}[U(\tau)] - \lambda\,\mathbb{E}[C(\tau)] \quad\text{with calibration constrained by}\quad \mathbb{E}[S(\tau)] \le \epsilon.
+]</p>
+<h2 id="three-theory-braid_7">Three-theory braid</h2>
+<ol>
+<li><strong>Proper scoring rules.</strong> Calibration and probabilistic honesty are measured with strictly proper losses (e.g., log score, Brier) [<a href="../../references.html#ref-49">49</a>].</li>
+<li><strong>Trace-based causal diagnosis.</strong> Interventional replay and counterfactual edits reveal which loop step caused failure [<a href="../../references.html#ref-6">6</a>].</li>
+<li><strong>Influence-based debugging.</strong> Influence-function approximations identify training/data points or memory entries that drive specific errors [<a href="../../references.html#ref-50">50</a>].</li>
+</ol>
+<h2 id="how-to-study-this-formally_7">How to study this formally</h2>
+<p>Instrument every loop step, replay with controlled interventions, and report confidence-utility frontiers rather than single accuracy points. A reasoning stack graduates from demo to system only when its failures are reproducible, attributable, and reducible.</p>
 <hr />
 <h1 id="tool-interfaces-and-function-calling">Tool Interfaces and Function Calling</h1>
-<p>Tool use converts language competence into environmental leverage. The core abstraction is a typed function interface with explicit argument schema, preconditions, and postconditions [<a href="../../references.html#ref-12">12</a>] [<a href="../../references.html#ref-13">13</a>].</p>
-<p>In robust systems, tools are not mere plugins; they are contracts. Contracts let planners reason about side effects, costs, retries, and irreversibility.</p>
-<p>This design choice also improves interpretability. Tool calls become machine-checkable events in execution traces, enabling post-hoc audits and policy learning.</p>
-<p>A minimal practical recommendation: every tool definition should include semantic purpose, latency class, failure modes, and rollback strategy.</p>
+<p>Tool use is where language stops narrating and starts doing. The central artifact is not the prompt—it is the contract.</p>
+<h2 id="formal-contract-model">Formal contract model</h2>
+<p>Represent tool (f) by
+[
+f : X \to Y,\quad \text{with } \texttt{Pre}<em u="u">f(x),\ \texttt{Post}_f(x,y),\ \texttt{Cost}_f(x),\ \texttt{Risk}_f(x).
+]
+An invocation is legal iff (\texttt{Pre}_f(x)=\texttt{true}).<br />
+A planner selects tool call (u_t=(f_t,x_t)) by maximizing expected utility under cost/risk constraints:
+[
+u_t^{*} = \arg\max</em>(u).
+]} \ \mathbb{E}[Q(\sigma_t,u)] - \lambda_c \texttt{Cost}(u) - \lambda_r \texttt{Risk</p>
+<h2 id="three-theory-braid_8">Three-theory braid</h2>
+<ol>
+<li><strong>Schema-typed interfaces.</strong> Function-calling schemas convert natural-language intent into machine-checkable arguments [<a href="../../references.html#ref-13">13</a>].</li>
+<li><strong>Self-supervised tool-use learning.</strong> Toolformer-style training demonstrates that models can internalize tool-selection policies from weak supervision [<a href="../../references.html#ref-12">12</a>].</li>
+<li><strong>Compositional action semantics.</strong> Reason-act trajectories make tool calls first-class state transitions suitable for replay and policy improvement [<a href="../../references.html#ref-11">11</a>].</li>
+</ol>
+<h2 id="how-to-study-this-formally_8">How to study this formally</h2>
+<p>Track precondition violation rate, postcondition success, rollback frequency, and utility gain per call. A tool interface is mature when failures are classifiable by contract violation rather than “the model seemed confused.”</p>
 <hr />
 <h1 id="retrieval-augmented-tooling">Retrieval-Augmented Tooling</h1>
-<p>RAG is best understood as a tool chain: query formulation, retrieval, ranking, synthesis, and citation. Each stage is a controllable component with separate error surfaces [<a href="../../references.html#ref-14">14</a>] [<a href="../../references.html#ref-15">15</a>].</p>
-<p>For agentic workflows, retrieval should be demand-driven by planner uncertainty, not indiscriminately invoked every turn. This keeps latency and context load aligned with epistemic need.</p>
-<p>A practical architecture:
-1. detect information gap,
-2. issue retrieval query,
-3. validate source quality,
-4. ground generated claims to retrieved evidence.</p>
-<p>The result is not merely better answers; it is better accountability.</p>
+<p>RAG is not a monolith; it is a pipeline whose stages can each be formalized, measured, and improved.</p>
+<h2 id="probabilistic-formulation">Probabilistic formulation</h2>
+<p>For query context (x), retrieved document (d), and answer (y):
+[
+p(y\mid x) = \sum_{d \in \mathcal{D}} p(y\mid x,d)\,p(d\mid x).
+]
+Operationally, (p(d\mid x)) is retrieval/ranking, while (p(y\mid x,d)) is grounded generation. Agentic retrieval triggers should depend on uncertainty:
+[
+\texttt{retrieve}_t = \mathbf{1}{H[p(\cdot\mid h_t)] &gt; \tau}.
+]</p>
+<h2 id="three-theory-braid_9">Three-theory braid</h2>
+<ol>
+<li><strong>Latent-document generation.</strong> RAG models combine parametric generation with non-parametric memory [<a href="../../references.html#ref-14">14</a>].</li>
+<li><strong>Dense representation retrieval.</strong> DPR-style dual encoders formalize semantic nearest-neighbor access to large corpora [<a href="../../references.html#ref-15">15</a>].</li>
+<li><strong>Classical IR ranking theory.</strong> Probabilistic ranking (e.g., BM25 family) provides robust lexical grounding and interpretable ranking signals [<a href="../../references.html#ref-46">46</a>].</li>
+</ol>
+<h2 id="how-to-study-this-formally_9">How to study this formally</h2>
+<p>Measure retrieval nDCG/Recall@k, citation faithfulness, and end-task utility under retrieval budget constraints. Compare always-retrieve versus uncertainty-triggered retrieval policies. If retrieval cannot justify its latency with measurable uncertainty reduction, it is ritual, not reasoning.</p>
 <hr />
 <h1 id="embodiment-sensors-actuators-and-feedback">Embodiment: Sensors, Actuators, and Feedback</h1>
-<p>Embodiment means the agent’s actions alter a world that pushes back. Even purely software agents are embodied in infrastructures: APIs rate-limit, files mutate, humans respond, and markets move.</p>
-<p>Classical control and RL provide the language for this feedback geometry: observations, actions, transition dynamics, and reward signals [<a href="../../references.html#ref-3">3</a>] [<a href="../../references.html#ref-4">4</a>].</p>
-<p>In production systems, embodiment design includes:
-1. sensor fidelity (what can be observed),
-2. actuator safety (what can be changed),
-3. feedback delay (when outcomes are known).</p>
-<p>Ignoring these constraints yields an “intelligent” agent that is mathematically under-informed and operationally overconfident.</p>
+<p>Embodiment means the world can answer back. Even software-only agents are embodied in systems with latency, saturation, and irreversible side effects.</p>
+<h2 id="state-space-formalization">State-space formalization</h2>
+<p>Let continuous latent state (x_t), control (u_t), and observation (o_t):
+[
+x_{t+1}=f(x_t,u_t)+w_t,\qquad o_t=g(x_t)+v_t.
+]
+The controller chooses (u_t=\pi(o_{0:t},u_{0:t-1})) to optimize long-run utility under actuator and safety bounds.</p>
+<p>Sensor quality enters through observability; actuator quality enters through controllability and delay.</p>
+<h2 id="three-theory-braid_10">Three-theory braid</h2>
+<ol>
+<li><strong>Control-theoretic state estimation.</strong> Kalman-style filtering formalizes noisy sensing and recursive belief updates [<a href="../../references.html#ref-36">36</a>].</li>
+<li><strong>Reinforcement learning dynamics.</strong> MDP/POMDP and return optimization model delayed consequences of action [<a href="../../references.html#ref-3">3</a>] [<a href="../../references.html#ref-4">4</a>].</li>
+<li><strong>System-level environment coupling.</strong> Agent loops embedded in real infrastructures require explicit modeling of latency, rate limits, and non-stationarity [<a href="../../references.html#ref-2">2</a>].</li>
+</ol>
+<h2 id="how-to-study-this-formally_10">How to study this formally</h2>
+<p>Quantify sensor noise sensitivity, actuator saturation failures, and closed-loop stability under delays. Evaluate with perturbation tests and feedback-loop stress scenarios. An embodied agent that ignores feedback geometry is not autonomous; it is merely loud.</p>
 <hr />
 <h1 id="safety-constraints-and-guardrails">Safety Constraints and Guardrails</h1>
-<p>Agent safety is best modeled as constrained optimization: maximize utility subject to policy and risk constraints [<a href="../../references.html#ref-29">29</a>] [<a href="../../references.html#ref-30">30</a>].</p>
-<p>Guardrails should exist at multiple layers:
-1. prompt-level behavioral constraints,
-2. tool-level argument validation,
-3. runtime-level permission and budget controls,
-4. human escalation paths.</p>
-<p>This layered design reduces single-point safety failure and aligns with the principle that oversight should be external to the model’s own narrative confidence.</p>
-<p>Constraint-aware orchestration is not anti-autonomy; it is the precondition for trustworthy autonomy.</p>
+<p>Safety is not a postscript to capability; it is constrained optimization from first principles.</p>
+<h2 id="constrained-control-formalization">Constrained control formalization</h2>
+<p>Model policy selection as a constrained MDP:
+[
+\max_{\pi}\ J_R(\pi)=\mathbb{E}<em C_j="C_j">\pi!\left[\sum_t\gamma^t r_t\right]
+\quad\text{s.t.}\quad
+J</em>}(\pi)=\mathbb{E<em j_t="j,t">\pi!\left[\sum_t\gamma^t c</em>\right]\le d_j.
+]
+The Lagrangian form
+[
+\mathcal{L}(\pi,\lambda)=J_R(\pi)-\sum_j\lambda_j\big(J_{C_j}(\pi)-d_j\big)
+]
+supports dual optimization and transparent trade-off tuning.</p>
+<h2 id="three-theory-braid_11">Three-theory braid</h2>
+<ol>
+<li><strong>Constrained MDP theory.</strong> Utility-safety trade-offs become explicit and optimizable [<a href="../../references.html#ref-51">51</a>].</li>
+<li><strong>Control barrier functions (CBFs).</strong> Safety can be imposed as forward-invariance constraints (h(x)\ge0) at runtime [<a href="../../references.html#ref-52">52</a>].</li>
+<li><strong>Normative governance frameworks.</strong> Constitutional and risk-management frameworks encode institution-level constraints beyond model internals [<a href="../../references.html#ref-29">29</a>] [<a href="../../references.html#ref-53">53</a>].</li>
+</ol>
+<h2 id="how-to-study-this-formally_11">How to study this formally</h2>
+<p>Report Pareto fronts of task return versus violation probability, plus time-to-escalation under unsafe trajectories. Layered guardrails should be tested for correlated failure modes, not in isolation. Constraint-aware autonomy is not anti-innovation; it is innovation that survives contact with reality.</p>
 <hr />
 <h1 id="coordination-protocols-and-communication">Coordination Protocols and Communication</h1>
-<p>Multi-agent systems succeed or fail on protocol quality. Communication is not free-form chatter; it is structured information exchange under timing and trust constraints [<a href="../../references.html#ref-17">17</a>] [<a href="../../references.html#ref-18">18</a>].</p>
-<p>Common coordination patterns include blackboard systems, planner-executor splits, and committee voting. Each pattern defines who may propose, who may veto, and how conflicts are resolved.</p>
-<p>For LLM agents, explicit message schemas and role contracts reduce ambiguity and improve debuggability [<a href="../../references.html#ref-24">24</a>].</p>
-<p>The key principle: coordination logic should be encoded as system rules, not inferred ad hoc from conversational style.</p>
+<p>In multi-agent systems, communication is not chatter; it is distributed computation under uncertainty and delay.</p>
+<h2 id="formal-protocol-model">Formal protocol model</h2>
+<p>Let agents (i\in{1,\dots,n}) have local state (x_i^t) and messages (m_{i\to j}^t).<br />
+A protocol (\Pi) defines transition rules
+[
+(x_i^{t+1}, m_{i\to <em>}^{t+1}) = \Pi_i!\left(x_i^t,{m_{</em>\to i}^t}\right).
+]
+Correctness criteria include safety (nothing bad happens), liveness (something good eventually happens), and agreement/consistency when required.</p>
+<h2 id="three-theory-braid_12">Three-theory braid</h2>
+<ol>
+<li><strong>Distributed consensus limits.</strong> Byzantine agreement and impossibility results formalize what reliable coordination can and cannot guarantee [<a href="../../references.html#ref-54">54</a>] [<a href="../../references.html#ref-55">55</a>].</li>
+<li><strong>Coordination theory.</strong> Task dependencies and resource constraints determine which communication structures are efficient [<a href="../../references.html#ref-56">56</a>].</li>
+<li><strong>Role-based MAS architectures.</strong> Agent communication languages and protocol roles improve traceability and conflict handling [<a href="../../references.html#ref-17">17</a>] [<a href="../../references.html#ref-18">18</a>].</li>
+</ol>
+<h2 id="how-to-study-this-formally_12">How to study this formally</h2>
+<p>Evaluate message complexity, consensus latency, deadlock frequency, and degradation under dropped/incorrect messages. Encode schemas and role permissions as enforceable protocol rules. If coordination depends on everyone being “reasonable,” it is not a protocol; it is a prayer.</p>
 <hr />
 <h1 id="negotiation-and-mechanism-design">Negotiation and Mechanism Design</h1>
-<p>Negotiation is algorithmic governance over competing objectives. Mechanism design asks how to set rules so rational local behavior induces desirable global outcomes [<a href="../../references.html#ref-18">18</a>] [<a href="../../references.html#ref-19">19</a>].</p>
-<p>In agent engineering, this appears in budget allocation, task assignment, conflict arbitration, and shared memory updates.</p>
-<p>Useful mechanism primitives include:
-1. voting with tie-break policy,
-2. auction-style allocation,
-3. contract-net bidding for task delegation.</p>
-<p>The point is not to imitate economics for style; it is to prevent hidden power dynamics in orchestration graphs.</p>
+<p>Negotiation is what happens when autonomy meets scarcity. Mechanism design is how we stop that meeting from turning into chaos.</p>
+<h2 id="formal-mechanism-frame">Formal mechanism frame</h2>
+<p>A mechanism is
+[
+\mathcal{M}=(N,\Theta, A, g, p),
+]
+with agents (N), types (\Theta), outcome space (A), allocation rule (g), and transfers (p).<br />
+Desired properties: incentive compatibility (IC), individual rationality (IR), and budget feasibility.</p>
+<p>For truthful dominant-strategy reporting, each agent (i) should satisfy
+[
+u_i!\big(g(\hat\theta_i,\hat\theta_{-i}),p_i(\hat\theta_i,\hat\theta_{-i});\theta_i\big)
+\ge
+u_i!\big(g(\theta'<em -i="-i">i,\hat\theta</em>),p_i(\theta'<em -i="-i">i,\hat\theta</em>);\theta_i\big).
+]</p>
+<h2 id="three-theory-braid_13">Three-theory braid</h2>
+<ol>
+<li><strong>VCG-style efficient mechanisms.</strong> Transfer rules can align local truthfulness with global welfare [<a href="../../references.html#ref-57">57</a>] [<a href="../../references.html#ref-58">58</a>] [<a href="../../references.html#ref-59">59</a>].</li>
+<li><strong>Social-choice limits.</strong> Gibbard-Satterthwaite impossibility reminds us that manipulation-free voting is highly constrained [<a href="../../references.html#ref-60">60</a>] [<a href="../../references.html#ref-61">61</a>].</li>
+<li><strong>Contract-net negotiation.</strong> Task delegation via bidding provides practical distributed allocation under heterogeneous capabilities [<a href="../../references.html#ref-62">62</a>].</li>
+</ol>
+<h2 id="how-to-study-this-formally_13">How to study this formally</h2>
+<p>Measure allocative efficiency, truthfulness regret, and fairness under strategic reporting. Simulate adversarial type misreports and collusion. A negotiation protocol without incentive analysis is merely an argument with extra JSON.</p>
 <hr />
 <h1 id="equilibria-self-play-and-learning-dynamics">Equilibria, Self-Play, and Learning Dynamics</h1>
-<p>Nash equilibrium provides a fixed-point concept for strategic stability: no agent benefits from unilateral deviation [<a href="../../references.html#ref-19">19</a>]. In practice, equilibrium is less destination than diagnostic.</p>
-<p>Self-play and Markov game formulations show how competitive and cooperative policies co-evolve under repeated interaction [<a href="../../references.html#ref-20">20</a>] [<a href="../../references.html#ref-21">21</a>].</p>
-<p>For orchestrated LLM systems, equilibrium thinking helps answer:
-- Will specialized agents collapse to redundant behavior?
-- Do incentives promote truthful intermediate outputs?
-- Does local optimization destabilize global task quality?</p>
-<p>The engineering value is predictive: equilibrium analysis reveals failure regimes before expensive deployment.</p>
+<p>Equilibrium is the grammar of strategic stability: who can deviate, who gains, and when dynamics settle or cycle.</p>
+<h2 id="formal-game-model">Formal game model</h2>
+<p>In a normal-form game ((N,{A_i},{u_i})), mixed strategy profile (\sigma^{<em>}) is Nash if
+[
+u_i(\sigma_i^{</em>},\sigma_{-i}^{<em>}) \ge u_i(\sigma_i,\sigma_{-i}^{</em>})\quad \forall i,\forall \sigma_i.
+]
+For sequential interaction, Markov games extend MDPs with multi-agent action tuples and payoff vectors.</p>
+<h2 id="three-theory-braid_14">Three-theory braid</h2>
+<ol>
+<li><strong>Nash equilibrium analysis.</strong> Fixed points characterize unilateral stability and expose incentive misalignment [<a href="../../references.html#ref-19">19</a>].</li>
+<li><strong>Self-play in Markov games.</strong> Repeated interaction drives policy co-adaptation and emergent conventions [<a href="../../references.html#ref-20">20</a>] [<a href="../../references.html#ref-21">21</a>].</li>
+<li><strong>Learning dynamics.</strong> Fictitious play and no-regret dynamics explain convergence to correlated/coarse-correlated equilibria in repeated games [<a href="../../references.html#ref-65">65</a>] [<a href="../../references.html#ref-64">64</a>] [<a href="../../references.html#ref-63">63</a>].</li>
+</ol>
+<h2 id="how-to-study-this-formally_14">How to study this formally</h2>
+<p>Track exploitability, diversity collapse, and equilibrium selection under perturbation. Evaluate whether local agent improvements increase system-level welfare or merely shift failure to other roles. If strategic dynamics are ignored, “multi-agent” is just parallel monologue.</p>
 <hr />
 <h1 id="neural-ensembles-and-orchestration">Neural Ensembles and Orchestration</h1>
-<p>Neural ensembles improve robustness by aggregating diverse predictors rather than trusting a single brittle model [<a href="../../references.html#ref-26">26</a>].</p>
-<p>Mixture-of-experts architecture extends this idea with sparse specialization and routing policies [<a href="../../references.html#ref-25">25</a>]. At the orchestration layer, this suggests agent societies where specialists debate, vote, and escalate.</p>
-<p>The conceptual bridge to classic “society of mind” is direct: intelligence emerges from coordinated partial competencies [<a href="../../references.html#ref-27">27</a>].</p>
-<p>Modern surveys of LLM multi-agent systems indicate this pattern is now practical at software scale, with measurable gains in reliability and decomposition quality [<a href="../../references.html#ref-23">23</a>].</p>
-<p>The chapter’s thesis culmination is therefore precise: agentic power comes from designed interaction topology, not from model size alone.</p>
+<p>An ensemble is a parliament of imperfect predictors. Its power comes from structured disagreement, not uniform certainty.</p>
+<h2 id="formal-aggregation-model">Formal aggregation model</h2>
+<p>Given predictors (f_k(x)), ensemble output is
+[
+\hat{y}(x)=\sum_{k=1}^{K} w_k(x)\,f_k(x),\qquad \sum_k w_k(x)=1,\ w_k(x)\ge 0.
+]
+For voting systems, (\hat{y}=\operatorname{mode}{f_k(x)}).<br />
+For MoE, router (g(x)) selects sparse experts (E(x)\subseteq{1,\dots,K}).</p>
+<p>Generalization gain is tied to error covariance: diverse-but-competent experts beat correlated experts.</p>
+<h2 id="three-theory-braid_15">Three-theory braid</h2>
+<ol>
+<li><strong>Deep ensembles and uncertainty.</strong> Independent predictors improve calibration and robustness under shift [<a href="../../references.html#ref-26">26</a>] [<a href="../../references.html#ref-67">67</a>].</li>
+<li><strong>Mixture-of-experts routing.</strong> Sparse specialization with learned gating yields scalable conditional computation [<a href="../../references.html#ref-25">25</a>] [<a href="../../references.html#ref-68">68</a>] [<a href="../../references.html#ref-69">69</a>].</li>
+<li><strong>Orchestrated societies of specialists.</strong> Multi-agent compositions operationalize ensemble principles at workflow scale [<a href="../../references.html#ref-23">23</a>] [<a href="../../references.html#ref-27">27</a>].</li>
+</ol>
+<h2 id="how-to-study-this-formally_15">How to study this formally</h2>
+<p>Measure ensemble gain versus best single expert, calibration under OOD inputs, and routing entropy (to detect expert collapse). The objective is not maximal committee size; it is minimal correlated error for a fixed budget.</p>
 <hr />
 <h1 id="references">References</h1>
 <ol>
@@ -386,6 +546,43 @@ td {
 <li><a id="ref-30"></a>OpenAI. (2023). GPT-4 Technical Report. https://arxiv.org/abs/2303.08774</li>
 <li><a id="ref-31"></a>WeasyPrint documentation. https://doc.courtbouillon.org/weasyprint/stable/</li>
 <li><a id="ref-32"></a>GitHub Pages documentation. https://docs.github.com/pages</li>
+<li><a id="ref-33"></a>Von Neumann, J., &amp; Morgenstern, O. (1944). <em>Theory of Games and Economic Behavior</em>. Princeton University Press. https://press.princeton.edu/books/hardcover/9780691130613/theory-of-games-and-economic-behavior</li>
+<li><a id="ref-34"></a>Savage, L. J. (1954). <em>The Foundations of Statistics</em>. Wiley. https://archive.org/details/foundationsofsta00sava</li>
+<li><a id="ref-35"></a>Shannon, C. E. (1948). A mathematical theory of communication. <em>Bell System Technical Journal</em>, 27, 379-423, 623-656. https://people.math.harvard.edu/~ctm/home/text/others/shannon/entropy/entropy.pdf</li>
+<li><a id="ref-36"></a>Kalman, R. E. (1960). A new approach to linear filtering and prediction problems. <em>Journal of Basic Engineering</em>, 82(1), 35-45. https://asmedigitalcollection.asme.org/fluidsengineering/article/82/1/35/397706/A-New-Approach-to-Linear-Filtering-and</li>
+<li><a id="ref-37"></a>Li, L., Walsh, T. J., &amp; Littman, M. L. (2006). Towards a unified theory of state abstraction for MDPs. <em>ISAIM 2006</em>. https://www.cs.rutgers.edu/~mlittman/papers/abstraction-06.pdf</li>
+<li><a id="ref-38"></a>Ferns, N., Panangaden, P., &amp; Precup, D. (2004). Metrics for finite Markov decision processes. <em>UAI 2004</em>. https://www.cs.mcgill.ca/~dprecup/publications/uai04.pdf</li>
+<li><a id="ref-39"></a>Bertsekas, D. P. (2017). <em>Dynamic Programming and Optimal Control</em> (4th ed.). Athena Scientific. https://www.mit.edu/~dimitrib/dpbook.html</li>
+<li><a id="ref-40"></a>Sutton, R. S., McAllester, D., Singh, S., &amp; Mansour, Y. (1999). Policy gradient methods for reinforcement learning with function approximation. <em>NeurIPS 1999</em>. https://papers.nips.cc/paper/1713-policy-gradient-methods-for-reinforcement-learning-with-function-approximation.pdf</li>
+<li><a id="ref-41"></a>Rawlings, J. B., Mayne, D. Q., &amp; Diehl, M. M. (2017). <em>Model Predictive Control: Theory, Computation, and Design</em> (2nd ed.). Nob Hill. https://sites.engineering.ucsb.edu/~jbraw/mpc/</li>
+<li><a id="ref-42"></a>Plotkin, G. D. (1981). A structural approach to operational semantics. Aarhus University technical report DAIMI FN-19. https://www.cs.tufts.edu/comp/150FP/archive/gordon-plotkin/sos.pdf</li>
+<li><a id="ref-43"></a>Cousot, P., &amp; Cousot, R. (1977). Abstract interpretation: A unified lattice model for static analysis. <em>POPL 1977</em>. https://dl.acm.org/doi/10.1145/512950.512973</li>
+<li><a id="ref-44"></a>Dean, T., &amp; Boddy, M. (1988). An analysis of time-dependent planning. <em>AAAI 1988</em>. https://cdn.aaai.org/AAAI/1988/AAAI88-003.pdf</li>
+<li><a id="ref-45"></a>Kocsis, L., &amp; Szepesvári, C. (2006). Bandit based Monte-Carlo planning. <em>ECML 2006</em>. https://link.springer.com/chapter/10.1007/11871842_29</li>
+<li><a id="ref-46"></a>Robertson, S., &amp; Zaragoza, H. (2009). The probabilistic relevance framework: BM25 and beyond. <em>Foundations and Trends in IR</em>, 3(4), 333-389. https://www.nowpublishers.com/article/Details/INR-019</li>
+<li><a id="ref-47"></a>Malkov, Y. A., &amp; Yashunin, D. A. (2018). Efficient and robust approximate nearest neighbor search using hierarchical navigable small world graphs. <em>IEEE TPAMI</em>, 42(4), 824-836. https://arxiv.org/abs/1603.09320</li>
+<li><a id="ref-48"></a>Atkinson, R. C., &amp; Shiffrin, R. M. (1968). Human memory: A proposed system and its control processes. In <em>The Psychology of Learning and Motivation</em> (Vol. 2). https://www.sciencedirect.com/science/article/pii/S0079742108604223</li>
+<li><a id="ref-49"></a>Gneiting, T., &amp; Raftery, A. E. (2007). Strictly proper scoring rules, prediction, and estimation. <em>JASA</em>, 102(477), 359-378. https://sites.stat.washington.edu/raftery/Research/PDF/Gneiting2007jasa.pdf</li>
+<li><a id="ref-50"></a>Koh, P. W., &amp; Liang, P. (2017). Understanding black-box predictions via influence functions. <em>ICML 2017</em>. https://arxiv.org/abs/1703.04730</li>
+<li><a id="ref-51"></a>Altman, E. (1999). <em>Constrained Markov Decision Processes</em>. Chapman and Hall/CRC. https://www.routledge.com/Constrained-Markov-Decision-Processes/Altman/p/book/9781584883593</li>
+<li><a id="ref-52"></a>Ames, A. D., Xu, X., Grizzle, J. W., &amp; Tabuada, P. (2019). Control barrier function based quadratic programs for safety critical systems. <em>IEEE TAC</em>, 62(8), 3861-3876. https://arxiv.org/abs/1609.06408</li>
+<li><a id="ref-53"></a>NIST. (2023). <em>Artificial Intelligence Risk Management Framework (AI RMF 1.0)</em>. https://www.nist.gov/itl/ai-risk-management-framework</li>
+<li><a id="ref-54"></a>Lamport, L., Shostak, R., &amp; Pease, M. (1982). The Byzantine generals problem. <em>ACM TOPLAS</em>, 4(3), 382-401. https://dl.acm.org/doi/10.1145/357172.357176</li>
+<li><a id="ref-55"></a>Fischer, M. J., Lynch, N. A., &amp; Paterson, M. S. (1985). Impossibility of distributed consensus with one faulty process. <em>JACM</em>, 32(2), 374-382. https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf</li>
+<li><a id="ref-56"></a>Malone, T. W., &amp; Crowston, K. (1994). The interdisciplinary study of coordination. <em>ACM Computing Surveys</em>, 26(1), 87-119. https://ccs.mit.edu/papers/CCSWP157/CCSWP157.html</li>
+<li><a id="ref-57"></a>Vickrey, W. (1961). Counterspeculation, auctions, and competitive sealed tenders. <em>Journal of Finance</em>, 16(1), 8-37. https://onlinelibrary.wiley.com/doi/10.1111/j.1540-6261.1961.tb02789.x</li>
+<li><a id="ref-58"></a>Clarke, E. H. (1971). Multipart pricing of public goods. <em>Public Choice</em>, 11, 17-33. https://link.springer.com/article/10.1007/BF01726210</li>
+<li><a id="ref-59"></a>Groves, T. (1973). Incentives in teams. <em>Econometrica</em>, 41(4), 617-631. https://www.jstor.org/stable/1914085</li>
+<li><a id="ref-60"></a>Gibbard, A. (1973). Manipulation of voting schemes: A general result. <em>Econometrica</em>, 41(4), 587-601. https://www.jstor.org/stable/1914083</li>
+<li><a id="ref-61"></a>Satterthwaite, M. A. (1975). Strategy-proofness and Arrow's conditions. <em>Journal of Economic Theory</em>, 10(2), 187-217. https://www.sciencedirect.com/science/article/pii/0022053175900502</li>
+<li><a id="ref-62"></a>Smith, R. G. (1980). The contract net protocol. <em>IEEE Transactions on Computers</em>, C-29(12), 1104-1113. https://ieeexplore.ieee.org/document/1675516</li>
+<li><a id="ref-63"></a>Brown, G. W. (1951). Iterative solution of games by fictitious play. In <em>Activity Analysis of Production and Allocation</em>. https://cowles.yale.edu/sites/default/files/files/pub/mon/m13-all.pdf</li>
+<li><a id="ref-64"></a>Weibull, J. W. (1997). <em>Evolutionary Game Theory</em>. MIT Press. https://mitpress.mit.edu/9780262731218/evolutionary-game-theory/</li>
+<li><a id="ref-65"></a>Hart, S., &amp; Mas-Colell, A. (2000). A simple adaptive procedure leading to correlated equilibrium. <em>Econometrica</em>, 68(5), 1127-1150. https://www.ma.huji.ac.il/hart/abs/adapt.html</li>
+<li><a id="ref-66"></a>Krogh, A., &amp; Vedelsby, J. (1995). Neural network ensembles, cross validation, and active learning. <em>NeurIPS 1994</em>. https://papers.nips.cc/paper/1001-neural-network-ensembles-cross-validation-and-active-learning.pdf</li>
+<li><a id="ref-67"></a>Dietterich, T. G. (2000). Ensemble methods in machine learning. <em>MCS 2000</em>. https://link.springer.com/chapter/10.1007/3-540-45014-9_1</li>
+<li><a id="ref-68"></a>Jacobs, R. A., Jordan, M. I., Nowlan, S. J., &amp; Hinton, G. E. (1991). Adaptive mixtures of local experts. <em>Neural Computation</em>, 3(1), 79-87. https://www.cs.toronto.edu/~hinton/absps/jjnh91.pdf</li>
+<li><a id="ref-69"></a>Fedus, W., Zoph, B., &amp; Shazeer, N. (2022). Switch Transformers: Scaling to trillion parameter models with simple and efficient sparsity. <em>JMLR</em>, 23(120), 1-39. https://www.jmlr.org/papers/v23/21-0998.html</li>
 </ol>
   </article>
 </body>

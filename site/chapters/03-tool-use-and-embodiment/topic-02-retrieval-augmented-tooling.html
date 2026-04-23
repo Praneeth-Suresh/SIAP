@@ -17,18 +17,28 @@
       </aside>
       <article class="content">
         <h1 id="retrieval-augmented-tooling">Retrieval-Augmented Tooling</h1>
-<p>RAG is best understood as a tool chain: query formulation, retrieval, ranking, synthesis, and citation. Each stage is a controllable component with separate error surfaces [<a href="../../references.html#ref-14">14</a>] [<a href="../../references.html#ref-15">15</a>].</p>
-<p>For agentic workflows, retrieval should be demand-driven by planner uncertainty, not indiscriminately invoked every turn. This keeps latency and context load aligned with epistemic need.</p>
-<p>A practical architecture:
-1. detect information gap,
-2. issue retrieval query,
-3. validate source quality,
-4. ground generated claims to retrieved evidence.</p>
-<p>The result is not merely better answers; it is better accountability.</p>
+<p>RAG is not a monolith; it is a pipeline whose stages can each be formalized, measured, and improved.</p>
+<h2 id="probabilistic-formulation">Probabilistic formulation</h2>
+<p>For query context (x), retrieved document (d), and answer (y):
+[
+p(y\mid x) = \sum_{d \in \mathcal{D}} p(y\mid x,d)\,p(d\mid x).
+]
+Operationally, (p(d\mid x)) is retrieval/ranking, while (p(y\mid x,d)) is grounded generation. Agentic retrieval triggers should depend on uncertainty:
+[
+\texttt{retrieve}_t = \mathbf{1}{H[p(\cdot\mid h_t)] &gt; \tau}.
+]</p>
+<h2 id="three-theory-braid">Three-theory braid</h2>
+<ol>
+<li><strong>Latent-document generation.</strong> RAG models combine parametric generation with non-parametric memory [<a href="../../references.html#ref-14">14</a>].</li>
+<li><strong>Dense representation retrieval.</strong> DPR-style dual encoders formalize semantic nearest-neighbor access to large corpora [<a href="../../references.html#ref-15">15</a>].</li>
+<li><strong>Classical IR ranking theory.</strong> Probabilistic ranking (e.g., BM25 family) provides robust lexical grounding and interpretable ranking signals [<a href="../../references.html#ref-46">46</a>].</li>
+</ol>
+<h2 id="how-to-study-this-formally">How to study this formally</h2>
+<p>Measure retrieval nDCG/Recall@k, citation faithfulness, and end-task utility under retrieval budget constraints. Compare always-retrieve versus uncertainty-triggered retrieval policies. If retrieval cannot justify its latency with measurable uncertainty reduction, it is ritual, not reasoning.</p>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-04-22 13:35 UTC
+      Last generated: 2026-04-23 06:51 UTC
     </footer>
   </body>
 </html>

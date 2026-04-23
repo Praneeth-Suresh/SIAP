@@ -1,18 +1,29 @@
 # Goals, Environments, and Actions
 
-An agentic system can be defined as a process that maps observations to actions in pursuit of a goal [[2](../../references.md#ref-2)]. The form looks innocent, but this mapping hides assumptions about what the world is, what can be sensed, and what counts as success.
+Agency begins with a compact covenant: choose actions that push a world toward a goal. The covenant sounds poetic until we formalize it, at which point it becomes testable engineering [[2](../../references.md#ref-2)].
 
-In practical LLM systems, goals often begin as natural language instructions. To engineer them rigorously, we translate instructions into objective functions, constraints, and stopping criteria [[1](../../references.md#ref-1)] [[3](../../references.md#ref-3)].
+## Formal model
 
-Environment modeling is where toy demos become science: open-loop prompting assumes a frozen world, while real agents operate in partially observable, changing environments [[7](../../references.md#ref-7)]. Actions then become interventions that alter future observations, not just outputs for a log file.
+Let an agent-environment system be
+\[
+\mathcal{M} = (\mathcal{S}, \mathcal{O}, \mathcal{A}, T, \Omega, R, C, \gamma),
+\]
+where \(T(s' \mid s,a)\) is transition dynamics, \(\Omega(o \mid s)\) is observation dynamics, \(R\) is task reward, \(C\) is a constraint vector (cost, risk, budget), and \(\gamma \in (0,1)\) is discount.
 
-## Minimal formal sketch
+A policy \(\pi(a\mid h_t)\), with history \(h_t=(o_{0:t},a_{0:t-1})\), seeks
+\[
+\max_{\pi}\ \mathbb{E}_{\pi,T,\Omega}\!\left[\sum_{t=0}^{\infty}\gamma^t R(s_t,a_t)\right]
+\quad\text{s.t.}\quad
+\mathbb{E}_{\pi}\!\left[\sum_{t=0}^{\infty}\gamma^t C_j(s_t,a_t)\right] \le \kappa_j.
+\]
+Natural-language goals are therefore specifications that must be compiled into \(R\), \(C\), and termination conditions.
 
-| Symbol | Meaning |
-|---|---|
-| \(s_t\) | latent world state |
-| \(o_t\) | observation at time \(t\) |
-| \(a_t\) | action chosen at time \(t\) |
-| \(G\) | goal/objective functional |
+## Three-theory braid
 
-The engineering principle is to keep this sketch explicit in code and docs, so architecture decisions can be audited against a shared formal target.
+1. **Expected-utility foundations.** Rational preference under uncertainty is represented by utility maximization; this turns “what should I do?” into a mathematical objective [[33](../../references.md#ref-33)] [[34](../../references.md#ref-34)].
+2. **Sequential decision theory.** MDP/POMDP formalisms model how present action sculpts future opportunity, not just immediate text quality [[4](../../references.md#ref-4)] [[7](../../references.md#ref-7)].
+3. **Feedback control.** In open worlds, behavior is closed-loop: observations update state estimates, which update action, which perturbs the world again [[36](../../references.md#ref-36)] [[39](../../references.md#ref-39)].
+
+## How to study this formally
+
+Define benchmark tasks with explicit \((R,C)\), estimate transition uncertainty, and compare policies by constrained return, regret, and violation rate. If a system cannot state its objective and constraints mathematically, it has not yet earned the title “agent”; it is still a very articulate reflex.

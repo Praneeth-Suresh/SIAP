@@ -17,17 +17,26 @@
       </aside>
       <article class="content">
         <h1 id="deliberation-planning-and-search">Deliberation, Planning, and Search</h1>
-<p>Planning gives agents temporal coherence: actions are selected for trajectory quality, not local plausibility [<a href="../../references.html#ref-8">8</a>] [<a href="../../references.html#ref-9">9</a>] [<a href="../../references.html#ref-10">10</a>].</p>
-<p>LLM agents often blend symbolic planning with learned heuristics. A search tree may be explicit (tool calls, simulation branches) while scoring is neural and context-dependent [<a href="../../references.html#ref-11">11</a>].</p>
-<p>Three planning modes are practical in orchestration:
-1. one-shot plan then execute,
-2. interleaved plan/act/replan,
-3. speculative branching with pruning.</p>
-<p>The correct mode depends on environment volatility, tool latency, and the cost of wrong irreversible actions.</p>
+<p>Deliberation is the art of spending computation now to avoid regret later.</p>
+<h2 id="formal-planning-frame">Formal planning frame</h2>
+<p>Let (G=(V,E)) be a search graph over decision states. A plan is a path (p=(v_0,\dots,v_T)) minimizing
+[
+J(p)=\sum_{t=0}^{T-1} c(v_t,v_{t+1}) + \Phi(v_T),
+]
+with admissible heuristic (h(v)\le h^{<em>}(v)) for A</em> optimality.</p>
+<p>In stochastic domains, planning becomes belief-space optimization or Monte Carlo tree search over sampled rollouts.</p>
+<h2 id="three-theory-braid">Three-theory braid</h2>
+<ol>
+<li><strong>Heuristic graph search.</strong> A* gives optimality guarantees under admissibility/consistency assumptions [<a href="../../references.html#ref-8">8</a>].</li>
+<li><strong>Symbolic planning.</strong> STRIPS-style operators and planning-domain models encode action preconditions/effects for compositional plan construction [<a href="../../references.html#ref-9">9</a>] [<a href="../../references.html#ref-10">10</a>].</li>
+<li><strong>Anytime and tree-search control.</strong> UCT/MCTS and anytime planning trade compute for solution quality under real-time budgets [<a href="../../references.html#ref-44">44</a>] [<a href="../../references.html#ref-45">45</a>].</li>
+</ol>
+<h2 id="how-to-study-this-formally">How to study this formally</h2>
+<p>Benchmark plan quality against compute budget, replan frequency, and irreversible-error rate. Analyze sensitivity to heuristic misspecification and environment volatility. The best planner is not the one with the fanciest tree; it is the one whose assumptions fail gracefully.</p>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-04-22 13:35 UTC
+      Last generated: 2026-04-23 06:51 UTC
     </footer>
   </body>
 </html>
