@@ -17,15 +17,27 @@
       </aside>
       <article class="content">
         <h1 id="neural-ensembles-and-orchestration">Neural Ensembles and Orchestration</h1>
-<p>Neural ensembles improve robustness by aggregating diverse predictors rather than trusting a single brittle model [<a href="../../references.html#ref-26">26</a>].</p>
-<p>Mixture-of-experts architecture extends this idea with sparse specialization and routing policies [<a href="../../references.html#ref-25">25</a>]. At the orchestration layer, this suggests agent societies where specialists debate, vote, and escalate.</p>
-<p>The conceptual bridge to classic “society of mind” is direct: intelligence emerges from coordinated partial competencies [<a href="../../references.html#ref-27">27</a>].</p>
-<p>Modern surveys of LLM multi-agent systems indicate this pattern is now practical at software scale, with measurable gains in reliability and decomposition quality [<a href="../../references.html#ref-23">23</a>].</p>
-<p>The chapter’s thesis culmination is therefore precise: agentic power comes from designed interaction topology, not from model size alone.</p>
+<p>An ensemble is a parliament of imperfect predictors. Its power comes from structured disagreement, not uniform certainty.</p>
+<h2 id="formal-aggregation-model">Formal aggregation model</h2>
+<p>Given predictors (f_k(x)), ensemble output is
+[
+\hat{y}(x)=\sum_{k=1}^{K} w_k(x)\,f_k(x),\qquad \sum_k w_k(x)=1,\ w_k(x)\ge 0.
+]
+For voting systems, (\hat{y}=\operatorname{mode}{f_k(x)}).<br />
+For MoE, router (g(x)) selects sparse experts (E(x)\subseteq{1,\dots,K}).</p>
+<p>Generalization gain is tied to error covariance: diverse-but-competent experts beat correlated experts.</p>
+<h2 id="three-theory-braid">Three-theory braid</h2>
+<ol>
+<li><strong>Deep ensembles and uncertainty.</strong> Independent predictors improve calibration and robustness under shift [<a href="../../references.html#ref-26">26</a>] [<a href="../../references.html#ref-67">67</a>].</li>
+<li><strong>Mixture-of-experts routing.</strong> Sparse specialization with learned gating yields scalable conditional computation [<a href="../../references.html#ref-25">25</a>] [<a href="../../references.html#ref-68">68</a>] [<a href="../../references.html#ref-69">69</a>].</li>
+<li><strong>Orchestrated societies of specialists.</strong> Multi-agent compositions operationalize ensemble principles at workflow scale [<a href="../../references.html#ref-23">23</a>] [<a href="../../references.html#ref-27">27</a>].</li>
+</ol>
+<h2 id="how-to-study-this-formally">How to study this formally</h2>
+<p>Measure ensemble gain versus best single expert, calibration under OOD inputs, and routing entropy (to detect expert collapse). The objective is not maximal committee size; it is minimal correlated error for a fixed budget.</p>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-04-22 13:35 UTC
+      Last generated: 2026-04-23 06:51 UTC
     </footer>
   </body>
 </html>

@@ -17,17 +17,25 @@
       </aside>
       <article class="content">
         <h1 id="equilibria-self-play-and-learning-dynamics">Equilibria, Self-Play, and Learning Dynamics</h1>
-<p>Nash equilibrium provides a fixed-point concept for strategic stability: no agent benefits from unilateral deviation [<a href="../../references.html#ref-19">19</a>]. In practice, equilibrium is less destination than diagnostic.</p>
-<p>Self-play and Markov game formulations show how competitive and cooperative policies co-evolve under repeated interaction [<a href="../../references.html#ref-20">20</a>] [<a href="../../references.html#ref-21">21</a>].</p>
-<p>For orchestrated LLM systems, equilibrium thinking helps answer:
-- Will specialized agents collapse to redundant behavior?
-- Do incentives promote truthful intermediate outputs?
-- Does local optimization destabilize global task quality?</p>
-<p>The engineering value is predictive: equilibrium analysis reveals failure regimes before expensive deployment.</p>
+<p>Equilibrium is the grammar of strategic stability: who can deviate, who gains, and when dynamics settle or cycle.</p>
+<h2 id="formal-game-model">Formal game model</h2>
+<p>In a normal-form game ((N,{A_i},{u_i})), mixed strategy profile (\sigma^{<em>}) is Nash if
+[
+u_i(\sigma_i^{</em>},\sigma_{-i}^{<em>}) \ge u_i(\sigma_i,\sigma_{-i}^{</em>})\quad \forall i,\forall \sigma_i.
+]
+For sequential interaction, Markov games extend MDPs with multi-agent action tuples and payoff vectors.</p>
+<h2 id="three-theory-braid">Three-theory braid</h2>
+<ol>
+<li><strong>Nash equilibrium analysis.</strong> Fixed points characterize unilateral stability and expose incentive misalignment [<a href="../../references.html#ref-19">19</a>].</li>
+<li><strong>Self-play in Markov games.</strong> Repeated interaction drives policy co-adaptation and emergent conventions [<a href="../../references.html#ref-20">20</a>] [<a href="../../references.html#ref-21">21</a>].</li>
+<li><strong>Learning dynamics.</strong> Fictitious play and no-regret dynamics explain convergence to correlated/coarse-correlated equilibria in repeated games [<a href="../../references.html#ref-65">65</a>] [<a href="../../references.html#ref-64">64</a>] [<a href="../../references.html#ref-63">63</a>].</li>
+</ol>
+<h2 id="how-to-study-this-formally">How to study this formally</h2>
+<p>Track exploitability, diversity collapse, and equilibrium selection under perturbation. Evaluate whether local agent improvements increase system-level welfare or merely shift failure to other roles. If strategic dynamics are ignored, “multi-agent” is just parallel monologue.</p>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-04-22 13:35 UTC
+      Last generated: 2026-04-23 06:51 UTC
     </footer>
   </body>
 </html>

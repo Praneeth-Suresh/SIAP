@@ -17,14 +17,31 @@
       </aside>
       <article class="content">
         <h1 id="reasoning-loops-as-interpreters">Reasoning Loops as Interpreters</h1>
-<p>A modern agent loop resembles a small interpreter: parse context, evaluate candidate actions, execute one, update state, repeat [<a href="../../references.html#ref-1">1</a>] [<a href="../../references.html#ref-11">11</a>].</p>
-<p>The key move is to make loop semantics explicit. Which variables are mutable? Which transitions are legal? Which errors are recoverable? Without these declarations, “autonomy” degenerates into optimistic recursion.</p>
-<p>The interpreter lens also makes compositionality tractable. We can define loop combinators (plan-then-act, act-then-reflect, branch-and-vote) and reason about their invariants, costs, and failure modes [<a href="../../references.html#ref-2">2</a>].</p>
-<p>In this framing, prompt text is only one layer. The loop itself is the machine.</p>
+<p>An agent loop is an interpreter wearing orchestration clothing. Once we say this out loud, semantics, invariants, and proofs become available to us.</p>
+<h2 id="small-step-semantics">Small-step semantics</h2>
+<p>Define machine state (\sigma=(m, h, b, \tau)): memory (m), interaction history (h), belief state (b), and tool context (\tau).<br />
+Transitions are relations (\sigma \xrightarrow{\ell} \sigma') labeled by step kind (\ell \in {\texttt{think},\texttt{act},\texttt{observe},\texttt{reflect}}).</p>
+<p>An agent loop is the least fixed point of a transition functional:
+[
+\mathcal{L}(\sigma)=
+\begin{cases}
+\sigma &amp; \text{if }\texttt{halt}(\sigma)\
+\mathcal{L}(F(\sigma)) &amp; \text{otherwise}
+\end{cases}
+]
+where (F) is one semantic step.</p>
+<h2 id="three-theory-braid">Three-theory braid</h2>
+<ol>
+<li><strong>Structural operational semantics (SOS).</strong> Behavior is specified via transition rules, making legal/illegal steps explicit [<a href="../../references.html#ref-42">42</a>].</li>
+<li><strong>Abstract interpretation.</strong> We reason soundly about large state spaces using abstract domains and transfer functions [<a href="../../references.html#ref-43">43</a>].</li>
+<li><strong>Reason-act coupling in LLM agents.</strong> ReAct-style trajectories instantiate interpreter steps over tool-mediated environments [<a href="../../references.html#ref-11">11</a>].</li>
+</ol>
+<h2 id="how-to-study-this-formally">How to study this formally</h2>
+<p>Prove step invariants (schema validity, budget monotonicity), termination conditions, and recovery properties from error states. If you cannot define your loop semantics, you cannot debug your loop semantics; you can only squint at transcripts and hope.</p>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-04-22 13:35 UTC
+      Last generated: 2026-04-23 06:51 UTC
     </footer>
   </body>
 </html>

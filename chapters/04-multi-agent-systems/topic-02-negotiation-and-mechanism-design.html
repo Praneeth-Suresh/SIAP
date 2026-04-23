@@ -17,17 +17,32 @@
       </aside>
       <article class="content">
         <h1 id="negotiation-and-mechanism-design">Negotiation and Mechanism Design</h1>
-<p>Negotiation is algorithmic governance over competing objectives. Mechanism design asks how to set rules so rational local behavior induces desirable global outcomes [<a href="../../references.html#ref-18">18</a>] [<a href="../../references.html#ref-19">19</a>].</p>
-<p>In agent engineering, this appears in budget allocation, task assignment, conflict arbitration, and shared memory updates.</p>
-<p>Useful mechanism primitives include:
-1. voting with tie-break policy,
-2. auction-style allocation,
-3. contract-net bidding for task delegation.</p>
-<p>The point is not to imitate economics for style; it is to prevent hidden power dynamics in orchestration graphs.</p>
+<p>Negotiation is what happens when autonomy meets scarcity. Mechanism design is how we stop that meeting from turning into chaos.</p>
+<h2 id="formal-mechanism-frame">Formal mechanism frame</h2>
+<p>A mechanism is
+[
+\mathcal{M}=(N,\Theta, A, g, p),
+]
+with agents (N), types (\Theta), outcome space (A), allocation rule (g), and transfers (p).<br />
+Desired properties: incentive compatibility (IC), individual rationality (IR), and budget feasibility.</p>
+<p>For truthful dominant-strategy reporting, each agent (i) should satisfy
+[
+u_i!\big(g(\hat\theta_i,\hat\theta_{-i}),p_i(\hat\theta_i,\hat\theta_{-i});\theta_i\big)
+\ge
+u_i!\big(g(\theta'<em -i="-i">i,\hat\theta</em>),p_i(\theta'<em -i="-i">i,\hat\theta</em>);\theta_i\big).
+]</p>
+<h2 id="three-theory-braid">Three-theory braid</h2>
+<ol>
+<li><strong>VCG-style efficient mechanisms.</strong> Transfer rules can align local truthfulness with global welfare [<a href="../../references.html#ref-57">57</a>] [<a href="../../references.html#ref-58">58</a>] [<a href="../../references.html#ref-59">59</a>].</li>
+<li><strong>Social-choice limits.</strong> Gibbard-Satterthwaite impossibility reminds us that manipulation-free voting is highly constrained [<a href="../../references.html#ref-60">60</a>] [<a href="../../references.html#ref-61">61</a>].</li>
+<li><strong>Contract-net negotiation.</strong> Task delegation via bidding provides practical distributed allocation under heterogeneous capabilities [<a href="../../references.html#ref-62">62</a>].</li>
+</ol>
+<h2 id="how-to-study-this-formally">How to study this formally</h2>
+<p>Measure allocative efficiency, truthfulness regret, and fairness under strategic reporting. Simulate adversarial type misreports and collusion. A negotiation protocol without incentive analysis is merely an argument with extra JSON.</p>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-04-22 13:35 UTC
+      Last generated: 2026-04-23 06:51 UTC
     </footer>
   </body>
 </html>

@@ -17,36 +17,29 @@
       </aside>
       <article class="content">
         <h1 id="memory-systems-context-and-retrieval">Memory Systems, Context, and Retrieval</h1>
-<p>Memory is not “everything ever said.” Memory is a policy over what to retain, compress, retrieve, and forget [<a href="../../references.html#ref-16">16</a>].</p>
-<p>RAG systems operationalize episodic and semantic recall: dense retrieval locates external facts while the model synthesizes them into current reasoning [<a href="../../references.html#ref-14">14</a>] [<a href="../../references.html#ref-15">15</a>].</p>
-<p>A useful architecture has at least three memory strata:</p>
-<table>
-<thead>
-<tr>
-<th>Layer</th>
-<th>Role</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Working context</td>
-<td>immediate decision state</td>
-</tr>
-<tr>
-<td>Episodic log</td>
-<td>recent trajectories and failures</td>
-</tr>
-<tr>
-<td>Semantic store</td>
-<td>durable concepts and references</td>
-</tr>
-</tbody>
-</table>
-<p>The retrieval policy should be explicit and testable, because memory errors usually appear as reasoning errors one layer later.</p>
+<p>Memory is policy, not pile: retain, compress, retrieve, forget. The trick is to optimize this policy under context-window scarcity.</p>
+<h2 id="formal-memory-policy">Formal memory policy</h2>
+<p>Let memory state be (m_t=(w_t,e_t,s_t)): working, episodic, and semantic stores.<br />
+A memory controller chooses operations (u_t \in {\texttt{write},\texttt{compress},\texttt{retrieve},\texttt{evict}}) by
+[
+u_t = \mu_\theta(m_t,h_t),
+]
+to optimize
+[
+\max_\mu\ \mathbb{E}!\left[\sum_t \gamma^t \big(\text{task_utility}_t - \lambda_1\text{latency}_t - \lambda_2\text{token_load}_t\big)\right].
+]</p>
+<h2 id="three-theory-braid">Three-theory braid</h2>
+<ol>
+<li><strong>Cognitive multi-store theory.</strong> Distinct working/episodic/semantic strata suggest principled architectural separation [<a href="../../references.html#ref-48">48</a>].</li>
+<li><strong>Information-theoretic compression.</strong> Retention is a rate-distortion tradeoff: keep bits that preserve decision value [<a href="../../references.html#ref-35">35</a>].</li>
+<li><strong>Modern retrieval theory.</strong> Sparse/dense indexing and RAG latent-document models define end-to-end evidence pipelines [<a href="../../references.html#ref-14">14</a>] [<a href="../../references.html#ref-15">15</a>] [<a href="../../references.html#ref-46">46</a>] [<a href="../../references.html#ref-47">47</a>].</li>
+</ol>
+<h2 id="how-to-study-this-formally">How to study this formally</h2>
+<p>Evaluate retrieval precision/recall, downstream answer faithfulness, and regret from memory eviction decisions. Stress-test long-horizon tasks with adversarial distractors. If memory policy cannot be audited quantitatively, “long context” is just expensive amnesia.</p>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-04-22 13:35 UTC
+      Last generated: 2026-04-23 06:51 UTC
     </footer>
   </body>
 </html>

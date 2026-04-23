@@ -17,14 +17,26 @@
       </aside>
       <article class="content">
         <h1 id="coordination-protocols-and-communication">Coordination Protocols and Communication</h1>
-<p>Multi-agent systems succeed or fail on protocol quality. Communication is not free-form chatter; it is structured information exchange under timing and trust constraints [<a href="../../references.html#ref-17">17</a>] [<a href="../../references.html#ref-18">18</a>].</p>
-<p>Common coordination patterns include blackboard systems, planner-executor splits, and committee voting. Each pattern defines who may propose, who may veto, and how conflicts are resolved.</p>
-<p>For LLM agents, explicit message schemas and role contracts reduce ambiguity and improve debuggability [<a href="../../references.html#ref-24">24</a>].</p>
-<p>The key principle: coordination logic should be encoded as system rules, not inferred ad hoc from conversational style.</p>
+<p>In multi-agent systems, communication is not chatter; it is distributed computation under uncertainty and delay.</p>
+<h2 id="formal-protocol-model">Formal protocol model</h2>
+<p>Let agents (i\in{1,\dots,n}) have local state (x_i^t) and messages (m_{i\to j}^t).<br />
+A protocol (\Pi) defines transition rules
+[
+(x_i^{t+1}, m_{i\to <em>}^{t+1}) = \Pi_i!\left(x_i^t,{m_{</em>\to i}^t}\right).
+]
+Correctness criteria include safety (nothing bad happens), liveness (something good eventually happens), and agreement/consistency when required.</p>
+<h2 id="three-theory-braid">Three-theory braid</h2>
+<ol>
+<li><strong>Distributed consensus limits.</strong> Byzantine agreement and impossibility results formalize what reliable coordination can and cannot guarantee [<a href="../../references.html#ref-54">54</a>] [<a href="../../references.html#ref-55">55</a>].</li>
+<li><strong>Coordination theory.</strong> Task dependencies and resource constraints determine which communication structures are efficient [<a href="../../references.html#ref-56">56</a>].</li>
+<li><strong>Role-based MAS architectures.</strong> Agent communication languages and protocol roles improve traceability and conflict handling [<a href="../../references.html#ref-17">17</a>] [<a href="../../references.html#ref-18">18</a>].</li>
+</ol>
+<h2 id="how-to-study-this-formally">How to study this formally</h2>
+<p>Evaluate message complexity, consensus latency, deadlock frequency, and degradation under dropped/incorrect messages. Encode schemas and role permissions as enforceable protocol rules. If coordination depends on everyone being “reasonable,” it is not a protocol; it is a prayer.</p>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-04-22 13:35 UTC
+      Last generated: 2026-04-23 06:51 UTC
     </footer>
   </body>
 </html>
