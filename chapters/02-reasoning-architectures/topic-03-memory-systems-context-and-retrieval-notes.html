@@ -25,10 +25,27 @@
 </ul>
 <h2 id="alternative-rewrite">Alternative rewrite</h2>
 <p>Context windows are weather; memory systems are climate. A serious agent survives beyond the current prompt by deciding what history deserves permanence and what should evaporate without regret.</p>
+<h2 id="pass-1-migrated-ideas-from-current-main-topic">Pass 1 - Migrated ideas from current main topic</h2>
+<p>The current topic models memory as policy over working, episodic, and semantic stores (m_t=(w_t,e_t,s_t)), with controller action (u_t\in{\texttt{write},\texttt{compress},\texttt{retrieve},\texttt{evict}}) chosen by (u_t=\mu_\theta(m_t,h_t)). Its objective maximizes discounted task utility while penalizing latency and token load, and its braid links cognitive multi-store theory, rate-distortion thinking, and modern sparse/dense retrieval plus RAG evidence flow [<a href="../../references.html#ref-48">48</a>] [<a href="../../references.html#ref-35">35</a>] [<a href="../../references.html#ref-46">46</a>] [<a href="../../references.html#ref-47">47</a>] [<a href="../../references.html#ref-14">14</a>] [<a href="../../references.html#ref-15">15</a>].</p>
+<h2 id="pass-1-storyline-outline-paragraph-by-paragraph">Pass 1 - Storyline outline (paragraph-by-paragraph)</h2>
+<p>Paragraph 1 opens with scarcity: the context window is a tiny stage, and memory policy is the casting director deciding who gets to speak.</p>
+<p>Paragraph 2 introduces memory strata as labor specialization, where working memory handles immediate control, episodic memory preserves events, and semantic memory stores compressed structure [<a href="../../references.html#ref-48">48</a>].</p>
+<p>Paragraph 3 shifts to decision economics: each retrieval or write is an expected-utility trade between downstream accuracy and immediate compute/token cost [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>].</p>
+<p>Paragraph 4 braids compression and retrieval: rate-distortion says what fidelity is worth paying for, while indexing/reranking says how quickly and reliably the right evidence can be recovered [<a href="../../references.html#ref-35">35</a>] [<a href="../../references.html#ref-46">46</a>] [<a href="../../references.html#ref-15">15</a>].</p>
+<p>Paragraph 5 closes with resilience and contamination control, showing that forgetting is not negligence but active safety policy when stale or poisoned context threatens action quality.</p>
+<h2 id="pass-2-research-synthesis-equations-theories-and-connective-tissue">Pass 2 - Research synthesis: equations, theories, and connective tissue</h2>
+<p>Equation stack for rewrite depth: memory-control Bellman form (V^\star(m,h)=\max_u{r(m,h,u)-\lambda_1\ell_{\text{lat}}-\lambda_2\ell_{\text{tok}}+\gamma\,\mathbb{E}[V^\star(m',h')]}) to formalize long-run memory policy [<a href="../../references.html#ref-5">5</a>] [<a href="../../references.html#ref-4">4</a>]; expected utility of retrieval (EU(\texttt{retrieve})=\mathbb{E}[U(a^\star\mid m\oplus \hat d)]-c_{\text{retrieve}}) to decide if memory access is worth it [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>]; rate-distortion program (R(D)=\min_{p(\hat x|x):\mathbb{E}[d(X,\hat X)]\le D} I(X;\hat X)) for principled compression [<a href="../../references.html#ref-35">35</a>]; sparse scoring via BM25 (\text{BM25}(q,d)=\sum_{t\in q}\text{IDF}(t)\frac{f(t,d)(k_1+1)}{f(t,d)+k_1(1-b+b|d|/\text{avgdl})}) and dense retrieval score (s(q,d)=\langle e_q,e_d\rangle) to connect indexing regimes [<a href="../../references.html#ref-46">46</a>] [<a href="../../references.html#ref-15">15</a>] [<a href="../../references.html#ref-47">47</a>]; and end-to-end RAG likelihood (p(y|x)\approx \sum_{d\in\mathcal{D}<em>k}p</em>\eta(d|x)\,p_\theta(y|x,d)) to show how retrieval quality propagates into generation quality [<a href="../../references.html#ref-14">14</a>]. The key connective claim: memory quality is not "more tokens," but controlled information flow from acquisition to compression to action.</p>
+<h2 id="additional-alternate-approaches-for-this-rewrite">Additional alternate approaches for this rewrite</h2>
+<ol>
+<li>Present the topic as a library operations story: acquisitions, cataloging, circulation, and deaccessioning mapped to write/retrieve/compress/evict.</li>
+<li>Build around a failure case where one contaminated memory entry corrupts several downstream tool calls, then repair it with policy constraints.</li>
+<li>Use a legal brief style in which each retrieved document must justify its relevance and reliability before entering context.</li>
+<li>Anchor the exposition around one persistent assistant persona that improves over sessions by disciplined memory curation rather than prompt bloat.</li>
+</ol>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-04-23 07:34 UTC
+      Last generated: 2026-04-30 09:20 UTC
     </footer>
   </body>
 </html>

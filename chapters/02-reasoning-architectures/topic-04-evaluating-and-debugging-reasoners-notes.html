@@ -25,10 +25,27 @@
 </ul>
 <h2 id="alternative-rewrite">Alternative rewrite</h2>
 <p>In agent engineering, charisma is a confounder. We therefore instrument the loop, replay the trace, and score the decisions. If the system improves only when watched live, it has not improved.</p>
+<h2 id="pass-1-migrated-ideas-from-current-main-topic">Pass 1 - Migrated ideas from current main topic</h2>
+<p>The current topic evaluates reasoners as stochastic trajectory generators (\tau\sim p_\pi(\tau)), optimizes expected utility with explicit safety and calibration penalties, and warns against judging only final outputs. Its braid combines strictly proper scoring rules, causal/interventional trace diagnosis, and influence-function debugging to identify which data or memory fragments drive specific errors [<a href="../../references.html#ref-49">49</a>] [<a href="../../references.html#ref-6">6</a>] [<a href="../../references.html#ref-50">50</a>].</p>
+<h2 id="pass-1-storyline-outline-paragraph-by-paragraph">Pass 1 - Storyline outline (paragraph-by-paragraph)</h2>
+<p>Paragraph 1 starts by demoting demo glamour: a single polished answer is evidence of luck, not necessarily evidence of robust reasoning.</p>
+<p>Paragraph 2 introduces trajectory-level instrumentation, where each loop transition, tool call, and confidence report becomes auditable state.</p>
+<p>Paragraph 3 develops calibration as ethical accounting: probabilities are promises, and proper scoring rules punish overconfident fiction [<a href="../../references.html#ref-49">49</a>].</p>
+<p>Paragraph 4 pivots to causality and interventions, showing how replay with controlled edits can separate correlation from mechanism [<a href="../../references.html#ref-6">6</a>].</p>
+<p>Paragraph 5 concludes with repair loops: once failure causes are attributable, influence-based and policy-level edits can reduce recurrence rather than cosmetically patching prompts [<a href="../../references.html#ref-50">50</a>].</p>
+<h2 id="pass-2-research-synthesis-equations-theories-and-connective-tissue">Pass 2 - Research synthesis: equations, theories, and connective tissue</h2>
+<p>Core equations and linkages: trajectory objective (\max_\pi \mathbb{E}[U(\tau)]-\lambda\mathbb{E}[C(\tau)]) with explicit safety budget constraints for operational governance [<a href="../../references.html#ref-53">53</a>]; probabilistic honesty via log score (\mathcal{L}<em>{\log}=-\frac1N\sum_i\log p</em>\theta(y_i|x_i)) and Brier score (BS=\frac1N\sum_i(p_i-y_i)^2), with calibration summaries like ECE (=\sum_b\frac{|B_b|}{N}\left|\text{acc}(B_b)-\text{conf}(B_b)\right|) [<a href="../../references.html#ref-49">49</a>]; causal debugging estimands such as average treatment effect (\text{ATE}=\mathbb{E}[Y\mid do(Z{=}1)]-\mathbb{E}[Y\mid do(Z{=}0)]) under trace interventions [<a href="../../references.html#ref-6">6</a>]; and influence-function approximation (I_{up,loss}(z,z_{test})\approx -\nabla_\theta L(z_{test},\hat\theta)^\top H_{\hat\theta}^{-1}\nabla_\theta L(z,\hat\theta)) for attribution of harmful training/memory points [<a href="../../references.html#ref-50">50</a>]. The connective narrative should show a chain: score the uncertainty, identify the mechanism, then target the smallest high-leverage edit.</p>
+<h2 id="additional-alternate-approaches-for-this-rewrite">Additional alternate approaches for this rewrite</h2>
+<ol>
+<li>Write as a forensic report with timeline, evidence table, hypothesis tests, and remediation plan.</li>
+<li>Frame the topic as medical diagnosis: symptoms (metrics), tests (interventions), etiology (causal mechanism), and treatment (policy/data edits).</li>
+<li>Use a courtroom cross-examination format where confidence claims are interrogated by proper scoring rules.</li>
+<li>Build around one "failure replay notebook" that readers repeatedly revisit as each debugging lens is introduced.</li>
+</ol>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-04-23 07:34 UTC
+      Last generated: 2026-04-30 09:20 UTC
     </footer>
   </body>
 </html>
