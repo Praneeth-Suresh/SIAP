@@ -99,6 +99,15 @@ This file defines the durable principles and operating instructions for future a
 - Expanded each Chapter 2 topic braid into full narrative treatment linking expected utility, dynamic planning/control, and robustness-oriented evaluation.
 - Preserved clickable numeric citation style and reference anchors across new Chapter 2 content.
 
+## Rewrite milestone: Chapters 3 and 4 three-pass expansion (completed)
+
+- Applied the same three-pass workflow to all Chapter 3 and Chapter 4 topics:
+  1. migrated prior main-topic ideas into companion notes,
+  2. appended equation/theory research synthesis with external-source linking,
+  3. rewrote primary topic text from a clean slate using notes as source.
+- Expanded tool-use, safety, coordination, mechanism-design, strategic-dynamics, and ensemble-orchestration braids into full narrative treatments with explicit mathematical formalism.
+- Preserved clickable numeric citation style and reference-anchor compatibility across all updated topic text.
+
 
 ## Current status
 - Core scaffold is complete: chapter/topic sources, companion rewrite notes, references, build scripts, site template, stylesheet, and deployment workflow.
@@ -107,6 +116,7 @@ This file defines the durable principles and operating instructions for future a
 - References expanded to include additional foundational and modern sources across decision theory, planning, control, retrieval, safety, and multi-agent game dynamics.
 - LaTeX PDF rendering pipeline added to produce `dist/book.tex` and `dist/book-latex.pdf` for cleaner mathematical typesetting.
 - Chapter 2 topics and notes now reflect full three-pass rewrites with storyline outlines, equation harvests, and polished narrative synthesis.
+- Chapters 3 and 4 topics and notes now reflect full three-pass rewrites with storyline outlines, equation harvests, and polished narrative synthesis.
 
 ## Next steps
 1. Add runnable code exercises per chapter (especially interpreter and planner sections).

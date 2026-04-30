@@ -17,7 +17,7 @@
       </aside>
       <article class="content">
         <h1 id="negotiation-and-mechanism-design">Negotiation and Mechanism Design</h1>
-<p>Negotiation is what happens when autonomy meets scarcity. Mechanism design is how we stop that meeting from turning into chaos.</p>
+<p>Negotiation is what happens when autonomy meets scarcity. Mechanism design is how we keep that meeting from collapsing into strategic theater.</p>
 <h2 id="formal-mechanism-frame">Formal mechanism frame</h2>
 <p>A mechanism is
 [
@@ -31,18 +31,29 @@ u_i!\big(g(\hat\theta_i,\hat\theta_{-i}),p_i(\hat\theta_i,\hat\theta_{-i});\thet
 \ge
 u_i!\big(g(\theta'<em -i="-i">i,\hat\theta</em>),p_i(\theta'<em -i="-i">i,\hat\theta</em>);\theta_i\big).
 ]</p>
+<p>Efficient allocation seeks
+[
+g(\hat\theta)\in\arg\max_{a\in A}\sum_i v_i(a,\hat\theta_i).
+]
+For VCG-style mechanisms, one canonical transfer form is
+[
+p_i(\hat\theta)=h_i(\hat\theta_{-i})-\sum_{j\ne i}v_j(g(\hat\theta),\hat\theta_j),
+]
+which charges each participant the externality imposed on others.</p>
+<h2 id="repeated-negotiation-as-control">Repeated negotiation as control</h2>
+<p>In repeated settings, mechanism choice itself is sequential control:
+[
+V^\star(s)=\max_m\left{R(s,m)-\lambda\,\mathrm{manip_risk}(m)+\gamma\,\mathbb{E}[V^\star(s')]\right}.
+]
+That is the formal version of institutional learning: update the rules when strategic behavior exploits the old ones.</p>
 <h2 id="three-theory-braid">Three-theory braid</h2>
-<ol>
-<li><strong>VCG-style efficient mechanisms.</strong> Transfer rules can align local truthfulness with global welfare [<a href="../../references.html#ref-57">57</a>] [<a href="../../references.html#ref-58">58</a>] [<a href="../../references.html#ref-59">59</a>].</li>
-<li><strong>Social-choice limits.</strong> Gibbard-Satterthwaite impossibility reminds us that manipulation-free voting is highly constrained [<a href="../../references.html#ref-60">60</a>] [<a href="../../references.html#ref-61">61</a>].</li>
-<li><strong>Contract-net negotiation.</strong> Task delegation via bidding provides practical distributed allocation under heterogeneous capabilities [<a href="../../references.html#ref-62">62</a>].</li>
-</ol>
+<p>VCG-style transfer design aligns local reporting incentives with system welfare, social-choice impossibility results tell us where manipulation-proofness is fundamentally constrained, and contract-net style bidding gives an operationally practical delegation protocol, so strategic multi-agent intelligence becomes a braid of foresight (design incentives for truthful revelation), responsiveness (adapt mechanism policy as strategic behavior shifts), and resilience (retain efficiency and fairness under misreport pressure rather than only under cooperative fantasy) [<a href="../../references.html#ref-57">57</a>] [<a href="../../references.html#ref-58">58</a>] [<a href="../../references.html#ref-59">59</a>] [<a href="../../references.html#ref-60">60</a>] [<a href="../../references.html#ref-61">61</a>] [<a href="../../references.html#ref-62">62</a>] [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>].</p>
 <h2 id="how-to-study-this-formally">How to study this formally</h2>
-<p>Measure allocative efficiency, truthfulness regret, and fairness under strategic reporting. Simulate adversarial type misreports and collusion. A negotiation protocol without incentive analysis is merely an argument with extra JSON.</p>
+<p>Measure allocative efficiency, truthfulness regret, fairness, and collusion sensitivity under strategic misreports. A negotiation protocol without incentive analysis is merely an argument with extra JSON.</p>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-04-30 09:20 UTC
+      Last generated: 2026-04-30 09:39 UTC
     </footer>
   </body>
 </html>

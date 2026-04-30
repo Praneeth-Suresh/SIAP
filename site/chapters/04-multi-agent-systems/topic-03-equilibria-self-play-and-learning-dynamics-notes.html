@@ -25,10 +25,27 @@
 </ul>
 <h2 id="alternative-rewrite">Alternative rewrite</h2>
 <p>Equilibrium is the awkward truce that remains after every unilateral improvement has been spent. In multi-agent systems, that truce may be elegant, brittle, or perverse; our job is to know which before production traffic finds out.</p>
+<h2 id="pass-1-migrated-ideas-from-current-main-topic">Pass 1 - Migrated ideas from current main topic</h2>
+<p>The current topic defines Nash equilibrium conditions in normal-form games, extends to Markov games for sequential interaction, and frames convergence through fictitious play and no-regret dynamics toward correlated/coarse-correlated equilibria. The three-theory braid connects fixed-point strategic stability, self-play adaptation, and learning-dynamics convergence behavior [<a href="../../references.html#ref-19">19</a>] [<a href="../../references.html#ref-20">20</a>] [<a href="../../references.html#ref-21">21</a>] [<a href="../../references.html#ref-63">63</a>] [<a href="../../references.html#ref-64">64</a>] [<a href="../../references.html#ref-65">65</a>].</p>
+<h2 id="pass-1-storyline-outline-paragraph-by-paragraph">Pass 1 - Storyline outline (paragraph-by-paragraph)</h2>
+<p>Paragraph 1 opens with strategic interdependence: my best action depends on your adaptation policy, not just your current move.</p>
+<p>Paragraph 2 introduces normal-form equilibria as unilateral-stability tests.</p>
+<p>Paragraph 3 transitions to repeated/Markov interaction where policies co-evolve and local gains can destabilize the system [<a href="../../references.html#ref-20">20</a>].</p>
+<p>Paragraph 4 introduces learning dynamics (fictitious play, no-regret) as motion laws over strategy space.</p>
+<p>Paragraph 5 resolves with resilience criteria: low exploitability, diversity preservation, and robust equilibrium selection under perturbation.</p>
+<h2 id="pass-2-research-synthesis-equations-theories-and-connective-tissue">Pass 2 - Research synthesis: equations, theories, and connective tissue</h2>
+<p>Equation set: Nash condition (u_i(\sigma_i^\star,\sigma_{-i}^\star)\ge u_i(\sigma_i,\sigma_{-i}^\star)), exploitability (\mathcal{E}(\sigma)=\sum_i\big(\max_{\sigma_i'}u_i(\sigma_i',\sigma_{-i})-u_i(\sigma)\big)), repeated-game regret (R_T^i=\max_a\sum_{t=1}^T u_i(a,a_{-i}^t)-\sum_{t=1}^T u_i(a_i^t,a_{-i}^t)), and Markov-game Bellman equation (V_i^\star(s)=\max_{\pi_i}\mathbb{E}<em -i="-i">{a\sim(\pi_i,\pi</em>P(s'|s,a)V_i^\star(s')]) [})}[r_i(s,a)+\gamma\sum_{s'<a href="../../references.html#ref-20">20</a>] [<a href="../../references.html#ref-5">5</a>]. Fictitious-play update: empirical opponent frequency (\hat\sigma_{-i}^{t+1}=\frac{t}{t+1}\hat\sigma_{-i}^{t}+\frac{1}{t+1}e(a_{-i}^t)), then best response to (\hat\sigma_{-i}^{t+1}) [<a href="../../references.html#ref-63">63</a>]. External pass-2 links included fictitious-play overview and equilibrium references in bibliography. Connection: equilibrium gives static target, self-play gives adaptation process, no-regret gives convergence diagnostics.</p>
+<h2 id="additional-alternate-approaches-for-this-rewrite">Additional alternate approaches for this rewrite</h2>
+<ol>
+<li>Explain with a two-agent matrix game that progresses into a Markov game version of the same interaction.</li>
+<li>Use a "treaty negotiation" metaphor where equilibrium is ceasefire and dynamics are diplomatic drift.</li>
+<li>Build around exploitability dashboards to show how apparently improving agents can still destabilize collectives.</li>
+<li>Write as a lab notebook tracking strategy trajectories over many self-play rounds.</li>
+</ol>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-04-30 09:20 UTC
+      Last generated: 2026-04-30 09:39 UTC
     </footer>
   </body>
 </html>

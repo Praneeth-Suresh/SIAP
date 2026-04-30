@@ -25,10 +25,27 @@
 </ul>
 <h2 id="alternative-rewrite">Alternative rewrite</h2>
 <p>Without guardrails, autonomy is mostly a liability with good branding. The engineering challenge is to embed constraints so deeply in orchestration that safety is default behavior, not heroic intervention.</p>
+<h2 id="pass-1-migrated-ideas-from-current-main-topic">Pass 1 - Migrated ideas from current main topic</h2>
+<p>The current topic already formalizes safety as constrained optimization in CMDPs: maximize discounted reward subject to discounted constraint budgets, with a Lagrangian dual form for explicit trade-off tuning. It braids constrained MDP theory, control barrier functions for runtime forward invariance, and governance frameworks such as constitutional methods and risk-management standards [<a href="../../references.html#ref-51">51</a>] [<a href="../../references.html#ref-52">52</a>] [<a href="../../references.html#ref-29">29</a>] [<a href="../../references.html#ref-53">53</a>].</p>
+<h2 id="pass-1-storyline-outline-paragraph-by-paragraph">Pass 1 - Storyline outline (paragraph-by-paragraph)</h2>
+<p>Paragraph 1 opens by rejecting "safety as patch": constraints are objective terms from the first line of system design.</p>
+<p>Paragraph 2 introduces CMDP budgets as institutional memory of harm tolerance, not ad hoc if-statements.</p>
+<p>Paragraph 3 introduces barrier-function safety filters as geometric runtime enforcement around unsafe state regions [<a href="../../references.html#ref-52">52</a>].</p>
+<p>Paragraph 4 distinguishes constitutional prompting (soft normative steering) from hard external enforcement (permissions, policy engines, kill-switches).</p>
+<p>Paragraph 5 closes with incident response as control recovery: detect, contain, rollback, and audit while preserving task continuity where possible.</p>
+<h2 id="pass-2-research-synthesis-equations-theories-and-connective-tissue">Pass 2 - Research synthesis: equations, theories, and connective tissue</h2>
+<p>Core equations: CMDP objective (\max_\pi J_R(\pi)) subject to (J_{C_j}(\pi)\le d_j), dual Lagrangian (\mathcal{L}(\pi,\lambda)=J_R(\pi)-\sum_j\lambda_j(J_{C_j}(\pi)-d_j)) [<a href="../../references.html#ref-51">51</a>]; Bellman-style constrained Q update (Q^\pi_\lambda(s,a)=r(s,a)-\sum_j\lambda_j c_j(s,a)+\gamma\mathbb{E}<em>{s'}V^\pi</em>\lambda(s')); safety set (\mathcal{C}={x:h(x)\ge0}) and CBF condition (\dot h(x,u)+\alpha(h(x))\ge0) for forward invariance [<a href="../../references.html#ref-52">52</a>]; and runtime safety filter QP (u^\star=\arg\min_u |u-u_{\text{nom}}|^2\ \text{s.t.}\ \dot h(x,u)+\alpha(h(x))\ge0). External source check in pass 2 used CBF paper abstract details (<a href="https://arxiv.org/abs/1609.06408">arXiv 1609.06408</a>) and NIST AI RMF overview (<a href="https://www.nist.gov/itl/ai-risk-management-framework">NIST AI RMF</a>). Connection logic: utility optimization proposes action, barrier constraints gate admissibility, and governance policy defines what counts as acceptable system behavior.</p>
+<h2 id="additional-alternate-approaches-for-this-rewrite">Additional alternate approaches for this rewrite</h2>
+<ol>
+<li>Present the topic as a "safety stack" from policy docs down to per-call enforcement hooks.</li>
+<li>Build around one unsafe-trajectory simulation with a before/after safety-filter insertion.</li>
+<li>Contrast soft guardrails (prompt constraints) with hard guardrails (permissioning middleware) using failure examples.</li>
+<li>Write as an operations runbook where equations justify each incident-response step.</li>
+</ol>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-04-30 09:20 UTC
+      Last generated: 2026-04-30 09:39 UTC
     </footer>
   </body>
 </html>

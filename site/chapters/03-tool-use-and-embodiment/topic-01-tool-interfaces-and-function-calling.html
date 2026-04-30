@@ -17,29 +17,43 @@
       </aside>
       <article class="content">
         <h1 id="tool-interfaces-and-function-calling">Tool Interfaces and Function Calling</h1>
-<p>Tool use is where language stops narrating and starts doing. The central artifact is not the prompt—it is the contract.</p>
-<h2 id="formal-contract-model">Formal contract model</h2>
+<p>Tool use is where language stops narrating and starts doing. The central artifact is not the prompt; it is the contract that decides which actions are legal, useful, and survivable under failure.</p>
+<h2 id="contract-first-action-semantics">Contract-first action semantics</h2>
 <p>Represent tool (f) by
 [
-f : X \to Y,\quad \text{with } \texttt{Pre}<em u="u">f(x),\ \texttt{Post}_f(x,y),\ \texttt{Cost}_f(x),\ \texttt{Risk}_f(x).
+f : X \to Y,\quad \texttt{Pre}<em f_t="f_t">f(x),\ \texttt{Post}_f(x,y),\ \texttt{Cost}_f(x),\ \texttt{Risk}_f(x).
 ]
-An invocation is legal iff (\texttt{Pre}_f(x)=\texttt{true}).<br />
-A planner selects tool call (u_t=(f_t,x_t)) by maximizing expected utility under cost/risk constraints:
+An invocation (u_t=(f_t,x_t,k_t)) with idempotency key (k_t) is legal iff schema, auth, and preconditions pass:
 [
-u_t^{*} = \arg\max</em>(u).
-]} \ \mathbb{E}[Q(\sigma_t,u)] - \lambda_c \texttt{Cost}(u) - \lambda_r \texttt{Risk</p>
+\texttt{legal}(u_t)=\mathbf{1}{\texttt{schema_ok}(x_t)\land \texttt{auth_ok}(f_t)\land \texttt{Pre}</em>(x_t)}.
+]
+Policy selection then becomes constrained expected utility:
+[
+u_t^{*} = \arg\max_{u}\ \mathbb{E}[Q(\sigma_t,u)]-\lambda_c C(u)-\lambda_r R(u).
+]
+For long horizons, the same logic lifts to Bellman structure:
+[
+V^\star(\sigma)=\max_u\left{r(\sigma,u)+\gamma\sum_{\sigma'}P(\sigma'|\sigma,u)V^\star(\sigma')\right},
+]
+so choosing a tool now is also choosing the future state of permissions, memory, and recovery options [<a href="../../references.html#ref-5">5</a>] [<a href="../../references.html#ref-4">4</a>].</p>
+<h2 id="exactly-once-behavior-and-fallback-control">Exactly-once behavior and fallback control</h2>
+<p>Retries are unavoidable; duplicate side effects are optional. Idempotency gives a functional target:
+[
+f(f(x,k),k)=f(x,k),
+]
+which means repeated delivery under the same key (k) does not multiply real-world effects. A minimal retry controller can be written as
+[
+n_{t+1}=\min(n_{\max},n_t+1),\qquad d_{t+1}=\beta d_t,\ \beta&gt;1,
+]
+with escalation when (n_t=n_{\max}). In other words: optimism in policy, pessimism in side-effect handling.</p>
 <h2 id="three-theory-braid">Three-theory braid</h2>
-<ol>
-<li><strong>Schema-typed interfaces.</strong> Function-calling schemas convert natural-language intent into machine-checkable arguments [<a href="../../references.html#ref-13">13</a>].</li>
-<li><strong>Self-supervised tool-use learning.</strong> Toolformer-style training demonstrates that models can internalize tool-selection policies from weak supervision [<a href="../../references.html#ref-12">12</a>].</li>
-<li><strong>Compositional action semantics.</strong> Reason-act trajectories make tool calls first-class state transitions suitable for replay and policy improvement [<a href="../../references.html#ref-11">11</a>].</li>
-</ol>
+<p>Schema-typed interfaces convert language intent into machine-checkable arguments, Toolformer-style learning shows that models can internalize when and how to call APIs from weak supervision, and ReAct-style trajectories turn those calls into explicit reason-act state transitions, so the whole orchestration loop reads like a disciplined control system in which expected utility chooses candidate actions (u_t^\star=\arg\max_u \mathbb{E}[Q]-\lambda_cC-\lambda_rR), Bellman recursion maintains long-horizon consistency (V^\star(\sigma)=\max_u{r+\gamma\mathbb{E}[V^\star]}), and retry/idempotency feedback prevents transient outages from becoming irreversible side effects [<a href="../../references.html#ref-13">13</a>] [<a href="../../references.html#ref-12">12</a>] [<a href="../../references.html#ref-11">11</a>] [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>].</p>
 <h2 id="how-to-study-this-formally">How to study this formally</h2>
-<p>Track precondition violation rate, postcondition success, rollback frequency, and utility gain per call. A tool interface is mature when failures are classifiable by contract violation rather than “the model seemed confused.”</p>
+<p>Track schema/precondition violation rate, postcondition success rate, duplicate-side-effect rate, rollback frequency, and utility gain per call under fixed latency budgets. A tool interface is mature when failures are classifiable by contract category, not by vibes.</p>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-04-30 09:20 UTC
+      Last generated: 2026-04-30 09:39 UTC
     </footer>
   </body>
 </html>
