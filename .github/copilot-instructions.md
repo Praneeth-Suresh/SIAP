@@ -57,4 +57,4 @@ This repository currently has no configured automated test suite or linter comma
   - each topic uses `topic-XX-*.md`;
   - each topic should have a companion `topic-XX-*-notes.md` with concrete improvement notes and at least one alternative rewrite.
 - Prefer updating markdown sources and regenerating outputs through scripts rather than editing generated artifacts manually.
-- Keep `plan.md` updated at meaningful milestones when doing multi-step content work.
+- Keep `AGENT.md` updated at meaningful milestones when doing multi-step content work.

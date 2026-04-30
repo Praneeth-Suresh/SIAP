@@ -89,3 +89,27 @@ This file defines the durable principles and operating instructions for future a
   - present the three-theory braid as a living architecture of decision-making,
   - make intelligence read as interplay between foresight, responsiveness, and resilience,
   - maintain scholarly clarity while inviting curiosity and reflection.
+
+## Rewrite milestone: Chapter 2 three-pass expansion (completed)
+
+- Applied the same three-pass workflow to all Chapter 2 topics:
+  1. migrated prior main-topic ideas into companion notes,
+  2. appended equation/theory research synthesis,
+  3. rewrote primary topic text from a clean slate using notes as source.
+- Expanded each Chapter 2 topic braid into full narrative treatment linking expected utility, dynamic planning/control, and robustness-oriented evaluation.
+- Preserved clickable numeric citation style and reference anchors across new Chapter 2 content.
+
+
+## Current status
+- Core scaffold is complete: chapter/topic sources, companion rewrite notes, references, build scripts, site template, stylesheet, and deployment workflow.
+- Documentation baseline is refreshed: `.gitignore`, `README.md`, and `AGENT.md` now reflect project conventions and voice requirements.
+- Task 1 completed: all primary topics were expanded with formal mathematical framing, theory triangulation, and deeper research-backed exposition.
+- References expanded to include additional foundational and modern sources across decision theory, planning, control, retrieval, safety, and multi-agent game dynamics.
+- LaTeX PDF rendering pipeline added to produce `dist/book.tex` and `dist/book-latex.pdf` for cleaner mathematical typesetting.
+- Chapter 2 topics and notes now reflect full three-pass rewrites with storyline outlines, equation harvests, and polished narrative synthesis.
+
+## Next steps
+1. Add runnable code exercises per chapter (especially interpreter and planner sections).
+2. Strengthen cross-links between theoretical claims and concrete orchestration patterns.
+3. Continue style-pass editing to keep a consistent witty, slightly grandiose pedagogical tone.
+4. Add benchmark/evaluation writeups for agent loop quality and tool-use reliability.

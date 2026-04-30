@@ -17,8 +17,8 @@
       </aside>
       <article class="content">
         <h1 id="memory-systems-context-and-retrieval">Memory Systems, Context, and Retrieval</h1>
-<p>Memory is policy, not pile: retain, compress, retrieve, forget. The trick is to optimize this policy under context-window scarcity.</p>
-<h2 id="formal-memory-policy">Formal memory policy</h2>
+<p>Memory is policy, not pile: retain, compress, retrieve, forget. A capable agent treats context as scarce capital and allocates it with the same seriousness we reserve for money, time, and safety.</p>
+<h2 id="formal-memory-control-problem">Formal memory control problem</h2>
 <p>Let memory state be (m_t=(w_t,e_t,s_t)): working, episodic, and semantic stores.<br />
 A memory controller chooses operations (u_t \in {\texttt{write},\texttt{compress},\texttt{retrieve},\texttt{evict}}) by
 [
@@ -27,19 +27,41 @@ u_t = \mu_\theta(m_t,h_t),
 to optimize
 [
 \max_\mu\ \mathbb{E}!\left[\sum_t \gamma^t \big(\text{task_utility}_t - \lambda_1\text{latency}_t - \lambda_2\text{token_load}_t\big)\right].
-]</p>
+]
+This is expected utility under systems constraints: retrieval is good only if it improves decisions more than it costs [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>].</p>
+<p>One useful control view is Bellman recursion on memory state:
+[
+V^\star(m,h)=\max_{u}\left{r(m,h,u)+\gamma\,\mathbb{E}[V^\star(m',h')]\right},
+]
+where (r) already includes latency and token penalties [<a href="../../references.html#ref-5">5</a>] [<a href="../../references.html#ref-4">4</a>].</p>
+<h2 id="retrieval-and-compression-mechanics">Retrieval and compression mechanics</h2>
+<p>Sparse retrieval can be represented by BM25 scoring:
+[
+\mathrm{BM25}(q,d)=\sum_{t\in q}\mathrm{IDF}(t)\frac{f(t,d)(k_1+1)}{f(t,d)+k_1\left(1-b+b|d|/\mathrm{avgdl}\right)},
+]
+while dense retrieval often uses inner-product similarity
+[
+s(q,d)=\langle e_q,e_d\rangle.
+]
+These are not rival religions; they are complementary indexing geometries with different failure modes [<a href="../../references.html#ref-46">46</a>] [<a href="../../references.html#ref-15">15</a>] [<a href="../../references.html#ref-47">47</a>].</p>
+<p>Compression policy is an information-theoretic trade:
+[
+R(D)=\min_{p(\hat x|x):\mathbb{E}[d(X,\hat X)]\le D} I(X;\hat X),
+]
+which says you should only pay bitrate for distinctions that matter to downstream decisions [<a href="../../references.html#ref-35">35</a>].</p>
+<p>For retrieval-augmented generation, evidence quality propagates to output probability:
+[
+p(y\mid x)\approx \sum_{d\in\mathcal{D}<em>k} p</em>\eta(d\mid x)\,p_\theta(y\mid x,d),
+]
+so poor retrieval is not a side issue; it is directly injected into generation dynamics [<a href="../../references.html#ref-14">14</a>].</p>
 <h2 id="three-theory-braid">Three-theory braid</h2>
-<ol>
-<li><strong>Cognitive multi-store theory.</strong> Distinct working/episodic/semantic strata suggest principled architectural separation [<a href="../../references.html#ref-48">48</a>].</li>
-<li><strong>Information-theoretic compression.</strong> Retention is a rate-distortion tradeoff: keep bits that preserve decision value [<a href="../../references.html#ref-35">35</a>].</li>
-<li><strong>Modern retrieval theory.</strong> Sparse/dense indexing and RAG latent-document models define end-to-end evidence pipelines [<a href="../../references.html#ref-14">14</a>] [<a href="../../references.html#ref-15">15</a>] [<a href="../../references.html#ref-46">46</a>] [<a href="../../references.html#ref-47">47</a>].</li>
-</ol>
+<p>Cognitive multi-store theory gives architectural separation (what kind of memory should hold what), information theory gives compression discipline (what fidelity is worth paying for), and modern retrieval theory gives operational evidence flow (how useful context is recovered in time), so memory becomes an active braid of foresight (saving what future policies will need), responsiveness (retrieving the right fragment now), and resilience (evicting stale or contaminated traces before they derail behavior) [<a href="../../references.html#ref-48">48</a>] [<a href="../../references.html#ref-35">35</a>] [<a href="../../references.html#ref-14">14</a>] [<a href="../../references.html#ref-15">15</a>] [<a href="../../references.html#ref-46">46</a>] [<a href="../../references.html#ref-47">47</a>].</p>
 <h2 id="how-to-study-this-formally">How to study this formally</h2>
-<p>Evaluate retrieval precision/recall, downstream answer faithfulness, and regret from memory eviction decisions. Stress-test long-horizon tasks with adversarial distractors. If memory policy cannot be audited quantitatively, “long context” is just expensive amnesia.</p>
+<p>Evaluate retrieval precision@(k), latency, grounded answer faithfulness, and regret from eviction decisions under fixed token budgets. Stress-test with adversarial distractors and contamination injections, then verify whether policy-level edits (not prompt cosmetics) reduce failure recurrence [<a href="../../references.html#ref-16">16</a>]. If memory policy is not measurable, "long context" is often just expensive amnesia.</p>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-04-23 07:34 UTC
+      Last generated: 2026-04-30 09:20 UTC
     </footer>
   </body>
 </html>

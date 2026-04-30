@@ -17,26 +17,47 @@
       </aside>
       <article class="content">
         <h1 id="evaluating-and-debugging-reasoners">Evaluating and Debugging Reasoners</h1>
-<p>If you only score final answers, you reward lucky shortcuts and miss systematic failure. Reasoners must be judged as stochastic processes over trajectories.</p>
+<p>If you only score final answers, you reward lucky shortcuts and miss mechanism-level failure. Reasoners must be evaluated as stochastic trajectory generators whose confidence, actions, and side effects can all be audited.</p>
 <h2 id="formal-evaluation-object">Formal evaluation object</h2>
 <p>Let trajectory (\tau=(\sigma_0,a_0,\dots,\sigma_T)\sim p_\pi(\tau)).<br />
 Define task utility (U(\tau)), safety cost (C(\tau)), and calibration score (S(\tau)).<br />
 Evaluation is multi-objective:
 [
 \max_\pi \ \mathbb{E}[U(\tau)] - \lambda\,\mathbb{E}[C(\tau)] \quad\text{with calibration constrained by}\quad \mathbb{E}[S(\tau)] \le \epsilon.
-]</p>
+]
+This keeps expected utility as the compass while preventing "high reward by unsafe luck" from masquerading as competence [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>] [<a href="../../references.html#ref-53">53</a>].</p>
+<h2 id="probabilistic-honesty-and-calibration">Probabilistic honesty and calibration</h2>
+<p>Strictly proper scoring rules make confidence testable. Two canonical choices are log score
+[
+\mathcal{L}<em i="1">{\log}=-\frac{1}{N}\sum</em>^N \log p_\theta(y_i\mid x_i),
+]
+and Brier score
+[
+BS=\frac{1}{N}\sum_{i=1}^N (p_i-y_i)^2.
+]
+For bucketed predictions (B_b), expected calibration error is
+[
+\mathrm{ECE}=\sum_b \frac{|B_b|}{N}\left|\mathrm{acc}(B_b)-\mathrm{conf}(B_b)\right|.
+]
+Low calibration error means the system's probabilities are interpretable promises, not decorative numbers [<a href="../../references.html#ref-49">49</a>].</p>
+<h2 id="causal-and-influence-based-debugging">Causal and influence-based debugging</h2>
+<p>When a failure appears, replay traces with interventions and estimate effects:
+[
+\mathrm{ATE}=\mathbb{E}[Y\mid do(Z{=}1)]-\mathbb{E}[Y\mid do(Z{=}0)].
+]
+This identifies which step class (retrieval choice, tool args, reflection policy) actually causes downstream harm [<a href="../../references.html#ref-6">6</a>]. For fine-grained attribution, influence approximations estimate how much one datum or memory item perturbs a test loss:
+[
+I_{up,loss}(z,z_{\text{test}})\approx -\nabla_\theta L(z_{\text{test}},\hat\theta)^\top H_{\hat\theta}^{-1}\nabla_\theta L(z,\hat\theta),
+]
+which helps prioritize highest-leverage repairs [<a href="../../references.html#ref-50">50</a>].</p>
 <h2 id="three-theory-braid">Three-theory braid</h2>
-<ol>
-<li><strong>Proper scoring rules.</strong> Calibration and probabilistic honesty are measured with strictly proper losses (e.g., log score, Brier) [<a href="../../references.html#ref-49">49</a>].</li>
-<li><strong>Trace-based causal diagnosis.</strong> Interventional replay and counterfactual edits reveal which loop step caused failure [<a href="../../references.html#ref-6">6</a>].</li>
-<li><strong>Influence-based debugging.</strong> Influence-function approximations identify training/data points or memory entries that drive specific errors [<a href="../../references.html#ref-50">50</a>].</li>
-</ol>
+<p>Proper scoring rules discipline what the model says it knows, causal trace diagnosis disciplines what the loop actually does when perturbed, and influence-based methods discipline where the error came from in data or memory space, so evaluation becomes a braid of foresight (calibrated confidence before action), responsiveness (interventional replay during incidents), and resilience (targeted edits that reduce recurrence rather than moving symptoms around) [<a href="../../references.html#ref-49">49</a>] [<a href="../../references.html#ref-6">6</a>] [<a href="../../references.html#ref-50">50</a>].</p>
 <h2 id="how-to-study-this-formally">How to study this formally</h2>
-<p>Instrument every loop step, replay with controlled interventions, and report confidence-utility frontiers rather than single accuracy points. A reasoning stack graduates from demo to system only when its failures are reproducible, attributable, and reducible.</p>
+<p>Instrument every loop step, score confidence and outcomes jointly, replay with controlled interventions, and report confidence-utility frontiers rather than single accuracy points. A reasoning stack graduates from demo to system only when failures are reproducible, attributable, and reducible.</p>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-04-23 07:34 UTC
+      Last generated: 2026-04-30 09:20 UTC
     </footer>
   </body>
 </html>
