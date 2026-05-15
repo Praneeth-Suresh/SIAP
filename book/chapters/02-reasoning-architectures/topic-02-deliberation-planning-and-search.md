@@ -47,3 +47,13 @@ Heuristic graph search gives an efficient map of plausible futures through \(f=g
 ## How to study this formally
 
 Benchmark plan utility against compute budget, replan frequency, and irreversible-error rate; report performance as a function of \(H\), branching factor \(b\), and heuristic misspecification. The best planner is not the one with the fanciest search tree; it is the one that still behaves coherently when its assumptions are wrong.
+
+## Translating the Theory into Agentic Practice
+
+Planning theory tells us when an agent should spend computation imagining futures and when it should stop admiring its own imagination and act. In a practical agent, deliberation depth should be a controlled resource. The system should choose between direct action, shallow lookahead, full task decomposition, tool-assisted simulation, or human clarification according to expected utility and cost. A planner that always thinks is slow; a planner that never thinks is merely quick to be wrong.
+
+For implementation, represent plans as explicit candidate trajectories: state estimate, proposed action, expected observation, cost, risk, and contingency. Use heuristics to prioritize branches, but record why a branch was pruned. Use symbolic preconditions for irreversible or expensive actions. Use search when the task has combinatorial structure, such as multi-file refactoring, multi-step data cleaning, deployment sequencing, or negotiation. Use receding-horizon control when the world will answer back after each move, as most worlds impolitely do.
+
+The theory also clarifies the role of decomposition in LLM agents. A task breakdown is not valuable because it looks organized; it is valuable when it reduces branching factor, exposes dependencies, or creates intermediate states that can be verified. "Plan then execute" is weak if the plan cannot absorb new observations. "Plan, execute one step, observe, replan" is stronger because it treats the plan as a living hypothesis rather than a stone tablet.
+
+To design better agents, give the planner a search budget, a heuristic, a fallback, and a replan trigger. Teach it to price computation, detect dead ends, and prefer reversible exploration before irreversible commitment. The theory of search is valuable because it rescues agents from both extremes: the tiny tyranny of next-token reflex and the imperial sprawl of infinite deliberation. Competent agency lives in the treaty between foresight and budget.

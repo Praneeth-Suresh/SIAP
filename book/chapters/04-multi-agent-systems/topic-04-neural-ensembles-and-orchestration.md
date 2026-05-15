@@ -34,3 +34,13 @@ Deep-ensemble theory gives uncertainty and calibration benefits through independ
 ## How to study this formally
 
 Measure ensemble lift over best single expert, calibration under shift, routing entropy (collapse detection), and cost-latency-normalized utility. The objective is not maximal committee size; it is minimal correlated error for a fixed budget.
+
+## Translating the Theory into Agentic Practice
+
+Ensemble theory teaches that better agentic systems often come from organized plurality rather than a single magnificent generalist. The practical question is not "how many agents can we call?" but "which independent competencies reduce the error we actually care about?" A useful ensemble combines diversity, calibration, routing, aggregation, and budget control. Without those, a committee of agents may simply agree loudly on the same mistake.
+
+A practical orchestration layer should maintain expert profiles: domain strengths, historical accuracy, calibration, latency, cost, failure modes, and correlation with other experts. The router chooses specialists based on task features and uncertainty. The aggregator combines outputs by confidence, evidence, role, and past reliability. The monitor watches for collapse, such as one expert always dominating, all experts sharing the same bad source, or critics converging into ceremonial agreement.
+
+This applies beyond model ensembles. A coding workflow might route architecture questions to a design reviewer, risky edits to a safety reviewer, failing tests to a debugger, and final synthesis to an integrator. A research workflow might combine retrieval, statistical critique, domain expertise, and writing. A customer-support workflow might combine policy lookup, empathy framing, fraud detection, and escalation assessment. In each case, orchestration is a budgeted control problem: consult enough specialists to reduce correlated error, but not so many that latency and contradiction consume the mission.
+
+The theory's value is disciplined collectivity. It gives us a way to turn disagreement into information, specialization into leverage, and redundancy into fault tolerance. Better agent systems are not merely bigger councils. They are routed ensembles whose diversity is measured, whose costs are priced, whose votes are calibrated, and whose final decisions are better than the most charismatic member acting alone.

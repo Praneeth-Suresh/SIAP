@@ -43,3 +43,13 @@ VCG-style transfer design aligns local reporting incentives with system welfare,
 ## How to study this formally
 
 Measure allocative efficiency, truthfulness regret, fairness, and collusion sensitivity under strategic misreports. A negotiation protocol without incentive analysis is merely an argument with extra JSON.
+
+## Translating the Theory into Agentic Practice
+
+Mechanism design teaches that agent collectives must be designed for incentives, not merely for intentions. If agents, tools, departments, vendors, or users have different objectives, the protocol must assume strategic behavior can appear. Better systems ask: what information does each participant possess, what outcome do they prefer, what can they misreport, and what rule makes honest or useful behavior the best available strategy?
+
+In implementation, this turns negotiation into structured interaction. Agents should declare preferences, constraints, confidence, and private costs in typed fields where possible. Allocation rules should be explicit: which worker gets a task, which model receives a query, which customer request is prioritized, which proposed patch is accepted. Payment may be literal money, but in software it is often budget, priority, reputation, access, or future routing weight. Transfers are any mechanism by which the system rewards or penalizes behavior.
+
+For agentic workflows, this is especially useful in delegation. If every specialist is rewarded for saying "I can do it," routing collapses into optimism theater. If specialists are scored by calibrated estimates, task completion, latency, and downstream correction cost, the system can allocate work to agents that reveal their competence honestly. If reviewers are rewarded only for finding flaws, they may become ornamental saboteurs; if rewarded for improving decision quality, critique becomes a public good.
+
+The theory's value is institutional. It gives builders a way to design agent societies whose local incentives support global performance. Negotiation protocols become less about persuasive prose and more about incentive-compatible information flow. A better agentic system does not beg its components to be virtuous. It arranges the game so that useful truth has somewhere to go, manipulation has a measurable cost, and scarce resources are allocated by rules sturdier than whoever sounded most confident in the last message.

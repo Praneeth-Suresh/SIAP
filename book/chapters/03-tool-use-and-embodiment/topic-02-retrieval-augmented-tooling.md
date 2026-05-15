@@ -39,3 +39,13 @@ Latent-document RAG gives the generative factorization \(p(y|x)=\sum_d p(y|x,d)p
 ## How to study this formally
 
 Measure Recall@\(k\)/nDCG, citation faithfulness, contradiction rate, and end-task utility under fixed retrieval budgets. Compare always-retrieve, never-retrieve, and uncertainty/VoI-triggered policies. If retrieval cannot buy measurable uncertainty reduction per unit latency, it is ritual, not reasoning.
+
+## Translating the Theory into Agentic Practice
+
+Retrieval-augmented tooling teaches that evidence acquisition is an action, not a reflex. A better agent decides when to search, where to search, how much to retrieve, how to rank, how to cite, and when the evidence is insufficient. It does not decorate an answer with retrieved fragments after the fact. It lets evidence shape the action itself.
+
+A practical design separates the retrieval policy from the generation policy. The retrieval policy observes task type, uncertainty, cost, freshness requirements, and source permissions. It may choose local project search, vector memory, web search, database lookup, or no retrieval. The generation policy then consumes a bounded evidence set with provenance and contradiction flags. If retrieved sources disagree, the agent should surface the conflict or seek a higher-authority source rather than blending contradictions into confident prose.
+
+For tool-using agents, retrieval should often precede irreversible action. A coding agent should inspect relevant symbols before editing. A compliance agent should fetch current policy before advising. A data agent should retrieve schema and sample rows before writing queries. The point is not to retrieve because retrieval is fashionable; the point is to buy the specific information that changes which action is rational.
+
+The theory pays off by preventing two expensive pathologies. Over-retrieval bloats context, slows execution, and invites distractors into the court. Under-retrieval lets fluent priors masquerade as evidence. Value-of-information control gives the agent a middle way: spend evidence only when it is likely to improve the decision. A retrieval-augmented agent is better not because it has more documents nearby, but because it knows when a document deserves to govern the next move.

@@ -245,6 +245,11 @@ Natural-language prompts are therefore only the front door; the house is built f
 <p>Take a real prompt you use (for example, “Refactor this module safely and quickly”) and formalize it as ((R,C,\text{termination})): define one reward term for functional correctness, one for latency or token cost, at least one hard safety constraint, and a measurable stopping condition. Then write one sentence explaining which part of your spec corresponds to utility, dynamics, and feedback.</p>
 <h2 id="how-to-study-this-formally">How to study this formally</h2>
 <p>Build small benchmark tasks where (R) and (C) are explicit, perturb observations and transition assumptions, and compare policies by constrained return, regret, and violation rate. If a system cannot state its objective and constraints mathematically, it may still be impressive—but it has not yet earned the full title of agent.</p>
+<h2 id="translating-the-theory-into-agentic-practice">Translating the Theory into Agentic Practice</h2>
+<p>The practical gift of this topic is a design discipline: before building a clever loop, write the agent's charter. A production agent should begin with an explicit goal specification, an environment boundary, an action vocabulary, constraint budgets, and termination rules. For a coding agent, this means distinguishing "produce a patch" from "produce a patch that passes named tests, preserves public contracts, avoids unsafe files, fits within a time budget, and escalates when evidence is insufficient." The first sentence is a wish. The second is an architecture.</p>
+<p>In implementation terms, treat (R), (C), and (\mathcal{A}) as configuration objects, not as folklore trapped in a prompt. The action registry should say which operations exist, what inputs are legal, what side effects they may cause, how much they cost, and what postconditions must be checked. The planner should score candidate actions against the current belief state and constraint ledger. The runtime should record each observation-action-transition triple so that later debugging can ask: did the agent choose badly, observe badly, or operate under a badly specified objective?</p>
+<p>This also changes how we design human oversight. A vague agent needs vague supervision: "please be careful." A formalized agent can expose precise gates: "this edit touches authentication," "this command exceeds budget," "this step reduces expected reward unless it obtains new evidence." Escalation becomes part of the state machine rather than an apology after the machine has wandered into the machinery room with a lit candle.</p>
+<p>The value of learning the theory is therefore immediate. It teaches us to replace prompt charisma with inspectable control. Goals become reward models and acceptance tests; environments become typed sources of observation and uncertainty; actions become contracts; constraints become budgets and guards; feedback becomes telemetry and correction. Once these pieces are explicit, better agents can be compared, improved, and governed. Without them, every success is anecdote and every failure is an interpretive fog.</p>
 <hr />
 <h1 id="belief-uncertainty-and-decision">Belief, Uncertainty, and Decision</h1>
 <p>The competent agent does not pray for certainty; it budgets uncertainty like an engineer with a deadline and a power bill. In serious systems, belief is not a vibe, not a slogan, and definitely not a confidence emoji—it is a state variable that must earn its keep in every action you take.</p>
@@ -304,6 +309,11 @@ and suppose approximation yields (\tilde Q) with uniform error (\lvert \tilde Q(
 This gives a practical criterion: particle filters, variational approximations, or distilled surrogates are fine when they preserve action ranking where it matters, stay calibrated under proper scoring rules, and respect latency budgets [<a href="../../references.html#ref-37">37</a>] [<a href="../../references.html#ref-38">38</a>] [<a href="../../references.html#ref-49">49</a>].</p>
 <h2 id="how-to-study-this-formally_1">How to study this formally</h2>
 <p>Run ablations where retrieval, tool probes, and clarification questions are explicit costly actions; then report downstream utility, realized (\operatorname{VoI}), and calibration (e.g., Brier score (BS=\frac{1}{N}\sum_{i=1}^N (p_i-y_i)^2)) under matched latency/token budgets [<a href="../../references.html#ref-49">49</a>]. If epistemic actions do not improve calibrated decision quality per unit cost, your agent is performing epistemology theater—dramatic, expensive, and mostly decorative.</p>
+<h2 id="translating-the-theory-into-agentic-practice_1">Translating the Theory into Agentic Practice</h2>
+<p>Belief turns an agent from a script into a situated decision-maker. The engineering move is to make uncertainty visible in the loop: every important claim should carry provenance, confidence, freshness, and the decision it supports. A retrieval result is not merely "context"; it is evidence with a likelihood of being relevant, stale, contradictory, or decisive. A tool result is not merely "output"; it is an observation that should update the agent's belief about the world.</p>
+<p>This implies a concrete control pattern. Maintain a belief state alongside the transcript: open hypotheses, confidence estimates, known unknowns, and uncertainty drivers. Before acting, ask whether the current action gap is large enough to proceed. If the best and second-best actions are separated by a wide margin, act. If they are close and a cheap query could change the ranking, retrieve, inspect, test, or ask the user. If no affordable evidence can change the decision, choose the least-regret action and record the assumption. Thus Bayesian humility becomes a budgeted policy, not a decorative paragraph in the system prompt.</p>
+<p>Good agentic systems also need calibrated refusal and escalation. A belief-aware customer-support agent can distinguish "I know the refund policy" from "I know the policy but not whether this order qualifies" from "this case crosses a legal boundary." A coding agent can distinguish "the failing test localizes the bug" from "the test failure is consistent with three modules, so I should inspect before editing." In both cases, uncertainty directs action instead of merely lowering the emotional temperature of the answer.</p>
+<p>The theory pays for itself whenever the system must decide whether to spend another token, call another tool, interrupt a human, or commit an irreversible action. Entropy, value of information, action gaps, and calibration are not ivory-tower ornaments; they are the knobs that keep agents from confusing confident fluency with competent control. A belief-state ledger is the difference between an agent that knows what it knows and an agent that simply speaks until reality objects.</p>
 <hr />
 <h1 id="world-models-and-state-abstractions">World Models and State Abstractions</h1>
 <p>A world model is a map drawn during a storm: if you sketch every raindrop, you never choose a road; if you sketch only the horizon, you drive into a lake. State abstraction is that disciplined cartography—selective forgetting in service of competent action, where elegance is measured not by compression ratio alone, but by whether the agent still reaches the right future.</p>
@@ -366,6 +376,11 @@ not archival completeness. If your state remembers everything except what the ne
 <p>State abstraction tells us how to compress without lying to control, bisimulation metrics tell us exactly how much behavioral truth was lost in that compression, and causal modeling tells us whether the compressed model still answers intervention questions rather than merely replaying correlations; together they define a disciplined pipeline in which action is still chosen by expected utility (a_t^{<em>}=\arg\max_a\mathbb E[U(a,S_t)\mid z_t]) [<a href="../../references.html#ref-34">34</a>], long-horizon consequences are propagated through Bellman recursion (V^{</em>}(z)=\max_a{\bar R(z,a)+\gamma\sum_{z'}\bar T(z'\mid z,a)V^{*}(z')}) [<a href="../../references.html#ref-5">5</a>] [<a href="../../references.html#ref-39">39</a>], and execution closes the loop through feedback laws such as (u_t=-K\hat x_t), where estimation and control co-govern real behavior [<a href="../../references.html#ref-36">36</a>] [<a href="../../references.html#ref-41">41</a>]; the moral is wonderfully unforgiving: a useful world model must be compact enough to think with, faithful enough to plan with, and causal enough to intervene with, or else the agent remains a brilliant spectator of consequences it cannot reliably shape [<a href="../../references.html#ref-37">37</a>] [<a href="../../references.html#ref-38">38</a>] [<a href="../../references.html#ref-6">6</a>].</p>
 <h2 id="how-to-study-this-formally_2">How to study this formally</h2>
 <p>Benchmark abstractions by (i) value loss (\Delta_V=|V^{<em>}-\tilde V^{</em>}\circ\phi|_\infty), (ii) intervention fidelity gaps on counterfactual test sets (compare (P(Y\mid \mathrm{do}(X=x))) predictions to observed outcomes), and (iii) robustness under distribution shift when retrieval budgets are constrained. Then run an ablation where you increase raw memory exposure while holding task and compute fixed; if extra memory hurts return, your agent is not under-informed—it is over-narrated.</p>
+<h2 id="translating-the-theory-into-agentic-practice_2">Translating the Theory into Agentic Practice</h2>
+<p>World models tell us what the agent thinks it is acting upon; state abstractions decide how much of that world is allowed into the control room. In practice, this means every agent needs a deliberately shaped decision state rather than a heroic transcript dump. For a coding agent, the useful state may include the failing behavior, touched files, dependency graph hints, test status, active constraints, and unresolved hypotheses. It does not need every line of every conversation unless those lines alter the next action.</p>
+<p>The design pattern is to maintain three layers. First, keep raw logs for audit and recovery. Second, build a compact decision state for planning. Third, maintain a causal or mechanistic model where interventions matter: "editing parser.py changes AST construction," "raising worker count affects queue latency after a delay," "retrieving an old policy document may contaminate answer grounding." The agent should plan on the compact state, retrieve from the archive only when value of information justifies it, and update the causal model when interventions produce surprising results.</p>
+<p>Abstraction quality should be tested by action preservation. If two states map to the same (z), the agent should be able to take the same action without material loss. If "user is annoyed" and "user is legally blocked" collapse into the same sentiment feature, the abstraction is not elegant; it is dangerous. If "test failed because dependency missing" and "test failed because behavior regressed" collapse into "tests red," the coding agent will flail with admirable consistency.</p>
+<p>Learning this theory therefore improves agents by disciplining memory, context, and planning. It tells us to compress around future decisions, not around aesthetic summaries; to preserve causal distinctions, not trivia; and to measure abstraction by downstream value loss. A good state representation admits only the variables necessary for judgment. Everything else may remain in the archive, ready to be summoned when the next decision actually needs it.</p>
 <hr />
 <h1 id="policies-value-and-control">Policies, Value, and Control</h1>
 <p>A policy is not merely “what the model says next”; it is the constitution of an artificial polity under uncertainty, delay, and temptation. If goals are the crown and actions are the ministers, policy is the legal code that keeps cleverness from mutiny.</p>
@@ -441,13 +456,25 @@ and is judged by calibration metrics such as Brier score
 <p>Dynamic programming gives the grammar of optimality through Bellman structure, where every present act is a price tag on future possibility (V^{<em>}(s)=\max_a{R(s,a)+\gamma\sum_{s'}T(s'\mid s,a)V^{</em>}(s')}) [<a href="../../references.html#ref-5">5</a>] [<a href="../../references.html#ref-39">39</a>]; policy-gradient learning then supplies adaptation when models are partial and function approximation is unavoidable, nudging parameters by (\nabla_\theta J(\theta)=\mathbb{E}[\nabla_\theta\log\pi_\theta(a\mid s)Q^{\pi_\theta}(s,a)]) so control laws can learn from experience instead of scripture [<a href="../../references.html#ref-40">40</a>] [<a href="../../references.html#ref-3">3</a>]; and model predictive control operationalizes this in the unruly present by repeatedly solving a finite-horizon constrained optimization, executing the first move, re-measuring reality, and replanning, with feedback law intuition captured by forms like (u_t=-K\hat x_t), so expected utility (a^{*}=\arg\max_a\mathbb{E}[U(a,S)\mid h]) becomes not a one-shot maxim but an institutional loop in which proposing, deciding, and policing co-evolve under uncertainty, constraints, and disturbance [<a href="../../references.html#ref-34">34</a>] [<a href="../../references.html#ref-41">41</a>] [<a href="../../references.html#ref-51">51</a>] [<a href="../../references.html#ref-52">52</a>].</p>
 <h2 id="how-to-study-this-formally_3">How to study this formally</h2>
 <p>Evaluate layered policies with ablations: proposer-only, proposer+adjudicator, and full proposer+adjudicator+oversight. Report constrained return, violation rate, closed-loop stability indicators, and calibration of risk/confidence heads under matched latency budgets. If the “smartest” policy wins only when constraints are ignored, you have not built control—you have built a very articulate gamble.</p>
+<h2 id="translating-the-theory-into-agentic-practice_3">Translating the Theory into Agentic Practice</h2>
+<p>Policy theory teaches that an agent should not be a single eager mouth attached to a tool belt. It should be a control system with distinct responsibilities: propose actions, estimate value, estimate risk, enforce constraints, execute, observe, and revise. In a serious agent, the language model may be an excellent proposer, but the policy is the larger institution that decides which proposal may become an event in the world.</p>
+<p>A practical architecture follows the proposer-adjudicator-oversight pattern. The proposer generates several plausible next actions or plans. The adjudicator scores them by expected utility, evidence quality, cost, and reversibility. The oversight layer blocks actions that violate hard constraints, routes uncertain cases to humans, or substitutes conservative fallbacks. The executor then performs the chosen action and reports observations back into the state. This separation lets creativity remain abundant while authority remains accountable.</p>
+<p>Value functions also prevent a common agent failure: optimizing the appearance of progress. A verbose reasoning step, a broad retrieval, or a sweeping refactor may feel productive while reducing expected return. The policy should ask: does this action improve the probability of task success enough to justify its cost and risk? For code agents, that means valuing small verified patches over majestic untested rewrites when the deadline is near. For research agents, it means stopping retrieval when marginal evidence no longer changes the answer.</p>
+<p>The control lens completes the lesson. A good agent does not choose once and vanish into destiny; it acts, measures, corrects, and sometimes retreats. Budgets, safety filters, fallback modes, and stability checks are not ornaments attached to intelligence after the parade. They are the machinery that turns intelligence into dependable behavior. The theory of policies and value thus gives us the grammar for designing agents whose cleverness is governed, whose risks are priced, and whose actions remain corrigible after the first plan meets the first inconvenient fact.</p>
 <hr />
 <h1 id="reasoning-loops-as-interpreters">Reasoning Loops as Interpreters</h1>
-<p>An agent loop is an interpreter wearing orchestration clothing. Once we say this out loud, semantics, invariants, and proofs become available to us.</p>
-<h2 id="small-step-semantics">Small-step semantics</h2>
-<p>Define machine state (\sigma=(m, h, b, \tau)): memory (m), interaction history (h), belief state (b), and tool context (\tau).<br />
-Transitions are relations (\sigma \xrightarrow{\ell} \sigma') labeled by step kind (\ell \in {\texttt{think},\texttt{act},\texttt{observe},\texttt{reflect}}).</p>
-<p>An agent loop is the least fixed point of a transition functional:
+<p>An agent loop is an interpreter in a tailored orchestration suit: it reads state, executes a semantic step, and returns a new state with fewer illusions about the world. Once we treat it this way, debugging becomes mathematics instead of transcript divination.</p>
+<h2 id="operational-core-a-tiny-machine-for-thought-and-action">Operational core: a tiny machine for thought and action</h2>
+<p>Let machine state be (\sigma=(m,h,b,\tau,\kappa)): memory (m), interaction history (h), belief (b), tool context (\tau), and control budget (\kappa). A loop step is a labeled transition
+[
+\sigma \xrightarrow{\ell} \sigma',\qquad \ell\in{\texttt{think},\texttt{act},\texttt{observe},\texttt{reflect}},
+]
+with legality defined by inference rules in the SOS style [<a href="../../references.html#ref-42">42</a>]. For example, a tool call can only fire when schema checks and budget guards hold:
+[
+\frac{\texttt{schema_ok}(a,\tau)\ \wedge\ \kappa&gt;0}{\langle \texttt{act}(a),\sigma\rangle \to \sigma'}.
+]
+This is not aesthetic pedantry; it is how you make "invalid tool call" a theorem-violating event rather than a vague complaint.</p>
+<p>The complete loop is the least fixed point of one-step execution:
 [
 \mathcal{L}(\sigma)=
 \begin{cases}
@@ -455,37 +482,80 @@ Transitions are relations (\sigma \xrightarrow{\ell} \sigma') labeled by step ki
 \mathcal{L}(F(\sigma)) &amp; \text{otherwise}
 \end{cases}
 ]
-where (F) is one semantic step.</p>
+where (F) is the semantic step function. Invariant proofs then become first-class engineering artifacts: if (I(\sigma)) and (I(\sigma)\Rightarrow I(F(\sigma))), then (I) is preserved along all reachable traces.</p>
+<h2 id="utility-compass-and-long-horizon-control">Utility compass and long-horizon control</h2>
+<p>Expected-utility foundations supply the "why" behind every transition: at decision time,
+[
+a_t^\star=\arg\max_{a\in\mathcal{A}} \mathbb{E}[U(a,S_t)\mid h_t],
+]
+so deliberation is justified only if it improves expected consequence quality [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>]. Over longer horizons, the same logic lifts to Bellman recursion on interpreter state:
+[
+V^\star(\sigma)=\max_a\left{r(\sigma,a)+\gamma\sum_{\sigma'}P(\sigma'\mid \sigma,a)V^\star(\sigma')\right},
+]
+making it explicit that today's loop policy is selecting tomorrow's option set [<a href="../../references.html#ref-5">5</a>] [<a href="../../references.html#ref-4">4</a>].</p>
+<p>Control enters when compute and safety must remain stable under disturbance. A simple budget-feedback law can regulate deliberation intensity:
+[
+\kappa_{t+1}=\kappa_t-\text{cost}(a_t)+\rho\big(\kappa_{\text{target}}-\kappa_t\big),
+]
+and, in linearized settings, action can be represented as (u_t=-K\hat x_t) over estimated state (\hat x_t), emphasizing that loop quality is a closed-loop property, not a one-shot prompt property [<a href="../../references.html#ref-36">36</a>] [<a href="../../references.html#ref-41">41</a>].</p>
 <h2 id="three-theory-braid_4">Three-theory braid</h2>
-<ol>
-<li><strong>Structural operational semantics (SOS).</strong> Behavior is specified via transition rules, making legal/illegal steps explicit [<a href="../../references.html#ref-42">42</a>].</li>
-<li><strong>Abstract interpretation.</strong> We reason soundly about large state spaces using abstract domains and transfer functions [<a href="../../references.html#ref-43">43</a>].</li>
-<li><strong>Reason-act coupling in LLM agents.</strong> ReAct-style trajectories instantiate interpreter steps over tool-mediated environments [<a href="../../references.html#ref-11">11</a>].</li>
-</ol>
+<p>Structural operational semantics gives us legal moves as transition judgments (\langle c,\sigma\rangle\to\sigma'), abstract interpretation gives us scalable guarantees through (F^\sharp=\alpha\circ F\circ\gamma) with sound over-approximation of reachable states, and reason-act trajectories in modern LLM agents ground those abstractions in empirical traces where (\texttt{think}\to\texttt{act}\to\texttt{observe}\to\texttt{reflect}) is literally visible token by token, so the architecture of intelligence appears as a disciplined interplay of foresight (utility-guided policy), responsiveness (online transition updates), and resilience (invariants preserved under noisy tools and partial observability) [<a href="../../references.html#ref-42">42</a>] [<a href="../../references.html#ref-43">43</a>] [<a href="../../references.html#ref-11">11</a>].</p>
 <h2 id="how-to-study-this-formally_4">How to study this formally</h2>
-<p>Prove step invariants (schema validity, budget monotonicity), termination conditions, and recovery properties from error states. If you cannot define your loop semantics, you cannot debug your loop semantics; you can only squint at transcripts and hope.</p>
+<p>Instrument each transition label, prove step invariants (schema validity, budget non-negativity, permission monotonicity), and run interventional trace replay when failures occur [<a href="../../references.html#ref-6">6</a>]. If you cannot state the semantics of your loop, you can still ship demos; you just cannot ship explanations.</p>
+<h2 id="translating-the-theory-into-agentic-practice_4">Translating the Theory into Agentic Practice</h2>
+<p>The interpreter view gives agent builders a magnificent little hammer: define the loop as a machine with state, transitions, guards, and invariants. Instead of asking "what should the prompt say?", ask "what states can the system enter, what transitions are legal, and what must remain true after every step?" The prompt becomes one component inside a semantics, not the sovereign monarch of the whole arrangement.</p>
+<p>In practice, the loop state should be a typed object: current task, belief summary, memory handles, tool permissions, budget ledger, pending commitments, and halt criteria. Each transition should have a name and a contract. <code>think</code> may update hypotheses but not mutate the outside world. <code>act</code> may call tools only through schemas and permission checks. <code>observe</code> may update belief but must preserve the raw result for audit. <code>reflect</code> may revise policy notes but should not launder failure into cheerful prose. These distinctions make execution traces intelligible.</p>
+<p>This architecture improves debugging dramatically. When an agent fails, the question becomes local: did the planner choose an illegal transition, did a guard fail to block it, did observation parsing corrupt state, or did a preserved invariant turn out to be the wrong invariant? Trace replay can then intervene on a single transition class, replacing one retrieved document, one tool argument, or one budget threshold to test causal responsibility.</p>
+<p>The value of the theory is that it turns agent loops into small languages. Once a loop is a language, we can give it syntax, semantics, tests, monitors, and eventually proofs of modest but precious properties. A reasoning agent whose operational semantics are explicit is no longer an oracle with a log file. It is an executable theory of thought, and its mistakes can be studied with instruments sharper than disappointment.</p>
 <hr />
 <h1 id="deliberation-planning-and-search">Deliberation, Planning, and Search</h1>
-<p>Deliberation is the art of spending computation now to avoid regret later.</p>
-<h2 id="formal-planning-frame">Formal planning frame</h2>
-<p>Let (G=(V,E)) be a search graph over decision states. A plan is a path (p=(v_0,\dots,v_T)) minimizing
+<p>Deliberation is the art of paying for imagination before reality charges interest. Planning and search are how an agent buys that imagination without going computationally bankrupt.</p>
+<h2 id="planning-as-structured-foresight">Planning as structured foresight</h2>
+<p>Let (G=(V,E)) be a search graph over decision states. A deterministic plan is a path (p=(v_0,\dots,v_T)) minimizing
 [
 J(p)=\sum_{t=0}^{T-1} c(v_t,v_{t+1}) + \Phi(v_T),
 ]
-with admissible heuristic (h(v)\le h^{<em>}(v)) for A</em> optimality.</p>
-<p>In stochastic domains, planning becomes belief-space optimization or Monte Carlo tree search over sampled rollouts.</p>
+and A* prioritizes candidates by
+[
+f(n)=g(n)+h(n),
+]
+where admissibility (h(n)\le h^\star(n)) (and consistency when available) gives shortest-path guarantees [<a href="../../references.html#ref-8">8</a>]. In symbolic planning, actions are model primitives with preconditions and effects:
+[
+s_{t+1}=(s_t\setminus \mathrm{Del}(a_t))\cup \mathrm{Add}(a_t),\qquad \mathrm{Pre}(a_t)\subseteq s_t,
+]
+which turns "reasoning" into explicit world-state transformation [<a href="../../references.html#ref-9">9</a>] [<a href="../../references.html#ref-10">10</a>].</p>
+<h2 id="uncertainty-aware-planning-and-search-control">Uncertainty-aware planning and search control</h2>
+<p>Expected-utility foundations provide the selection compass:
+[
+a_t^\star=\arg\max_a \mathbb{E}[U(a,S_t)\mid h_t],
+]
+so planning depth is justified only when it increases downstream utility enough to beat its own compute cost [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>]. In stochastic settings this becomes Bellman recursion,
+[
+V^\star(s)=\max_a\left{R(s,a)+\gamma\sum_{s'}P(s'|s,a)V^\star(s')\right},
+]
+or belief-space variants for partial observability [<a href="../../references.html#ref-5">5</a>] [<a href="../../references.html#ref-4">4</a>] [<a href="../../references.html#ref-7">7</a>].</p>
+<p>When the horizon explodes, Monte Carlo tree search allocates rollouts by optimism:
+[
+a^\star=\arg\max_a\left(Q(s,a)+c\sqrt{\frac{\ln N(s)}{N(s,a)}}\right),
+]
+balancing exploitation and exploration under finite time [<a href="../../references.html#ref-45">45</a>]. Receding-horizon control then executes only the first action of an (H)-step solve,
+[
+u_t=\arg\min_{u_{t:t+H-1}} \sum_{k=0}^{H-1}\ell(x_{t+k},u_{t+k})+\ell_f(x_{t+H}),
+]
+and replans at the next step, converting brittle open-loop plans into responsive closed-loop behavior [<a href="../../references.html#ref-41">41</a>].</p>
 <h2 id="three-theory-braid_5">Three-theory braid</h2>
-<ol>
-<li><strong>Heuristic graph search.</strong> A* gives optimality guarantees under admissibility/consistency assumptions [<a href="../../references.html#ref-8">8</a>].</li>
-<li><strong>Symbolic planning.</strong> STRIPS-style operators and planning-domain models encode action preconditions/effects for compositional plan construction [<a href="../../references.html#ref-9">9</a>] [<a href="../../references.html#ref-10">10</a>].</li>
-<li><strong>Anytime and tree-search control.</strong> UCT/MCTS and anytime planning trade compute for solution quality under real-time budgets [<a href="../../references.html#ref-44">44</a>] [<a href="../../references.html#ref-45">45</a>].</li>
-</ol>
+<p>Heuristic graph search gives an efficient map of plausible futures through (f=g+h), symbolic planning gives compositional world mechanics through precondition-effect algebra, and anytime/tree-search control gives temporal humility by improving solutions as long as budget remains, so intelligence appears as a braid of foresight (explicit lookahead), responsiveness (replanning under new observations), and resilience (graceful degradation when depth, branching factor, and latency constraints collide) [<a href="../../references.html#ref-8">8</a>] [<a href="../../references.html#ref-9">9</a>] [<a href="../../references.html#ref-44">44</a>] [<a href="../../references.html#ref-45">45</a>].</p>
 <h2 id="how-to-study-this-formally_5">How to study this formally</h2>
-<p>Benchmark plan quality against compute budget, replan frequency, and irreversible-error rate. Analyze sensitivity to heuristic misspecification and environment volatility. The best planner is not the one with the fanciest tree; it is the one whose assumptions fail gracefully.</p>
+<p>Benchmark plan utility against compute budget, replan frequency, and irreversible-error rate; report performance as a function of (H), branching factor (b), and heuristic misspecification. The best planner is not the one with the fanciest search tree; it is the one that still behaves coherently when its assumptions are wrong.</p>
+<h2 id="translating-the-theory-into-agentic-practice_5">Translating the Theory into Agentic Practice</h2>
+<p>Planning theory tells us when an agent should spend computation imagining futures and when it should stop admiring its own imagination and act. In a practical agent, deliberation depth should be a controlled resource. The system should choose between direct action, shallow lookahead, full task decomposition, tool-assisted simulation, or human clarification according to expected utility and cost. A planner that always thinks is slow; a planner that never thinks is merely quick to be wrong.</p>
+<p>For implementation, represent plans as explicit candidate trajectories: state estimate, proposed action, expected observation, cost, risk, and contingency. Use heuristics to prioritize branches, but record why a branch was pruned. Use symbolic preconditions for irreversible or expensive actions. Use search when the task has combinatorial structure, such as multi-file refactoring, multi-step data cleaning, deployment sequencing, or negotiation. Use receding-horizon control when the world will answer back after each move, as most worlds impolitely do.</p>
+<p>The theory also clarifies the role of decomposition in LLM agents. A task breakdown is not valuable because it looks organized; it is valuable when it reduces branching factor, exposes dependencies, or creates intermediate states that can be verified. "Plan then execute" is weak if the plan cannot absorb new observations. "Plan, execute one step, observe, replan" is stronger because it treats the plan as a living hypothesis rather than a stone tablet.</p>
+<p>To design better agents, give the planner a search budget, a heuristic, a fallback, and a replan trigger. Teach it to price computation, detect dead ends, and prefer reversible exploration before irreversible commitment. The theory of search is valuable because it rescues agents from both extremes: the tiny tyranny of next-token reflex and the imperial sprawl of infinite deliberation. Competent agency lives in the treaty between foresight and budget.</p>
 <hr />
 <h1 id="memory-systems-context-and-retrieval">Memory Systems, Context, and Retrieval</h1>
-<p>Memory is policy, not pile: retain, compress, retrieve, forget. The trick is to optimize this policy under context-window scarcity.</p>
-<h2 id="formal-memory-policy">Formal memory policy</h2>
+<p>Memory is policy, not pile: retain, compress, retrieve, forget. A capable agent treats context as scarce capital and allocates it with the same seriousness we reserve for money, time, and safety.</p>
+<h2 id="formal-memory-control-problem">Formal memory control problem</h2>
 <p>Let memory state be (m_t=(w_t,e_t,s_t)): working, episodic, and semantic stores.<br />
 A memory controller chooses operations (u_t \in {\texttt{write},\texttt{compress},\texttt{retrieve},\texttt{evict}}) by
 [
@@ -494,96 +564,202 @@ u_t = \mu_\theta(m_t,h_t),
 to optimize
 [
 \max_\mu\ \mathbb{E}!\left[\sum_t \gamma^t \big(\text{task_utility}_t - \lambda_1\text{latency}_t - \lambda_2\text{token_load}_t\big)\right].
-]</p>
+]
+This is expected utility under systems constraints: retrieval is good only if it improves decisions more than it costs [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>].</p>
+<p>One useful control view is Bellman recursion on memory state:
+[
+V^\star(m,h)=\max_{u}\left{r(m,h,u)+\gamma\,\mathbb{E}[V^\star(m',h')]\right},
+]
+where (r) already includes latency and token penalties [<a href="../../references.html#ref-5">5</a>] [<a href="../../references.html#ref-4">4</a>].</p>
+<h2 id="retrieval-and-compression-mechanics">Retrieval and compression mechanics</h2>
+<p>Sparse retrieval can be represented by BM25 scoring:
+[
+\mathrm{BM25}(q,d)=\sum_{t\in q}\mathrm{IDF}(t)\frac{f(t,d)(k_1+1)}{f(t,d)+k_1\left(1-b+b|d|/\mathrm{avgdl}\right)},
+]
+while dense retrieval often uses inner-product similarity
+[
+s(q,d)=\langle e_q,e_d\rangle.
+]
+These are not rival religions; they are complementary indexing geometries with different failure modes [<a href="../../references.html#ref-46">46</a>] [<a href="../../references.html#ref-15">15</a>] [<a href="../../references.html#ref-47">47</a>].</p>
+<p>Compression policy is an information-theoretic trade:
+[
+R(D)=\min_{p(\hat x|x):\mathbb{E}[d(X,\hat X)]\le D} I(X;\hat X),
+]
+which says you should only pay bitrate for distinctions that matter to downstream decisions [<a href="../../references.html#ref-35">35</a>].</p>
+<p>For retrieval-augmented generation, evidence quality propagates to output probability:
+[
+p(y\mid x)\approx \sum_{d\in\mathcal{D}<em>k} p</em>\eta(d\mid x)\,p_\theta(y\mid x,d),
+]
+so poor retrieval is not a side issue; it is directly injected into generation dynamics [<a href="../../references.html#ref-14">14</a>].</p>
 <h2 id="three-theory-braid_6">Three-theory braid</h2>
-<ol>
-<li><strong>Cognitive multi-store theory.</strong> Distinct working/episodic/semantic strata suggest principled architectural separation [<a href="../../references.html#ref-48">48</a>].</li>
-<li><strong>Information-theoretic compression.</strong> Retention is a rate-distortion tradeoff: keep bits that preserve decision value [<a href="../../references.html#ref-35">35</a>].</li>
-<li><strong>Modern retrieval theory.</strong> Sparse/dense indexing and RAG latent-document models define end-to-end evidence pipelines [<a href="../../references.html#ref-14">14</a>] [<a href="../../references.html#ref-15">15</a>] [<a href="../../references.html#ref-46">46</a>] [<a href="../../references.html#ref-47">47</a>].</li>
-</ol>
+<p>Cognitive multi-store theory gives architectural separation (what kind of memory should hold what), information theory gives compression discipline (what fidelity is worth paying for), and modern retrieval theory gives operational evidence flow (how useful context is recovered in time), so memory becomes an active braid of foresight (saving what future policies will need), responsiveness (retrieving the right fragment now), and resilience (evicting stale or contaminated traces before they derail behavior) [<a href="../../references.html#ref-48">48</a>] [<a href="../../references.html#ref-35">35</a>] [<a href="../../references.html#ref-14">14</a>] [<a href="../../references.html#ref-15">15</a>] [<a href="../../references.html#ref-46">46</a>] [<a href="../../references.html#ref-47">47</a>].</p>
 <h2 id="how-to-study-this-formally_6">How to study this formally</h2>
-<p>Evaluate retrieval precision/recall, downstream answer faithfulness, and regret from memory eviction decisions. Stress-test long-horizon tasks with adversarial distractors. If memory policy cannot be audited quantitatively, “long context” is just expensive amnesia.</p>
+<p>Evaluate retrieval precision@(k), latency, grounded answer faithfulness, and regret from eviction decisions under fixed token budgets. Stress-test with adversarial distractors and contamination injections, then verify whether policy-level edits (not prompt cosmetics) reduce failure recurrence [<a href="../../references.html#ref-16">16</a>]. If memory policy is not measurable, "long context" is often just expensive amnesia.</p>
+<h2 id="translating-the-theory-into-agentic-practice_6">Translating the Theory into Agentic Practice</h2>
+<p>Memory theory teaches that better agents are not built by pouring the past into the context window until the window groans. They are built by deciding what kind of past each future decision deserves. Working memory should hold the current control state. Episodic memory should preserve concrete events and traces. Semantic memory should store distilled patterns, policies, and domain facts. The agent's memory controller decides which store to write, query, compress, or evict.</p>
+<p>A practical agent should therefore expose memory operations as first-class actions. <code>write</code> stores a new observation with provenance. <code>compress</code> turns bulky traces into decision-relevant summaries while retaining links to raw evidence. <code>retrieve</code> is triggered by uncertainty, task phase, or value of information. <code>evict</code> removes stale, duplicated, or harmful context from the active state. This is not clerical tidiness; it is how the agent prevents irrelevant history from becoming an unelected adviser.</p>
+<p>Retrieval should be evaluated at the decision boundary, not merely at the document boundary. The question is not "did we retrieve something similar?" but "did the retrieved evidence change the action ranking in the right direction?" For a legal research agent, the right case is the one that changes the answer safely. For a code agent, the right file is the one that localizes the bug or rules out a tempting but false edit. For a personal assistant, the right memory is current, permissioned, and relevant to the user's actual intent.</p>
+<p>The practical value of the theory is a memory economy. It gives us policies for spending context, metrics for retrieval quality, and defenses against contamination. A memory-rich agent without retrieval control is a library after an earthquake. A memory-governed agent is closer to a scholar: it knows what to keep on the desk, what to leave in the stacks, and when a dusty footnote is worth summoning into daylight.</p>
 <hr />
 <h1 id="evaluating-and-debugging-reasoners">Evaluating and Debugging Reasoners</h1>
-<p>If you only score final answers, you reward lucky shortcuts and miss systematic failure. Reasoners must be judged as stochastic processes over trajectories.</p>
+<p>If you only score final answers, you reward lucky shortcuts and miss mechanism-level failure. Reasoners must be evaluated as stochastic trajectory generators whose confidence, actions, and side effects can all be audited.</p>
 <h2 id="formal-evaluation-object">Formal evaluation object</h2>
 <p>Let trajectory (\tau=(\sigma_0,a_0,\dots,\sigma_T)\sim p_\pi(\tau)).<br />
 Define task utility (U(\tau)), safety cost (C(\tau)), and calibration score (S(\tau)).<br />
 Evaluation is multi-objective:
 [
 \max_\pi \ \mathbb{E}[U(\tau)] - \lambda\,\mathbb{E}[C(\tau)] \quad\text{with calibration constrained by}\quad \mathbb{E}[S(\tau)] \le \epsilon.
-]</p>
+]
+This keeps expected utility as the compass while preventing "high reward by unsafe luck" from masquerading as competence [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>] [<a href="../../references.html#ref-53">53</a>].</p>
+<h2 id="probabilistic-honesty-and-calibration">Probabilistic honesty and calibration</h2>
+<p>Strictly proper scoring rules make confidence testable. Two canonical choices are log score
+[
+\mathcal{L}<em i="1">{\log}=-\frac{1}{N}\sum</em>^N \log p_\theta(y_i\mid x_i),
+]
+and Brier score
+[
+BS=\frac{1}{N}\sum_{i=1}^N (p_i-y_i)^2.
+]
+For bucketed predictions (B_b), expected calibration error is
+[
+\mathrm{ECE}=\sum_b \frac{|B_b|}{N}\left|\mathrm{acc}(B_b)-\mathrm{conf}(B_b)\right|.
+]
+Low calibration error means the system's probabilities are interpretable promises, not decorative numbers [<a href="../../references.html#ref-49">49</a>].</p>
+<h2 id="causal-and-influence-based-debugging">Causal and influence-based debugging</h2>
+<p>When a failure appears, replay traces with interventions and estimate effects:
+[
+\mathrm{ATE}=\mathbb{E}[Y\mid do(Z{=}1)]-\mathbb{E}[Y\mid do(Z{=}0)].
+]
+This identifies which step class (retrieval choice, tool args, reflection policy) actually causes downstream harm [<a href="../../references.html#ref-6">6</a>]. For fine-grained attribution, influence approximations estimate how much one datum or memory item perturbs a test loss:
+[
+I_{up,loss}(z,z_{\text{test}})\approx -\nabla_\theta L(z_{\text{test}},\hat\theta)^\top H_{\hat\theta}^{-1}\nabla_\theta L(z,\hat\theta),
+]
+which helps prioritize highest-leverage repairs [<a href="../../references.html#ref-50">50</a>].</p>
 <h2 id="three-theory-braid_7">Three-theory braid</h2>
-<ol>
-<li><strong>Proper scoring rules.</strong> Calibration and probabilistic honesty are measured with strictly proper losses (e.g., log score, Brier) [<a href="../../references.html#ref-49">49</a>].</li>
-<li><strong>Trace-based causal diagnosis.</strong> Interventional replay and counterfactual edits reveal which loop step caused failure [<a href="../../references.html#ref-6">6</a>].</li>
-<li><strong>Influence-based debugging.</strong> Influence-function approximations identify training/data points or memory entries that drive specific errors [<a href="../../references.html#ref-50">50</a>].</li>
-</ol>
+<p>Proper scoring rules discipline what the model says it knows, causal trace diagnosis disciplines what the loop actually does when perturbed, and influence-based methods discipline where the error came from in data or memory space, so evaluation becomes a braid of foresight (calibrated confidence before action), responsiveness (interventional replay during incidents), and resilience (targeted edits that reduce recurrence rather than moving symptoms around) [<a href="../../references.html#ref-49">49</a>] [<a href="../../references.html#ref-6">6</a>] [<a href="../../references.html#ref-50">50</a>].</p>
 <h2 id="how-to-study-this-formally_7">How to study this formally</h2>
-<p>Instrument every loop step, replay with controlled interventions, and report confidence-utility frontiers rather than single accuracy points. A reasoning stack graduates from demo to system only when its failures are reproducible, attributable, and reducible.</p>
+<p>Instrument every loop step, score confidence and outcomes jointly, replay with controlled interventions, and report confidence-utility frontiers rather than single accuracy points. A reasoning stack graduates from demo to system only when failures are reproducible, attributable, and reducible.</p>
+<h2 id="translating-the-theory-into-agentic-practice_7">Translating the Theory into Agentic Practice</h2>
+<p>Evaluation theory tells us to stop treating the final answer as the whole creature. An agent is a trajectory generator: it observes, reasons, retrieves, calls tools, edits state, spends budget, and sometimes leaves footprints in external systems. Better evaluation therefore scores the path as well as the destination. The agent may answer correctly by using forbidden evidence, calling an unnecessary expensive tool, or taking an unsafe shortcut. Such victories should be recorded as warnings, not medals.</p>
+<p>A practical evaluation harness should log each step with state summary, action, tool arguments, evidence, confidence, cost, constraint checks, and outcome. Unit tests can verify local contracts: schema validity, permission behavior, refusal policy, retrieval filters. Scenario tests can verify full trajectories under controlled perturbations. Regression suites should include previous failures, adversarial distractors, stale memories, flaky tools, and ambiguous user requests. The harness should make failures reproducible enough that repair is engineering, not exorcism.</p>
+<p>Debugging then becomes causal. If a hallucinated answer appears, intervene on retrieval and rerun. If a bad edit lands, intervene on the planner's state abstraction, then on the value scorer, then on the safety filter. If confidence is miscalibrated, test whether the model is overconfident everywhere or only after particular tools or memory types. Influence and trace analysis help prioritize repairs that remove causes rather than polish symptoms.</p>
+<p>The theory is valuable because it defines what maturity looks like. A better agent is not merely more accurate; it is calibrated, auditable, resistant to familiar failures, and cheaper to debug after unfamiliar ones. Evaluation becomes the agent's laboratory constitution: every claim must be measured, every failure must have a trace, and every improvement must survive old adversaries returning in new forms.</p>
 <hr />
 <h1 id="tool-interfaces-and-function-calling">Tool Interfaces and Function Calling</h1>
-<p>Tool use is where language stops narrating and starts doing. The central artifact is not the prompt—it is the contract.</p>
-<h2 id="formal-contract-model">Formal contract model</h2>
+<p>Tool use is where language stops narrating and starts doing. The central artifact is not the prompt; it is the contract that decides which actions are legal, useful, and survivable under failure.</p>
+<h2 id="contract-first-action-semantics">Contract-first action semantics</h2>
 <p>Represent tool (f) by
 [
-f : X \to Y,\quad \text{with } \texttt{Pre}<em u="u">f(x),\ \texttt{Post}_f(x,y),\ \texttt{Cost}_f(x),\ \texttt{Risk}_f(x).
+f : X \to Y,\quad \texttt{Pre}<em f_t="f_t">f(x),\ \texttt{Post}_f(x,y),\ \texttt{Cost}_f(x),\ \texttt{Risk}_f(x).
 ]
-An invocation is legal iff (\texttt{Pre}_f(x)=\texttt{true}).<br />
-A planner selects tool call (u_t=(f_t,x_t)) by maximizing expected utility under cost/risk constraints:
+An invocation (u_t=(f_t,x_t,k_t)) with idempotency key (k_t) is legal iff schema, auth, and preconditions pass:
 [
-u_t^{*} = \arg\max</em>(u).
-]} \ \mathbb{E}[Q(\sigma_t,u)] - \lambda_c \texttt{Cost}(u) - \lambda_r \texttt{Risk</p>
+\texttt{legal}(u_t)=\mathbf{1}{\texttt{schema_ok}(x_t)\land \texttt{auth_ok}(f_t)\land \texttt{Pre}</em>(x_t)}.
+]
+Policy selection then becomes constrained expected utility:
+[
+u_t^{*} = \arg\max_{u}\ \mathbb{E}[Q(\sigma_t,u)]-\lambda_c C(u)-\lambda_r R(u).
+]
+For long horizons, the same logic lifts to Bellman structure:
+[
+V^\star(\sigma)=\max_u\left{r(\sigma,u)+\gamma\sum_{\sigma'}P(\sigma'|\sigma,u)V^\star(\sigma')\right},
+]
+so choosing a tool now is also choosing the future state of permissions, memory, and recovery options [<a href="../../references.html#ref-5">5</a>] [<a href="../../references.html#ref-4">4</a>].</p>
+<h2 id="exactly-once-behavior-and-fallback-control">Exactly-once behavior and fallback control</h2>
+<p>Retries are unavoidable; duplicate side effects are optional. Idempotency gives a functional target:
+[
+f(f(x,k),k)=f(x,k),
+]
+which means repeated delivery under the same key (k) does not multiply real-world effects. A minimal retry controller can be written as
+[
+n_{t+1}=\min(n_{\max},n_t+1),\qquad d_{t+1}=\beta d_t,\ \beta&gt;1,
+]
+with escalation when (n_t=n_{\max}). In other words: optimism in policy, pessimism in side-effect handling.</p>
 <h2 id="three-theory-braid_8">Three-theory braid</h2>
-<ol>
-<li><strong>Schema-typed interfaces.</strong> Function-calling schemas convert natural-language intent into machine-checkable arguments [<a href="../../references.html#ref-13">13</a>].</li>
-<li><strong>Self-supervised tool-use learning.</strong> Toolformer-style training demonstrates that models can internalize tool-selection policies from weak supervision [<a href="../../references.html#ref-12">12</a>].</li>
-<li><strong>Compositional action semantics.</strong> Reason-act trajectories make tool calls first-class state transitions suitable for replay and policy improvement [<a href="../../references.html#ref-11">11</a>].</li>
-</ol>
+<p>Schema-typed interfaces convert language intent into machine-checkable arguments, Toolformer-style learning shows that models can internalize when and how to call APIs from weak supervision, and ReAct-style trajectories turn those calls into explicit reason-act state transitions, so the whole orchestration loop reads like a disciplined control system in which expected utility chooses candidate actions (u_t^\star=\arg\max_u \mathbb{E}[Q]-\lambda_cC-\lambda_rR), Bellman recursion maintains long-horizon consistency (V^\star(\sigma)=\max_u{r+\gamma\mathbb{E}[V^\star]}), and retry/idempotency feedback prevents transient outages from becoming irreversible side effects [<a href="../../references.html#ref-13">13</a>] [<a href="../../references.html#ref-12">12</a>] [<a href="../../references.html#ref-11">11</a>] [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>].</p>
 <h2 id="how-to-study-this-formally_8">How to study this formally</h2>
-<p>Track precondition violation rate, postcondition success, rollback frequency, and utility gain per call. A tool interface is mature when failures are classifiable by contract violation rather than “the model seemed confused.”</p>
+<p>Track schema/precondition violation rate, postcondition success rate, duplicate-side-effect rate, rollback frequency, and utility gain per call under fixed latency budgets. A tool interface is mature when failures are classifiable by contract category, not by vibes.</p>
+<h2 id="translating-the-theory-into-agentic-practice_8">Translating the Theory into Agentic Practice</h2>
+<p>Tool theory teaches that an agent's real action space is not "whatever the model can describe." It is the set of operations the system can legally, safely, and observably execute. Better agents therefore begin tool design with contracts: schemas, preconditions, postconditions, permissions, idempotency, cost, risk, timeout behavior, and rollback semantics. The function call is not a convenience wrapper; it is the drawbridge between language and consequence.</p>
+<p>In practice, every tool should publish a small constitution. What arguments are required? Which caller roles may invoke it? What external systems can it change? What must be true before invocation? What evidence proves success? What errors are retryable? What actions require human approval? The agent policy should choose tools only through this contract, and the runtime should reject malformed or unauthorized calls before they become expensive anecdotes.</p>
+<p>This contract-first view improves planning. A code-editing tool with dry-run, diff, apply, and rollback modes gives the planner reversible steps before commitment. A payment tool with idempotency keys prevents retries from multiplying side effects. A search tool with source metadata lets the agent reason about evidence quality. A deployment tool with staged rollout and health checks turns a dangerous leap into a sequence of guarded transitions.</p>
+<p>The theory is valuable because it turns tool use from theatrical capability into controlled embodiment. The model may propose, but the interface disposes. Better agentic systems are designed so that illegal actions are unrepresentable, risky actions are guarded, failures are classified, and retries are harmless. Then language can reach into the world without dragging the whole world back through the hole.</p>
 <hr />
 <h1 id="retrieval-augmented-tooling">Retrieval-Augmented Tooling</h1>
-<p>RAG is not a monolith; it is a pipeline whose stages can each be formalized, measured, and improved.</p>
-<h2 id="probabilistic-formulation">Probabilistic formulation</h2>
+<p>Retrieval-augmented tooling is not "ask search then hope"; it is a policy for buying evidence when ignorance is expensive.</p>
+<h2 id="probabilistic-retrieval-generation-pipeline">Probabilistic retrieval-generation pipeline</h2>
 <p>For query context (x), retrieved document (d), and answer (y):
 [
 p(y\mid x) = \sum_{d \in \mathcal{D}} p(y\mid x,d)\,p(d\mid x).
 ]
-Operationally, (p(d\mid x)) is retrieval/ranking, while (p(y\mid x,d)) is grounded generation. Agentic retrieval triggers should depend on uncertainty:
+Operationally, (p(d\mid x)) is retrieval/ranking and (p(y\mid x,d)) is grounded generation [<a href="../../references.html#ref-14">14</a>]. Typical retrieval scores include dense similarity
 [
-\texttt{retrieve}_t = \mathbf{1}{H[p(\cdot\mid h_t)] &gt; \tau}.
-]</p>
+s_{\text{dense}}(q,d)=\langle e_q,e_d\rangle
+]
+and lexical ranking such as BM25 [<a href="../../references.html#ref-15">15</a>] [<a href="../../references.html#ref-46">46</a>].</p>
+<p>The control question is when to retrieve. One uncertainty-trigger policy is
+[
+\texttt{retrieve}_t = \mathbf{1}{H[p(\cdot\mid h_t)] &gt; \tau},
+]
+but the economically sharper rule is expected value of information:
+[
+\mathrm{VoI}(q)=\mathbb{E}!\left[\max_a\mathbb{E}[U(a,S)\mid q]\right]-\max_a\mathbb{E}[U(a,S)].
+]
+Retrieve when (\mathrm{VoI}(q)) exceeds retrieval cost.</p>
+<h2 id="retrieval-as-sequential-control">Retrieval as sequential control</h2>
+<p>Let action (a_t\in{\texttt{retrieve},\texttt{skip}}). Then a budget-aware Bellman control law is
+[
+V^\star(h_t)=\max_{a_t}\left{r(h_t,a_t)-\lambda\ell(a_t)+\gamma\,\mathbb{E}[V^\star(h_{t+1})]\right},
+]
+where (\ell) captures latency/token cost [<a href="../../references.html#ref-5">5</a>] [<a href="../../references.html#ref-4">4</a>]. This is the formal version of a practical truth: always retrieving is slow, never retrieving is reckless.</p>
 <h2 id="three-theory-braid_9">Three-theory braid</h2>
-<ol>
-<li><strong>Latent-document generation.</strong> RAG models combine parametric generation with non-parametric memory [<a href="../../references.html#ref-14">14</a>].</li>
-<li><strong>Dense representation retrieval.</strong> DPR-style dual encoders formalize semantic nearest-neighbor access to large corpora [<a href="../../references.html#ref-15">15</a>].</li>
-<li><strong>Classical IR ranking theory.</strong> Probabilistic ranking (e.g., BM25 family) provides robust lexical grounding and interpretable ranking signals [<a href="../../references.html#ref-46">46</a>].</li>
-</ol>
+<p>Latent-document RAG gives the generative factorization (p(y|x)=\sum_d p(y|x,d)p(d|x)), DPR-style dense retrieval gives scalable semantic access via vector similarity, and classical probabilistic ranking gives lexical grounding with interpretable score structure, so the architecture becomes a living braid in which expected utility decides whether evidence acquisition is worth paying for, Bellman recursion propagates that decision through future uncertainty, and uncertainty-trigger feedback prevents both over-retrieval bloat and under-retrieval hallucination [<a href="../../references.html#ref-14">14</a>] [<a href="../../references.html#ref-15">15</a>] [<a href="../../references.html#ref-46">46</a>] [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>].</p>
 <h2 id="how-to-study-this-formally_9">How to study this formally</h2>
-<p>Measure retrieval nDCG/Recall@k, citation faithfulness, and end-task utility under retrieval budget constraints. Compare always-retrieve versus uncertainty-triggered retrieval policies. If retrieval cannot justify its latency with measurable uncertainty reduction, it is ritual, not reasoning.</p>
+<p>Measure Recall@(k)/nDCG, citation faithfulness, contradiction rate, and end-task utility under fixed retrieval budgets. Compare always-retrieve, never-retrieve, and uncertainty/VoI-triggered policies. If retrieval cannot buy measurable uncertainty reduction per unit latency, it is ritual, not reasoning.</p>
+<h2 id="translating-the-theory-into-agentic-practice_9">Translating the Theory into Agentic Practice</h2>
+<p>Retrieval-augmented tooling teaches that evidence acquisition is an action, not a reflex. A better agent decides when to search, where to search, how much to retrieve, how to rank, how to cite, and when the evidence is insufficient. It does not decorate an answer with retrieved fragments after the fact. It lets evidence shape the action itself.</p>
+<p>A practical design separates the retrieval policy from the generation policy. The retrieval policy observes task type, uncertainty, cost, freshness requirements, and source permissions. It may choose local project search, vector memory, web search, database lookup, or no retrieval. The generation policy then consumes a bounded evidence set with provenance and contradiction flags. If retrieved sources disagree, the agent should surface the conflict or seek a higher-authority source rather than blending contradictions into confident prose.</p>
+<p>For tool-using agents, retrieval should often precede irreversible action. A coding agent should inspect relevant symbols before editing. A compliance agent should fetch current policy before advising. A data agent should retrieve schema and sample rows before writing queries. The point is not to retrieve because retrieval is fashionable; the point is to buy the specific information that changes which action is rational.</p>
+<p>The theory pays off by preventing two expensive pathologies. Over-retrieval bloats context, slows execution, and invites distractors into the court. Under-retrieval lets fluent priors masquerade as evidence. Value-of-information control gives the agent a middle way: spend evidence only when it is likely to improve the decision. A retrieval-augmented agent is better not because it has more documents nearby, but because it knows when a document deserves to govern the next move.</p>
 <hr />
 <h1 id="embodiment-sensors-actuators-and-feedback">Embodiment: Sensors, Actuators, and Feedback</h1>
-<p>Embodiment means the world can answer back. Even software-only agents are embodied in systems with latency, saturation, and irreversible side effects.</p>
-<h2 id="state-space-formalization">State-space formalization</h2>
-<p>Let continuous latent state (x_t), control (u_t), and observation (o_t):
+<p>Embodiment means the world answers back. Even software-only agents are embodied in infrastructure with delay, noise, saturation, and permissions that do not negotiate.</p>
+<h2 id="lag-aware-state-space-model">Lag-aware state-space model</h2>
+<p>Let latent state (x_t), control (u_t), and observation (o_t):
 [
-x_{t+1}=f(x_t,u_t)+w_t,\qquad o_t=g(x_t)+v_t.
+x_{t+1}=f(x_t,u_{t-d_u})+w_t,\qquad o_t=g(x_{t-d_o})+v_t,
 ]
-The controller chooses (u_t=\pi(o_{0:t},u_{0:t-1})) to optimize long-run utility under actuator and safety bounds.</p>
-<p>Sensor quality enters through observability; actuator quality enters through controllability and delay.</p>
+where (d_u) and (d_o) are actuation and observation lag. Policy (\pi) chooses (u_t) under bounds such as (|u_t|<em _max="\max">\infty\le u</em>), because commands outside the envelope are not bold; they are invalid.</p>
+<h2 id="estimation-control-backbone">Estimation-control backbone</h2>
+<p>For linearized dynamics, Kalman filtering gives recursive belief updates:
+[
+\hat x_{t|t-1}=A\hat x_{t-1|t-1}+Bu_{t-1},\qquad
+K_t=P_{t|t-1}H^\top(HP_{t|t-1}H^\top+R)^{-1},
+]
+[
+\hat x_{t|t}=\hat x_{t|t-1}+K_t(o_t-H\hat x_{t|t-1}),
+]
+followed by feedback control (u_t=-K\hat x_t) in LQR style [<a href="../../references.html#ref-36">36</a>] [<a href="../../references.html#ref-41">41</a>].</p>
+<p>Long-run behavior is still Bellman-governed:
+[
+V^\star(s)=\max_a\left{R(s,a)+\gamma\sum_{s'}P(s'|s,a)V^\star(s')\right},
+]
+with policy objective (J(\pi)=\mathbb{E}_\pi[\sum_t\gamma^t r_t]) [<a href="../../references.html#ref-3">3</a>] [<a href="../../references.html#ref-4">4</a>] [<a href="../../references.html#ref-5">5</a>].</p>
+<h2 id="api-embodiment-example">API embodiment example</h2>
+<p>Suppose a deployment agent scales workers from delayed queue telemetry. A naive policy reacts to stale data and oscillates; a lag-aware estimator plus bounded feedback policy stabilizes behavior and cuts rollback churn. Same API, different control geometry.</p>
 <h2 id="three-theory-braid_10">Three-theory braid</h2>
-<ol>
-<li><strong>Control-theoretic state estimation.</strong> Kalman-style filtering formalizes noisy sensing and recursive belief updates [<a href="../../references.html#ref-36">36</a>].</li>
-<li><strong>Reinforcement learning dynamics.</strong> MDP/POMDP and return optimization model delayed consequences of action [<a href="../../references.html#ref-3">3</a>] [<a href="../../references.html#ref-4">4</a>].</li>
-<li><strong>System-level environment coupling.</strong> Agent loops embedded in real infrastructures require explicit modeling of latency, rate limits, and non-stationarity [<a href="../../references.html#ref-2">2</a>].</li>
-</ol>
+<p>Control-theoretic estimation supplies the best available state from noisy delayed observations, reinforcement-learning and Bellman structure supply the long-horizon objective that prices delayed consequences, and system-level coupling analysis supplies non-negotiable constraints like latency, rate limits, and actuator saturation, so embodied intelligence appears as one continuous braid of foresight (optimize return over time), responsiveness (update estimates every observation), and resilience (maintain stable bounded feedback (u_t=-K\hat x_t) under disturbance) [<a href="../../references.html#ref-36">36</a>] [<a href="../../references.html#ref-3">3</a>] [<a href="../../references.html#ref-4">4</a>] [<a href="../../references.html#ref-2">2</a>].</p>
 <h2 id="how-to-study-this-formally_10">How to study this formally</h2>
-<p>Quantify sensor noise sensitivity, actuator saturation failures, and closed-loop stability under delays. Evaluate with perturbation tests and feedback-loop stress scenarios. An embodied agent that ignores feedback geometry is not autonomous; it is merely loud.</p>
+<p>Measure delay margin, sensor-noise sensitivity, saturation events, and closed-loop stability under perturbations. Compare with and without lag-aware estimation/control. An embodied agent that ignores feedback geometry is not autonomous; it is merely loud.</p>
+<h2 id="translating-the-theory-into-agentic-practice_10">Translating the Theory into Agentic Practice</h2>
+<p>Embodiment theory reminds us that even a text-only agent has a body: APIs, filesystems, queues, browsers, databases, rate limits, clocks, caches, and humans with finite patience. Better agents model those bodies explicitly. They know that observations can be stale, actions can be delayed, tools can saturate, and the environment can change between plan and execution. The world is not a passive blackboard waiting for the agent's chalk.</p>
+<p>A practical embodied architecture maintains sensor models and actuator models. Sensor models record freshness, noise, authority, and sampling delay: "CI status is ten minutes old," "browser DOM changed after click," "repository search may miss generated code." Actuator models record effect delay, reversibility, rate limits, blast radius, and confirmation signals: "deployment takes five minutes to settle," "email send is irreversible," "file edit is reversible until committed." The policy should use these models before deciding whether to wait, probe, act, or escalate.</p>
+<p>Feedback is the decisive design principle. A deployment agent should not scale, deploy, and declare victory from its own optimism; it should observe health metrics, compare them to expected dynamics, and correct or roll back. A browser agent should verify the page state after each click. A data agent should inspect query results before assuming a transformation worked. Every nontrivial action should have an observation plan, because acting without sensing is just command-shaped superstition.</p>
+<p>The theory's value is that it gives agent builders the vocabulary of delay, noise, saturation, and stability. These are the quiet forces that make demos fail in production. Designing with embodiment in mind yields agents that move cautiously when sensors are stale, act boldly when feedback is strong, and remain bounded when tools misbehave. Autonomy is not the absence of feedback; it is obedience to the right feedback at the right time.</p>
 <hr />
 <h1 id="safety-constraints-and-guardrails">Safety Constraints and Guardrails</h1>
-<p>Safety is not a postscript to capability; it is constrained optimization from first principles.</p>
-<h2 id="constrained-control-formalization">Constrained control formalization</h2>
+<p>Safety is not a postscript to capability; it is optimization with explicit boundaries, encoded before the first tool call is ever allowed.</p>
+<h2 id="constrained-control-formulation">Constrained control formulation</h2>
 <p>Model policy selection as a constrained MDP:
 [
 \max_{\pi}\ J_R(\pi)=\mathbb{E}<em C_j="C_j">\pi!\left[\sum_t\gamma^t r_t\right]
@@ -595,35 +771,72 @@ The Lagrangian form
 \mathcal{L}(\pi,\lambda)=J_R(\pi)-\sum_j\lambda_j\big(J_{C_j}(\pi)-d_j\big)
 ]
 supports dual optimization and transparent trade-off tuning.</p>
+<p>At state-action level, constrained Bellman structure appears as
+[
+Q^\pi_\lambda(s,a)=r(s,a)-\sum_j\lambda_j c_j(s,a)+\gamma\,\mathbb{E}<em>{s'}[V^\pi</em>\lambda(s')],
+]
+which makes "unsafe but high reward" mathematically explicit instead of politically vague.</p>
+<h2 id="runtime-safety-filter">Runtime safety filter</h2>
+<p>Define safe set (\mathcal{C}={x:h(x)\ge0}). Control barrier functions require
+[
+\dot h(x,u)+\alpha(h(x))\ge0
+]
+for class-(\mathcal{K}) function (\alpha), giving forward invariance of (\mathcal{C}) [<a href="../../references.html#ref-52">52</a>]. A practical filter solves
+[
+u^\star=\arg\min_u |u-u_{\text{nom}}|^2
+\quad\text{s.t.}\quad
+\dot h(x,u)+\alpha(h(x))\ge0,
+]
+so nominal autonomy is preserved when safe and corrected when not.</p>
 <h2 id="three-theory-braid_11">Three-theory braid</h2>
-<ol>
-<li><strong>Constrained MDP theory.</strong> Utility-safety trade-offs become explicit and optimizable [<a href="../../references.html#ref-51">51</a>].</li>
-<li><strong>Control barrier functions (CBFs).</strong> Safety can be imposed as forward-invariance constraints (h(x)\ge0) at runtime [<a href="../../references.html#ref-52">52</a>].</li>
-<li><strong>Normative governance frameworks.</strong> Constitutional and risk-management frameworks encode institution-level constraints beyond model internals [<a href="../../references.html#ref-29">29</a>] [<a href="../../references.html#ref-53">53</a>].</li>
-</ol>
+<p>Constrained MDP theory gives the expected-utility compass with explicit harm budgets, control barrier functions give a feedback law that enforces state-space invariants online, and governance frameworks translate organizational risk appetite into operational policy envelopes, so safety becomes a braided architecture of foresight (optimize return while pricing risk), responsiveness (intervene at runtime through CBF-constrained control), and resilience (institutional constraints that persist beyond any single prompt or model version) [<a href="../../references.html#ref-51">51</a>] [<a href="../../references.html#ref-52">52</a>] [<a href="../../references.html#ref-29">29</a>] [<a href="../../references.html#ref-53">53</a>] [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>].</p>
 <h2 id="how-to-study-this-formally_11">How to study this formally</h2>
-<p>Report Pareto fronts of task return versus violation probability, plus time-to-escalation under unsafe trajectories. Layered guardrails should be tested for correlated failure modes, not in isolation. Constraint-aware autonomy is not anti-innovation; it is innovation that survives contact with reality.</p>
+<p>Report Pareto fronts of task return versus violation probability, dual-variable stability, and time-to-escalation under unsafe trajectories. Stress layered guardrails under correlated failures rather than isolated tests. Constraint-aware autonomy is not anti-innovation; it is innovation that survives contact with reality.</p>
+<h2 id="translating-the-theory-into-agentic-practice_11">Translating the Theory into Agentic Practice</h2>
+<p>Safety theory tells us to stop treating guardrails as polite reminders attached to a powerful system after the banquet has already begun. Better agents encode safety as constraints in the policy, filters at runtime, monitors during execution, and audit records after the fact. The system should know which boundaries are soft preferences, which are hard prohibitions, and which require escalation because the machine has reached the edge of its charter.</p>
+<p>A practical safety architecture has layers. Static constraints remove forbidden actions from the action space. Pre-execution filters check schemas, permissions, data sensitivity, and risk class. Runtime monitors watch for drift, unsafe intermediate states, budget exhaustion, and unexpected tool outputs. Post-action checks verify whether the intended safety property actually held. Human escalation is not a defeat; it is a designed transition for states where autonomous policy should not pretend to be sovereign.</p>
+<p>The constrained-control view helps tune trade-offs. Some constraints are inviolable: do not leak secrets, do not execute destructive commands without approval, do not fabricate legal citations. Others are budgeted risks: latency, cost, temporary uncertainty, bounded retries. Lagrange multipliers are the mathematical cousin of operational policy knobs: they decide how expensive a violation should feel to the agent's decision procedure. Hard filters then stand behind those prices with a lock.</p>
+<p>The value of the theory is that safety becomes designable rather than theatrical. A better agent is not the one that says "I will be safe" most solemnly; it is the one whose unsafe actions are blocked, whose risky actions are priced, whose ambiguous actions escalate, and whose incidents generate evidence for repair. Guardrails are not a muzzle on intelligence. They are the walls of the canal that let power become transport instead of flood.</p>
 <hr />
 <h1 id="coordination-protocols-and-communication">Coordination Protocols and Communication</h1>
-<p>In multi-agent systems, communication is not chatter; it is distributed computation under uncertainty and delay.</p>
+<p>In multi-agent systems, communication is not chatter; it is distributed control over partial information, delayed channels, and imperfect trust.</p>
 <h2 id="formal-protocol-model">Formal protocol model</h2>
 <p>Let agents (i\in{1,\dots,n}) have local state (x_i^t) and messages (m_{i\to j}^t).<br />
 A protocol (\Pi) defines transition rules
 [
 (x_i^{t+1}, m_{i\to <em>}^{t+1}) = \Pi_i!\left(x_i^t,{m_{</em>\to i}^t}\right).
 ]
-Correctness criteria include safety (nothing bad happens), liveness (something good eventually happens), and agreement/consistency when required.</p>
+Correctness criteria include safety (nothing bad happens), liveness (something good eventually happens), and agreement when required:
+[
+x_i^T=x_j^T\quad\forall i,j.
+]</p>
+<p>Communication itself has cost. A utility-aware protocol objective can be written
+[
+\max_{\Pi}\ \mathbb{E}[U(\tau)]-\lambda\sum_t |m_t|,
+]
+and, over long horizons, Bellman recursion appears as
+[
+V^\star(s)=\max_a\left{R(s,a)-\lambda C_{\text{comm}}(a)+\gamma\sum_{s'}P(s'|s,a)V^\star(s')\right}.
+]
+This is how "send more messages" becomes an optimization decision instead of a reflex.</p>
+<h2 id="typed-speech-acts-and-role-safety">Typed speech acts and role safety</h2>
+<p>A practical protocol grammar is ({\texttt{propose},\texttt{critique},\texttt{decide},\texttt{commit}}), with role guards controlling who may emit each act. Message observability should be measurable as
+[
+\rho_{\text{log}}=\frac{\text{logged messages}}{\text{sent messages}},
+]
+because unlogged coordination is un-debuggable coordination.</p>
 <h2 id="three-theory-braid_12">Three-theory braid</h2>
-<ol>
-<li><strong>Distributed consensus limits.</strong> Byzantine agreement and impossibility results formalize what reliable coordination can and cannot guarantee [<a href="../../references.html#ref-54">54</a>] [<a href="../../references.html#ref-55">55</a>].</li>
-<li><strong>Coordination theory.</strong> Task dependencies and resource constraints determine which communication structures are efficient [<a href="../../references.html#ref-56">56</a>].</li>
-<li><strong>Role-based MAS architectures.</strong> Agent communication languages and protocol roles improve traceability and conflict handling [<a href="../../references.html#ref-17">17</a>] [<a href="../../references.html#ref-18">18</a>].</li>
-</ol>
+<p>Distributed consensus limits tell us what reliability is mathematically possible under faults and asynchrony, coordination theory tells us which communication structure fits the task/resource dependency graph, and role-based MAS architectures turn those ideas into enforceable protocol semantics, so collective intelligence becomes a braid of foresight (utility-aware protocol planning under message cost), responsiveness (state updates from incoming typed acts), and resilience (agreement/liveness behavior that degrades gracefully under drops, delay, or adversarial nodes) [<a href="../../references.html#ref-54">54</a>] [<a href="../../references.html#ref-55">55</a>] [<a href="../../references.html#ref-56">56</a>] [<a href="../../references.html#ref-17">17</a>] [<a href="../../references.html#ref-18">18</a>] [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>].</p>
 <h2 id="how-to-study-this-formally_12">How to study this formally</h2>
-<p>Evaluate message complexity, consensus latency, deadlock frequency, and degradation under dropped/incorrect messages. Encode schemas and role permissions as enforceable protocol rules. If coordination depends on everyone being “reasonable,” it is not a protocol; it is a prayer.</p>
+<p>Evaluate message complexity, consensus latency, deadlock rate, role-violation rate, and degradation under dropped or corrupted messages. If coordination depends on everyone being "reasonable," it is not a protocol; it is a prayer.</p>
+<h2 id="translating-the-theory-into-agentic-practice_12">Translating the Theory into Agentic Practice</h2>
+<p>Coordination theory teaches that a multi-agent system is not improved by adding more voices unless those voices are governed by a protocol. Better agent collectives define roles, speech acts, message schemas, turn-taking rules, commitment semantics, and failure behavior. "Researcher, critic, and planner discuss" is a sketch. "Researcher may propose evidence with citations, critic may challenge assumptions, planner may commit only after quorum or timeout" is the beginning of a system.</p>
+<p>In practice, design communication as typed control flow. Messages should say whether they are proposals, observations, critiques, votes, decisions, commitments, or handoffs. Each type should have required fields and authorized senders. Commitments should be explicit: who owns the next action, what condition completes it, what deadline applies, and what happens on failure. Logs should be complete enough that a later auditor can reconstruct why the collective converged, deadlocked, or stampeded.</p>
+<p>The theory also helps decide when agents should communicate at all. Communication has cost and can introduce noise, delay, and strategic contamination. A specialist should speak when its message can change another agent's action or improve shared state; otherwise silence is often the nobler protocol. For ensemble workflows, this means routing only relevant subproblems to specialists and requiring compact, decision-bearing outputs rather than free-form councils of infinite minutes.</p>
+<p>The practical value is reliability under partial failure. Typed protocols let the system detect missing votes, contradictory commitments, role violations, and stalled dependencies. Consensus and liveness concepts become operational dashboards rather than textbook relics. A better multi-agent system is not a louder room; it is a small institution whose members know what kind of sentence they are allowed to utter, when it binds the group, and how the group recovers when one chair is empty.</p>
 <hr />
 <h1 id="negotiation-and-mechanism-design">Negotiation and Mechanism Design</h1>
-<p>Negotiation is what happens when autonomy meets scarcity. Mechanism design is how we stop that meeting from turning into chaos.</p>
+<p>Negotiation is what happens when autonomy meets scarcity. Mechanism design is how we keep that meeting from collapsing into strategic theater.</p>
 <h2 id="formal-mechanism-frame">Formal mechanism frame</h2>
 <p>A mechanism is
 [
@@ -637,14 +850,30 @@ u_i!\big(g(\hat\theta_i,\hat\theta_{-i}),p_i(\hat\theta_i,\hat\theta_{-i});\thet
 \ge
 u_i!\big(g(\theta'<em -i="-i">i,\hat\theta</em>),p_i(\theta'<em -i="-i">i,\hat\theta</em>);\theta_i\big).
 ]</p>
+<p>Efficient allocation seeks
+[
+g(\hat\theta)\in\arg\max_{a\in A}\sum_i v_i(a,\hat\theta_i).
+]
+For VCG-style mechanisms, one canonical transfer form is
+[
+p_i(\hat\theta)=h_i(\hat\theta_{-i})-\sum_{j\ne i}v_j(g(\hat\theta),\hat\theta_j),
+]
+which charges each participant the externality imposed on others.</p>
+<h2 id="repeated-negotiation-as-control">Repeated negotiation as control</h2>
+<p>In repeated settings, mechanism choice itself is sequential control:
+[
+V^\star(s)=\max_m\left{R(s,m)-\lambda\,\mathrm{manip_risk}(m)+\gamma\,\mathbb{E}[V^\star(s')]\right}.
+]
+That is the formal version of institutional learning: update the rules when strategic behavior exploits the old ones.</p>
 <h2 id="three-theory-braid_13">Three-theory braid</h2>
-<ol>
-<li><strong>VCG-style efficient mechanisms.</strong> Transfer rules can align local truthfulness with global welfare [<a href="../../references.html#ref-57">57</a>] [<a href="../../references.html#ref-58">58</a>] [<a href="../../references.html#ref-59">59</a>].</li>
-<li><strong>Social-choice limits.</strong> Gibbard-Satterthwaite impossibility reminds us that manipulation-free voting is highly constrained [<a href="../../references.html#ref-60">60</a>] [<a href="../../references.html#ref-61">61</a>].</li>
-<li><strong>Contract-net negotiation.</strong> Task delegation via bidding provides practical distributed allocation under heterogeneous capabilities [<a href="../../references.html#ref-62">62</a>].</li>
-</ol>
+<p>VCG-style transfer design aligns local reporting incentives with system welfare, social-choice impossibility results tell us where manipulation-proofness is fundamentally constrained, and contract-net style bidding gives an operationally practical delegation protocol, so strategic multi-agent intelligence becomes a braid of foresight (design incentives for truthful revelation), responsiveness (adapt mechanism policy as strategic behavior shifts), and resilience (retain efficiency and fairness under misreport pressure rather than only under cooperative fantasy) [<a href="../../references.html#ref-57">57</a>] [<a href="../../references.html#ref-58">58</a>] [<a href="../../references.html#ref-59">59</a>] [<a href="../../references.html#ref-60">60</a>] [<a href="../../references.html#ref-61">61</a>] [<a href="../../references.html#ref-62">62</a>] [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>].</p>
 <h2 id="how-to-study-this-formally_13">How to study this formally</h2>
-<p>Measure allocative efficiency, truthfulness regret, and fairness under strategic reporting. Simulate adversarial type misreports and collusion. A negotiation protocol without incentive analysis is merely an argument with extra JSON.</p>
+<p>Measure allocative efficiency, truthfulness regret, fairness, and collusion sensitivity under strategic misreports. A negotiation protocol without incentive analysis is merely an argument with extra JSON.</p>
+<h2 id="translating-the-theory-into-agentic-practice_13">Translating the Theory into Agentic Practice</h2>
+<p>Mechanism design teaches that agent collectives must be designed for incentives, not merely for intentions. If agents, tools, departments, vendors, or users have different objectives, the protocol must assume strategic behavior can appear. Better systems ask: what information does each participant possess, what outcome do they prefer, what can they misreport, and what rule makes honest or useful behavior the best available strategy?</p>
+<p>In implementation, this turns negotiation into structured interaction. Agents should declare preferences, constraints, confidence, and private costs in typed fields where possible. Allocation rules should be explicit: which worker gets a task, which model receives a query, which customer request is prioritized, which proposed patch is accepted. Payment may be literal money, but in software it is often budget, priority, reputation, access, or future routing weight. Transfers are any mechanism by which the system rewards or penalizes behavior.</p>
+<p>For agentic workflows, this is especially useful in delegation. If every specialist is rewarded for saying "I can do it," routing collapses into optimism theater. If specialists are scored by calibrated estimates, task completion, latency, and downstream correction cost, the system can allocate work to agents that reveal their competence honestly. If reviewers are rewarded only for finding flaws, they may become ornamental saboteurs; if rewarded for improving decision quality, critique becomes a public good.</p>
+<p>The theory's value is institutional. It gives builders a way to design agent societies whose local incentives support global performance. Negotiation protocols become less about persuasive prose and more about incentive-compatible information flow. A better agentic system does not beg its components to be virtuous. It arranges the game so that useful truth has somewhere to go, manipulation has a measurable cost, and scarce resources are allocated by rules sturdier than whoever sounded most confident in the last message.</p>
 <hr />
 <h1 id="equilibria-self-play-and-learning-dynamics">Equilibria, Self-Play, and Learning Dynamics</h1>
 <p>Equilibrium is the grammar of strategic stability: who can deviate, who gains, and when dynamics settle or cycle.</p>
@@ -654,17 +883,34 @@ u_i!\big(g(\theta'<em -i="-i">i,\hat\theta</em>),p_i(\theta'<em -i="-i">i,\hat\t
 u_i(\sigma_i^{</em>},\sigma_{-i}^{<em>}) \ge u_i(\sigma_i,\sigma_{-i}^{</em>})\quad \forall i,\forall \sigma_i.
 ]
 For sequential interaction, Markov games extend MDPs with multi-agent action tuples and payoff vectors.</p>
+<p>A useful robustness metric is exploitability:
+[
+\mathcal{E}(\sigma)=\sum_i\left(\max_{\sigma_i'}u_i(\sigma_i',\sigma_{-i})-u_i(\sigma)\right),
+]
+which is zero only at exact equilibrium in two-player zero-sum settings.</p>
+<p>Repeated adaptation is governed by regret:
+[
+R_T^i=\max_a\sum_{t=1}^T u_i(a,a_{-i}^t)-\sum_{t=1}^T u_i(a_i^t,a_{-i}^t),
+]
+and no-regret learning drives empirical play toward correlated equilibrium sets.</p>
+<h2 id="sequential-strategic-control">Sequential strategic control</h2>
+<p>For Markov games, value recursion for player (i) under profile (\pi) is
+[
+V_i^\pi(s)=\mathbb{E}<em s_="s'">{a\sim \pi}!\left[r_i(s,a)+\gamma\sum</em>P(s'|s,a)V_i^\pi(s')\right],
+]
+with equilibrium planning replacing unilateral maximization by strategic best-response consistency [<a href="../../references.html#ref-20">20</a>] [<a href="../../references.html#ref-5">5</a>].</p>
 <h2 id="three-theory-braid_14">Three-theory braid</h2>
-<ol>
-<li><strong>Nash equilibrium analysis.</strong> Fixed points characterize unilateral stability and expose incentive misalignment [<a href="../../references.html#ref-19">19</a>].</li>
-<li><strong>Self-play in Markov games.</strong> Repeated interaction drives policy co-adaptation and emergent conventions [<a href="../../references.html#ref-20">20</a>] [<a href="../../references.html#ref-21">21</a>].</li>
-<li><strong>Learning dynamics.</strong> Fictitious play and no-regret dynamics explain convergence to correlated/coarse-correlated equilibria in repeated games [<a href="../../references.html#ref-65">65</a>] [<a href="../../references.html#ref-64">64</a>] [<a href="../../references.html#ref-63">63</a>].</li>
-</ol>
+<p>Nash equilibrium analysis gives fixed-point notions of unilateral stability, self-play in Markov games gives the adaptive process by which policies co-evolve under repeated interaction, and learning-dynamics tools like fictitious play and no-regret updates characterize when trajectories converge, cycle, or fragment, so multi-agent intelligence appears as a braid of foresight (optimize expected utility against strategic responses), responsiveness (update policies from observed opponent behavior), and resilience (maintain low exploitability and bounded regret under perturbations) [<a href="../../references.html#ref-19">19</a>] [<a href="../../references.html#ref-20">20</a>] [<a href="../../references.html#ref-21">21</a>] [<a href="../../references.html#ref-63">63</a>] [<a href="../../references.html#ref-64">64</a>] [<a href="../../references.html#ref-65">65</a>] [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>].</p>
 <h2 id="how-to-study-this-formally_14">How to study this formally</h2>
-<p>Track exploitability, diversity collapse, and equilibrium selection under perturbation. Evaluate whether local agent improvements increase system-level welfare or merely shift failure to other roles. If strategic dynamics are ignored, “multi-agent” is just parallel monologue.</p>
+<p>Track exploitability, regret curves, diversity collapse, and equilibrium selection stability under perturbation. If strategic dynamics are ignored, "multi-agent" is just parallel monologue.</p>
+<h2 id="translating-the-theory-into-agentic-practice_14">Translating the Theory into Agentic Practice</h2>
+<p>Equilibrium theory teaches that multi-agent behavior should be judged not only by what happens in one run, but by what incentives remain after everyone has seen the protocol. Better systems ask whether any participant can improve by deviating, whether repeated learning amplifies a pathology, and whether the group settles into cooperation, cycling, collusion, or brittle uniformity. The first successful demo is merely the opening move in a longer game.</p>
+<p>In practice, self-play and regret analysis become test harnesses for agent societies. Run agents against copies, variants, adversaries, lazy collaborators, overconfident specialists, and strategically silent reviewers. Measure whether the system learns robust conventions or merely exploits the quirks of its training partners. A negotiation agent that wins against a polite opponent may be helpless against a manipulative one. A debate system that converges with honest critics may collapse when critics optimize for attention rather than truth.</p>
+<p>Design patterns follow naturally. Keep populations diverse enough to avoid monoculture. Track exploitability: how easy is it for a new strategy to take advantage of the current protocol? Track regret: would an agent have done better by consistently choosing a different role, message, or action? Add perturbations to reveal whether equilibrium is stable or just lucky. When dynamics cycle, add commitment rules, arbitration, memory, or mechanism changes rather than hoping the next round becomes wise by fatigue.</p>
+<p>The practical value of the theory is strategic robustness. It teaches builders to design agentic systems as evolving games, not static diagrams. The aim is not perfect harmony, which is often just hidden suppression of useful disagreement. The aim is low exploitability, bounded regret, recoverable diversity, and stable cooperation under pressure. A multi-agent system becomes trustworthy when its good behavior is an equilibrium property, not a mood.</p>
 <hr />
 <h1 id="neural-ensembles-and-orchestration">Neural Ensembles and Orchestration</h1>
-<p>An ensemble is a parliament of imperfect predictors. Its power comes from structured disagreement, not uniform certainty.</p>
+<p>An ensemble is a parliament of imperfect predictors. Its power comes from structured disagreement, not synchronized overconfidence.</p>
 <h2 id="formal-aggregation-model">Formal aggregation model</h2>
 <p>Given predictors (f_k(x)), ensemble output is
 [
@@ -673,14 +919,26 @@ For sequential interaction, Markov games extend MDPs with multi-agent action tup
 For voting systems, (\hat{y}=\operatorname{mode}{f_k(x)}).<br />
 For MoE, router (g(x)) selects sparse experts (E(x)\subseteq{1,\dots,K}).</p>
 <p>Generalization gain is tied to error covariance: diverse-but-competent experts beat correlated experts.</p>
+<p>Confidence-weighted routing can use softmax gates
+[
+w_k(x)=\frac{\exp(g_k(x)/\tau)}{\sum_j \exp(g_j(x)/\tau)},
+]
+or top-(k) sparse routing (E(x)=\operatorname{TopK}(g(x),k)) for compute control [<a href="../../references.html#ref-25">25</a>] [<a href="../../references.html#ref-69">69</a>].</p>
+<h2 id="orchestration-as-budgeted-control">Orchestration as budgeted control</h2>
+<p>Specialist dispatch is a sequential decision problem:
+[
+V^\star(s)=\max_a\left{R(s,a)-\lambda_c C(a)-\lambda_l L(a)+\gamma\,\mathbb{E}[V^\star(s')]\right},
+]
+where (a) chooses which experts/agents to consult, (C) is monetary compute cost, and (L) is latency. This prevents "call everyone" from masquerading as sophistication.</p>
 <h2 id="three-theory-braid_15">Three-theory braid</h2>
-<ol>
-<li><strong>Deep ensembles and uncertainty.</strong> Independent predictors improve calibration and robustness under shift [<a href="../../references.html#ref-26">26</a>] [<a href="../../references.html#ref-67">67</a>].</li>
-<li><strong>Mixture-of-experts routing.</strong> Sparse specialization with learned gating yields scalable conditional computation [<a href="../../references.html#ref-25">25</a>] [<a href="../../references.html#ref-68">68</a>] [<a href="../../references.html#ref-69">69</a>].</li>
-<li><strong>Orchestrated societies of specialists.</strong> Multi-agent compositions operationalize ensemble principles at workflow scale [<a href="../../references.html#ref-23">23</a>] [<a href="../../references.html#ref-27">27</a>].</li>
-</ol>
+<p>Deep-ensemble theory gives uncertainty and calibration benefits through independent predictors, mixture-of-experts routing gives conditional computation that scales by activating only relevant specialists, and orchestrated multi-agent societies operationalize those principles at workflow level, so collective prediction becomes a braid of foresight (expected-utility routing under cost/latency budgets), responsiveness (input-dependent gating and reweighting), and resilience (fault tolerance from diversity with reduced correlated error) [<a href="../../references.html#ref-26">26</a>] [<a href="../../references.html#ref-67">67</a>] [<a href="../../references.html#ref-25">25</a>] [<a href="../../references.html#ref-68">68</a>] [<a href="../../references.html#ref-69">69</a>] [<a href="../../references.html#ref-23">23</a>] [<a href="../../references.html#ref-27">27</a>] [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>].</p>
 <h2 id="how-to-study-this-formally_15">How to study this formally</h2>
-<p>Measure ensemble gain versus best single expert, calibration under OOD inputs, and routing entropy (to detect expert collapse). The objective is not maximal committee size; it is minimal correlated error for a fixed budget.</p>
+<p>Measure ensemble lift over best single expert, calibration under shift, routing entropy (collapse detection), and cost-latency-normalized utility. The objective is not maximal committee size; it is minimal correlated error for a fixed budget.</p>
+<h2 id="translating-the-theory-into-agentic-practice_15">Translating the Theory into Agentic Practice</h2>
+<p>Ensemble theory teaches that better agentic systems often come from organized plurality rather than a single magnificent generalist. The practical question is not "how many agents can we call?" but "which independent competencies reduce the error we actually care about?" A useful ensemble combines diversity, calibration, routing, aggregation, and budget control. Without those, a committee of agents may simply agree loudly on the same mistake.</p>
+<p>A practical orchestration layer should maintain expert profiles: domain strengths, historical accuracy, calibration, latency, cost, failure modes, and correlation with other experts. The router chooses specialists based on task features and uncertainty. The aggregator combines outputs by confidence, evidence, role, and past reliability. The monitor watches for collapse, such as one expert always dominating, all experts sharing the same bad source, or critics converging into ceremonial agreement.</p>
+<p>This applies beyond model ensembles. A coding workflow might route architecture questions to a design reviewer, risky edits to a safety reviewer, failing tests to a debugger, and final synthesis to an integrator. A research workflow might combine retrieval, statistical critique, domain expertise, and writing. A customer-support workflow might combine policy lookup, empathy framing, fraud detection, and escalation assessment. In each case, orchestration is a budgeted control problem: consult enough specialists to reduce correlated error, but not so many that latency and contradiction consume the mission.</p>
+<p>The theory's value is disciplined collectivity. It gives us a way to turn disagreement into information, specialization into leverage, and redundancy into fault tolerance. Better agent systems are not merely bigger councils. They are routed ensembles whose diversity is measured, whose costs are priced, whose votes are calibrated, and whose final decisions are better than the most charismatic member acting alone.</p>
 <hr />
 <h1 id="references">References</h1>
 <ol>

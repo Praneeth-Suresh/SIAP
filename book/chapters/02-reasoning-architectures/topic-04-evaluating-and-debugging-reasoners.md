@@ -47,3 +47,13 @@ Proper scoring rules discipline what the model says it knows, causal trace diagn
 ## How to study this formally
 
 Instrument every loop step, score confidence and outcomes jointly, replay with controlled interventions, and report confidence-utility frontiers rather than single accuracy points. A reasoning stack graduates from demo to system only when failures are reproducible, attributable, and reducible.
+
+## Translating the Theory into Agentic Practice
+
+Evaluation theory tells us to stop treating the final answer as the whole creature. An agent is a trajectory generator: it observes, reasons, retrieves, calls tools, edits state, spends budget, and sometimes leaves footprints in external systems. Better evaluation therefore scores the path as well as the destination. The agent may answer correctly by using forbidden evidence, calling an unnecessary expensive tool, or taking an unsafe shortcut. Such victories should be recorded as warnings, not medals.
+
+A practical evaluation harness should log each step with state summary, action, tool arguments, evidence, confidence, cost, constraint checks, and outcome. Unit tests can verify local contracts: schema validity, permission behavior, refusal policy, retrieval filters. Scenario tests can verify full trajectories under controlled perturbations. Regression suites should include previous failures, adversarial distractors, stale memories, flaky tools, and ambiguous user requests. The harness should make failures reproducible enough that repair is engineering, not exorcism.
+
+Debugging then becomes causal. If a hallucinated answer appears, intervene on retrieval and rerun. If a bad edit lands, intervene on the planner's state abstraction, then on the value scorer, then on the safety filter. If confidence is miscalibrated, test whether the model is overconfident everywhere or only after particular tools or memory types. Influence and trace analysis help prioritize repairs that remove causes rather than polish symptoms.
+
+The theory is valuable because it defines what maturity looks like. A better agent is not merely more accurate; it is calibrated, auditable, resistant to familiar failures, and cheaper to debug after unfamiliar ones. Evaluation becomes the agent's laboratory constitution: every claim must be measured, every failure must have a trace, and every improvement must survive old adversaries returning in new forms.

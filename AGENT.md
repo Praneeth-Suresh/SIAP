@@ -1,6 +1,6 @@
 # AGENT.md
 
-This file defines the durable principles and operating instructions for future agent sessions in this repository.
+This file defines the durable principles and operating instructions for future agent sessions in this repository. Read README.md first to understand what this repository is about.
 
 ## Project voice and pedagogical stance (non-negotiable)
 

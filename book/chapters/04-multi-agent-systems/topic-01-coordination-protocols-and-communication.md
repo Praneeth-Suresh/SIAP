@@ -39,3 +39,13 @@ Distributed consensus limits tell us what reliability is mathematically possible
 ## How to study this formally
 
 Evaluate message complexity, consensus latency, deadlock rate, role-violation rate, and degradation under dropped or corrupted messages. If coordination depends on everyone being "reasonable," it is not a protocol; it is a prayer.
+
+## Translating the Theory into Agentic Practice
+
+Coordination theory teaches that a multi-agent system is not improved by adding more voices unless those voices are governed by a protocol. Better agent collectives define roles, speech acts, message schemas, turn-taking rules, commitment semantics, and failure behavior. "Researcher, critic, and planner discuss" is a sketch. "Researcher may propose evidence with citations, critic may challenge assumptions, planner may commit only after quorum or timeout" is the beginning of a system.
+
+In practice, design communication as typed control flow. Messages should say whether they are proposals, observations, critiques, votes, decisions, commitments, or handoffs. Each type should have required fields and authorized senders. Commitments should be explicit: who owns the next action, what condition completes it, what deadline applies, and what happens on failure. Logs should be complete enough that a later auditor can reconstruct why the collective converged, deadlocked, or stampeded.
+
+The theory also helps decide when agents should communicate at all. Communication has cost and can introduce noise, delay, and strategic contamination. A specialist should speak when its message can change another agent's action or improve shared state; otherwise silence is often the nobler protocol. For ensemble workflows, this means routing only relevant subproblems to specialists and requiring compact, decision-bearing outputs rather than free-form councils of infinite minutes.
+
+The practical value is reliability under partial failure. Typed protocols let the system detect missing votes, contradictory commitments, role violations, and stalled dependencies. Consensus and liveness concepts become operational dashboards rather than textbook relics. A better multi-agent system is not a louder room; it is a small institution whose members know what kind of sentence they are allowed to utter, when it binds the group, and how the group recovers when one chair is empty.

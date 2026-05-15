@@ -75,3 +75,13 @@ State abstraction tells us how to compress without lying to control, bisimulatio
 ## How to study this formally
 
 Benchmark abstractions by (i) value loss \(\Delta_V=\|V^{*}-\tilde V^{*}\circ\phi\|_\infty\), (ii) intervention fidelity gaps on counterfactual test sets (compare \(P(Y\mid \mathrm{do}(X=x))\) predictions to observed outcomes), and (iii) robustness under distribution shift when retrieval budgets are constrained. Then run an ablation where you increase raw memory exposure while holding task and compute fixed; if extra memory hurts return, your agent is not under-informed—it is over-narrated.
+
+## Translating the Theory into Agentic Practice
+
+World models tell us what the agent thinks it is acting upon; state abstractions decide how much of that world is allowed into the control room. In practice, this means every agent needs a deliberately shaped decision state rather than a heroic transcript dump. For a coding agent, the useful state may include the failing behavior, touched files, dependency graph hints, test status, active constraints, and unresolved hypotheses. It does not need every line of every conversation unless those lines alter the next action.
+
+The design pattern is to maintain three layers. First, keep raw logs for audit and recovery. Second, build a compact decision state for planning. Third, maintain a causal or mechanistic model where interventions matter: "editing parser.py changes AST construction," "raising worker count affects queue latency after a delay," "retrieving an old policy document may contaminate answer grounding." The agent should plan on the compact state, retrieve from the archive only when value of information justifies it, and update the causal model when interventions produce surprising results.
+
+Abstraction quality should be tested by action preservation. If two states map to the same \(z\), the agent should be able to take the same action without material loss. If "user is annoyed" and "user is legally blocked" collapse into the same sentiment feature, the abstraction is not elegant; it is dangerous. If "test failed because dependency missing" and "test failed because behavior regressed" collapse into "tests red," the coding agent will flail with admirable consistency.
+
+Learning this theory therefore improves agents by disciplining memory, context, and planning. It tells us to compress around future decisions, not around aesthetic summaries; to preserve causal distinctions, not trivia; and to measure abstraction by downstream value loss. A good state representation admits only the variables necessary for judgment. Everything else may remain in the archive, ready to be summoned when the next decision actually needs it.

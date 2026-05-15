@@ -87,3 +87,13 @@ Dynamic programming gives the grammar of optimality through Bellman structure, w
 ## How to study this formally
 
 Evaluate layered policies with ablations: proposer-only, proposer+adjudicator, and full proposer+adjudicator+oversight. Report constrained return, violation rate, closed-loop stability indicators, and calibration of risk/confidence heads under matched latency budgets. If the “smartest” policy wins only when constraints are ignored, you have not built control—you have built a very articulate gamble.
+
+## Translating the Theory into Agentic Practice
+
+Policy theory teaches that an agent should not be a single eager mouth attached to a tool belt. It should be a control system with distinct responsibilities: propose actions, estimate value, estimate risk, enforce constraints, execute, observe, and revise. In a serious agent, the language model may be an excellent proposer, but the policy is the larger institution that decides which proposal may become an event in the world.
+
+A practical architecture follows the proposer-adjudicator-oversight pattern. The proposer generates several plausible next actions or plans. The adjudicator scores them by expected utility, evidence quality, cost, and reversibility. The oversight layer blocks actions that violate hard constraints, routes uncertain cases to humans, or substitutes conservative fallbacks. The executor then performs the chosen action and reports observations back into the state. This separation lets creativity remain abundant while authority remains accountable.
+
+Value functions also prevent a common agent failure: optimizing the appearance of progress. A verbose reasoning step, a broad retrieval, or a sweeping refactor may feel productive while reducing expected return. The policy should ask: does this action improve the probability of task success enough to justify its cost and risk? For code agents, that means valuing small verified patches over majestic untested rewrites when the deadline is near. For research agents, it means stopping retrieval when marginal evidence no longer changes the answer.
+
+The control lens completes the lesson. A good agent does not choose once and vanish into destiny; it acts, measures, corrects, and sometimes retreats. Budgets, safety filters, fallback modes, and stability checks are not ornaments attached to intelligence after the parade. They are the machinery that turns intelligence into dependable behavior. The theory of policies and value thus gives us the grammar for designing agents whose cleverness is governed, whose risks are priced, and whose actions remain corrigible after the first plan meets the first inconvenient fact.

@@ -39,3 +39,13 @@ Control-theoretic estimation supplies the best available state from noisy delaye
 ## How to study this formally
 
 Measure delay margin, sensor-noise sensitivity, saturation events, and closed-loop stability under perturbations. Compare with and without lag-aware estimation/control. An embodied agent that ignores feedback geometry is not autonomous; it is merely loud.
+
+## Translating the Theory into Agentic Practice
+
+Embodiment theory reminds us that even a text-only agent has a body: APIs, filesystems, queues, browsers, databases, rate limits, clocks, caches, and humans with finite patience. Better agents model those bodies explicitly. They know that observations can be stale, actions can be delayed, tools can saturate, and the environment can change between plan and execution. The world is not a passive blackboard waiting for the agent's chalk.
+
+A practical embodied architecture maintains sensor models and actuator models. Sensor models record freshness, noise, authority, and sampling delay: "CI status is ten minutes old," "browser DOM changed after click," "repository search may miss generated code." Actuator models record effect delay, reversibility, rate limits, blast radius, and confirmation signals: "deployment takes five minutes to settle," "email send is irreversible," "file edit is reversible until committed." The policy should use these models before deciding whether to wait, probe, act, or escalate.
+
+Feedback is the decisive design principle. A deployment agent should not scale, deploy, and declare victory from its own optimism; it should observe health metrics, compare them to expected dynamics, and correct or roll back. A browser agent should verify the page state after each click. A data agent should inspect query results before assuming a transformation worked. Every nontrivial action should have an observation plan, because acting without sensing is just command-shaped superstition.
+
+The theory's value is that it gives agent builders the vocabulary of delay, noise, saturation, and stability. These are the quiet forces that make demos fail in production. Designing with embodiment in mind yields agents that move cautiously when sensors are stale, act boldly when feedback is strong, and remain bounded when tools misbehave. Autonomy is not the absence of feedback; it is obedience to the right feedback at the right time.

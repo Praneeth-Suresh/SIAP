@@ -52,3 +52,13 @@ Cognitive multi-store theory gives architectural separation (what kind of memory
 ## How to study this formally
 
 Evaluate retrieval precision@\(k\), latency, grounded answer faithfulness, and regret from eviction decisions under fixed token budgets. Stress-test with adversarial distractors and contamination injections, then verify whether policy-level edits (not prompt cosmetics) reduce failure recurrence [[16](../../references.md#ref-16)]. If memory policy is not measurable, "long context" is often just expensive amnesia.
+
+## Translating the Theory into Agentic Practice
+
+Memory theory teaches that better agents are not built by pouring the past into the context window until the window groans. They are built by deciding what kind of past each future decision deserves. Working memory should hold the current control state. Episodic memory should preserve concrete events and traces. Semantic memory should store distilled patterns, policies, and domain facts. The agent's memory controller decides which store to write, query, compress, or evict.
+
+A practical agent should therefore expose memory operations as first-class actions. `write` stores a new observation with provenance. `compress` turns bulky traces into decision-relevant summaries while retaining links to raw evidence. `retrieve` is triggered by uncertainty, task phase, or value of information. `evict` removes stale, duplicated, or harmful context from the active state. This is not clerical tidiness; it is how the agent prevents irrelevant history from becoming an unelected adviser.
+
+Retrieval should be evaluated at the decision boundary, not merely at the document boundary. The question is not "did we retrieve something similar?" but "did the retrieved evidence change the action ranking in the right direction?" For a legal research agent, the right case is the one that changes the answer safely. For a code agent, the right file is the one that localizes the bug or rules out a tempting but false edit. For a personal assistant, the right memory is current, permissioned, and relevant to the user's actual intent.
+
+The practical value of the theory is a memory economy. It gives us policies for spending context, metrics for retrieval quality, and defenses against contamination. A memory-rich agent without retrieval control is a library after an earthquake. A memory-governed agent is closer to a scholar: it knows what to keep on the desk, what to leave in the stacks, and when a dusty footnote is worth summoning into daylight.

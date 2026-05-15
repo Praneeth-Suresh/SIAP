@@ -5,7 +5,7 @@
 ![Deploy](https://img.shields.io/badge/deploy-GitHub%20Pages-24292f?logo=github)
 ![Citations](https://img.shields.io/badge/citations-clickable%20%5Bn%5D-c97a00)
 
-This repository is a workshop for a somewhat audacious goal: to do for agentic systems what classic CS texts did for programming itself. We are not collecting clever prompts; we are constructing a theory-backed craft of orchestration.
+This repository is a scratchpad for a somewhat audacious goal: to do for agentic systems what classic CS texts did for programming itself. We are not collecting clever prompts; we are constructing a theory-backed craft of orchestration.
 
 ## Project goals
 
@@ -13,7 +13,7 @@ This repository is a workshop for a somewhat audacious goal: to do for agentic s
 2. Walk readers through constructing **interpreters for reasoning loops, planners, and tool-using agents**, so architecture is learned by building.
 3. Present a unifying conceptual frame for **autonomy, memory, and collaboration** rather than treating them as unrelated hacks.
 4. Balance formal foundations (decision theory, reinforcement learning, symbolic methods, game theory) with practical systems work (LLM APIs, retrieval, orchestration runtimes).
-5. Maintain a voice that is explanatory, witty, and slightly grandiose—because big ideas deserve a bit of theatrical lighting.
+5. Maintain a voice that is explanatory, witty, and slightly grandiose because big ideas deserve theatrical lighting.
 
 ## Project layout
 

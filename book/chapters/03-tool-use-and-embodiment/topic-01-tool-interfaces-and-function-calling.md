@@ -41,3 +41,13 @@ Schema-typed interfaces convert language intent into machine-checkable arguments
 ## How to study this formally
 
 Track schema/precondition violation rate, postcondition success rate, duplicate-side-effect rate, rollback frequency, and utility gain per call under fixed latency budgets. A tool interface is mature when failures are classifiable by contract category, not by vibes.
+
+## Translating the Theory into Agentic Practice
+
+Tool theory teaches that an agent's real action space is not "whatever the model can describe." It is the set of operations the system can legally, safely, and observably execute. Better agents therefore begin tool design with contracts: schemas, preconditions, postconditions, permissions, idempotency, cost, risk, timeout behavior, and rollback semantics. The function call is not a convenience wrapper; it is the drawbridge between language and consequence.
+
+In practice, every tool should publish a small constitution. What arguments are required? Which caller roles may invoke it? What external systems can it change? What must be true before invocation? What evidence proves success? What errors are retryable? What actions require human approval? The agent policy should choose tools only through this contract, and the runtime should reject malformed or unauthorized calls before they become expensive anecdotes.
+
+This contract-first view improves planning. A code-editing tool with dry-run, diff, apply, and rollback modes gives the planner reversible steps before commitment. A payment tool with idempotency keys prevents retries from multiplying side effects. A search tool with source metadata lets the agent reason about evidence quality. A deployment tool with staged rollout and health checks turns a dangerous leap into a sequence of guarded transitions.
+
+The theory is valuable because it turns tool use from theatrical capability into controlled embodiment. The model may propose, but the interface disposes. Better agentic systems are designed so that illegal actions are unrepresentable, risky actions are guarded, failures are classified, and retries are harmless. Then language can reach into the world without dragging the whole world back through the hole.

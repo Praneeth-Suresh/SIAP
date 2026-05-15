@@ -46,3 +46,13 @@ Take a real prompt you use (for example, “Refactor this module safely and quic
 ## How to study this formally
 
 Build small benchmark tasks where \(R\) and \(C\) are explicit, perturb observations and transition assumptions, and compare policies by constrained return, regret, and violation rate. If a system cannot state its objective and constraints mathematically, it may still be impressive—but it has not yet earned the full title of agent.
+
+## Translating the Theory into Agentic Practice
+
+The practical gift of this topic is a design discipline: before building a clever loop, write the agent's charter. A production agent should begin with an explicit goal specification, an environment boundary, an action vocabulary, constraint budgets, and termination rules. For a coding agent, this means distinguishing "produce a patch" from "produce a patch that passes named tests, preserves public contracts, avoids unsafe files, fits within a time budget, and escalates when evidence is insufficient." The first sentence is a wish. The second is an architecture.
+
+In implementation terms, treat \(R\), \(C\), and \(\mathcal{A}\) as configuration objects, not as folklore trapped in a prompt. The action registry should say which operations exist, what inputs are legal, what side effects they may cause, how much they cost, and what postconditions must be checked. The planner should score candidate actions against the current belief state and constraint ledger. The runtime should record each observation-action-transition triple so that later debugging can ask: did the agent choose badly, observe badly, or operate under a badly specified objective?
+
+This also changes how we design human oversight. A vague agent needs vague supervision: "please be careful." A formalized agent can expose precise gates: "this edit touches authentication," "this command exceeds budget," "this step reduces expected reward unless it obtains new evidence." Escalation becomes part of the state machine rather than an apology after the machine has wandered into the machinery room with a lit candle.
+
+The value of learning the theory is therefore immediate. It teaches us to replace prompt charisma with inspectable control. Goals become reward models and acceptance tests; environments become typed sources of observation and uncertainty; actions become contracts; constraints become budgets and guards; feedback becomes telemetry and correction. Once these pieces are explicit, better agents can be compared, improved, and governed. Without them, every success is anecdote and every failure is an interpretive fog.
