@@ -44,7 +44,6 @@ tmp/
 temp/
 
 # Agent Artefacts
-AGENT.md
-AGENTS.md
 plan.md
 prompt.md
+.beryl/agent/session-state.md

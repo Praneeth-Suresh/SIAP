@@ -1,0 +1,7 @@
+{
+  "installerVersion": "1",
+  "sourceRef": "main",
+  "source": "/tmp/beryl-source",
+  "requestedComponents": ["agent-core","tool-shims","checks","githooks","ci","driver"],
+  "components": ["agent-core","tool-shims","checks","githooks","ci","driver"]
+}

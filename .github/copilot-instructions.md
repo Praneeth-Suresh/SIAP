@@ -1,60 +1,125 @@
-# Copilot Instructions for SIAP
+# Agent Operating Instructions
 
-## Build, test, and lint commands
+This tool-specific instruction file is a generated shim. Do not edit this copy manually. Update `.beryl/agent/tool-instruction-template.md` and rerun `.beryl/agent/scripts/sync-agent-env.sh`.
 
-Use `uv` for local Python workflows:
+You are working in this repository as an implementation agent. Treat repository files as the source of truth. Do not rely on hidden chat history or assumptions when repo-owned instructions answer the question.
 
-```bash
-uv venv
-uv pip install -r requirements.txt
-```
+This repository is SIAP, a SICP-inspired manuscript and publication pipeline for agentic AI. Preserve the book's explanatory, witty, slightly grandiose voice; keep mathematical rigor tied to executable/interpreter-style construction; and treat `dist/book-latex.pdf` as the publication artifact.
 
-Build commands:
+## Instruction Precedence
 
-```bash
-uv run python scripts/build_site.py
-uv run python scripts/build_pdf.py
-uv run python scripts/build_latex_pdf.py
-```
+1. Explicit user instructions for the current task.
+2. Canonical files under `.beryl/agent/`.
+3. This generated shim.
+4. Existing code, tests, and local conventions.
 
-System dependencies used by existing scripts:
+If this shim conflicts with canonical files under `.beryl/agent/`, treat this shim as stale, follow `.beryl/agent/`, and note the conflict.
 
-```bash
-# For WeasyPrint PDF path
-sudo apt-get install -y libcairo2 libpango-1.0-0 libgdk-pixbuf2.0-0 libffi-dev shared-mime-info
+## Required Context Before Editing
 
-# For LaTeX PDF path
-sudo apt-get install -y pandoc tectonic
-```
+Before changing code or tests, read `.beryl/agent/task-routing.md`, classify the current task, and load only the matching workflow from `.beryl/agent/skills/<skill-name>/SKILL.md`.
 
-This repository currently has no configured automated test suite or linter commands (`pytest`, `ruff`, `mypy`, etc.), so there is no single-test command available yet.
+Then read the smallest relevant set of canonical files requested by that workflow:
 
-## High-level architecture
+- `AGENT.md` when doing manuscript, publication, or style-sensitive work.
+- `.beryl/agent/project-brief.md`
+- `.beryl/agent/design-tree.md`
+- `.beryl/agent/architecture.md`
+- `.beryl/agent/ubiquitous-language.md`
+- `.beryl/agent/testing-policy.md`
+- `.beryl/agent/agent-rules.md`
 
-- **Content source of truth is `book/`**:
-  - `book/index.md` is the root entry.
-  - `book/chapters/*/index.md` defines chapter-level navigation.
-  - Topic files (`topic-XX-*.md`) hold primary narrative content.
-  - `book/references.md` is the canonical bibliography.
-- **`scripts/build_site.py`** renders **every** markdown file under `book/` into `site/` using `templates/page.html`, rewrites `.md` links to `.html`, and writes `.nojekyll`.
-- **`scripts/build_pdf.py`** builds print artifacts in `dist/` by concatenating only:
-  1. `book/index.md`
-  2. chapter `index.md` files
-  3. topic files excluding `*-notes.md`
-  4. `book/references.md`
-  It outputs `dist/book.html`, `dist/book.pdf`, and `dist/book.css`.
-- **`scripts/build_latex_pdf.py`** uses the same section selection as `build_pdf.py`, rewrites references links for in-document anchors, then generates `dist/book-latex.md`, `dist/book.tex`, and `dist/book-latex.pdf` via Pandoc + a LaTeX engine (`tectonic` preferred).
-- **Deployment** (`.github/workflows/deploy-pages.yml`) builds and publishes only the static `site/` artifact to GitHub Pages on pushes to `main` (or manual dispatch).
+Load additional files only when relevant.
 
-## Key repository conventions
+## Always-On Operating Contract
 
-- Preserve the project voice in prose changes: explanatory, witty, and slightly grandiose (SICP-inspired).
-- Keep the pedagogical throughline centered on interpreters, explicit loop semantics, and theory-to-implementation mapping.
-- Every externally sourced claim must use clickable numeric citation syntax: `[[n](...)]`.
-- Treat `book/references.md` as the bibliography authority; update it when adding new citations.
-- Keep chapter/topic structure consistent:
-  - each chapter has an `index.md`;
-  - each topic uses `topic-XX-*.md`;
-  - each topic should have a companion `topic-XX-*-notes.md` with concrete improvement notes and at least one alternative rewrite.
-- Prefer updating markdown sources and regenerating outputs through scripts rather than editing generated artifacts manually.
-- Keep `AGENT.md` updated at meaningful milestones when doing multi-step content work.
+These operating defaults apply in every agent session even when the user does not restate them. Users only need to speak up when they want to opt out of or override a default for the current prompt, such as explicitly allowing sub-agents.
+
+- Route work through `.beryl/agent/task-routing.md` and the matching workflow skill before editing.
+- Treat ratified feature implementation as `adding-features` work by default.
+- Use `.beryl/agent/session-state.md` only as internal temporary state when needed, and clear it when the feature, repair, or debugging thread is complete.
+- After edits, run the formatter command if one is configured, then narrow checks, then the broader deterministic gate `./.beryl/scripts/check.sh`.
+- Never weaken tests to make implementation pass.
+- If tests change intentionally, run `./.beryl/scripts/update-test-manifest.sh` and explain why the test and manifest changes were required.
+- Do not use sub-agents unless the user explicitly asks for sub-agents, parallel agents, reviewer agents, or competing agent implementations.
+- For publication-impacting work, rebuild through `python3 scripts/build_latex_pdf.py` and do not hand-edit generated `dist` files.
+
+## Skill Use
+
+Skills live in `.beryl/agent/skills/<skill-name>/SKILL.md`.
+
+Task workflows:
+
+- `planning`: plans, designs, approaches, and feature planning gates.
+- `adding-features`: feature implementation after a user-ratified plan.
+- `debugging`: bugs, failures, regressions, exceptions, and failing checks.
+- `explaining-codebase`: codebase walkthroughs and explanations without edits.
+
+Supporting skills:
+
+- `grill-me`: non-trivial feature, architecture change, cross-context change, ambiguous bug fix.
+- `interview-me`: one-question-at-a-time user interview when `grill-me` leaves unresolved user-judgment decisions.
+- `testing-vertical-slices`: feature/bug behavior implementation.
+- `improving-architecture`: shallow modules, unclear boundaries, recurring coupling.
+- `tracking-entropy`: maintainability review, post-run cleanup, hotspots, refactoring priority.
+- `frontend-design`: distinctive, intentional visual design for new UI or UI reshaping.
+
+When using a skill, follow its required inputs/outputs exactly.
+
+Do not use sub-agents unless the user explicitly asks for sub-agents, parallel agents, reviewer agents, or competing agent implementations.
+
+## Default Work Loop
+
+1. Restate requested behavior and bounded context.
+2. Identify intended public interface and likely files to change.
+3. Add or identify the smallest deterministic test/check for behavior.
+4. Before any meaningful redirect or implementation, state success checks: expected artifact change, narrow command, broader command, generated output or browser evidence when applicable, and one user-visible behavior.
+5. For non-trivial work with multiple viable implementation paths, present the options and wait for user approval unless the user explicitly allowed you to choose.
+6. Before coding, state commit boundaries: one purpose, expected files, and validating check command per boundary.
+7. Implement one internal feature slice.
+8. Run the formatter command if configured, then narrow checks, then broader checks.
+9. Repair from actual tool output.
+10. Update glossary/design-tree/architecture/ADR files if design knowledge changed.
+
+For feature implementation, an approved plan is mandatory. If no approved plan exists, produce the plan first, present it to the user, and stop. Do not implement until the user ratifies the plan.
+
+Feature slices are internal bookkeeping. Do not ask the user to manage slice IDs or ledgers. Use `.beryl/agent/session-state.md` for temporary session-specific implementation state when needed, and clear it when the feature is complete. Store only durable decisions in canonical files.
+
+For post-run cleanup prompts, do not implement new features. Read changed files and return one safe extraction slice only, considering dead selectors, repeated CSS patterns, rendering functions that should be split, generated artifacts that should not be hand-edited, and tests missing for known regressions.
+
+## Engineering Rules
+
+- Prefer existing project patterns over new abstractions.
+- Keep public interfaces small and explicit.
+- Do not import internals from another bounded context.
+- Keep external systems behind adapters.
+- Use terms from `.beryl/agent/ubiquitous-language.md`.
+- Do not weaken tests to make implementation pass.
+- Do not edit unrelated files.
+- Do not store secrets in repo files, prompts, or logs.
+- Do not let temporary implementation notes accumulate in canonical agent files.
+- Keep session debugging history bounded in `.beryl/agent/session-state.md`; summarize failures, cap entries, and clear resolved errors.
+
+Before deleting or consolidating root planning or documentation files, list every file, what is preserved, what is lost, and where replacement content lives, then wait for explicit approval.
+
+## Browser Verification Rule
+
+- For web app, HTML, or CSS tasks, prefer **Microsoft Playwright MCP** as the browser tool.
+- Use browser state/tool output (for example accessibility snapshots and DOM state) as the source of truth for UI verification.
+- Do not mark browser-related work complete until the behavior is confirmed through Playwright MCP checks.
+
+For static-site changes, source inspection is not enough. Verify affected generated output such as `dist` HTML, sitemap, robots, search index, feeds, copied assets, and browser behavior when relevant.
+
+## Verification
+
+Run checks required by `.beryl/agent/testing-policy.md` and local project tooling.
+
+Final response must include:
+
+- What changed.
+- Map each changed file to the intended commit boundary.
+- Flag any changed file that does not belong to a stated commit boundary.
+- Checks run.
+- Checks skipped or unavailable.
+- Design files/ADR updates.
+- Whether temporary session state was cleared or why it remains.

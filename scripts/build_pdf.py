@@ -20,28 +20,50 @@ def rewrite_md_links(markdown_text: str) -> str:
     return pattern.sub(lambda m: f"]({m.group(1)}.html{m.group(2) or ''})", markdown_text)
 
 
-def gather_book_sections() -> list[Path]:
-    chapter_indexes = sorted((BOOK_DIR / "chapters").glob("*/index.md"))
-    topic_files = sorted(
-        p
-        for p in (BOOK_DIR / "chapters").glob("*/*.md")
-        if p.name != "index.md" and not p.name.endswith("-notes.md")
-    )
-    return [BOOK_DIR / "index.md", *chapter_indexes, *topic_files, BOOK_DIR / "references.md"]
+def gather_book_sections() -> list[tuple[Path, str]]:
+    sections: list[tuple[Path, str]] = [(BOOK_DIR / "index.md", "preface")]
+    for chapter_index in sorted((BOOK_DIR / "chapters").glob("*/index.md")):
+        chapter_dir = chapter_index.parent
+        sections.append((chapter_index, "chapter"))
+        for topic_path in sorted(chapter_dir.glob("topic-*.md")):
+            if not topic_path.name.endswith("-notes.md"):
+                sections.append((topic_path, "topic"))
+    sections.append((BOOK_DIR / "references.md", "references"))
+    return sections
+
+
+def demote_headings(markdown_text: str, levels: int = 1) -> str:
+    def repl(match: re.Match[str]) -> str:
+        hashes = match.group(1)
+        return f"{hashes}{'#' * levels} "
+
+    return re.sub(r"^(#{1,5}) ", repl, markdown_text, flags=re.MULTILINE)
+
+
+def prepare_book_markdown(section: Path, section_kind: str) -> str:
+    text = rewrite_md_links(section.read_text(encoding="utf-8"))
+
+    if section_kind == "preface":
+        text = re.sub(r"^# .+$", "# Preface", text, count=1, flags=re.MULTILINE)
+    elif section_kind == "chapter":
+        text = re.sub(r"^# Chapter \d+:\s*", "# ", text, count=1, flags=re.MULTILINE)
+    elif section_kind == "topic":
+        text = demote_headings(text, levels=1)
+
+    return text
 
 
 def main() -> None:
     sections = gather_book_sections()
-    for section in sections:
+    for section, _section_kind in sections:
         if not section.exists():
             raise SystemExit(f"Missing source section: {section}")
 
     DIST_DIR.mkdir(parents=True, exist_ok=True)
 
     chunks = []
-    for section in sections:
-        text = rewrite_md_links(section.read_text(encoding="utf-8"))
-        chunks.append(text)
+    for section, section_kind in sections:
+        chunks.append(prepare_book_markdown(section, section_kind))
 
     merged_markdown = "\n\n---\n\n".join(chunks)
     body_html = markdown.markdown(merged_markdown, extensions=MD_EXTENSIONS)
