@@ -17,72 +17,274 @@
       </aside>
       <article class="content">
         <h1 id="belief-uncertainty-and-decision">Belief, Uncertainty, and Decision</h1>
-<p>The competent agent does not pray for certainty; it budgets uncertainty like an engineer with a deadline and a power bill. In serious systems, belief is not a vibe, not a slogan, and definitely not a confidence emoji—it is a state variable that must earn its keep in every action you take.</p>
-<h2 id="bayesian-formalization">Bayesian formalization</h2>
-<p>Let (s_t) be latent world state, (h_t=(o_{0:t},a_{0:t-1})) be history, and (b_t(s)=P(s_t=s\mid h_t)) be the agent's belief. Under a POMDP model, belief evolves by Bayesian filtering [<a href="../../references.html#ref-7">7</a>] [<a href="../../references.html#ref-4">4</a>]:
-[
+<p>An agent almost never gets to see the world as it truly is. It sees fragments,
+and must act anyway. Something has to turn those fragments into a picture solid
+enough to act on. That machinery is called <em>belief</em>, and it is the second
+component of the interpreter we are building.</p>
+<p>The interpreter from Topic 1 (Goals, Environments, and Actions) cannot read the
+true state of the world directly. It sees test output, file contents, user
+messages, logs, retrieval results, and tool failures. Belief is the agent's
+working account of what those observations imply. It is not a mood of confidence.
+It is the state variable that makes action possible under <em>partial
+observability</em> (the ordinary situation in which the agent's sensors show only
+part of what is going on).</p>
+<h2 id="belief-as-runtime-state-not-a-feeling">Belief as Runtime State, Not a Feeling</h2>
+<p>Belief is a variable the program carries between steps, like a counter or a
+cache. Three symbols do the work.</p>
+<p>The table below names the three quantities that appear in every belief equation
+in this section, together with how to read each one aloud.</p>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Read it as</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(s_t)</td>
+<td>"the state at step t"</td>
+<td>The <em>latent</em> (hidden from the agent's sensors) state of the world</td>
+</tr>
+<tr>
+<td>(h_t=(o_{0:t},a_{0:t-1}))</td>
+<td>"the history at step t"</td>
+<td>Everything observed so far, plus every action taken so far</td>
+</tr>
+<tr>
+<td>(b_t(s)=P(s_t=s\mid h_t))</td>
+<td>"the belief at step t assigns to state s"</td>
+<td>How likely the agent thinks state (s) is, given that history</td>
+</tr>
+</tbody>
+</table>
+<p>Under a POMDP (partially observable Markov decision process) interpretation,
+belief evolves by Bayesian filtering [<a href="../../references.html#ref-7">7</a>]
+[<a href="../../references.html#ref-4">4</a>]:</p>
+<p>[
 b_{t+1}(s')=\eta\,\Omega(o_{t+1}\mid s',a_t)\sum_{s\in\mathcal{S}}T(s'\mid s,a_t)b_t(s),
-]
-with (\eta) as normalization. The observation model also gives a posterior predictive law,
-[
-P(o_{t+1}\mid b_t,a_t)=\sum_{s'}\Omega(o_{t+1}\mid s',a_t)\sum_s T(s'\mid s,a_t)b_t(s),
-]
-which is the agent's explicit wager about what reality will show next. Decision quality is then evaluated in belief space:
-[
-V^\pi(b)=\mathbb{E}!\left[\sum_{t\ge 0}\gamma^t R(s_t,a_t)\mid b_0=b,\pi\right].
-]
-At each step, the normative move is expected-utility maximization [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>]:
-[
-a_t^\star=\arg\max_{a\in\mathcal{A}}\mathbb{E}[U(a,S_t)\mid h_t].
 ]</p>
-<h2 id="worked-example-heuristic-bravado-vs-bayesian-humility">Worked example: heuristic bravado vs Bayesian humility</h2>
-<p>Suppose an agent chooses between <strong>Shortcut</strong> (A) and <strong>Detour</strong> (B), while weather (S\in{\text{clear},\text{storm}}) is hidden. Utilities are (U(A,\text{clear})=10), (U(A,\text{storm})=-20), and (U(B,\text{clear})=U(B,\text{storm})=4). A deterministic heuristic ("always pick the shorter route") commits to (A), yielding
+<p>where (\eta) normalizes the distribution. The observation model also gives a
+prediction about what the agent expects to see next:</p>
+<p>[
+P(o_{t+1}\mid b_t,a_t)=\sum_{s'}\Omega(o_{t+1}\mid s',a_t)\sum_s T(s'\mid s,a_t)b_t(s).
+]</p>
+<p>Read the filter as two moves: <strong>predict</strong>, then <strong>correct</strong>.</p>
+<ol>
+<li>The inner sum (\sum_s T(s'\mid s,a_t)b_t(s)) predicts how likely each next
+   state (s') is after action (a_t), before the new observation arrives.
+   Here (T) is the transition model and (\mathcal{S}) is the set of possible
+   states.</li>
+<li>The likelihood (\Omega(o_{t+1}\mid s',a_t)) then corrects that prediction.
+   It asks how plausible the observed evidence would be if (s') were true.</li>
+<li>The constant (\eta), the Greek letter eta, is just the normalizer that
+   makes all the updated probabilities add to (1).</li>
+</ol>
+<p>Some vocabulary, defined once and used forever after. Conditional probability
+(P(X\mid Y)) means "the probability of (X) after assuming or observing
+(Y)." A <strong>prior</strong> is the belief before the new observation. A <strong>likelihood</strong>
+is how well a possible state explains the observation. The <strong>posterior</strong> is the
+corrected belief after combining them.</p>
+<p>A two-state example makes the arithmetic concrete. Suppose the agent believes a
+bug is in module A with probability (0.5) and in module B with probability
+(0.5). A test fails. If that failure has likelihood (0.9) under "bug in A"
+and (0.1) under "bug in B", the unnormalized scores are (0.45) and (0.05).
+Divide by their sum, (0.5), and belief becomes (0.9) for A and (0.1) for
+B. That division by (0.5) is (\eta) doing its only job.</p>
+<h3 id="why-approximate-belief-still-counts-as-belief">Why Approximate Belief Still Counts as Belief</h3>
+<p>These equations are idealized. Real agents often use scores, hypotheses,
+retrieval rankings, or learned estimators instead of exact distributions. The
+key requirement is not mathematical ceremony. It is that observations change the
+variables that action selection depends on.</p>
+<p>The pseudocode below shows the minimum shape of a belief update in a practical
+agent. It takes the old belief, a new observation, and the action just taken,
+and returns a new belief made of three parts: the surviving hypotheses, a
+recalibrated confidence, and the gaps that still matter for the decision.</p>
+<pre><code class="language-text">function UPDATE_BELIEF(belief, observation, action):
+    hypotheses &lt;- revise_hypotheses(belief.hypotheses, observation)
+    confidence &lt;- recalibrate(hypotheses, observation.source, observation.freshness)
+    unknowns &lt;- identify_decision_relevant_gaps(hypotheses)
+    return Belief(hypotheses, confidence, unknowns)
+</code></pre>
+<p>In a coding agent, a failing test should increase belief in some fault
+hypotheses and decrease others. A missing dependency error should not be treated
+like a behavioral regression. A stale document should count as evidence with a
+weaker likelihood than a current API response. This is what it means for belief
+to be an operational object.</p>
+<h2 id="decisions-in-belief-space">Decisions in Belief Space</h2>
+<p>Once belief is explicit, decision quality can be evaluated in belief space. In
+sequential problems this value is recursive. An action is good partly because of
+the observations and opportunities it makes available later
+[<a href="../../references.html#ref-5">5</a>].</p>
+<p>[
+V^\pi(b)=\mathbb{E}!\left[\sum_{t\ge 0}\gamma^t R(s_t,a_t)\mid b_0=b,\pi\right].
+]</p>
+<p>Read that as "the value of following policy (\pi) from belief (b) is the
+expected total reward, with rewards further in the future shrunk by the discount
+factor (\gamma)." The symbol (\mathbb{E}) means "expected value", the
+probability-weighted average.</p>
+<p>At a single step, the expected-utility rule is:</p>
+<p>[
+a_t^\star=\arg\max_{a\in\mathcal{A}}\mathbb{E}[U(a,S_t)\mid h_t],
+]</p>
+<p>which reads "the best action (a^\star) is the one in the action set
+(\mathcal{A}) with the highest average utility (U), averaged over the states
+the history (h_t) still allows." This holds assuming the utility model and
+belief distribution are adequate for the decision at hand
+[<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>]. The
+assumption matters. If the belief state omits a safety-relevant variable, the
+expected utility calculation can be precise and still wrong.</p>
+<h3 id="two-roads-and-a-hidden-storm">Two Roads and a Hidden Storm</h3>
+<p>Suppose an agent chooses between <strong>Shortcut</strong> (A) and <strong>Detour</strong> (B), while
+weather (S\in{\text{clear},\text{storm}}) is hidden. Utilities are
+(U(A,\text{clear})=10), (U(A,\text{storm})=-20), and
+(U(B,\text{clear})=U(B,\text{storm})=4). With no forecast and equal prior
+probabilities, (A) has expected utility (-5), so (B) is better. If a
+forecast is 90 percent accurate and predicts clear weather, then (A)'s
+expected utility becomes (0.9(10)+0.1(-20)=7), so (A) is better. The world
+did not change; the action ranking changed because the belief did.</p>
+<p>The arithmetic is small enough to leave on the page. Before querying,
 [
 \mathbb{E}[U(A)]=0.5(10)+0.5(-20)=-5.
 ]
-Bayesian control first asks for a forecast (q) with (90\%) accuracy. If (q=\text{clear}), then (P(\text{clear}\mid q=\text{clear})=0.9) and
+After a forecast (q=\text{clear}) with 90 percent accuracy,
 [
 \mathbb{E}[U(A)\mid q=\text{clear}]=0.9(10)+0.1(-20)=7&gt;4=\mathbb{E}[U(B)\mid q=\text{clear}],
 ]
-so take (A). If (q=\text{storm}), then (P(\text{clear}\mid q=\text{storm})=0.1) and
+so the shortcut becomes rational. If instead (q=\text{storm}), then
 [
 \mathbb{E}[U(A)\mid q=\text{storm}]=0.1(10)+0.9(-20)=-17&lt;4,
 ]
-so take (B). Same roads, same world, radically different policy quality—because one agent updates.</p>
-<h2 id="information-as-an-economic-action">Information as an economic action</h2>
-<p>Information gathering is not a prelude to action; it is an action with cost, latency, and opportunity cost. The value of information for query (q) is
-[
+so the detour remains rational. The same pair of roads supports different
+actions because belief, not bravado, mediates between observation and control.</p>
+<h2 id="information-has-a-price">Information Has a Price</h2>
+<p>Information gathering is not a prelude to action. It is an action with cost,
+latency, and opportunity cost. Two features of a task decide whether another
+query is worth making:</p>
+<ul>
+<li><strong>Uncertainty.</strong> If the relevant state is already known well enough, another
+  query is incense, not engineering.</li>
+<li><strong>The size of the action gap.</strong> If the best action is far ahead of its rivals,
+  evidence must be very surprising to change the ranking. If the alternatives
+  are nearly tied, a small observation can be decisive.</li>
+</ul>
+<p>A query is worthwhile when it is likely to change the decision enough to pay for
+itself. The value of information, written VoI, states that condition exactly:</p>
+<p>[
 \operatorname{VoI}(q)=\mathbb{E}!\left[\max_a \mathbb{E}[U(a,s)\mid h_t,q]\right]
 \;-\;\max_a \mathbb{E}[U(a,s)\mid h_t].
-]
-In the toy route problem, without querying we choose (B) for utility (4). With the forecast, expected utility is
+]</p>
+<p>Read it as "the best you expect to do after learning the answer to (q), minus
+the best you can do now." To use it in practice, price the query in the same
+units as utility and compare.</p>
+<p>In the route example, querying the forecast raises expected utility from (4)
+to (5.5):
 [
 0.5\cdot 7 + 0.5\cdot 4 = 5.5,
 ]
-so (\operatorname{VoI}=5.5-4=1.5). If the API call costs (0.8) utility units (time, tokens, dollars), net gain is (0.7): query first, act second. If the call cost were (2), the same "more information!" instinct would be irrational.</p>
-<h2 id="three-theory-braid">Three-theory braid</h2>
-<p>Bayesian decision theory tells us to choose (a^\star=\arg\max_a \mathbb{E}[U(a,S)\mid h]), information theory tells us how much ignorance remains via (H(S\mid h)=-\sum_s b(s)\log b(s)) and how much a query might retire via (I(S;Q\mid h)=H(S\mid h)-H(S\mid h,Q)), and sequential control tells us that these local choices compound through Bellman structure (V^\star(b)=\max_a{r(b,a)+\gamma\sum_o P(o\mid b,a)V^\star(\tau(b,a,o))}), so the agent is not merely selecting an action but selecting the future quality of its own epistemic state [<a href="../../references.html#ref-34">34</a>] [<a href="../../references.html#ref-35">35</a>] [<a href="../../references.html#ref-5">5</a>] [<a href="../../references.html#ref-7">7</a>]; in deployed systems this braid closes the loop through estimation and control—state estimate (\hat{x}_t) from filtering, then feedback (u_t=-K\hat{x}_t)—which is the practical reminder that uncertainty is not an academic footnote but the very signal driving closed-loop behavior [<a href="../../references.html#ref-36">36</a>] [<a href="../../references.html#ref-41">41</a>].</p>
-<h2 id="when-approximate-inference-is-acceptable">When approximate inference is acceptable</h2>
-<p>Exact Bayesian filtering is often too expensive for production loops, so approximation is acceptable when it is <strong>decision-safe</strong>, not merely statistically pretty. Define the action gap
+so the value of information is (1.5). The two halves of that sum are the two
+possible forecasts: clear, worth (7), and storm, worth (4). If the query
+costs (0.8), ask first. If it costs (2), act without it.</p>
+<h3 id="entropy-and-mutual-information-measuring-what-is-left-to-learn">Entropy and Mutual Information: Measuring What Is Left to Learn</h3>
+<p>Information theory gives related measures of remaining uncertainty. Entropy
+measures how spread out the belief is:
 [
-\Delta(b)=Q(b,a^\star)-\max_{a\ne a^\star}Q(b,a),
+H(S\mid h)=-\sum_s b(s)\log b(s).
 ]
-and suppose approximation yields (\tilde Q) with uniform error (\lvert \tilde Q(b,a)-Q(b,a)\rvert\le \varepsilon_Q). Then the greedy action is unchanged whenever
+Mutual information measures how much a query (Q) is expected to reduce that
+uncertainty:
 [
-\Delta(b)&gt;2\varepsilon_Q.
+I(S;Q\mid h)=H(S\mid h)-H(S\mid h,Q).
 ]
-This gives a practical criterion: particle filters, variational approximations, or distilled surrogates are fine when they preserve action ranking where it matters, stay calibrated under proper scoring rules, and respect latency budgets [<a href="../../references.html#ref-37">37</a>] [<a href="../../references.html#ref-38">38</a>] [<a href="../../references.html#ref-49">49</a>].</p>
-<h2 id="how-to-study-this-formally">How to study this formally</h2>
-<p>Run ablations where retrieval, tool probes, and clarification questions are explicit costly actions; then report downstream utility, realized (\operatorname{VoI}), and calibration (e.g., Brier score (BS=\frac{1}{N}\sum_{i=1}^N (p_i-y_i)^2)) under matched latency/token budgets [<a href="../../references.html#ref-49">49</a>]. If epistemic actions do not improve calibrated decision quality per unit cost, your agent is performing epistemology theater—dramatic, expensive, and mostly decorative.</p>
-<h2 id="translating-the-theory-into-agentic-practice">Translating the Theory into Agentic Practice</h2>
-<p>Belief turns an agent from a script into a situated decision-maker. The engineering move is to make uncertainty visible in the loop: every important claim should carry provenance, confidence, freshness, and the decision it supports. A retrieval result is not merely "context"; it is evidence with a likelihood of being relevant, stale, contradictory, or decisive. A tool result is not merely "output"; it is an observation that should update the agent's belief about the world.</p>
-<p>This implies a concrete control pattern. Maintain a belief state alongside the transcript: open hypotheses, confidence estimates, known unknowns, and uncertainty drivers. Before acting, ask whether the current action gap is large enough to proceed. If the best and second-best actions are separated by a wide margin, act. If they are close and a cheap query could change the ranking, retrieve, inspect, test, or ask the user. If no affordable evidence can change the decision, choose the least-regret action and record the assumption. Thus Bayesian humility becomes a budgeted policy, not a decorative paragraph in the system prompt.</p>
-<p>Good agentic systems also need calibrated refusal and escalation. A belief-aware customer-support agent can distinguish "I know the refund policy" from "I know the policy but not whether this order qualifies" from "this case crosses a legal boundary." A coding agent can distinguish "the failing test localizes the bug" from "the test failure is consistent with three modules, so I should inspect before editing." In both cases, uncertainty directs action instead of merely lowering the emotional temperature of the answer.</p>
-<p>The theory pays for itself whenever the system must decide whether to spend another token, call another tool, interrupt a human, or commit an irreversible action. Entropy, value of information, action gaps, and calibration are not ivory-tower ornaments; they are the knobs that keep agents from confusing confident fluency with competent control. A belief-state ledger is the difference between an agent that knows what it knows and an agent that simply speaks until reality objects.</p>
+These symbols are not rival decision rules. (H(S\mid h)) says how much
+uncertainty about state (S) remains after history (h). (I(S;Q\mid h)) says
+how much of that uncertainty the query may retire. The value-of-information
+calculation then asks whether retiring that uncertainty changes the action
+ranking enough to pay for the query [<a href="../../references.html#ref-35">35</a>].</p>
+<p>A quick check on entropy. A belief split (0.5/0.5) has entropy (\log 2), the
+largest possible value for two states. A belief of (1.0/0.0) has entropy
+(0), because nothing is left to learn. Entropy measures confusion; only VoI
+measures whether that confusion is expensive.</p>
+<h3 id="deciding-now-while-protecting-later">Deciding Now While Protecting Later</h3>
+<p>Sequential control carries the same idea forward in time through a belief-space
+Bellman equation:
+[
+V^\star(b)=\max_a{r(b,a)+\gamma\sum_o P(o\mid b,a)V^\star(\tau(b,a,o))}.
+]
+Here (b) is the current belief, (r(b,a)) is the immediate reward of acting
+from that belief, (P(o\mid b,a)) is the probability of seeing observation
+(o), and (\tau(b,a,o)) is the updated belief after action and observation.
+The agent is therefore not merely selecting an action; it is selecting the
+future quality of its own epistemic state [<a href="../../references.html#ref-5">5</a>]
+[<a href="../../references.html#ref-7">7</a>].</p>
+<p>The control loop now becomes a short branch on the size of the action gap. If
+one action clearly wins, act. If not, consider buying evidence. If evidence
+cannot help either, act with the assumption written down, or hand the decision
+to a human.</p>
+<pre><code class="language-text">if action_gap(belief) is large:
+    act(best_action)
+else if cheap_observation_can_change_ranking(belief):
+    gather_information()
+else:
+    act_with_recorded_assumption_or_escalate()
+</code></pre>
+<p>This pattern turns "be uncertain" into a policy. It also explains why more
+retrieval is not automatically better. Retrieval, search, and external evidence
+help only when they can move belief in a way that changes the ranking of
+available actions, or at least changes whether acting, waiting, or escalating is
+justified. Evidence is useful when it changes calibrated action quality per unit
+cost. In feedback-control terms, estimation and action are coupled: the agent
+measures because the measurement may change the next control move, and it acts
+knowing that the next measurement may correct it
+[<a href="../../references.html#ref-36">36</a>] [<a href="../../references.html#ref-41">41</a>].</p>
+<h2 id="approximation-and-calibration">Approximation and Calibration</h2>
+<p>Exact Bayesian filtering is often too expensive for production loops.
+Approximation is acceptable when it is decision-safe, not merely statistically
+elegant. Let</p>
+<p>[
+\Delta(b)=Q(b,a^\star)-\max_{a\ne a^\star}Q(b,a)
+]</p>
+<p>be the action gap, read as "the value of the best action minus the value of the
+best runner-up." If an approximation (\tilde Q) has uniform error
+(\lvert \tilde Q(b,a)-Q(b,a)\rvert\le \varepsilon_Q), then the greedy action
+is unchanged whenever (\Delta(b)&gt;2\varepsilon_Q). The error can push the best
+action down by (\varepsilon_Q) and the runner-up up by (\varepsilon_Q), so
+(2\varepsilon_Q) is the worst-case swing. This simple bound is useful because
+it ties inference quality to policy quality: approximation error matters most
+near decision boundaries [<a href="../../references.html#ref-37">37</a>]
+[<a href="../../references.html#ref-38">38</a>].</p>
+<p>For example, suppose a coding agent estimates (Q(b,\text{SafePatch})=10) and
+(Q(b,\text{FastPatch})=7), so the action gap is (\Delta=3). If the value
+approximation can be wrong by at most (\varepsilon_Q=1) for each action, then
+(2\varepsilon_Q=2), and (3&gt;2). Even after accounting for approximation
+error, SafePatch remains the greedy choice. If the gap were only (1.5), the
+same estimator would not justify confidence in the ranking; the agent should
+gather evidence, choose the safer default, or escalate.</p>
+<h3 id="making-confidence-mean-something">Making Confidence Mean Something</h3>
+<p>Calibration is the corresponding empirical discipline. A confidence estimate
+should mean what it says under proper scoring rules such as the Brier score
+[<a href="../../references.html#ref-49">49</a>]. For a binary event, the Brier score is
+((p-y)^2), where (p) is the predicted probability and (y) is (1) if the
+event happened and (0) otherwise; lower is better. Predicting a test will pass
+with probability (0.8) and then seeing it fail gives ((0.8-0)^2=0.64).
+Predicting (0.2) and seeing failure gives (0.04). A builder can measure this
+directly: log each stated probability, log what happened, and average the
+squared differences.</p>
+<p>Calibrated belief also changes what an agent can say about itself. A
+belief-aware customer-support agent can distinguish "I know the refund policy"
+from "I know the policy but not whether this order qualifies." A belief-aware
+coding agent can distinguish "the failing test localizes the bug" from "three
+modules remain plausible, so editing now is premature."</p>
+<p>The interpreter has therefore gained its second component. Goals and actions
+define what the agent is trying to do; belief defines what the agent thinks is
+true enough to justify the next move. Topic 3 (World Models and State
+Abstractions) takes up the next question: which parts of the world deserve to be
+in the state at all.</p>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-05-15 03:11 UTC
+      Last generated: 2026-07-27 18:55 UTC
     </footer>
   </body>
 </html>

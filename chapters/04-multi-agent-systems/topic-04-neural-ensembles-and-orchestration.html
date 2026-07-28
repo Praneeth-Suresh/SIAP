@@ -17,39 +17,159 @@
       </aside>
       <article class="content">
         <h1 id="neural-ensembles-and-orchestration">Neural Ensembles and Orchestration</h1>
-<p>An ensemble is a parliament of imperfect predictors. Its power comes from structured disagreement, not synchronized overconfidence.</p>
-<h2 id="formal-aggregation-model">Formal aggregation model</h2>
-<p>Given predictors (f_k(x)), ensemble output is
+<p>Sometimes several flawed workers, combined, beat the best worker alone. Sometimes they simply repeat one mistake in unison, only louder. This section is about telling those two cases apart, and about the machinery that sends each task to the right specialist. Two words will do most of the work: an <em>ensemble</em> is a group of predictors whose separate answers are combined into one, and <em>orchestration</em> narrows here to the routing part of the discipline the preface defined, namely the logic that decides who is consulted at all.</p>
+<p>An ensemble is useful when several imperfect interpreters make different errors. The central question is not how many voices the system can summon. It is whether their diversity reduces the error that matters, under the budget that actually exists.</p>
+<p>In Chapter 4's recurring publication workflow, the ensemble is not just a bag of answers. It is a set of interpreters bound to different parts of the environment:</p>
+<ul>
+<li>the drafter is bound to exposition and structure;</li>
+<li>the fact checker is bound to claims and sources;</li>
+<li>the integrator is bound to release constraints and consistency.</li>
+</ul>
+<p>Orchestration then decides three things: which interpreter receives which expression, which environment bindings (the names and values it is allowed to see) it may read, and which side effects it may perform. Those three decisions are the whole design surface.</p>
+<h2 id="aggregating-imperfect-predictors">Aggregating Imperfect Predictors</h2>
+<p>Start with the simplest combination rule: take a weighted average of what each expert says. Given predictors (f_k(x)), a weighted ensemble produces
 [
 \hat{y}(x)=\sum_{k=1}^{K} w_k(x)\,f_k(x),\qquad \sum_k w_k(x)=1,\ w_k(x)\ge 0.
 ]
-For voting systems, (\hat{y}=\operatorname{mode}{f_k(x)}).<br />
-For MoE, router (g(x)) selects sparse experts (E(x)\subseteq{1,\dots,K}).</p>
-<p>Generalization gain is tied to error covariance: diverse-but-competent experts beat correlated experts.</p>
-<p>Confidence-weighted routing can use softmax gates
+Read (f_k(x)) as "the answer that expert number (k) gives for input (x)", and (w_k(x)) as "how much we trust expert (k) on this particular input". The weights are non-negative and sum to one, so the result (\hat{y}(x)) ("y-hat of x", the ensemble's prediction) stays on the same scale as the individual answers. For voting systems, (\hat{y}=\operatorname{mode}{f_k(x)}), which reads "take whichever answer was given most often".</p>
+<p>The gain comes from competent diversity. If predictors make independent or weakly correlated errors, aggregation can improve accuracy and uncertainty estimates. If they share the same blind spot, the ensemble may only make the mistake more confidently.</p>
+<h3 id="why-three-independent-reviewers-beat-one">Why Three Independent Reviewers Beat One</h3>
+<p>Suppose three reviewers each have (80\%) accuracy and make independent errors on a binary decision. Majority vote is wrong only when at least two are wrong:
+[
+{3\choose 2}(0.2)^2(0.8)+(0.2)^3=0.104.
+]
+The first term counts the three ways that exactly two reviewers err while one is right. The second term is the single case where all three err. Their sum is (0.104), so independent majority voting raises accuracy from (80\%) to (89.6\%). Nearly ten points of accuracy for the price of two extra calls is a real bargain.</p>
+<h3 id="why-correlated-errors-erase-that-bargain">Why Correlated Errors Erase That Bargain</h3>
+<p>Now suppose all three reviewers use the same flawed source extraction step, so their errors are perfectly correlated. When one is wrong, all are wrong, and the majority is still wrong (20\%) of the time. Three voices have produced one error with a choir robe.</p>
+<p>The lesson for a builder is procedural, not philosophical: before adding a reviewer, ask what would have to differ for its mistakes to differ. Deep ensembles are valuable partly because independently trained predictors can improve calibration and predictive uncertainty [<a href="../../references.html#ref-26">26</a>]. Calibration means that stated confidence matches observed accuracy, so claims made with (90\%) confidence turn out right about nine times in ten. Classical ensemble methods make the same theme explicit: diversity matters only when the individual models remain useful [<a href="../../references.html#ref-67">67</a>]. A committee of confident incompetents averages to nothing.</p>
+<h3 id="routing-with-mixtures-of-experts">Routing with Mixtures of Experts</h3>
+<p>Mixture-of-experts (MoE) systems add conditional computation, meaning the system spends compute only where it expects a return. A router (g(x)) chooses which experts to activate for an input, rather than paying for every expert every time. Confidence-weighted routing can use softmax gates
 [
 w_k(x)=\frac{\exp(g_k(x)/\tau)}{\sum_j \exp(g_j(x)/\tau)},
 ]
-or top-(k) sparse routing (E(x)=\operatorname{TopK}(g(x),k)) for compute control [<a href="../../references.html#ref-25">25</a>] [<a href="../../references.html#ref-69">69</a>].</p>
-<h2 id="orchestration-as-budgeted-control">Orchestration as budgeted control</h2>
-<p>Specialist dispatch is a sequential decision problem:
+where (g_k(x)) is the router's raw score for expert (k), and the formula turns those scores into weights that sum to one. An alternative is sparse top-(k) routing,
+[
+E(x)=\operatorname{TopK}(g(x),k),
+]
+which selects a small set (E(x)) of experts to run.</p>
+<p>The softmax temperature (\tau) ("tau") controls how sharp the routing distribution is. Small (\tau) makes the largest gate score dominate; large (\tau) spreads weight more evenly. Top-(k) routing means "activate only the (k) highest-scoring experts," such as the two best specialists out of sixteen, and give the rest no computation for this input.</p>
+<p>To see whether a router is doing anything interesting, measure its spread. Routing entropy measures how spread out the router's choices are,
+[
+H(w)=-\sum_k w_k\log w_k,
+]
+so low entropy means the router almost always chooses the same expert, while high entropy means it distributes work broadly. Neither extreme is automatically healthy; the number is a diagnostic, not a target. Early adaptive mixtures of local experts introduced this divide-and-route pattern [<a href="../../references.html#ref-68">68</a>]. Sparsely gated MoE layers and Switch Transformers show how the same principle can scale neural computation by activating only a small subset of experts per input [<a href="../../references.html#ref-25">25</a>] [<a href="../../references.html#ref-69">69</a>].</p>
+<h2 id="from-neural-experts-to-agent-societies">From Neural Experts to Agent Societies</h2>
+<p>It is tempting to treat a team of agents as an MoE layer wearing business clothes. The analogy between neural ensembles and multi-agent societies is useful but limited, and both halves of that sentence matter.</p>
+<h3 id="what-the-analogy-gets-right">What the Analogy Gets Right</h3>
+<p>It is useful because both kinds of system depend on the same five concerns: specialization, routing, aggregation, calibration, and correlated-error control. A coding workflow may route architecture questions to a design reviewer, risky edits to a safety reviewer, failing tests to a debugger, and final synthesis to an integrator. A research workflow may combine retrieval, statistical critique, domain expertise, and writing. Surveys of multi-agent systems built from large language models describe many such patterns at the workflow level [<a href="../../references.html#ref-23">23</a>].</p>
+<h3 id="what-the-analogy-gets-wrong">What the Analogy Gets Wrong</h3>
+<p>The analogy breaks when we forget that agents are not just differentiable submodules inside one loss function. A differentiable module is a component whose outputs change smoothly enough with respect to its parameters that gradient descent can assign credit through it. Neural experts usually share training infrastructure, optimization objectives, and a tightly specified interface.</p>
+<p>Agent societies are messier. They may use tools, memory, permissions, natural language, human escalation, and changing local objectives. They can misunderstand instructions, strategically shape reports, duplicate hidden sources, or alter the environment while the router is still deciding. Minsky's "society of mind" is a suggestive metaphor for intelligence built from many smaller processes, not a license to treat every committee as a well-calibrated MoE layer [<a href="../../references.html#ref-27">27</a>].</p>
+<h3 id="what-an-agentic-router-actually-hands-out">What an Agentic Router Actually Hands Out</h3>
+<p>This distinction changes the orchestration problem. A neural router mostly selects computation. An agentic router selects computation plus authority, information exposure, side effects, latency, and incentive pressure. Choosing an agent is closer to signing a permission slip than to picking a matrix multiply.</p>
+<p>The orchestration layer should therefore maintain expert profiles that record, for each participant:</p>
+<ul>
+<li>domain strengths and historical accuracy;</li>
+<li>calibration, latency, and cost;</li>
+<li>permissions and known failure modes;</li>
+<li>correlation with the other experts.</li>
+</ul>
+<p>The aggregator should combine outputs by confidence, evidence, role, independence, and past reliability. The monitor should watch for collapse, which shows up in four recognizable ways: one expert always dominates, all experts cite the same weak source, critics converge into ceremony, or routing entropy falls because the system has learned convenience rather than competence.</p>
+<h3 id="the-router-is-another-partial-observer">The Router Is Another Partial Observer</h3>
+<p>The router itself is another partial observer. It sees task metadata, past scores, queue length, and visible artifacts. It may not see the drafter's uncertainty, the fact checker's failed searches, or a subtle inconsistency until someone emits the right message.</p>
+<p>Good orchestration therefore exposes structured summaries, claim inventories, confidence reports, and provenance trails. These artifacts are not paperwork. They are the shared environment that lets separately specialized interpreters approximate a joint belief.</p>
+<h2 id="budgeted-orchestration">Budgeted Orchestration</h2>
+<p>Deciding whom to consult next, given what you have already learned, is a sequential decision problem. Specialist dispatch can be written as one:
 [
 V^\star(s)=\max_a\left{R(s,a)-\lambda_c C(a)-\lambda_l L(a)+\gamma\,\mathbb{E}[V^\star(s')]\right},
 ]
-where (a) chooses which experts/agents to consult, (C) is monetary compute cost, and (L) is latency. This prevents "call everyone" from masquerading as sophistication.</p>
-<h2 id="three-theory-braid">Three-theory braid</h2>
-<p>Deep-ensemble theory gives uncertainty and calibration benefits through independent predictors, mixture-of-experts routing gives conditional computation that scales by activating only relevant specialists, and orchestrated multi-agent societies operationalize those principles at workflow level, so collective prediction becomes a braid of foresight (expected-utility routing under cost/latency budgets), responsiveness (input-dependent gating and reweighting), and resilience (fault tolerance from diversity with reduced correlated error) [<a href="../../references.html#ref-26">26</a>] [<a href="../../references.html#ref-67">67</a>] [<a href="../../references.html#ref-25">25</a>] [<a href="../../references.html#ref-68">68</a>] [<a href="../../references.html#ref-69">69</a>] [<a href="../../references.html#ref-23">23</a>] [<a href="../../references.html#ref-27">27</a>] [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>].</p>
-<h2 id="how-to-study-this-formally">How to study this formally</h2>
-<p>Measure ensemble lift over best single expert, calibration under shift, routing entropy (collapse detection), and cost-latency-normalized utility. The objective is not maximal committee size; it is minimal correlated error for a fixed budget.</p>
-<h2 id="translating-the-theory-into-agentic-practice">Translating the Theory into Agentic Practice</h2>
-<p>Ensemble theory teaches that better agentic systems often come from organized plurality rather than a single magnificent generalist. The practical question is not "how many agents can we call?" but "which independent competencies reduce the error we actually care about?" A useful ensemble combines diversity, calibration, routing, aggregation, and budget control. Without those, a committee of agents may simply agree loudly on the same mistake.</p>
-<p>A practical orchestration layer should maintain expert profiles: domain strengths, historical accuracy, calibration, latency, cost, failure modes, and correlation with other experts. The router chooses specialists based on task features and uncertainty. The aggregator combines outputs by confidence, evidence, role, and past reliability. The monitor watches for collapse, such as one expert always dominating, all experts sharing the same bad source, or critics converging into ceremonial agreement.</p>
-<p>This applies beyond model ensembles. A coding workflow might route architecture questions to a design reviewer, risky edits to a safety reviewer, failing tests to a debugger, and final synthesis to an integrator. A research workflow might combine retrieval, statistical critique, domain expertise, and writing. A customer-support workflow might combine policy lookup, empathy framing, fraud detection, and escalation assessment. In each case, orchestration is a budgeted control problem: consult enough specialists to reduce correlated error, but not so many that latency and contradiction consume the mission.</p>
-<p>The theory's value is disciplined collectivity. It gives us a way to turn disagreement into information, specialization into leverage, and redundancy into fault tolerance. Better agent systems are not merely bigger councils. They are routed ensembles whose diversity is measured, whose costs are priced, whose votes are calibrated, and whose final decisions are better than the most charismatic member acting alone.</p>
+where (a) chooses which experts or agents to consult, (C) is monetary or compute cost, and (L) is latency. The equation packs a great deal into one line, so every symbol in it is given a plain reading in the table below.</p>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>How to read it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(V^\star(s))</td>
+<td>the best long-run value obtainable from orchestration state (s)</td>
+</tr>
+<tr>
+<td>(a)</td>
+<td>the action of consulting a particular set of experts</td>
+</tr>
+<tr>
+<td>(R(s,a))</td>
+<td>the immediate benefit of that consultation</td>
+</tr>
+<tr>
+<td>(C(a))</td>
+<td>its money or compute cost</td>
+</tr>
+<tr>
+<td>(L(a))</td>
+<td>its latency, in wall-clock delay</td>
+</tr>
+<tr>
+<td>(\lambda_c,\lambda_l)</td>
+<td>prices that convert cost and delay into the same units as benefit</td>
+</tr>
+<tr>
+<td>(\gamma\,\mathbb{E}[V^\star(s')])</td>
+<td>the discounted expected value of the state (s') you land in next</td>
+</tr>
+</tbody>
+</table>
+<p>A tiny instance: if consulting a second reviewer adds (R=0.05) of expected accuracy but costs (\lambda_c C=0.03) and (\lambda_l L=0.04) in priced delay, the call is worth (-0.02) and should not happen. Expected utility and dynamic programming give the formal discipline behind the obvious engineering rule: "call everyone" is not sophistication when the marginal expert mostly adds delay, contradiction, or correlated noise [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>] [<a href="../../references.html#ref-5">5</a>].</p>
+<h3 id="a-four-step-orchestration-loop">A Four-Step Orchestration Loop</h3>
+<p>A useful orchestration loop has four steps:</p>
+<ol>
+<li>Estimate task features and uncertainty: domain, coupling, reversibility, freshness, evidence availability, permission class, and tolerance for delay.</li>
+<li>Route to a small set of specialists whose errors are likely to be different.</li>
+<li>Aggregate with calibration rather than rank or verbosity.</li>
+<li>Update the profiles from verified outcomes.</li>
+</ol>
+<p>In the publication workflow, those four steps might mean this:</p>
+<ul>
+<li>route a new section to the drafter,</li>
+<li>extract claims for the fact checker,</li>
+<li>route only unresolved conflicts to the integrator,</li>
+<li>store the final patch plus the evidence trail as training data for future routing.</li>
+</ul>
+<p>The objective is not maximal committee size. It is minimal correlated error for a fixed budget.</p>
+<h3 id="when-uncertainty-is-spread-across-agents">When Uncertainty Is Spread Across Agents</h3>
+<p>Decentralized uncertainty is the hard case for ensembles. If the drafter and fact checker both inherit the same mistaken premise from the outline, their agreement should not be counted as independent evidence. If the fact checker cannot reveal a source because of access limits, the aggregator should distinguish three different verdicts: "verified false," "not verified," and "verified but not shareable." Collapsing them loses exactly the information a reviewer needs.</p>
+<p>Reasoning about decentralized partially observable Markov decision processes (Dec-POMDPs), introduced in Topic 1 (Coordination Protocols and Communication), sits behind these engineering choices. Route actions are communication actions, artifacts are public observations, and expert calls are costly attempts to reduce uncertainty in the joint policy.</p>
+<h3 id="what-to-report-in-an-evaluation">What to Report in an Evaluation</h3>
+<p>Evaluation should report a wide panel rather than a single score:</p>
+<ul>
+<li>ensemble lift over the best single expert;</li>
+<li>calibration under distribution shift;</li>
+<li>routing entropy and expert utilization balance;</li>
+<li>disagreement quality and stale-artifact rate;</li>
+<li>provenance diversity and correlated-error interactions;</li>
+<li>permission denials and stopping accuracy;</li>
+<li>cost-latency-normalized utility.</li>
+</ul>
+<p>Distribution shift means the future inputs no longer come from the same pattern as the examples used to train, tune, or score the router. Yesterday's fact checks were biomedical citations, today's are legal claims, and the old confidence calibration may now be a charming historical artifact.</p>
+<p>A successful agent society is not merely louder than its members. It is a routed ensemble whose disagreements contain information, whose redundancy buys fault tolerance, and whose final decision is better than the most confident participant acting alone.</p>
+<h2 id="the-institution-is-still-an-interpreter">The Institution Is Still an Interpreter</h2>
+<p>The book's arc now folds back to the single interpreter. Chapter 1, Topic 4 (Policies, Value, and Control) gave us a loop that observes, updates, chooses, and acts. Chapter 4 has not replaced that loop with a parliament of mist. It has shown how to place many such loops in one environment and make their interaction explicit: protocols for messages, mechanisms for incentives, dynamics for adaptation, and ensembles for error reduction.</p>
+<p>The institution is still an interpreter, but its registers are distributed across agents, artifacts, and logs. To build it well is to do five things at once:</p>
+<ul>
+<li>route by the task's real features;</li>
+<li>buy ensemble lift only when independence exists;</li>
+<li>watch for correlated errors and altered incentives;</li>
+<li>account for cost, latency, and permission;</li>
+<li>stop when another call would add ceremony rather than control.</li>
+</ul>
+<p>The smallest sufficient institution for the task is the one whose collective computation remains legible enough that wisdom, when it appears, is not mistaken for accident.</p>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-05-15 03:11 UTC
+      Last generated: 2026-07-27 18:55 UTC
     </footer>
   </body>
 </html>

@@ -17,15 +17,114 @@
       </aside>
       <article class="content">
         <h1 id="embodiment-sensors-actuators-and-feedback">Embodiment: Sensors, Actuators, and Feedback</h1>
-<p>Embodiment means the world answers back. Even software-only agents are embodied in infrastructure with delay, noise, saturation, and permissions that do not negotiate.</p>
-<h2 id="lag-aware-state-space-model">Lag-aware state-space model</h2>
-<p>Let latent state (x_t), control (u_t), and observation (o_t):
+<p>Embodiment means the world answers back. Our subject is agents whose actions
+land somewhere real, and the delay between the acting and the landing. We build
+a small model of that delay, learn to estimate the present from stale readings,
+and see what changes when a tool call must settle before it can be trusted.</p>
+<p>The body of a software agent is not made of metal. It is made of APIs
+(application programming interfaces, the published entry points other systems
+expose), filesystems, browsers, queues, clocks, caches, databases, rate limits,
+permissions, and humans waiting for results. These bodies have delay, noise,
+saturation, and failure modes. None of those problems become simpler because the
+agent writes fluent sentences.</p>
+<h2 id="command-effect-and-observation-are-three-different-things">Command, Effect, and Observation Are Three Different Things</h2>
+<p>An interpreter that touches the world must distinguish command from effect, and
+effect from observation. A command is what the agent asked for. An effect is
+what actually changed. An observation is what a sensor later reports. The three
+can disagree for a while, and that interval is where most embodied bugs live.</p>
+<p>Ordinary examples make the gap concrete:</p>
+<ul>
+<li>A click may not settle the page.</li>
+<li>A deploy may not become healthy.</li>
+<li>A database write may replicate later.</li>
+<li>A queue metric may describe the past.</li>
+</ul>
+<p>Embodiment is the discipline of acting under those lags while remaining correct
+enough to be trusted.</p>
+<h2 id="a-state-space-model-that-accounts-for-lag">A State-Space Model That Accounts for Lag</h2>
+<p>Before the equations, the plain idea: the world has a true condition the agent
+cannot see directly, the agent pushes on it, and the report of what happened
+arrives late. A state-space model is simply a pair of rules, one for how the
+world moves and one for what the sensors say.</p>
+<p>Let latent state (x_t), meaning hidden from the agent's sensors, plus control
+(u_t) and observation (o_t):
 [
 x_{t+1}=f(x_t,u_{t-d_u})+w_t,\qquad o_t=g(x_{t-d_o})+v_t,
 ]
-where (d_u) and (d_o) are actuation and observation lag. Policy (\pi) chooses (u_t) under bounds such as (|u_t|<em _max="\max">\infty\le u</em>), because commands outside the envelope are not bold; they are invalid.</p>
-<h2 id="estimation-control-backbone">Estimation-control backbone</h2>
-<p>For linearized dynamics, Kalman filtering gives recursive belief updates:
+where (d_u) and (d_o) are actuation and observation lag. Read the first
+equation aloud as "the state at the next step comes from the current state plus a
+command issued (d_u) steps ago, plus a random disturbance." Read the second as
+"today's observation is a function of a state from (d_o) steps ago, plus
+measurement error."</p>
+<p>The policy (\pi), the agent's rule for choosing actions, picks (u_t) under
+bounds such as (|u_t|<em _max="\max">\infty\le u</em>), because commands outside the
+envelope are not bold; they are invalid.</p>
+<h3 id="the-symbols-read-aloud">The Symbols, Read Aloud</h3>
+<p>A symbol you cannot pronounce is a symbol you will not remember, so here is a
+short glossary of the ones this loop runs on:</p>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Read it as</th>
+<th>Concrete meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(x_t)</td>
+<td>"the latent state at step t"</td>
+<td>What is really going on, such as a service's true health</td>
+</tr>
+<tr>
+<td>(u_t)</td>
+<td>"the control at step t"</td>
+<td>What the agent does, such as adding two workers</td>
+</tr>
+<tr>
+<td>(o_t)</td>
+<td>"the observation at step t"</td>
+<td>What the sensors report, such as a queue depth measured thirty seconds ago</td>
+</tr>
+<tr>
+<td>(w_t)</td>
+<td>"process noise at step t"</td>
+<td>Uncommanded changes in the world</td>
+</tr>
+<tr>
+<td>(v_t)</td>
+<td>"observation noise at step t"</td>
+<td>Error in the measurement</td>
+</tr>
+<tr>
+<td>(d_u), (d_o)</td>
+<td>"actuation lag, observation lag"</td>
+<td>How late a command lands, and how late a reading arrives</td>
+</tr>
+<tr>
+<td>(|u_t|_\infty)</td>
+<td>"the infinity norm of u at step t"</td>
+<td>The largest absolute component of the command vector</td>
+</tr>
+</tbody>
+</table>
+<p>The infinity norm is a compact way to say that no single knob may be turned too
+far at once. If a scale command is the vector ((+3, -1)), its infinity norm is
+3, so a bound of (u_{\max}=2) rejects it.</p>
+<p>This model applies directly to ordinary software operations. The latent state
+may be the real health of a service. The control may be a rollout, a rollback, or
+a scale adjustment. The observation may be delayed telemetry. The disturbance
+terms (w_t) and (v_t) stand for everything the agent did not command and
+everything the sensor did not measure cleanly. Chapter 1, Topic 3 (World Models
+and State Abstractions) develops the general habit of naming state before acting
+on it; here the new wrinkle is that the naming must include time.</p>
+<h2 id="the-estimation-and-control-backbone">The Estimation and Control Backbone</h2>
+<p>Two jobs must now be separated. Estimation asks what the state probably is.
+Control asks what to do given that estimate. Classical engineering has a standard
+answer for each.</p>
+<h3 id="predict-then-correct-the-kalman-update">Predict, Then Correct: The Kalman Update</h3>
+<p>For linearized delay-free dynamics, Kalman filtering gives recursive belief
+updates:
 [
 \hat x_{t|t-1}=A\hat x_{t-1|t-1}+Bu_{t-1},\qquad
 K_t=P_{t|t-1}H^\top(HP_{t|t-1}H^\top+R)^{-1},
@@ -33,27 +132,150 @@ K_t=P_{t|t-1}H^\top(HP_{t|t-1}H^\top+R)^{-1},
 [
 \hat x_{t|t}=\hat x_{t|t-1}+K_t(o_t-H\hat x_{t|t-1}),
 ]
-followed by feedback control (u_t=-K\hat x_t) in LQR style [<a href="../../references.html#ref-36">36</a>] [<a href="../../references.html#ref-41">41</a>].</p>
-<p>Long-run behavior is still Bellman-governed:
+followed by feedback control (u_t=-K\hat x_t) in LQR style
+[<a href="../../references.html#ref-36">36</a>] [<a href="../../references.html#ref-41">41</a>].</p>
+<p>Kalman filtering is the disciplined version of "predict, then correct." The hat
+in (\hat x) marks an estimate rather than the truth. The subscript
+(t|t-1) means "the estimate for time (t) before seeing time (t)'s
+observation"; (t|t) means "after seeing it."</p>
+<p>The remaining letters each have one job:</p>
+<ul>
+<li>Matrix (A) predicts how the state evolves on its own.</li>
+<li>Matrix (B) says how yesterday's command changes today's state.</li>
+<li>Matrix (H) says what the sensor can see.</li>
+<li>Matrix (P) records uncertainty in the estimate.</li>
+<li>Matrix (R) records observation noise. Control theory reuses the letter (R) here; it is not Chapter 1's reward.</li>
+<li>The Kalman gain (K_t) decides how strongly to trust the new observation
+  relative to the prediction.</li>
+</ul>
+<h3 id="delay-requires-an-augmented-state">Delay Requires an Augmented State</h3>
+<p>With observation delay (d_o), the state must be augmented, for example
 [
-V^\star(s)=\max_a\left{R(s,a)+\gamma\sum_{s'}P(s'|s,a)V^\star(s')\right},
+z_t=(x_t,x_{t-1},\ldots,x_{t-d_o}),
 ]
-with policy objective (J(\pi)=\mathbb{E}_\pi[\sum_t\gamma^t r_t]) [<a href="../../references.html#ref-3">3</a>] [<a href="../../references.html#ref-4">4</a>] [<a href="../../references.html#ref-5">5</a>].</p>
-<h2 id="api-embodiment-example">API embodiment example</h2>
-<p>Suppose a deployment agent scales workers from delayed queue telemetry. A naive policy reacts to stale data and oscillates; a lag-aware estimator plus bounded feedback policy stabilizes behavior and cuts rollback churn. Same API, different control geometry.</p>
-<h2 id="three-theory-braid">Three-theory braid</h2>
-<p>Control-theoretic estimation supplies the best available state from noisy delayed observations, reinforcement-learning and Bellman structure supply the long-horizon objective that prices delayed consequences, and system-level coupling analysis supplies non-negotiable constraints like latency, rate limits, and actuator saturation, so embodied intelligence appears as one continuous braid of foresight (optimize return over time), responsiveness (update estimates every observation), and resilience (maintain stable bounded feedback (u_t=-K\hat x_t) under disturbance) [<a href="../../references.html#ref-36">36</a>] [<a href="../../references.html#ref-3">3</a>] [<a href="../../references.html#ref-4">4</a>] [<a href="../../references.html#ref-2">2</a>].</p>
-<h2 id="how-to-study-this-formally">How to study this formally</h2>
-<p>Measure delay margin, sensor-noise sensitivity, saturation events, and closed-loop stability under perturbations. Compare with and without lag-aware estimation/control. An embodied agent that ignores feedback geometry is not autonomous; it is merely loud.</p>
-<h2 id="translating-the-theory-into-agentic-practice">Translating the Theory into Agentic Practice</h2>
-<p>Embodiment theory reminds us that even a text-only agent has a body: APIs, filesystems, queues, browsers, databases, rate limits, clocks, caches, and humans with finite patience. Better agents model those bodies explicitly. They know that observations can be stale, actions can be delayed, tools can saturate, and the environment can change between plan and execution. The world is not a passive blackboard waiting for the agent's chalk.</p>
-<p>A practical embodied architecture maintains sensor models and actuator models. Sensor models record freshness, noise, authority, and sampling delay: "CI status is ten minutes old," "browser DOM changed after click," "repository search may miss generated code." Actuator models record effect delay, reversibility, rate limits, blast radius, and confirmation signals: "deployment takes five minutes to settle," "email send is irreversible," "file edit is reversible until committed." The policy should use these models before deciding whether to wait, probe, act, or escalate.</p>
-<p>Feedback is the decisive design principle. A deployment agent should not scale, deploy, and declare victory from its own optimism; it should observe health metrics, compare them to expected dynamics, and correct or roll back. A browser agent should verify the page state after each click. A data agent should inspect query results before assuming a transformation worked. Every nontrivial action should have an observation plan, because acting without sensing is just command-shaped superstition.</p>
-<p>The theory's value is that it gives agent builders the vocabulary of delay, noise, saturation, and stability. These are the quiet forces that make demos fail in production. Designing with embodiment in mind yields agents that move cautiously when sensors are stale, act boldly when feedback is strong, and remain bounded when tools misbehave. Autonomy is not the absence of feedback; it is obedience to the right feedback at the right time.</p>
+so the filter estimates the present from a history that explicitly contains the
+stale state being observed. Read (z_t) as "the stacked list of the present
+state and the last (d_o) states." Calling a standard delay-free update
+"lag-aware" without this augmentation is a category error.</p>
+<p>The augmented state (z_t) is also an estimate, not an oracle. It contains
+latent variables for the present and the recent past so the filter can reason
+about which old state a delayed observation is actually describing. The agent is
+carrying a little clockwork model of time, not a perfect diary of truth.</p>
+<h3 id="two-different-ks-estimation-gain-versus-feedback-gain">Two Different K's: Estimation Gain Versus Feedback Gain</h3>
+<p>Do not confuse that (K_t) with the feedback gain (K) in (u_t=-K\hat x_t).
+The first (K_t) belongs to estimation; it tells the interpreter how to update
+belief. The second (K) belongs to control; it tells the actuator how hard to
+push once a state estimate exists. LQR, linear-quadratic regulation, is the
+classical setting where a linear system is controlled by minimizing a quadratic
+penalty on state error and control effort. In practice you tune that penalty:
+raise the price of control effort and the agent pushes more gently.</p>
+<h3 id="a-worked-queue-estimate-you-can-check-mentally">A Worked Queue Estimate You Can Check Mentally</h3>
+<p>For a scalar queue example, suppose yesterday's delayed sensor says the queue
+was 100 jobs. The model predicts that two added workers should have reduced it to
+70 by now. A noisy current observation reports 80. A cautious Kalman gain of
+(K_t=0.25) updates the estimate to
+(70+0.25(80-70)=72.5).</p>
+<p>The arithmetic is small on purpose: prediction and observation differ by 10 jobs,
+and a quarter of 10 is 2.5. The agent should scale from 72.5, not blindly from the
+stale 100 or the noisy 80.</p>
+<h3 id="act-on-an-estimate-not-on-the-last-string-received">Act on an Estimate, Not on the Last String Received</h3>
+<p>The control-theoretic point is modest but powerful: the agent should act on an
+estimate of present state, not on the last string it received. Long-run behavior
+is still governed by the same reinforcement-learning objective
+(J(\pi)=\mathbb{E}_\pi[\sum_t\gamma^t r_t]), read as "the expected sum of
+rewards under the policy, with later rewards discounted by (\gamma) each step."
+The state supplied to the policy must be earned through sensing and filtering
+[<a href="../../references.html#ref-3">3</a>] [<a href="../../references.html#ref-4">4</a>]
+[<a href="../../references.html#ref-5">5</a>].</p>
+<h2 id="feedback-in-ordinary-tools">Feedback in Ordinary Tools</h2>
+<p>Suppose a deployment agent scales workers from delayed queue telemetry. A naive
+policy reacts to stale data and oscillates: queue high, scale up; delayed queue
+still high, scale up again; delayed drop finally appears, scale down too far. A
+lag-aware estimator plus a bounded feedback policy stabilizes behavior and cuts
+rollback churn. Same API, different control geometry.</p>
+<p>The loop that fixes the oscillation is short. Each line is one step:</p>
+<pre><code class="language-text">observe telemetry with timestamp
+estimate current queue depth from delayed samples
+choose bounded scale adjustment
+wait for the expected settling interval
+observe health before issuing the next adjustment
+</code></pre>
+<p>In words: timestamp the reading, correct for the lag, command within the bound,
+wait for settling, then confirm health before commanding again.</p>
+<h3 id="the-same-loop-in-browsers-databases-and-code">The Same Loop in Browsers, Databases, and Code</h3>
+<p>A browser agent follows the same pattern at smaller scale. It clicks, observes
+the DOM (Document Object Model, the browser's live tree of page elements) after
+the page has had time to respond, compares the new state to the
+expected transition, and only then continues. A data agent runs a query, inspects
+rows and errors, and updates its belief about the schema. A code agent edits,
+runs tests, and treats failures as observations rather than insults.</p>
+<h3 id="when-feedback-helps-and-when-it-misleads">When Feedback Helps and When It Misleads</h3>
+<p>Feedback helps only when its timing and quality fit the task. If delay is short,
+noise is low, disturbances are small, and the system has settled, feedback can
+turn action into control.</p>
+<p>Feedback can also lure the interpreter into overcorrection. That happens when the
+sensor reports the past, when the world is being disturbed by other actors, or
+when the actuator has not yet had time to take effect. Planning and reflection do
+not automatically cure this. Composed with stale feedback, they may amplify
+oscillation by inventing elaborate reasons to chase yesterday's measurement.</p>
+<p>The practical question is always fourfold: what state does this observation
+describe, how noisy is it, what changed while it was traveling, and has the
+system had time to settle?</p>
+<h2 id="sensor-and-actuator-models">Sensor and Actuator Models</h2>
+<p>A practical embodied architecture records two kinds of models, one for reading
+the world and one for changing it.</p>
+<p>Sensor models describe freshness, noise, authority, sampling delay, and blind
+spots. Written down, they read like this:</p>
+<ul>
+<li>"CI status, meaning the continuous integration pipeline's report, is ten minutes old."</li>
+<li>"Repository search excludes generated code."</li>
+<li>"Browser state may have changed after navigation."</li>
+</ul>
+<p>Actuator models describe effect delay, reversibility, rate limits, blast radius,
+and confirmation signals:</p>
+<ul>
+<li>"Deployment takes five minutes to settle."</li>
+<li>"Email send is irreversible."</li>
+<li>"File edit is reversible until committed."</li>
+</ul>
+<h3 id="choosing-between-waiting-probing-acting-and-escalating">Choosing Between Waiting, Probing, Acting, and Escalating</h3>
+<p>These models let the policy choose among four moves rather than always acting.
+If telemetry is stale, observe again or widen uncertainty. If an actuator is
+saturated, meaning further commands produce no additional effect, stop issuing
+larger commands and choose a different route. If the confirmation signal never
+arrives, consult an independent sensor before retrying an irreversible action.
+Topic 4 (Safety Constraints and Guardrails) takes up the harder cases of
+irreversibility.</p>
+<h3 id="where-control-reward-and-system-limits-meet">Where Control, Reward, and System Limits Meet</h3>
+<p>Three bodies of theory each supply one piece of this loop.
+Control-theoretic estimation supplies the best available state from noisy,
+delayed observations. Reinforcement learning supplies the long-horizon objective
+that prices delayed consequences. System-level analysis supplies constraints such
+as latency, rate limits, and actuator saturation
+[<a href="../../references.html#ref-36">36</a>] [<a href="../../references.html#ref-3">3</a>]
+[<a href="../../references.html#ref-4">4</a>] [<a href="../../references.html#ref-2">2</a>]. The shared
+lesson is that autonomy is not the absence of feedback. It is obedience to the
+right feedback at the right time.</p>
+<h3 id="how-to-measure-whether-an-agent-is-safely-embodied">How to Measure Whether an Agent Is Safely Embodied</h3>
+<p>Evaluate embodied agents by measuring six things:</p>
+<ol>
+<li>Delay margin, or how much extra lag the loop tolerates before going unstable.</li>
+<li>Sensitivity to sensor noise.</li>
+<li>Disturbance recovery, meaning how quickly the agent returns to target after an
+   uncommanded change.</li>
+<li>Settling time after actions.</li>
+<li>Saturation events, counted whenever a command exceeded what the actuator could
+   deliver.</li>
+<li>Closed-loop stability with and without lag-aware estimation, run as an A/B
+   comparison, meaning two matched groups of runs that differ in exactly one
+   design choice.</li>
+</ol>
+<p>An agent that ignores feedback geometry may still produce confident commands, but
+it is not yet safely embodied.</p>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-05-15 03:11 UTC
+      Last generated: 2026-07-27 18:55 UTC
     </footer>
   </body>
 </html>

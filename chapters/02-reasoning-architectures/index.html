@@ -17,7 +17,32 @@
       </aside>
       <article class="content">
         <h1 id="chapter-2-reasoning-architectures">Chapter 2: Reasoning Architectures</h1>
-<p>This chapter treats reasoning systems as interpreters: they execute loops over thought, memory, action, and critique.</p>
+<p>Picture an agent asked to fix a failing test. Before editing a file, it reads the error, recalls what the module does, and sketches two candidate causes. All of that happens inside the agent, and this chapter is about those inner steps.</p>
+<h2 id="reasoning-as-an-interpreter-not-a-mood">Reasoning as an Interpreter, Not a Mood</h2>
+<p>This chapter treats reasoning systems as interpreters. An <em>interpreter</em> is a program that repeatedly reads a state and takes one legal step. Here the loop runs over thought, memory, action, and critique.</p>
+<p>Chapter 1 gave us the basic agent machine, in five moves:</p>
+<ol>
+<li>Observe the world.</li>
+<li>Update belief, meaning the agent's current best account of hidden facts.</li>
+<li>Choose a governed action, meaning one allowed by its constraints.</li>
+<li>Execute it.</li>
+<li>Learn from the result.</li>
+</ol>
+<p>Chapter 2 adds a new layer inside that machine: a reasoning interpreter that can spend controlled internal steps before touching the outside world. Internal steps cost time and tokens, so budget them.</p>
+<p>That layer changes the question. Instead of asking only "what should the agent do next?", we now ask "what legal thinking, planning, remembering, and self-checking steps may the agent run before it acts?"</p>
+<h2 id="the-running-example-and-the-four-things-it-learns-to-do">The Running Example, and the Four Things It Learns to Do</h2>
+<p>The running example is the same practical creature in a more elaborate costume: a coding or research agent trying to complete a task without inventing evidence, exceeding budget, or confusing a wish with a dependency. Wanting a library to export a function does not make the export exist.</p>
+<p>Across this chapter, that agent will do four things:</p>
+<ul>
+<li>Reason as a transition system, meaning states plus rules for legal moves between them.</li>
+<li>Plan by searching through possible interpreter states.</li>
+<li>Retrieve memory as an action with cost and risk, not as a free lookup.</li>
+<li>Debug itself by inspecting whole traces rather than final answers alone.</li>
+</ul>
+<h2 id="these-parts-are-options-not-a-mandatory-parade">These Parts Are Options, Not a Mandatory Parade</h2>
+<p>Planning, memory, retrieval, and reflection should not be read as a royal procession of stages that every agent must always march through. They are alternative modifications to the same machine.</p>
+<p>Consider three tasks. One may need a deeper search horizon, meaning it looks further ahead. Another may need a stricter memory policy. A third may need reflection after a failed tool call, and no reflection at all before a trivial answer.</p>
+<p>The useful question is not "did we add all the fashionable organs?" but which change to state, control flow, feedback, memory, authority, or stopping condition improves <em>this</em> task enough to justify its cost. Sometimes none do.</p>
 <h2 id="topics">Topics</h2>
 <ol>
 <li><a href="topic-01-reasoning-loops-as-interpreters.html">Reasoning Loops as Interpreters</a></li>
@@ -28,7 +53,7 @@
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-05-15 03:11 UTC
+      Last generated: 2026-07-27 18:55 UTC
     </footer>
   </body>
 </html>

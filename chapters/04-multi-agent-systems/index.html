@@ -18,6 +18,21 @@
       <article class="content">
         <h1 id="chapter-4-multi-agent-systems">Chapter 4: Multi-Agent Systems</h1>
 <p>When one agent is uncertain, we consult evidence. When many agents are uncertain, we need institutions.</p>
+<p>This chapter is about several agents working at once on one task. One agent is a program. Many agents are a small society, and societies need rules.</p>
+<h2 id="from-one-interpreter-to-many">From One Interpreter to Many</h2>
+<p>Chapter 1 built a single interpreter. It observes the environment, updates state, chooses an action, executes it, and loops. This chapter adds one more layer around that interpreter. Now several such machines run at once. Each has its own partial state, meaning it sees only a slice of the world. Each has its own budget, its own memory, and its own authority. Yet all of them affect one shared world.</p>
+<h2 id="why-benefits-stop-adding-up">Why Benefits Stop Adding Up</h2>
+<p>This is the decisive test of composition. Two agents look like twice the capability. Say one agent alone finishes 6 tasks an hour. Two rarely finish 12, because they now queue behind the same file lock and the same rate limit. Benefits that looked additive in isolation stop being additive once interpreters share state, cost, authority, latency, and incentives.</p>
+<p>The new layer is therefore not "more prompting." It is an institutional evaluator: an evaluator that runs the rules of a group rather than the steps of one agent. Four kinds of rules do that work:</p>
+<ul>
+<li>Protocols decide who may speak.</li>
+<li>Mechanisms decide how scarce authority is allocated.</li>
+<li>Learning dynamics reveal which conventions survive adaptation.</li>
+<li>Ensembles decide when disagreement is useful evidence rather than noise.</li>
+</ul>
+<h2 id="the-running-example-this-books-publication-workflow">The Running Example: This Book's Publication Workflow</h2>
+<p>The running example is the publication workflow itself. A drafter proposes text. A fact checker tests claims. An integrator commits patches. A router decides which interpreter should see the next fragment of work.</p>
+<p>The shared document becomes the common heap, the one store every agent may touch. The audit log becomes the continuation, the record of what still must happen. Messages, votes, bids, critiques, and commits become the visible transitions. By them, many local evaluators simulate one larger, stranger program.</p>
 <h2 id="topics">Topics</h2>
 <ol>
 <li><a href="topic-01-coordination-protocols-and-communication.html">Coordination Protocols and Communication</a></li>
@@ -28,7 +43,7 @@
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-05-15 03:11 UTC
+      Last generated: 2026-07-27 18:55 UTC
     </footer>
   </body>
 </html>

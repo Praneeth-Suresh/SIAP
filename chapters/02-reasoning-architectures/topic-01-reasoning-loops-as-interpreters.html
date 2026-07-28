@@ -17,54 +17,224 @@
       </aside>
       <article class="content">
         <h1 id="reasoning-loops-as-interpreters">Reasoning Loops as Interpreters</h1>
-<p>An agent loop is an interpreter in a tailored orchestration suit: it reads state, executes a semantic step, and returns a new state with fewer illusions about the world. Once we treat it this way, debugging becomes mathematics instead of transcript divination.</p>
-<h2 id="operational-core-a-tiny-machine-for-thought-and-action">Operational core: a tiny machine for thought and action</h2>
-<p>Let machine state be (\sigma=(m,h,b,\tau,\kappa)): memory (m), interaction history (h), belief (b), tool context (\tau), and control budget (\kappa). A loop step is a labeled transition
+<p>Read an agent's reasoning as a small programming language: it has a state, a set of legal moves, and a rule that says when the computation is finished. Once you see reasoning that way, you can ask precise questions about it instead of admiring it. You can also debug it, which is the more useful skill.</p>
+<h2 id="what-a-reasoning-architecture-adds-to-the-loop">What a Reasoning Architecture Adds to the Loop</h2>
+<p>Chapter 1 ended with an agent interpreter. Its cycle was: observe, update belief, abstract state, choose a governed action, execute, and repeat.</p>
+<p>A reasoning architecture is a refinement of that interpreter. It is the part of the agent that decides which internal computations count as legal steps before an external action is allowed to occur. In other words, it governs the thinking that happens between two moments of consequence.</p>
+<p>This shift matters because "reasoning" is otherwise too easy to treat as a mood of the model. In an engineered agent, reasoning is a transition system: a machine that moves from one state to another by named steps. Such a system has four visible parts:</p>
+<ul>
+<li>state, meaning everything the loop currently knows and holds;</li>
+<li>admissible moves, meaning the steps the loop is allowed to take;</li>
+<li>guards and budgets, meaning the conditions and resources that permit a move;</li>
+<li>halting conditions, also called stopping conditions in this book, meaning the test that says the computation is done.</li>
+</ul>
+<p>Once those pieces are explicit, we can ask ordinary semantic questions. What states can this loop reach? Which transitions mutate the outside world? Which invariants are preserved? Which failures are illegal states rather than disappointing outputs? The last question is the sharpest one. A disappointing output is a matter of taste; an illegal state is a bug with a location.</p>
+<h2 id="why-pattern-must-mean-something-mechanical">Why "Pattern" Must Mean Something Mechanical</h2>
+<p>Call an agentic pattern a disciplined change to this little machine. A pattern earns the name by changing one of five things:</p>
+<ol>
+<li>It may add a field to state, such as a plan frontier (the set of plan steps still open) or a memory handle (a reference the loop can use to fetch stored material).</li>
+<li>It may add legal transitions, such as <code>retrieve</code> or <code>critique</code>.</li>
+<li>It may introduce a feedback channel, such as test results that update the controller rather than merely decorate the transcript.</li>
+<li>It may strengthen authority guards before dangerous actions.</li>
+<li>It may change the halt predicate, so the agent stops only after evidence, budget, and task conditions line up.</li>
+</ol>
+<p>This definition keeps the word "pattern" from becoming incense. A pattern is not a vibe; it is a modification to machine state, legal transitions, feedback channels, authority guards, or the predicate that says the computation is done.</p>
+<h2 id="the-machine-state">The Machine State</h2>
+<p>Let machine state be
+[
+\sigma=(m,h,b,\tau,\kappa),
+]
+where (m) is memory, (h) is interaction history, (b) is belief, (\tau) is tool context, and (\kappa) is the remaining control budget. Read (\sigma) aloud as "sigma, the current machine state", and read (\kappa) as "kappa, the budget left".</p>
+<p>That is a good many letters for one definition, so the following table gathers them in one place for reference:</p>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Read aloud as</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(\sigma)</td>
+<td>"sigma"</td>
+<td>the whole machine state at one moment</td>
+</tr>
+<tr>
+<td>(m)</td>
+<td>"m"</td>
+<td>memory the loop can consult</td>
+</tr>
+<tr>
+<td>(h)</td>
+<td>"h"</td>
+<td>the interaction history so far</td>
+</tr>
+<tr>
+<td>(b)</td>
+<td>"b"</td>
+<td>the agent's belief about the situation</td>
+</tr>
+<tr>
+<td>(\tau)</td>
+<td>"tau"</td>
+<td>tool context: which tools exist and what shapes their arguments take</td>
+</tr>
+<tr>
+<td>(\kappa)</td>
+<td>"kappa"</td>
+<td>the remaining control budget for deliberation and action</td>
+</tr>
+<tr>
+<td>(\ell)</td>
+<td>"ell"</td>
+<td>the label naming which kind of step was taken</td>
+</tr>
+</tbody>
+</table>
+<p>A loop step is a labeled transition
 [
 \sigma \xrightarrow{\ell} \sigma',\qquad \ell\in{\texttt{think},\texttt{act},\texttt{observe},\texttt{reflect}},
 ]
-with legality defined by inference rules in the SOS style [<a href="../../references.html#ref-42">42</a>]. For example, a tool call can only fire when schema checks and budget guards hold:
+with legality defined by inference rules in the style of structural operational semantics [<a href="../../references.html#ref-42">42</a>]. Read the arrow as "state sigma steps to state sigma-prime by a step of kind ell".</p>
+<p>A tool call, for example, can fire only when its arguments satisfy the tool schema and the loop still has budget:
 [
 \frac{\texttt{schema_ok}(a,\tau)\ \wedge\ \kappa&gt;0}{\langle \texttt{act}(a),\sigma\rangle \to \sigma'}.
-]
-This is not aesthetic pedantry; it is how you make "invalid tool call" a theorem-violating event rather than a vague complaint.</p>
-<p>The complete loop is the least fixed point of one-step execution:
+]</p>
+<h3 id="reading-the-inference-rule-as-a-legal-tablet">Reading the Inference Rule as a Legal Tablet</h3>
+<p>Read the inference rule as a tiny legal-code tablet. The facts in the numerator, the upper part of the fraction, are premises. Here there are two of them: the proposed action (a) must match the tool context (\tau), and the remaining budget (\kappa) must be positive. The statement in the denominator, the lower part, is the transition the interpreter is allowed to take when those premises hold.</p>
+<p>Structural operational semantics is the discipline of defining a language by such local execution rules. It does not offer a paragraph saying what the whole program "means". It specifies which small steps are legal from each state.</p>
+<p>The rule is small, but its effect is large. An invalid tool call becomes a violation of the agent language, not a vague "model mistake". A builder checks this rule by refusing the call at the boundary: if the arguments fail validation, or the budget reads zero, no external call is made and the refusal is recorded with a reason.</p>
+<h3 id="traces-reachability-and-invariants">Traces, Reachability, and Invariants</h3>
+<p>The complete loop is the execution relation generated by repeated one-step execution:
 [
-\mathcal{L}(\sigma)=
-\begin{cases}
-\sigma &amp; \text{if }\texttt{halt}(\sigma)\
-\mathcal{L}(F(\sigma)) &amp; \text{otherwise}
-\end{cases}
+\sigma_0 \xrightarrow{\ell_0} \sigma_1
+\xrightarrow{\ell_1}\cdots
+\xrightarrow{\ell_{T-1}} \sigma_T,
+\qquad \texttt{halt}(\sigma_T).
 ]
-where (F) is the semantic step function. Invariant proofs then become first-class engineering artifacts: if (I(\sigma)) and (I(\sigma)\Rightarrow I(F(\sigma))), then (I) is preserved along all reachable traces.</p>
-<h2 id="utility-compass-and-long-horizon-control">Utility compass and long-horizon control</h2>
-<p>Expected-utility foundations supply the "why" behind every transition: at decision time,
+Read this as a chain: the loop starts at (\sigma_0), takes labeled steps one at a time, and stops at (\sigma_T) because the halt test finally holds there.</p>
+<p>If one wants a denotational account, this relation can later be embedded in an ordered domain and studied by fixed-point methods. For engineering purposes the operational trace is already powerful. If (I(\sigma)) holds initially and every legal transition preserves it, then (I) holds along every reachable trace. That includes traces that halt late and traces that fail early.</p>
+<h3 id="the-vocabulary-behind-reachability">The Vocabulary Behind Reachability</h3>
+<p>Several technical words are doing quiet work here, so each deserves a plain definition.</p>
+<ul>
+<li>An invariant is a property that should remain true after every legal step. Two practical examples: "external actions require permission", and "raw observations are stored before summaries are trusted."</li>
+<li>A reachable state is any (\sigma_T) that can be produced from the initial state (\sigma_0) by zero or more legal transitions. Unreachable states may be imaginable, but the interpreter can never actually enter them.</li>
+<li>Denotational semantics gives meanings by mapping programs or transition systems into mathematical objects, often functions.</li>
+<li>An ordered domain is a collection of meanings arranged by an information order, where one approximation can be less precise than another.</li>
+<li>A fixed point is a value (x) with (F(x)=x). In semantics it often describes the stable meaning obtained when repeatedly applying a behavior equation no longer changes what we know.</li>
+</ul>
+<p>Freshmen need not worship these terms, but they should recognize the ceremony. Local transition rules generate traces, traces define reachability, and reachability is where invariants either live or perish.</p>
+<h2 id="four-kinds-of-steps">Four Kinds of Steps</h2>
+<p>The labels separate internal computation from external consequence. Each label carries a different contract:</p>
+<ul>
+<li><code>think</code> may update candidate hypotheses, plan fragments, or uncertainty estimates. It must not mutate the outside world.</li>
+<li><code>act</code> is the only transition that invokes an external tool or changes an external system.</li>
+<li><code>observe</code> incorporates tool results, user replies, or environment measurements into belief while preserving raw evidence for audit.</li>
+<li><code>reflect</code> revises policies, summaries, or future search heuristics, without pretending that a failed action succeeded.</li>
+</ul>
+<h3 id="a-semantic-skeleton-in-pseudocode">A Semantic Skeleton in Pseudocode</h3>
+<p>One compact interpreter makes those contracts visible. The pseudocode below loops until the halt test passes, asks a controller which label to run next, performs the matching update, and checks the invariants after every step. Note that only the <code>act</code> branch carries the two guards, schema validity and positive budget.</p>
+<pre><code class="language-text">while not halt(sigma):
+    ell &lt;- controller.select_label(sigma)
+
+    if ell == think:
+        sigma &lt;- propose_or_score(sigma)
+    if ell == act:
+        require schema_ok(action, sigma.tools)
+        require sigma.budget &gt; 0
+        sigma &lt;- execute_external_action(sigma)
+    if ell == observe:
+        sigma &lt;- update_belief_from_raw_observation(sigma)
+    if ell == reflect:
+        sigma &lt;- revise_internal_policy_notes(sigma)
+
+    require invariants_hold(sigma)
+</code></pre>
+<p>This is not meant as a production runtime. It is a semantic skeleton. A real implementation may use event logs, queues, type systems, and permission services. The same distinction remains: reasoning steps are interpreter transitions whose side effects must be named.</p>
+<h2 id="utility-and-control-inside-the-loop">Utility and Control Inside the Loop</h2>
+<p>The transition system needs a selection principle. Something must say which legal move to take.</p>
+<h3 id="choosing-the-next-step-by-expected-consequence">Choosing the Next Step by Expected Consequence</h3>
+<p>Expected-utility theory supplies the local one:
 [
 a_t^\star=\arg\max_{a\in\mathcal{A}} \mathbb{E}[U(a,S_t)\mid h_t],
 ]
-so deliberation is justified only if it improves expected consequence quality [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>]. Over longer horizons, the same logic lifts to Bellman recursion on interpreter state:
+so deliberation is justified only when it improves expected consequences enough to pay for itself [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>]. Read the formula as "pick the action (a) from the action set (\mathcal{A}) whose average usefulness, given the history so far, is highest".</p>
+<p>A tiny example makes the accounting concrete. Suppose acting now succeeds with probability (0.6) for a payoff of (10), so its expected value is (6). Suppose one extra retrieval step raises the success chance to (0.8), giving (8), but costs (1). The extra thinking is worth it: (8-1=7) beats (6). Raise the retrieval cost to (3) and it is not.</p>
+<p>Over longer horizons, the same idea lifts to Bellman recursion on interpreter state:
 [
 V^\star(\sigma)=\max_a\left{r(\sigma,a)+\gamma\sum_{\sigma'}P(\sigma'\mid \sigma,a)V^\star(\sigma')\right},
 ]
-making it explicit that today's loop policy is selecting tomorrow's option set [<a href="../../references.html#ref-5">5</a>] [<a href="../../references.html#ref-4">4</a>].</p>
-<p>Control enters when compute and safety must remain stable under disturbance. A simple budget-feedback law can regulate deliberation intensity:
+which makes the next-step policy accountable for the options it creates or destroys later [<a href="../../references.html#ref-5">5</a>] [<a href="../../references.html#ref-4">4</a>]. Read (V^\star(\sigma)) as "the best long-run value obtainable from state sigma", (r(\sigma,a)) as the immediate reward, (\gamma) as the discount that shrinks future value, and (P(\sigma'\mid\sigma,a)) as the chance of landing in (\sigma'). With (r=1), (\gamma=0.9), and a single successor worth (10), the value is (1+0.9\times 10=10).</p>
+<h3 id="regulating-deliberation-with-a-budget-law">Regulating Deliberation with a Budget Law</h3>
+<p>Control enters because reasoning consumes scarce resources and operates under disturbance. A simple budget-feedback law can regulate deliberation intensity:
 [
 \kappa_{t+1}=\kappa_t-\text{cost}(a_t)+\rho\big(\kappa_{\text{target}}-\kappa_t\big),
 ]
-and, in linearized settings, action can be represented as (u_t=-K\hat x_t) over estimated state (\hat x_t), emphasizing that loop quality is a closed-loop property, not a one-shot prompt property [<a href="../../references.html#ref-36">36</a>] [<a href="../../references.html#ref-41">41</a>].</p>
-<h2 id="three-theory-braid">Three-theory braid</h2>
-<p>Structural operational semantics gives us legal moves as transition judgments (\langle c,\sigma\rangle\to\sigma'), abstract interpretation gives us scalable guarantees through (F^\sharp=\alpha\circ F\circ\gamma) with sound over-approximation of reachable states, and reason-act trajectories in modern LLM agents ground those abstractions in empirical traces where (\texttt{think}\to\texttt{act}\to\texttt{observe}\to\texttt{reflect}) is literally visible token by token, so the architecture of intelligence appears as a disciplined interplay of foresight (utility-guided policy), responsiveness (online transition updates), and resilience (invariants preserved under noisy tools and partial observability) [<a href="../../references.html#ref-42">42</a>] [<a href="../../references.html#ref-43">43</a>] [<a href="../../references.html#ref-11">11</a>].</p>
-<h2 id="how-to-study-this-formally">How to study this formally</h2>
-<p>Instrument each transition label, prove step invariants (schema validity, budget non-negativity, permission monotonicity), and run interventional trace replay when failures occur [<a href="../../references.html#ref-6">6</a>]. If you cannot state the semantics of your loop, you can still ship demos; you just cannot ship explanations.</p>
-<h2 id="translating-the-theory-into-agentic-practice">Translating the Theory into Agentic Practice</h2>
-<p>The interpreter view gives agent builders a magnificent little hammer: define the loop as a machine with state, transitions, guards, and invariants. Instead of asking "what should the prompt say?", ask "what states can the system enter, what transitions are legal, and what must remain true after every step?" The prompt becomes one component inside a semantics, not the sovereign monarch of the whole arrangement.</p>
-<p>In practice, the loop state should be a typed object: current task, belief summary, memory handles, tool permissions, budget ledger, pending commitments, and halt criteria. Each transition should have a name and a contract. <code>think</code> may update hypotheses but not mutate the outside world. <code>act</code> may call tools only through schemas and permission checks. <code>observe</code> may update belief but must preserve the raw result for audit. <code>reflect</code> may revise policy notes but should not launder failure into cheerful prose. These distinctions make execution traces intelligible.</p>
-<p>This architecture improves debugging dramatically. When an agent fails, the question becomes local: did the planner choose an illegal transition, did a guard fail to block it, did observation parsing corrupt state, or did a preserved invariant turn out to be the wrong invariant? Trace replay can then intervene on a single transition class, replacing one retrieved document, one tool argument, or one budget threshold to test causal responsibility.</p>
-<p>The value of the theory is that it turns agent loops into small languages. Once a loop is a language, we can give it syntax, semantics, tests, monitors, and eventually proofs of modest but precious properties. A reasoning agent whose operational semantics are explicit is no longer an oracle with a log file. It is an executable theory of thought, and its mistakes can be studied with instruments sharper than disappointment.</p>
+and, in linearized settings, action can be represented as (u_t=-K\hat x_t) over estimated state (\hat x_t). Read that second expression as "the control input (u) at time (t) is a gain matrix (K) applied, with a minus sign, to the current estimate of the state".</p>
+<p>The point is not that every language agent is a linear controller. The point is that loop quality is a closed-loop property. The system must measure, correct, and continue under model error [<a href="../../references.html#ref-36">36</a>] [<a href="../../references.html#ref-41">41</a>].</p>
+<h3 id="reading-the-budget-equation-slowly">Reading the Budget Equation Slowly</h3>
+<p>The budget equation deserves a plain reading, one step at a time.</p>
+<ol>
+<li>Start with current budget (\kappa_t).</li>
+<li>Subtract the cost of the chosen step.</li>
+<li>Then add the feedback term (\rho(\kappa_{\text{target}}-\kappa_t)).</li>
+</ol>
+<p>If (\kappa_t) is below the target and (\rho&gt;0), this term is positive; if it is above the target, the term is negative. Try numbers: with (\kappa_t=40), a step cost of (6), a target of (50), and (\rho=0.5), the feedback term is (0.5\times(50-40)=5), so (\kappa_{t+1}=40-6+5=39).</p>
+<p>Thus the law intentionally replenishes or tightens the budget as a control signal, not as a magical refund for tokens already spent. A production system might implement that replenishment as "allow a little more cheap reflection because the loop is under its deliberation target". Or it might clamp the term at zero when budgets are hard safety limits.</p>
+<p>The equation models a regulator; the engineering policy decides what (\kappa) really is. It may be a soft deliberation allowance, a hard money limit, or two ledgers kept separately so the empire does not pay twice for one thought.</p>
+<h2 id="from-semantics-to-debugging">From Semantics to Debugging</h2>
+<p>Once the loop is a small language, debugging becomes local. Instead of rereading the transcript for mood, you ask four pointed questions:</p>
+<ul>
+<li>Did the planner choose a legal transition?</li>
+<li>Did the guard fail to block an illegal action?</li>
+<li>Did observation parsing corrupt belief?</li>
+<li>Did a preserved invariant turn out to be the wrong invariant?</li>
+</ul>
+<p>Abstract interpretation gives a way to over-approximate reachable states through
+[
+F^\sharp=\alpha\circ F\circ\gamma,
+]
+so some guarantees can be checked without enumerating every concrete trace [<a href="../../references.html#ref-43">43</a>]. Modern reason-act agents make this especially useful, because their traces expose interleaved reasoning, action, and observation steps in a form that can be instrumented [<a href="../../references.html#ref-11">11</a>].</p>
+<h3 id="abstract-interpretation-with-a-two-state-budget">Abstract Interpretation with a Two-State Budget</h3>
+<p>Here (F) is the concrete one-step transformer over detailed states, while (F^\sharp) is the cheaper abstract transformer over a coarser world. The abstraction function (\alpha) forgets detail on purpose. The concretization function (\gamma) says which concrete states an abstract description may represent. This (\gamma) is not Chapter 1's discount factor; abstract interpretation traditionally reuses the letter for concretization. Read (F^\sharp=\alpha\circ F\circ\gamma) as "expand the abstract description, take one concrete step, then forget the detail again".</p>
+<p>For the budget component alone, one exact little abstraction is
+[
+\alpha_\kappa(\kappa)=
+\begin{cases}
+\texttt{positive}, &amp; \kappa&gt;0,\
+\texttt{exhausted}, &amp; \kappa\le 0,
+\end{cases}
+\qquad
+\gamma_\kappa(\texttt{positive})={\kappa\mid \kappa&gt;0},\quad
+\gamma_\kappa(\texttt{exhausted})={\kappa\mid \kappa\le 0}.
+]</p>
+<p>If the safety question is merely "can an <code>act</code> transition fire?", this two-state budget kingdom is enough. All positive budgets permit the premise (\kappa&gt;0), and exhausted budgets do not.</p>
+<p>The price is precision. A concrete budget of (1) and a concrete budget of (100) both become <code>positive</code>. So the abstract checker can protect legality while remaining gloriously ignorant about whether the agent can afford a long opera of reflection.</p>
+<h3 id="designing-the-loop-state-as-a-typed-object">Designing the Loop State as a Typed Object</h3>
+<p>The practical lesson is to design the loop state as a typed object, with named fields rather than a bag of text. A workable set of fields is:</p>
+<ul>
+<li>current task;</li>
+<li>belief summary;</li>
+<li>memory handles;</li>
+<li>tool permissions;</li>
+<li>budget ledger;</li>
+<li>pending commitments;</li>
+<li>halt criteria.</li>
+</ul>
+<p>Each transition should have a name and a contract. The prompt is then one component inside a semantics, not the sovereign description of the whole system.</p>
+<h2 id="exercise">Exercise</h2>
+<p>Take an agent loop you have built or used. The goal is to state its invariants precisely enough to test them.</p>
+<ol>
+<li>Write three invariants that should hold after every transition. At least one should concern budget, one should concern permissions, and one should concern evidence preservation.</li>
+<li>For each invariant, identify the transition label most likely to violate it: <code>think</code>, <code>act</code>, <code>observe</code>, or <code>reflect</code>.</li>
+<li>For each invariant, name the observation you would need in the trace to diagnose the violation.</li>
+</ol>
+<p>A good answer is checkable. "The loop is careful with money" is not an invariant; "no <code>act</code> step runs when the budget ledger reads zero or less, and every <code>act</code> step appends its cost to the ledger" is, because a reader can point at the trace entry that proves or breaks it.</p>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-05-15 03:11 UTC
+      Last generated: 2026-07-27 18:55 UTC
     </footer>
   </body>
 </html>

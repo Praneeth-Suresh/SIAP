@@ -17,75 +17,135 @@
       </aside>
       <article class="content">
         <h1 id="world-models-and-state-abstractions">World Models and State Abstractions</h1>
-<p>A world model is a map drawn during a storm: if you sketch every raindrop, you never choose a road; if you sketch only the horizon, you drive into a lake. State abstraction is that disciplined cartography—selective forgetting in service of competent action, where elegance is measured not by compression ratio alone, but by whether the agent still reaches the right future.</p>
-<h2 id="formalization">Formalization</h2>
-<p>Let the ground control problem be an MDP ((\mathcal S,\mathcal A,T,R,\gamma)) [<a href="../../references.html#ref-4">4</a>] [<a href="../../references.html#ref-5">5</a>], and let (\phi:\mathcal S\to\mathcal Z) be an abstraction map. Exact homomorphism requires reward and transition consistency [<a href="../../references.html#ref-37">37</a>]:
-[
+<p>What should an agent carry in its head from one decision to the next? Two ideas answer that question. A <strong>world model</strong> says how the world tends to change. A <strong>state abstraction</strong> says which parts of the past are worth keeping when choosing the next action. Get these wrong and the agent either forgets what it needed or chokes on what it did not.</p>
+<p>Belief cannot remain an ever-growing transcript. An agent that remembers every token as equally available state has not become wise; it has made planning expensive and brittle.</p>
+<p>The design problem is selective forgetting. Forget too much and the agent loses the variables that make action competent. Retain too much and the policy drowns in irrelevant distinctions. Good abstraction is compression in service of control.</p>
+<h2 id="from-history-to-decision-state">From History to Decision State</h2>
+<h3 id="the-formal-setup-compressing-a-decision-problem">The Formal Setup: Compressing a Decision Problem</h3>
+<p>Let the ground control problem be a <strong>Markov decision process (MDP)</strong>, written as the tuple ((\mathcal S,\mathcal A,T,R,\gamma)) [<a href="../../references.html#ref-4">4</a>] [<a href="../../references.html#ref-5">5</a>]. Read the pieces aloud like this: (\mathcal S) is the set of states, (\mathcal A) is the set of actions, (T) is the transition rule saying which state comes next, (R) is the reward, and (\gamma) (gamma) is the discount that makes distant rewards count less.</p>
+<p>Now let (\phi:\mathcal S\to\mathcal Z) map detailed states to abstract states. Read (\phi) (phi) as "the compression map that sends a detailed state to its coarser label". Exact <strong>homomorphism</strong> requires reward and transition consistency [<a href="../../references.html#ref-37">37</a>]:</p>
+<p>[
 R(s,a)=\bar R(\phi(s),a),\qquad
 \sum_{s':\phi(s')=z'}T(s'\mid s,a)=\bar T(z'\mid \phi(s),a).
-]
-Then planning may occur in the compressed space via
-[
-\bar V^{<em>}(z)=\max_{a\in\mathcal A}\Big[\bar R(z,a)+\gamma\sum_{z'}\bar T(z'\mid z,a)\bar V^{</em>}(z')\Big],
-]
-and the lifted policy (\pi(s)=\bar\pi(\phi(s))) preserves optimal control structure in the original system [<a href="../../references.html#ref-37">37</a>]. In approximate abstractions, if reward and transition mismatches are bounded by (\varepsilon_R) and (\varepsilon_P), a standard simulation-style bound is
-[
+]</p>
+<p>A homomorphism is a structure-preserving map. In ordinary programming terms, (\phi) is a compression function. It is allowed to rename and merge states only when the merged states still behave the same way for decisions.</p>
+<p>The barred symbols (\bar R) and (\bar T) live in the abstract world (\mathcal Z). So (\bar T(z'\mid z,a)) means "the transition probability between abstract states after compression". The sum on the left collects all detailed next states (s') that (\phi) maps into the same abstract state (z').</p>
+<h3 id="a-four-state-coding-example-you-can-check-by-hand">A Four-State Coding Example You Can Check by Hand</h3>
+<p>Here is a four-state coding example. Let the detailed states be:</p>
+<ul>
+<li>(s_1=) "tests red because dependency missing";</li>
+<li>(s_2=) "tests red because dependency missing and cache stale";</li>
+<li>(s_3=) "tests red because behavior regressed";</li>
+<li>(s_4=) "tests green".</li>
+</ul>
+<p>A useful abstraction might map (\phi(s_1)=\phi(s_2)=z_D) for dependency trouble, (\phi(s_3)=z_B) for behavioral bug, and (\phi(s_4)=z_G) for green.</p>
+<p>Now check the two conditions with small numbers. Suppose the action <code>install_dependency</code> gives reward (+3) in both (s_1) and (s_2), and moves to (z_G) with probabilities (0.80) and (0.78). The rewards match exactly, and the transition probabilities differ by only (0.02). Merging (s_1) and (s_2) therefore approximately preserves reward and transition.</p>
+<p>Contrast that with a bad merge. Suppose <code>edit_logic</code> gives (-2) in (s_1) but (+6) in (s_3). Collapsing (s_1) and (s_3) into a single <code>tests_red</code> state fails action preservation. The same abstract state would recommend incompatible repairs, because the reward gap is (8), not (0).</p>
+<h3 id="planning-inside-the-compressed-space">Planning Inside the Compressed Space</h3>
+<p>Under those assumptions, planning can occur in the compressed space:</p>
+<p>[
+\bar V^{<em>}(z)=\max_{a\in\mathcal A}\Big[\bar R(z,a)+\gamma\sum_{z'}\bar T(z'\mid z,a)\bar V^{</em>}(z')\Big].
+]</p>
+<p>Read this as: the best long-run value of an abstract state is the best available immediate abstract reward plus the discounted average value of wherever that action lands you. The practical payoff is that the planner never has to look at the full detailed state space.</p>
+<h3 id="what-approximate-abstractions-cost-you">What Approximate Abstractions Cost You</h3>
+<p>The assumptions are strong. Approximate abstractions are more realistic. Their errors should be interpreted as possible value loss rather than as harmless summarization noise. A standard simulation-style bound has the shape</p>
+<p>[
 |V^{<em>}-\bar V^{</em>}!\circ\phi|<em _max="\max">\infty \lesssim \frac{\varepsilon_R}{1-\gamma}+\frac{\gamma R</em>\varepsilon_P,
-]
-which makes the central bargain explicit: every saved byte must pay rent in decision quality [}}{(1-\gamma)^2<a href="../../references.html#ref-37">37</a>] [<a href="../../references.html#ref-39">39</a>].</p>
-<p>Bisimulation metrics refine this bargain by turning “close enough” into geometry [<a href="../../references.html#ref-38">38</a>]:
-[
-d(s,s')=\max_{a\in\mathcal A}\Big(|R(s,a)-R(s',a)|+\gamma\,W_d\big(T(\cdot\mid s,a),T(\cdot\mid s',a)\big)\Big),
-]
-with (W_d) the Kantorovich lift induced by (d). If (d(s,s')) is small, the states are behaviorally interchangeable up to a quantified tolerance.</p>
-<p>And because agents act on worlds rather than merely describing them, causal world models encode mechanism, not just association [<a href="../../references.html#ref-6">6</a>]:
-[
-X_i=f_i(\mathrm{Pa}(X_i),U_i),\qquad P(x_1,\dots,x_n)=\prod_i P(x_i\mid \mathrm{pa}<em i_neq="i\neq" j="j">i),
-]
-while intervention semantics replace observation with surgery:
-[
-P(x_1,\dots,x_n\mid \mathrm{do}(X_j=x))=\mathbf{1}[x_j=x]\prod</em>_i).
-]
-That is the mathematical line between “I saw this happen” and “I can make this happen.”}P(x_i\mid \mathrm{pa</p>
-<h2 id="code-facing-pattern-logs-are-archives-state-is-policy-fuel">Code-facing pattern: logs are archives, state is policy fuel</h2>
-<p>A practical pattern is to separate <strong>observation logs</strong> (high-volume, append-only) from <strong>decision state</strong> (small, control-sufficient summary):</p>
+]}}{(1-\gamma)^2</p>
+<p>where (\varepsilon_R) and (\varepsilon_P) bound reward and transition mismatch [<a href="../../references.html#ref-37">37</a>] [<a href="../../references.html#ref-39">39</a>]. The message is practical. Every compressed-away detail is acceptable only if it does not materially change the action the agent should take.</p>
+<p>Two pieces of notation deserve a plain reading. The norm (|\cdot|_\infty), called the <strong>supremum norm</strong> or <strong>sup norm</strong>, means "look at the largest absolute error over all states". The symbol (\lesssim) means "bounded up to a conventional constant or omitted technical factor". It is a mathematician's compact way of saying that the right-hand side controls the scale of the left-hand side.</p>
+<p>The assumptions behind the bound are doing real work:</p>
+<ul>
+<li>rewards must be bounded by (R_{\max}), the largest reward magnitude;</li>
+<li>the discount must satisfy (\gamma&lt;1);</li>
+<li>(\varepsilon_R) and (\varepsilon_P) must genuinely bound the abstraction's reward and transition errors.</li>
+</ul>
+<p>Watch the discount term. With (\gamma=0.9), the factor (1/(1-\gamma)^2) is (100). With (\gamma=0.99) it is (10{,}000). If (\gamma) is close to (1), small transition errors can echo for a long time. That is why a cheerful summary such as <code>repo_status: messy</code> is not enough for high-stakes editing.</p>
+<h2 id="logs-are-archives-state-is-policy-fuel">Logs Are Archives; State Is Policy Fuel</h2>
+<h3 id="separating-the-audit-trail-from-the-decision-state">Separating the Audit Trail from the Decision State</h3>
+<p>A useful implementation separates raw memory from decision state. The code below keeps two fields: an append-only <code>event_log</code> for auditing and retrieval, and a small <code>decision_state</code> that the policy actually reads. Ingestion writes to both; acting reads only the compact one.</p>
 <pre><code class="language-python">from dataclasses import dataclass
 
 @dataclass
 class AgentMemory:
-    event_log: list[dict]          # full transcript / telemetry archive
-    decision_state: dict           # compact features used by planner
+    event_log: list[dict]        # audit trail and retrieval source
+    decision_state: dict         # compact features used by policy
 
 
 def ingest(observation: dict, mem: AgentMemory) -&gt; AgentMemory:
     mem.event_log.append(observation)
-    mem.decision_state = update_belief(mem.decision_state, observation)
+    evidence = extract_decision_relevant_features(observation)
+    mem.decision_state = update_state(mem.decision_state, evidence)
     return mem
 
 
 def act(mem: AgentMemory):
     return policy(mem.decision_state)
 </code></pre>
-<p>Use the log for audit and targeted retrieval, but let the policy read only (z_t=\psi(h_t)), a compressed sufficient statistic. In Chapter 2’s memory controller framing (see <a href="../02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval.html">Memory Systems, Context, and Retrieval</a>), retrieval should be a gated action with explicit cost, not an always-on reflex.</p>
-<h2 id="cautionary-case-when-memory-abundance-became-planning-starvation">Cautionary case: when memory abundance became planning starvation</h2>
-<p>One common failure mode is transcript maximalism: define state as (s'<em t_1="t+1">t=(s_t,\ell_t)), where (\ell_t) is a long raw interaction log, then wonder why planning quality collapses. The planner now optimizes over irrelevant detail, value estimates become noisier, and action ranking destabilizes under tiny prompt perturbations. Formally, the right requirement is conditional sufficiency,
-[
-P(s</em>,r_t\mid z_t,a_t),\qquad z_t=\psi(h_t),
-]
-not archival completeness. If your state remembers everything except what the next decision needs, you have built a luxury memory palace with no steering wheel.},r_t\mid h_t,a_t)=P(s_{t+1</p>
-<h2 id="three-theory-braid">Three-theory braid</h2>
-<p>State abstraction tells us how to compress without lying to control, bisimulation metrics tell us exactly how much behavioral truth was lost in that compression, and causal modeling tells us whether the compressed model still answers intervention questions rather than merely replaying correlations; together they define a disciplined pipeline in which action is still chosen by expected utility (a_t^{<em>}=\arg\max_a\mathbb E[U(a,S_t)\mid z_t]) [<a href="../../references.html#ref-34">34</a>], long-horizon consequences are propagated through Bellman recursion (V^{</em>}(z)=\max_a{\bar R(z,a)+\gamma\sum_{z'}\bar T(z'\mid z,a)V^{*}(z')}) [<a href="../../references.html#ref-5">5</a>] [<a href="../../references.html#ref-39">39</a>], and execution closes the loop through feedback laws such as (u_t=-K\hat x_t), where estimation and control co-govern real behavior [<a href="../../references.html#ref-36">36</a>] [<a href="../../references.html#ref-41">41</a>]; the moral is wonderfully unforgiving: a useful world model must be compact enough to think with, faithful enough to plan with, and causal enough to intervene with, or else the agent remains a brilliant spectator of consequences it cannot reliably shape [<a href="../../references.html#ref-37">37</a>] [<a href="../../references.html#ref-38">38</a>] [<a href="../../references.html#ref-6">6</a>].</p>
-<h2 id="how-to-study-this-formally">How to study this formally</h2>
-<p>Benchmark abstractions by (i) value loss (\Delta_V=|V^{<em>}-\tilde V^{</em>}\circ\phi|_\infty), (ii) intervention fidelity gaps on counterfactual test sets (compare (P(Y\mid \mathrm{do}(X=x))) predictions to observed outcomes), and (iii) robustness under distribution shift when retrieval budgets are constrained. Then run an ablation where you increase raw memory exposure while holding task and compute fixed; if extra memory hurts return, your agent is not under-informed—it is over-narrated.</p>
-<h2 id="translating-the-theory-into-agentic-practice">Translating the Theory into Agentic Practice</h2>
-<p>World models tell us what the agent thinks it is acting upon; state abstractions decide how much of that world is allowed into the control room. In practice, this means every agent needs a deliberately shaped decision state rather than a heroic transcript dump. For a coding agent, the useful state may include the failing behavior, touched files, dependency graph hints, test status, active constraints, and unresolved hypotheses. It does not need every line of every conversation unless those lines alter the next action.</p>
-<p>The design pattern is to maintain three layers. First, keep raw logs for audit and recovery. Second, build a compact decision state for planning. Third, maintain a causal or mechanistic model where interventions matter: "editing parser.py changes AST construction," "raising worker count affects queue latency after a delay," "retrieving an old policy document may contaminate answer grounding." The agent should plan on the compact state, retrieve from the archive only when value of information justifies it, and update the causal model when interventions produce surprising results.</p>
-<p>Abstraction quality should be tested by action preservation. If two states map to the same (z), the agent should be able to take the same action without material loss. If "user is annoyed" and "user is legally blocked" collapse into the same sentiment feature, the abstraction is not elegant; it is dangerous. If "test failed because dependency missing" and "test failed because behavior regressed" collapse into "tests red," the coding agent will flail with admirable consistency.</p>
-<p>Learning this theory therefore improves agents by disciplining memory, context, and planning. It tells us to compress around future decisions, not around aesthetic summaries; to preserve causal distinctions, not trivia; and to measure abstraction by downstream value loss. A good state representation admits only the variables necessary for judgment. Everything else may remain in the archive, ready to be summoned when the next decision actually needs it.</p>
+<p>For a coding agent, the decision state may include:</p>
+<ul>
+<li>the failing behavior;</li>
+<li>the touched files;</li>
+<li>dependency hints;</li>
+<li>test status;</li>
+<li>active constraints;</li>
+<li>unresolved hypotheses;</li>
+<li>remaining budget.</li>
+</ul>
+<p>It usually does not need every line of conversation. Raw logs remain available for audit and targeted retrieval. But retrieval should be a gated action with explicit cost, as later memory systems will develop in more detail (see <a href="../02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval.html">Memory Systems, Context, and Retrieval</a>).</p>
+<h3 id="the-sufficiency-condition-that-licenses-forgetting">The Sufficiency Condition That Licenses Forgetting</h3>
+<p>The formal requirement is conditional sufficiency:</p>
+<p>[
+P(s_{t+1},r_t\mid h_t,a_t)=P(s_{t+1},r_t\mid z_t,a_t),\qquad z_t=\psi(h_t).
+]</p>
+<p>Read the left side as "the chance of the next state and this step's reward given the whole history (h_t) and the action (a_t)". Read the right side the same way, but with the compressed state (z_t) in place of the history. The map (\psi) (psi) is the summarizer that turns history into that compact state.</p>
+<p>This says that, for the next decision, the compressed state (z_t) carries the predictive information from history that matters. It does not say the archive is useless. It says the policy should not be forced to plan over the archive unless the current decision needs it.</p>
+<p>Action selection can then be interpreted as expected-utility maximization over (z_t), provided the abstraction preserves the distinctions that affect utility [<a href="../../references.html#ref-34">34</a>]. A quick check for builders: if two histories produce the same (z_t) but you would want different next actions, the abstraction is already broken.</p>
+<h2 id="behavioral-and-causal-fidelity">Behavioral and Causal Fidelity</h2>
+<h3 id="measuring-close-enough-with-bisimulation-distance">Measuring "Close Enough" with Bisimulation Distance</h3>
+<p>Bisimulation metrics sharpen the idea of "close enough" by measuring whether two states behave similarly under action [<a href="../../references.html#ref-38">38</a>]:</p>
+<p>[
+d(s,s')=\max_{a\in\mathcal A}\Big(|R(s,a)-R(s',a)|+\gamma\,W_d\big(T(\cdot\mid s,a),T(\cdot\mid s',a)\big)\Big),
+]</p>
+<p>with (W_d) the Kantorovich lift induced by (d), which turns a distance between single states into a distance between distributions over states. If (d(s,s')) is small, the states are interchangeable up to a quantified tolerance. If "test failed because dependency missing" and "test failed because behavior regressed" collapse into the same feature <code>tests_red</code>, the abstraction may be compact, but it is not behaviorally faithful.</p>
+<p>A <strong>bisimulation</strong> asks whether two states can answer the same action questions. Do they give similar immediate rewards? Do they lead to similar distributions over future states? The first term in the formula checks reward. The second term compares transition distributions.</p>
+<p>(W_d), the <strong>Kantorovich lifting</strong>, is a way to lift a distance between individual states into a distance between probability distributions over states. Intuitively, it asks how much "work" is needed to transport probability mass from one next-state distribution to the other, when moving mass between unlike states is expensive.</p>
+<p>The exact transport machinery can wait; the engineering lesson cannot. If two situations lead to different repair actions, their distance should not be treated as zero merely because the same red test banner appears.</p>
+<h3 id="why-acting-agents-need-causal-models-not-just-correlations">Why Acting Agents Need Causal Models, Not Just Correlations</h3>
+<p>Agents also need causal fidelity when they intervene. A causal world model encodes mechanisms rather than only associations [<a href="../../references.html#ref-6">6</a>]:</p>
+<p>[
+X_i=f_i(\mathrm{Pa}(X_i),U_i),\qquad P(x_1,\dots,x_n)=\prod_i P(x_i\mid \mathrm{pa}_i).
+]</p>
+<p>Intervention semantics replace observation with action:</p>
+<p>[
+P(x_1,\dots,x_n\mid \mathrm{do}(X_j=x))=\mathbf{1}[x_j=x]\prod_{i\neq j}P(x_i\mid \mathrm{pa}_i).
+]</p>
+<p>These are <strong>structural causal equations</strong>. Each variable (X_i) is produced by a function (f_i) of its parents (\mathrm{Pa}(X_i)) and background disturbance (U_i). Read (\mathrm{Pa}(X_i)) as "the parents of (X_i)", meaning the variables that directly cause it. The product factorization says the joint probability can be assembled from each variable given its parents.</p>
+<p>The notation (\mathrm{do}(X_j=x)) means an intervention: set (X_j) to (x) by action, rather than merely observing that it happened to equal (x). The indicator (\mathbf{1}[x_j=x]) reads "one when (x_j) equals (x), zero otherwise", which is how the equation records that the intervened variable no longer listens to its parents. In code-agent language, observing that "tests pass after a cache clear" is not the same as knowing that clearing the cache caused the pass. Perhaps the dependency install was the real mechanism.</p>
+<p>That distinction matters for agents because they do not merely predict. They edit files, send messages, allocate resources, and call tools. "This change correlated with lower latency" is weaker than "raising worker count lowers queue latency after a delay and raises cost".</p>
+<p>A state abstraction that erases the difference between correlation and intervention will mislead control. Feedback laws such as (u_t=-K\hat x_t) are a reminder of the point. Read that as "the control input at time (t) is minus a gain matrix (K) times the estimated state (\hat x_t)". The estimated state is not a report for its own sake; it is the input to correction [<a href="../../references.html#ref-36">36</a>] [<a href="../../references.html#ref-41">41</a>].</p>
+<h2 id="studying-abstractions">Studying Abstractions</h2>
+<h3 id="good-compression-depends-on-the-task">Good Compression Depends on the Task</h3>
+<p>Evaluate abstractions by downstream behavior. The quality of a compression is task-dependent, because different tasks preserve different distinctions.</p>
+<ul>
+<li>A customer-support agent may need order status, policy version, and jurisdiction, while safely ignoring the poetic texture of the complaint.</li>
+<li>A coding agent may need failing behavior, touched files, dependency state, and test scope, while ignoring most pleasantries in the transcript.</li>
+<li>A summarizer may compress away execution permissions that a deployment agent must keep in letters ten feet high.</li>
+</ul>
+<h3 id="five-measurements-worth-taking">Five Measurements Worth Taking</h3>
+<p>These are the quantities to instrument when you are judging a candidate abstraction:</p>
+<ul>
+<li>Value loss: (\Delta_V=|V^{<em>}-\tilde V^{</em>}\circ\phi|_\infty), read as "the largest gap, over all states, between true optimal value and the abstract value pulled back through (\phi)". Estimate it by scoring the abstract policy in the detailed environment.</li>
+<li>Intervention fidelity: predicted and observed effects under controlled actions. Measure it by taking the action deliberately and comparing outcome to prediction.</li>
+<li>Robustness under distribution shift, meaning a change between the situations the abstraction was designed on and the ones it now meets, especially when retrieval budgets are constrained. Measure it by rerunning the same tasks with a tighter retrieval budget and watching how fast value loss grows.</li>
+<li>Action preservation: whether states mapped to the same (z) really support the same action.</li>
+<li>Token and latency savings: whether the smaller state reduces context size, model time, retrieval work, and tool waiting, without buying those savings by erasing decision-relevant variables.</li>
+</ul>
+<p>The interpreter now has a compact internal language. Topic 1 (Goals, Environments, and Actions) gave it a contract. Topic 2 (Belief, Uncertainty, and Decision) gave it belief. This topic gives it a state representation small enough to act on but faithful enough to trust. The remaining question is how action selection becomes governed control rather than a single eager choice.</p>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-05-15 03:11 UTC
+      Last generated: 2026-07-27 18:55 UTC
     </footer>
   </body>
 </html>

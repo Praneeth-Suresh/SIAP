@@ -17,48 +17,165 @@
       </aside>
       <article class="content">
         <h1 id="negotiation-and-mechanism-design">Negotiation and Mechanism Design</h1>
-<p>Negotiation is what happens when autonomy meets scarcity. Mechanism design is how we keep that meeting from collapsing into strategic theater.</p>
-<h2 id="formal-mechanism-frame">Formal mechanism frame</h2>
+<p>Coordination assumes that agents must fit their actions together. Negotiation adds a sharper difficulty: the agents may not value the same outcomes. This section is about writing the rules of the game itself, so that agents find it more attractive to reveal useful information than to generate strategic noise. Once many interpreters share one environment with scarce resources, private information, and local objectives, somebody has to design that rulebook. That designer is you.</p>
+<h2 id="one-edit-slot-two-eager-agents">One Edit Slot, Two Eager Agents</h2>
+<p>Start with a toy scarcity problem.</p>
+<p>There is one edit slot before release. Agent (D), the drafter, privately knows that using the slot for a conceptual rewrite is worth (8) units to final quality and costs (3) units of effort. Agent (F), the fact checker, privately knows that using the slot for citation repair is worth (6) units and costs (1). Nobody else can see those numbers.</p>
+<p>Four words carry the rest of this section:</p>
+<ul>
+<li>A <strong>type</strong> is the private fact an agent holds about its own value and cost. (D)'s type is the pair (8) and (3).</li>
+<li>A <strong>report</strong> is what the agent tells the mechanism, such as "my edit is worth (8) and costs (3)." A report may be a lie.</li>
+<li>An <strong>allocation</strong> is the outcome the mechanism chooses: give the slot to (D), give it to (F), or use no slot at all.</li>
+<li>A <strong>transfer</strong> is a payoff adjustment the mechanism imposes. In an auction it is money. In agent workflows it is often priority, reputation, review burden, future budget, or blame.</li>
+</ul>
+<p>The arithmetic already bites. (D) nets (8-3=5); (F) nets (6-1=5). The two candidate edits are worth the same once effort is priced, so the tiebreak has to come from the announced rule rather than from whoever reports most loudly.</p>
+<h2 id="what-the-designer-wants-truthfulness-fair-entry-and-efficiency">What the Designer Wants: Truthfulness, Fair Entry, and Efficiency</h2>
+<p>Three desiderata (the properties a designer asks a rulebook to have) can be read directly off that example.</p>
+<p><strong>Incentive compatibility</strong> means truthful reporting should be the best policy. (D) should not gain by pretending the rewrite is worth (30).</p>
+<p><strong>Individual rationality</strong> means an honest participant should not be made worse off by joining. (F) should not be assigned unrewarded work whose effort cost exceeds its expected benefit.</p>
+<p><strong>Efficiency</strong> means the chosen allocation should maximize total value net of relevant costs. The slot should go where it improves the shared artifact most, not where the loudest report points.</p>
+<p>To check these as a builder, run the rule against fabricated reports. Feed it an inflated claim, then ask whether the inflating agent ended up better off. If it did, the rule is not incentive compatible, whatever the design document says. With these words in hand, the notation is less imperial.</p>
+<h2 id="private-information-is-part-of-the-environment">Private Information Is Part of the Environment</h2>
+<p>The shared-environment view from Topic 1 (Coordination Protocols and Communication) matters here, because private information is not abstract decoration. It is the part of the environment bound only inside one interpreter.</p>
+<p>A drafter knows how hard a rewrite will be. A fact checker knows which claims produced thin evidence. An integrator knows the release deadline and the cost of reopening a committed section. None of that is visible from outside.</p>
+<p>Mechanism design asks how to build an outer evaluator whose rules make those private bindings show up in useful, checkable form.</p>
+<h2 id="the-mechanism-tuple-read-aloud">The Mechanism Tuple, Read Aloud</h2>
+<p>The mechanism tuple leans on eight pieces of notation, so here is a reading guide.</p>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Read aloud as</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(N)</td>
+<td>"the agent set N"</td>
+<td>Who participates in the mechanism</td>
+</tr>
+<tr>
+<td>(\Theta)</td>
+<td>"big theta"</td>
+<td>The type spaces, that is, all private facts agents could hold</td>
+</tr>
+<tr>
+<td>(\theta_i)</td>
+<td>"theta sub i"</td>
+<td>Agent (i)'s true type</td>
+</tr>
+<tr>
+<td>(\hat\theta_i)</td>
+<td>"theta hat sub i"</td>
+<td>Agent (i)'s reported type, truthful or not</td>
+</tr>
+<tr>
+<td>(\hat\theta_{-i})</td>
+<td>"theta hat minus i"</td>
+<td>The reports of every agent except (i)</td>
+</tr>
+<tr>
+<td>(A)</td>
+<td>"the outcome space A"</td>
+<td>Every allocation the mechanism could choose</td>
+</tr>
+<tr>
+<td>(g)</td>
+<td>"the allocation rule g"</td>
+<td>The function from reports to an outcome</td>
+</tr>
+<tr>
+<td>(p)</td>
+<td>"the transfer rule p"</td>
+<td>The function from reports to payments</td>
+</tr>
+</tbody>
+</table>
 <p>A mechanism is
 [
 \mathcal{M}=(N,\Theta, A, g, p),
 ]
-with agents (N), types (\Theta), outcome space (A), allocation rule (g), and transfers (p).<br />
-Desired properties: incentive compatibility (IC), individual rationality (IR), and budget feasibility.</p>
-<p>For truthful dominant-strategy reporting, each agent (i) should satisfy
+with agents (N), type spaces (\Theta), outcome space (A), allocation rule (g), and transfers (p). A type (\theta_i) represents what agent (i) privately knows: cost, preference, skill, urgency, risk, or capacity. The mechanism asks for reports (\hat\theta_i), chooses an outcome (g(\hat\theta)), and applies transfers (p(\hat\theta)).</p>
+<p>The designer usually wants some combination of incentive compatibility, individual rationality, budget feasibility, fairness, and efficiency. Choosing a mechanism means choosing which of those five to trade away.</p>
+<h2 id="writing-truthfulness-as-an-inequality">Writing Truthfulness as an Inequality</h2>
+<p>Truthfulness can be stated as an inequality rather than a hope. In the inequality that states it, (u_i(\cdot;\theta_i)) is evaluated using agent (i)'s true type, even when the report is false; (\hat\theta_{-i}) denotes the other agents' reports.</p>
+<p>Dominant-strategy truthfulness requires that honest reporting be best for each agent regardless of the others' reports:
 [
-u_i!\big(g(\hat\theta_i,\hat\theta_{-i}),p_i(\hat\theta_i,\hat\theta_{-i});\theta_i\big)
+u_i!\big(g(\theta_i,\hat\theta_{-i}),p_i(\theta_i,\hat\theta_{-i});\theta_i\big)
 \ge
 u_i!\big(g(\theta'<em -i="-i">i,\hat\theta</em>),p_i(\theta'<em -i="-i">i,\hat\theta</em>);\theta_i\big).
-]</p>
+]
+Read the left side as "what agent (i) really gets when it tells the truth." Read the right side as "what it really gets from any lie (\theta'_i)." The word <em>dominant</em> is the strong part: the inequality must hold for every possible behaviour of the other agents, not merely on average.</p>
+<h2 id="efficient-allocation-and-the-vickrey-clarke-groves-transfer">Efficient Allocation and the Vickrey-Clarke-Groves Transfer</h2>
 <p>Efficient allocation seeks
 [
 g(\hat\theta)\in\arg\max_{a\in A}\sum_i v_i(a,\hat\theta_i).
 ]
-For VCG-style mechanisms, one canonical transfer form is
+That reads: "pick the outcome (a) whose total reported value, summed over all agents, is largest."</p>
+<p>Vickrey, Clarke, and Groves mechanisms show one classic way to align reported local valuations with a welfare-maximizing allocation [<a href="../../references.html#ref-57">57</a>] [<a href="../../references.html#ref-58">58</a>] [<a href="../../references.html#ref-59">59</a>]. One canonical transfer form is
 [
 p_i(\hat\theta)=h_i(\hat\theta_{-i})-\sum_{j\ne i}v_j(g(\hat\theta),\hat\theta_j),
 ]
-which charges each participant the externality imposed on others.</p>
-<h2 id="repeated-negotiation-as-control">Repeated negotiation as control</h2>
-<p>In repeated settings, mechanism choice itself is sequential control:
+which charges each participant for the externality it imposes on the rest of the system. An externality here is the value other agents lose because this agent won.</p>
+<p>Put the edit slot through it. Suppose the tie breaks toward (D), and let (h_i) be the value the others would have enjoyed if (D) had never shown up, which is (F)'s net (5). With (D) winning, the others actually receive (0). So (D) pays (5-0=5): exactly the value it displaced. Because the two edits tie at (5), (D)'s surplus here is exactly zero; raise (D)'s value to (6) and the winner keeps (1).</p>
+<p>The sign convention here is that (p_i) is a payment made by agent (i) to the mechanism, so larger (p_i) lowers utility when utility is written as value minus payment. Some texts use the opposite convention, treating transfers as money received; the algebra changes sign, not substance.</p>
+<h2 id="payments-that-are-not-money">Payments That Are Not Money</h2>
+<p>The point is not that every agent workflow should implement VCG payments, where VCG abbreviates Vickrey-Clarke-Groves. The point is that a rule changes behavior by changing payoffs.</p>
+<p>In software, "payment" may be money, but it may also be priority, budget, reputation, access to tools, future routing probability, review burden, or blame assignment. A reviewer rewarded only for finding flaws will learn a different policy from a reviewer rewarded for improving final decision quality. Both reviewers are rational; they were simply paid for different things.</p>
+<h2 id="scarcity-inside-agent-societies">Scarcity Inside Agent Societies</h2>
+<p>Multi-agent systems allocate scarce things constantly: model calls, tool permissions, human attention, wall-clock time, memory, authority to commit a patch, or the right to answer a user.</p>
+<p>A contract-net protocol makes this operational: a manager announces a task, agents bid, the manager awards the contract, and the selected agent executes [<a href="../../references.html#ref-62">62</a>]. The protocol is simple, but its quality depends on the scoring rule. If every specialist gains by saying "I can do it," bids become optimism. If bids are scored by calibrated confidence, task completion, latency, and downstream correction cost, specialists have a path to reveal competence honestly.</p>
+<h2 id="allocating-the-edit-slot-by-an-announced-rule">Allocating the Edit Slot by an Announced Rule</h2>
+<p>Return to the publication workflow. The integrator has one edit slot before release. The drafter wants the slot for a conceptual rewrite; the fact checker wants it for citation repair. Both requests are locally rational, and both are based on observations the integrator cannot directly inspect.</p>
+<p>A mechanism can ask each agent to report a tuple such as ((\text{impact},\text{risk},\text{effort},\text{evidence})), then allocate the slot by a rule announced in advance. Announcing the rule first is what makes it a mechanism rather than a mood.</p>
+<p>The evidence field is a shared artifact: it turns a private belief into an object the other interpreters can test. The effort and risk fields remain partly private, so the rule must make systematic exaggeration expensive through later scoring.</p>
+<h2 id="the-impossibility-results-that-keep-us-honest">The Impossibility Results That Keep Us Honest</h2>
+<p>Social-choice theory, the study of how group preferences turn into group decisions, marks the limits of this ambition. Gibbard-Satterthwaite style impossibility results show that broad classes of voting systems are manipulable once preferences are unrestricted and there are at least three outcomes [<a href="../../references.html#ref-60">60</a>] [<a href="../../references.html#ref-61">61</a>].</p>
+<p>This does not make mechanism design futile. It prevents magical thinking. The designer must know which assumptions buy strategy-proofness, which constraints are being relaxed, and where manipulation will be measured rather than wished away.</p>
+<h2 id="choosing-mechanisms-over-time">Choosing Mechanisms over Time</h2>
+<p>In repeated settings, mechanism choice itself becomes sequential control:
 [
 V^\star(s)=\max_m\left{R(s,m)-\lambda\,\mathrm{manip_risk}(m)+\gamma\,\mathbb{E}[V^\star(s')]\right}.
 ]
-That is the formal version of institutional learning: update the rules when strategic behavior exploits the old ones.</p>
-<h2 id="three-theory-braid">Three-theory braid</h2>
-<p>VCG-style transfer design aligns local reporting incentives with system welfare, social-choice impossibility results tell us where manipulation-proofness is fundamentally constrained, and contract-net style bidding gives an operationally practical delegation protocol, so strategic multi-agent intelligence becomes a braid of foresight (design incentives for truthful revelation), responsiveness (adapt mechanism policy as strategic behavior shifts), and resilience (retain efficiency and fairness under misreport pressure rather than only under cooperative fantasy) [<a href="../../references.html#ref-57">57</a>] [<a href="../../references.html#ref-58">58</a>] [<a href="../../references.html#ref-59">59</a>] [<a href="../../references.html#ref-60">60</a>] [<a href="../../references.html#ref-61">61</a>] [<a href="../../references.html#ref-62">62</a>] [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>].</p>
-<h2 id="how-to-study-this-formally">How to study this formally</h2>
-<p>Measure allocative efficiency, truthfulness regret, fairness, and collusion sensitivity under strategic misreports. A negotiation protocol without incentive analysis is merely an argument with extra JSON.</p>
-<h2 id="translating-the-theory-into-agentic-practice">Translating the Theory into Agentic Practice</h2>
-<p>Mechanism design teaches that agent collectives must be designed for incentives, not merely for intentions. If agents, tools, departments, vendors, or users have different objectives, the protocol must assume strategic behavior can appear. Better systems ask: what information does each participant possess, what outcome do they prefer, what can they misreport, and what rule makes honest or useful behavior the best available strategy?</p>
-<p>In implementation, this turns negotiation into structured interaction. Agents should declare preferences, constraints, confidence, and private costs in typed fields where possible. Allocation rules should be explicit: which worker gets a task, which model receives a query, which customer request is prioritized, which proposed patch is accepted. Payment may be literal money, but in software it is often budget, priority, reputation, access, or future routing weight. Transfers are any mechanism by which the system rewards or penalizes behavior.</p>
-<p>For agentic workflows, this is especially useful in delegation. If every specialist is rewarded for saying "I can do it," routing collapses into optimism theater. If specialists are scored by calibrated estimates, task completion, latency, and downstream correction cost, the system can allocate work to agents that reveal their competence honestly. If reviewers are rewarded only for finding flaws, they may become ornamental saboteurs; if rewarded for improving decision quality, critique becomes a public good.</p>
-<p>The theory's value is institutional. It gives builders a way to design agent societies whose local incentives support global performance. Negotiation protocols become less about persuasive prose and more about incentive-compatible information flow. A better agentic system does not beg its components to be virtuous. It arranges the game so that useful truth has somewhere to go, manipulation has a measurable cost, and scarce resources are allocated by rules sturdier than whoever sounded most confident in the last message.</p>
+Read this as: the long-run value of state (s) comes from choosing the mechanism (m) with the best immediate reward (R(s,m)), minus a penalty (\lambda) times its manipulation risk. To that total you add the discounted expected value (\gamma\,\mathbb{E}[V^\star(s')]) of wherever the system lands next.</p>
+<p>Expected utility supplies the local comparison among mechanisms, and dynamic programming expresses the long-run cost of creating exploitable incentives [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>] [<a href="../../references.html#ref-5">5</a>]. An institution learns when it changes the rules after observing how strategic behavior exploits the old ones. Topic 3 (Equilibria, Self-Play, and Learning Dynamics) studies what that adaptation converges to.</p>
+<h2 id="delegation-in-the-publication-workflow">Delegation in the Publication Workflow</h2>
+<p>Suppose the integrator must assign the next revision task to the drafter, fact checker, or a synthesis pass. Each agent reports a cost (c_i), confidence (q_i), expected latency (\ell_i), and the artifact it can produce.</p>
+<p>A naive router asks, "Who wants this?" A mechanism-aware router scores
+[
+s_i = \alpha q_i-\beta c_i-\delta \ell_i-\eta\,\mathrm{correction_rate}_i
+]
+and later updates each agent's reputation from verified outcomes. The Greek letters (\alpha), (\beta), (\delta), and (\eta) are weights the designer picks; they say how much confidence, cost, latency, and past corrections each count. With all four weights set to (1), an agent reporting (q_i=0.9), (c_i=0.2), (\ell_i=0.3), and a correction rate of (0.1) scores (0.9-0.2-0.3-0.1=0.3).</p>
+<p>This reputation router is an accountability heuristic, not a theorem of truthfulness wearing a small hat. It becomes mechanism-like only under three conditions:</p>
+<ol>
+<li>Reports are later checked against outcomes.</li>
+<li>Agents expect repeated interaction, so today's exaggeration has a tomorrow.</li>
+<li>The update rule makes misreporting costly enough to matter.</li>
+</ol>
+<p>Without verification, a reputation score can become a decoration on self-advertisement. The reports are still imperfect, but miscalibration has a cost. Confidence becomes an accountable forecast rather than a persuasive adjective. Topic 4 (Neural Ensembles and Orchestration) takes up routing among specialists in more depth.</p>
+<h2 id="shaping-which-observations-become-public">Shaping Which Observations Become Public</h2>
+<p>The same structure handles communication limits. If the fact checker has only enough budget to verify three claims, the mechanism should not ask for a global truth verdict. It should ask for a prioritized claim list and a confidence interval over the unchecked remainder.</p>
+<p>In Dec-POMDP language, the mechanism is shaping which local observations become public signals. A Dec-POMDP is a decentralized partially observable Markov decision process, introduced in Topic 1 (Coordination Protocols and Communication): each agent sees only its own slice of the world. The mechanism cannot remove partial observability, but it can choose the artifacts that make later coordination less blind.</p>
+<h2 id="when-a-mechanism-is-not-worth-its-ceremony">When a Mechanism Is Not Worth Its Ceremony</h2>
+<p>Mechanisms are not useful merely because several agents are present. If tasks are plentiful, preferences aligned, information public, and no one has reason to misreport, a simple queue may be better than an auction in ceremonial robes.</p>
+<p>Mechanisms earn their keep under scarcity, private information, or incentive conflict. The recurring cases are concrete: one edit slot, one reviewer with rare access, one release deadline, one agent that benefits from overstating confidence, or one budget that cannot fund every plausible specialist.</p>
+<p>The task predicts the institution. Scarcity asks for allocation. Private information asks for elicitation, meaning rules that draw private facts into the open. Incentive conflict asks for rules that make useful behavior cheaper than strategic fog.</p>
+<h2 id="evaluating-a-mechanism">Evaluating a Mechanism</h2>
+<p>The formal evaluation should therefore measure six things:</p>
+<ul>
+<li>allocative efficiency, or how close the chosen outcome comes to the best available total value;</li>
+<li>truthfulness regret, the extra payoff an agent could have won by lying;</li>
+<li>fairness across agents or users;</li>
+<li>budget balance, when transfers are literal money;</li>
+<li>sensitivity to collusion, when agents coordinate their reports;</li>
+<li>performance under strategic misreports, tested by deliberately feeding the rule dishonest inputs.</li>
+</ul>
+<p>A negotiation protocol without incentive analysis is merely an argument with extra JSON. A useful mechanism arranges the shared environment so that local pursuit of advantage produces information the collective can actually use.</p>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-05-15 03:11 UTC
+      Last generated: 2026-07-27 18:55 UTC
     </footer>
   </body>
 </html>

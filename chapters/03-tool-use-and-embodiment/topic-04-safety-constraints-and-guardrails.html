@@ -17,49 +17,234 @@
       </aside>
       <article class="content">
         <h1 id="safety-constraints-and-guardrails">Safety Constraints and Guardrails</h1>
-<p>Safety is not a postscript to capability; it is optimization with explicit boundaries, encoded before the first tool call is ever allowed.</p>
-<h2 id="constrained-control-formulation">Constrained control formulation</h2>
-<p>Model policy selection as a constrained MDP:
+<p>Between what an agent wants to do and what the world actually suffers stands a
+layer of machinery. That machinery is what we build here. We will price harm
+with numbers, fence the state with an inequality, and decide who is allowed to
+sign off on what. The reward for reading carefully is a safety story you can
+test, not merely recite.</p>
+<p>Safety is not a postscript to capability. It is the part of the interpreter that
+decides which proposed transitions are outside the program's charter, which are
+allowed but costly, and which require another authority before the world may be
+changed. A <em>transition</em> here is one step of the agent loop: the move from the
+current state to the next state. In a tool-using system, safety lives at the same
+boundary as action. That boundary sits between the model's proposed next step and
+the external effect that would make that step real.</p>
+<p>This makes guardrails more than warning text. A guardrail is a filter on the
+agent's transition system, meaning the set of steps the agent is able to take at
+all. Such a filter has four moves available:</p>
+<ul>
+<li>remove an action from the action space, so the agent cannot even propose it;</li>
+<li>reshape the action into a safer one;</li>
+<li>pause for human approval;</li>
+<li>attach an obligation to monitor what happens next.</li>
+</ul>
+<h2 id="constrained-control-formulation">Constrained Control Formulation</h2>
+<h3 id="rewarding-the-agent-while-capping-its-harm">Rewarding the Agent While Capping Its Harm</h3>
+<p>Start with the ordinary picture of a decision-making agent and then add ledgers
+for harm. Model policy selection as a constrained MDP (Markov decision process,
+the standard model of an agent choosing actions in states over time):
 [
 \max_{\pi}\ J_R(\pi)=\mathbb{E}<em C_j="C_j">\pi!\left[\sum_t\gamma^t r_t\right]
 \quad\text{s.t.}\quad
 J</em>}(\pi)=\mathbb{E<em j_t="j,t">\pi!\left[\sum_t\gamma^t c</em>\right]\le d_j.
 ]
-The Lagrangian form
+Read this first as bookkeeping. (J_R(\pi)) reads "the expected discounted
+reward earned by policy (\pi)", where a policy is the agent's rule for choosing
+actions, and <em>discounted</em> means later rewards count a little less. Each
+(J_{C_j}(\pi)) reads "the expected discounted amount of harm number (j)".
+Those harms are concrete: privacy exposure, money spent, dangerous commands, or
+manual interruptions. The bound (d_j) is the allowed budget for that cost, and
+"s.t." reads "subject to".</p>
+<p>The contrast is the whole point. A plain reinforcement-learning agent asks, "How
+much reward can I get?" A constrained agent asks, "How much reward can I get
+while keeping each harm ledger under its limit?"</p>
+<p>That constrained objective is dense with notation, so the following table gives
+each symbol a short reading before we use it again.</p>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>How to read it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(\pi)</td>
+<td>The policy: the agent's rule for choosing actions</td>
+</tr>
+<tr>
+<td>(J_R(\pi))</td>
+<td>Expected discounted reward under that policy</td>
+</tr>
+<tr>
+<td>(J_{C_j}(\pi))</td>
+<td>Expected discounted amount of harm (j)</td>
+</tr>
+<tr>
+<td>(d_j)</td>
+<td>The budget allowed for harm (j)</td>
+</tr>
+<tr>
+<td>(\lambda_j)</td>
+<td>The price charged for one unit of harm (j)</td>
+</tr>
+<tr>
+<td>(h(x))</td>
+<td>Safety margin at state (x); nonnegative means safe</td>
+</tr>
+</tbody>
+</table>
+<h3 id="turning-constraints-into-prices">Turning Constraints into Prices</h3>
+<p>The Lagrangian form, which folds a constraint into the objective by charging a
+price for breaking it,
 [
 \mathcal{L}(\pi,\lambda)=J_R(\pi)-\sum_j\lambda_j\big(J_{C_j}(\pi)-d_j\big)
 ]
 supports dual optimization and transparent trade-off tuning.</p>
-<p>At state-action level, constrained Bellman structure appears as
+<p>A Lagrange multiplier (\lambda_j) is a shadow price for violating constraint
+(j). If privacy risk is already close to its bound, a large (\lambda_j) makes
+risky actions look expensive. If the risk ledger is comfortably low, the price
+can be smaller. Dual optimization is the process of adjusting these prices while
+improving the policy; a builder implements it as a slow feedback loop that raises
+a price whenever the measured ledger creeps over budget.</p>
+<p>With two actions the idea is visible. Suppose <code>fast_patch</code> yields reward 10 and
+harm 4, while <code>safe_patch</code> yields reward 7 and harm 1 under a harm budget of 2.
+When (\lambda=0), fast wins, since 10 beats 7 and harm is free. When
+(\lambda=2), their priced values become (10-2(4-2)=6) and (7-2(1-2)=9), so
+the safer action wins because scarce safety budget has become dear. Notice that
+<code>safe_patch</code> is rewarded for coming in under budget.</p>
+<h3 id="prohibition-is-not-the-same-as-price">Prohibition Is Not the Same as Price</h3>
+<p>At the state-action level, constrained Bellman structure appears as
 [
 Q^\pi_\lambda(s,a)=r(s,a)-\sum_j\lambda_j c_j(s,a)+\gamma\,\mathbb{E}<em>{s'}[V^\pi</em>\lambda(s')],
 ]
-which makes "unsafe but high reward" mathematically explicit instead of politically vague.</p>
-<h2 id="runtime-safety-filter">Runtime safety filter</h2>
+which reads "the priced value of taking action (a) in state (s) is its reward
+minus its priced harms, plus the discounted value of wherever it lands you". This
+makes "unsafe but high reward" mathematically explicit instead of politically
+vague.</p>
+<p>Some constraints are hard: do not leak secrets, do not run a destructive command
+without authorization, do not fabricate a citation. Others are budgets: latency,
+cost, bounded uncertainty, allowed retry counts. The mathematics matters because
+it separates prohibition from price. Hard constraints belong in the action space
+as removals; budgets belong in the objective as costs.</p>
+<h2 id="runtime-safety-filter">Runtime Safety Filter</h2>
+<h3 id="a-fence-written-as-an-inequality">A Fence Written as an Inequality</h3>
 <p>Define safe set (\mathcal{C}={x:h(x)\ge0}). Control barrier functions require
 [
 \dot h(x,u)+\alpha(h(x))\ge0
 ]
-for class-(\mathcal{K}) function (\alpha), giving forward invariance of (\mathcal{C}) [<a href="../../references.html#ref-52">52</a>]. A practical filter solves
+for class-(\mathcal{K}) function (\alpha), giving forward invariance of
+(\mathcal{C}) [<a href="../../references.html#ref-52">52</a>]. A practical filter solves
 [
 u^\star=\arg\min_u |u-u_{\text{nom}}|^2
 \quad\text{s.t.}\quad
 \dot h(x,u)+\alpha(h(x))\ge0,
 ]
-so nominal autonomy is preserved when safe and corrected when not.</p>
-<h2 id="three-theory-braid">Three-theory braid</h2>
-<p>Constrained MDP theory gives the expected-utility compass with explicit harm budgets, control barrier functions give a feedback law that enforces state-space invariants online, and governance frameworks translate organizational risk appetite into operational policy envelopes, so safety becomes a braided architecture of foresight (optimize return while pricing risk), responsiveness (intervene at runtime through CBF-constrained control), and resilience (institutional constraints that persist beyond any single prompt or model version) [<a href="../../references.html#ref-51">51</a>] [<a href="../../references.html#ref-52">52</a>] [<a href="../../references.html#ref-29">29</a>] [<a href="../../references.html#ref-53">53</a>] [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>].</p>
-<h2 id="how-to-study-this-formally">How to study this formally</h2>
-<p>Report Pareto fronts of task return versus violation probability, dual-variable stability, and time-to-escalation under unsafe trajectories. Stress layered guardrails under correlated failures rather than isolated tests. Constraint-aware autonomy is not anti-innovation; it is innovation that survives contact with reality.</p>
-<h2 id="translating-the-theory-into-agentic-practice">Translating the Theory into Agentic Practice</h2>
-<p>Safety theory tells us to stop treating guardrails as polite reminders attached to a powerful system after the banquet has already begun. Better agents encode safety as constraints in the policy, filters at runtime, monitors during execution, and audit records after the fact. The system should know which boundaries are soft preferences, which are hard prohibitions, and which require escalation because the machine has reached the edge of its charter.</p>
-<p>A practical safety architecture has layers. Static constraints remove forbidden actions from the action space. Pre-execution filters check schemas, permissions, data sensitivity, and risk class. Runtime monitors watch for drift, unsafe intermediate states, budget exhaustion, and unexpected tool outputs. Post-action checks verify whether the intended safety property actually held. Human escalation is not a defeat; it is a designed transition for states where autonomous policy should not pretend to be sovereign.</p>
-<p>The constrained-control view helps tune trade-offs. Some constraints are inviolable: do not leak secrets, do not execute destructive commands without approval, do not fabricate legal citations. Others are budgeted risks: latency, cost, temporary uncertainty, bounded retries. Lagrange multipliers are the mathematical cousin of operational policy knobs: they decide how expensive a violation should feel to the agent's decision procedure. Hard filters then stand behind those prices with a lock.</p>
-<p>The value of the theory is that safety becomes designable rather than theatrical. A better agent is not the one that says "I will be safe" most solemnly; it is the one whose unsafe actions are blocked, whose risky actions are priced, whose ambiguous actions escalate, and whose incidents generate evidence for repair. Guardrails are not a muzzle on intelligence. They are the walls of the canal that let power become transport instead of flood.</p>
+so nominal autonomy is preserved when safe and corrected when not. Here
+(u_{\text{nom}}) is the control the agent nominally wanted, and (u^\star) is
+the nearest control that still satisfies the safety condition.</p>
+<p>The notation hides a simple fence. The function (h(x)) measures signed distance
+from danger: nonnegative means safe, negative means outside the safe set. The dot
+in (\dot h) means derivative, the instantaneous rate at which that safety
+margin is changing under control (u). A class-(\mathcal{K}) function is an
+increasing function with (\alpha(0)=0); it lets the allowed rate depend on how
+much margin remains. Forward invariance means that once the state starts in the
+safe set, the filtered controller keeps future states there under the model
+assumptions.</p>
+<h3 id="a-one-dimensional-budget-example">A One-Dimensional Budget Example</h3>
+<p>In one dimension, let (x) be dollars already spent and let the budget cap be
+100, so (h(x)=100-x). At (x=95), the margin is (h=5). A proposed action
+that spends 10 would push (h) negative, to (-5). The filter searches for the
+closest acceptable action, perhaps spend 4, ask approval, or wait for more
+budget. The minimization is the formal way of saying "change the command as
+little as possible while preserving the safety condition."</p>
+<h3 id="the-same-pattern-for-language-agents">The Same Pattern for Language Agents</h3>
+<p>For language agents, the same pattern appears in less continuous clothing. The
+nominal action may be "delete the database," "email this file," or "publish the
+deployment." The safety filter checks state, role, data class, reversibility,
+blast radius, and evidence. If the proposed action would cross a boundary, the
+filter blocks it, rewrites it into a reversible alternative, or asks for human
+approval.</p>
+<p>This analogy must be used honestly. A continuous control-barrier proof does not
+automatically prove that a discrete language-agent filter is safe. To get an
+equally formal guarantee, the language-agent system would need its own transition
+invariant: a statement showing that every permitted discrete step preserves the
+safety property. Without that proof, the barrier picture is a design pattern and
+a source of tests, not a borrowed certificate.</p>
+<p>The safety filter has four branches: propose, classify the
+risk, then reject, escalate, or execute under monitoring.</p>
+<pre><code class="language-text">proposal = policy(state)
+risk = classify(proposal, state)
+if forbidden(risk):
+  reject(proposal)
+elif requires_approval(risk):
+  ask_human(proposal, evidence)
+else:
+  execute_with_monitor(proposal)
+</code></pre>
+<p>The important feature is placement. The filter stands between proposal and
+effect, not between effect and apology.</p>
+<h2 id="layers-of-constraint">Layers of Constraint</h2>
+<p>Safety architectures are layered because no single check sees the whole risk.
+Each layer watches a different moment in the loop:</p>
+<ul>
+<li>Static constraints remove forbidden tools or arguments before planning begins.</li>
+<li>Pre-execution checks validate schemas, permissions, data sensitivity, and risk
+  class.</li>
+<li>Runtime monitors watch for drift, unsafe intermediate states, budget
+  exhaustion, and unexpected tool outputs.</li>
+<li>Post-action checks verify whether the intended safety property actually held.</li>
+<li>Audit records make repair possible when the system or organization learns that
+  a boundary was incomplete.</li>
+</ul>
+<p>Three bodies of theory supply these layers. Constrained MDP theory provides the
+expected-utility compass with explicit harm budgets. Control barrier functions
+provide the model of an online filter that preserves invariants. Governance
+frameworks translate institutional risk appetite into operational envelopes that
+outlive any single prompt or model version
+[<a href="../../references.html#ref-51">51</a>] [<a href="../../references.html#ref-52">52</a>]
+[<a href="../../references.html#ref-29">29</a>] [<a href="../../references.html#ref-53">53</a>].
+Together they make safety a property of the agent loop, not a promise in the
+system message. Topic 3 (Embodiment: Sensors, Actuators, and Feedback) supplies
+the sensing and feedback machinery that these monitors depend on.</p>
+<h2 id="designing-for-escalation">Designing for Escalation</h2>
+<h3 id="handing-a-decision-to-a-human-on-purpose">Handing a Decision to a Human on Purpose</h3>
+<p>Human escalation is not a defeat. It is a designed transition for states where
+the autonomous policy should not pretend to be sovereign. The interface should
+answer four questions:</p>
+<ul>
+<li>what evidence the human receives;</li>
+<li>what decision is requested;</li>
+<li>how long the approval remains valid;</li>
+<li>whether the agent may continue with a safer fallback while waiting.</li>
+</ul>
+<h3 id="allocating-authority-action-by-action">Allocating Authority Action by Action</h3>
+<p>Authority is therefore an allocation problem. A reversible formatting edit may be
+delegated to the agent. A citation replacement may require evidence. A
+secret-bearing export may require a human. A forbidden disclosure may not be
+priced at all, because a hard constraint is not an expensive option.</p>
+<p>Different tasks deserve different authority envelopes according to
+reversibility, blast radius, evidence quality, time pressure, and the value of
+partial progress while approval is pending. Topic 1 (Tool Interfaces and Function
+Calling) describes the contracts these envelopes attach to. The design error is
+to flatten all of this into either "the agent is autonomous" or "the human
+decides." An institution allocates authority at the transition where it matters.</p>
+<h3 id="measuring-whether-the-guardrails-work">Measuring Whether the Guardrails Work</h3>
+<p>Evaluate these systems by reporting task return against violation probability,
+dual-variable stability where constraints are optimized, blocked-action loops,
+escalation latency, successful fallback rate, and incident quality under
+correlated failures rather than isolated happy-path tests
+[<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>]. Read that
+list as a dashboard: reward on one axis, violations on the other, with the
+awkward operational numbers beside them.</p>
+<p>A better agent is not the one that says it will be safe. It is the one whose
+forbidden actions are blocked, whose risky tradeoffs are explicitly priced, whose
+ambiguous actions escalate, whose waiting states still make useful progress when
+allowed, and whose incidents generate evidence for repair.</p>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-05-15 03:11 UTC
+      Last generated: 2026-07-27 18:55 UTC
     </footer>
   </body>
 </html>

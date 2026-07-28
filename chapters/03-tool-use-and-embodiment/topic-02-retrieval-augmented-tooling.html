@@ -17,18 +17,109 @@
       </aside>
       <article class="content">
         <h1 id="retrieval-augmented-tooling">Retrieval-Augmented Tooling</h1>
-<p>Retrieval-augmented tooling is not "ask search then hope"; it is a policy for buying evidence when ignorance is expensive.</p>
-<h2 id="probabilistic-retrieval-generation-pipeline">Probabilistic retrieval-generation pipeline</h2>
+<p>Sometimes an agent should stop guessing and go look something up. This section
+is about that decision: when an agent should fetch outside evidence, how it
+should score and rank what it finds, and how it should carry that evidence into
+its next step. Retrieval here is an action with a price, not a ritual.</p>
+<h2 id="retrieval-as-an-observation-the-agent-buys">Retrieval as an Observation the Agent Buys</h2>
+<p>Retrieval-augmented tooling is the interpreter's way of asking the world for
+evidence before it commits to an answer or an action. Retrieval-augmented
+generation, usually shortened to RAG, is the general name for this pattern.</p>
+<p>The retrieval call is not a decorative prelude to generation. It is an external
+observation. The agent buys that observation under four constraints: latency
+(how long the lookup takes), permission (whether the caller may see the source),
+freshness (whether the source is current), and relevance (whether it bears on
+the task). What comes back is then folded into the agent's state.</p>
+<p>This framing matters because many failures called "hallucination" are really
+failures of evidence acquisition. The model was asked to act as if its prior
+were enough. A prior here means the belief the model already carries from
+training, before it looks anything up.</p>
+<p>A retrieval-capable agent has a larger action space. It can:</p>
+<ul>
+<li>search the repository;</li>
+<li>inspect a table schema;</li>
+<li>query a memory index;</li>
+<li>open the current policy;</li>
+<li>fetch a manual page;</li>
+<li>or decide that no new evidence is worth its cost.</li>
+</ul>
+<p>That last option is a real action, not a failure to act.</p>
+<h2 id="the-probabilistic-retrieval-generation-pipeline">The Probabilistic Retrieval-Generation Pipeline</h2>
+<p>The pipeline has two stages: find evidence, then answer using it. Writing that
+down as probability makes the two stages separately inspectable.</p>
+<p>Each piece of notation used in that pipeline gets a plain reading below:</p>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Read it as</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(\mathcal{D})</td>
+<td>the set of candidate documents the retriever can return</td>
+</tr>
+<tr>
+<td>(e_q), (e_d)</td>
+<td>vector embeddings of the query and of a document</td>
+</tr>
+<tr>
+<td>(H)</td>
+<td>entropy, a measure of how spread out the agent's uncertainty is</td>
+</tr>
+<tr>
+<td>(\tau)</td>
+<td>a threshold on entropy chosen by the designer</td>
+</tr>
+<tr>
+<td>(\mathrm{VoI}(q))</td>
+<td>expected value of information for the query (q)</td>
+</tr>
+</tbody>
+</table>
 <p>For query context (x), retrieved document (d), and answer (y):
 [
 p(y\mid x) = \sum_{d \in \mathcal{D}} p(y\mid x,d)\,p(d\mid x).
 ]
-Operationally, (p(d\mid x)) is retrieval/ranking and (p(y\mid x,d)) is grounded generation [<a href="../../references.html#ref-14">14</a>]. Typical retrieval scores include dense similarity
+Operationally, (p(d\mid x)) is retrieval and ranking; (p(y\mid x,d)) is
+grounded generation conditioned on the acquired evidence [<a href="../../references.html#ref-14">14</a>].</p>
+<h3 id="reading-the-sum-over-documents">Reading the Sum over Documents</h3>
+<p>The vertical bar in (p(y\mid x,d)) means "given." Read the equation this way:
+the agent imagines each possible document (d), asks how likely answer (y)
+would be if that document were the evidence, and weights that answer by how
+likely the retriever was to select (d) for the query (x).</p>
+<p>Suppose two candidate documents. The retriever gives
+the first a selection chance of 0.8 and the second 0.2. Given the first, the
+answer "the limit is 30 days" has probability 0.9; given the second, only 0.1.
+Then (p(y\mid x) = 0.8 \times 0.9 + 0.2 \times 0.1 = 0.74). Notice that the
+retriever's ranking, not the generator's fluency, did most of the work.</p>
+<p>The sum is not saying the agent literally reads every document in the universe.
+It is a clean idealization of a ranked evidence process.</p>
+<h3 id="dense-and-lexical-retrieval-scores">Dense and Lexical Retrieval Scores</h3>
+<p>Typical retrieval scores include dense similarity
 [
 s_{\text{dense}}(q,d)=\langle e_q,e_d\rangle
 ]
-and lexical ranking such as BM25 [<a href="../../references.html#ref-15">15</a>] [<a href="../../references.html#ref-46">46</a>].</p>
-<p>The control question is when to retrieve. One uncertainty-trigger policy is
+and lexical ranking such as BM25 [<a href="../../references.html#ref-15">15</a>] [<a href="../../references.html#ref-46">46</a>].
+BM25 is a long-standing formula that scores a document by which query words it
+contains and how rare those words are.</p>
+<p>An embedding (e_q) or (e_d) is a vector representation of a query or
+document. The angle brackets denote an inner product: multiply corresponding
+coordinates and add them. For example, (\langle (1,0,2),(1,1,1)\rangle
+= 1 + 0 + 2 = 3).</p>
+<p>Similar vectors point in similar semantic directions. So a query about
+"permission checks before deletion" may retrieve a passage about "authorization
+gates for destructive actions" even without exact word overlap.</p>
+<p>Each family buys something different:</p>
+<ul>
+<li>Dense retrieval buys semantic reach, matching meaning across different wording.</li>
+<li>Lexical retrieval buys exact surface matches and interpretable term evidence.</li>
+</ul>
+<p>Hybrid systems are common because the two failures differ. An embedding may miss
+a precise identifier such as <code>PolicyV3_2024</code>. A lexical ranker may miss a paraphrase.</p>
+<h3 id="deciding-when-to-retrieve">Deciding When to Retrieve</h3>
+<p>The control question is when to retrieve. One uncertainty-triggered policy is
 [
 \texttt{retrieve}_t = \mathbf{1}{H[p(\cdot\mid h_t)] &gt; \tau},
 ]
@@ -37,25 +128,139 @@ but the economically sharper rule is expected value of information:
 \mathrm{VoI}(q)=\mathbb{E}!\left[\max_a\mathbb{E}[U(a,S)\mid q]\right]-\max_a\mathbb{E}[U(a,S)].
 ]
 Retrieve when (\mathrm{VoI}(q)) exceeds retrieval cost.</p>
-<h2 id="retrieval-as-sequential-control">Retrieval as sequential control</h2>
-<p>Let action (a_t\in{\texttt{retrieve},\texttt{skip}}). Then a budget-aware Bellman control law is
-[
-V^\star(h_t)=\max_{a_t}\left{r(h_t,a_t)-\lambda\ell(a_t)+\gamma\,\mathbb{E}[V^\star(h_{t+1})]\right},
-]
-where (\ell) captures latency/token cost [<a href="../../references.html#ref-5">5</a>] [<a href="../../references.html#ref-4">4</a>]. This is the formal version of a practical truth: always retrieving is slow, never retrieving is reckless.</p>
-<h2 id="three-theory-braid">Three-theory braid</h2>
-<p>Latent-document RAG gives the generative factorization (p(y|x)=\sum_d p(y|x,d)p(d|x)), DPR-style dense retrieval gives scalable semantic access via vector similarity, and classical probabilistic ranking gives lexical grounding with interpretable score structure, so the architecture becomes a living braid in which expected utility decides whether evidence acquisition is worth paying for, Bellman recursion propagates that decision through future uncertainty, and uncertainty-trigger feedback prevents both over-retrieval bloat and under-retrieval hallucination [<a href="../../references.html#ref-14">14</a>] [<a href="../../references.html#ref-15">15</a>] [<a href="../../references.html#ref-46">46</a>] [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>].</p>
-<h2 id="how-to-study-this-formally">How to study this formally</h2>
-<p>Measure Recall@(k)/nDCG, citation faithfulness, contradiction rate, and end-task utility under fixed retrieval budgets. Compare always-retrieve, never-retrieve, and uncertainty/VoI-triggered policies. If retrieval cannot buy measurable uncertainty reduction per unit latency, it is ritual, not reasoning.</p>
-<h2 id="translating-the-theory-into-agentic-practice">Translating the Theory into Agentic Practice</h2>
-<p>Retrieval-augmented tooling teaches that evidence acquisition is an action, not a reflex. A better agent decides when to search, where to search, how much to retrieve, how to rank, how to cite, and when the evidence is insufficient. It does not decorate an answer with retrieved fragments after the fact. It lets evidence shape the action itself.</p>
-<p>A practical design separates the retrieval policy from the generation policy. The retrieval policy observes task type, uncertainty, cost, freshness requirements, and source permissions. It may choose local project search, vector memory, web search, database lookup, or no retrieval. The generation policy then consumes a bounded evidence set with provenance and contradiction flags. If retrieved sources disagree, the agent should surface the conflict or seek a higher-authority source rather than blending contradictions into confident prose.</p>
-<p>For tool-using agents, retrieval should often precede irreversible action. A coding agent should inspect relevant symbols before editing. A compliance agent should fetch current policy before advising. A data agent should retrieve schema and sample rows before writing queries. The point is not to retrieve because retrieval is fashionable; the point is to buy the specific information that changes which action is rational.</p>
-<p>The theory pays off by preventing two expensive pathologies. Over-retrieval bloats context, slows execution, and invites distractors into the court. Under-retrieval lets fluent priors masquerade as evidence. Value-of-information control gives the agent a middle way: spend evidence only when it is likely to improve the decision. A retrieval-augmented agent is better not because it has more documents nearby, but because it knows when a document deserves to govern the next move.</p>
+<p>Here (H) is entropy, a measure of spread-out uncertainty. If the agent assigns
+nearly all probability to one answer, entropy is low. If many answers remain
+plausible, entropy is high. (\tau) is a threshold chosen by the designer.</p>
+<p>The bold (\mathbf{1}{\cdot}) is an indicator: it equals 1 when the condition
+inside holds and 0 otherwise. So the rule reads "retrieve at step (t) exactly
+when uncertainty about the next answer exceeds (\tau)." In practice, this
+simple rule says: when the model is too uncertain, buy evidence unless the
+evidence is too expensive or forbidden.</p>
+<h3 id="value-of-information-as-the-sharper-rule">Value of Information as the Sharper Rule</h3>
+<p>The value-of-information expression, VoI for short, gives a sober interpretation
+of search. Read it as the difference between two quantities: the best expected
+usefulness (U) the agent could reach after seeing the answer to (q), minus
+the best expected usefulness it can reach right now, averaging over the unknown state (S).</p>
+<p>The question is not "could more context be useful?" Almost always, yes. The
+question is whether the expected change in the downstream decision is worth the
+delay, token budget, privacy exposure, and distraction risk of importing more
+text.</p>
+<p>To use this, you need no exact number. Estimate roughly: if a lookup costs two
+seconds and would change the action in one case out of twenty, it pays only when
+that case is expensive to get wrong.</p>
+<h2 id="evidence-as-an-action">Evidence as an Action</h2>
+<p>Let the retrieval decision be an action
+(a_t\in{\texttt{retrieve},\texttt{skip}}). Read that as: at step (t) the
+agent picks either "retrieve" or "skip." A budget-aware control law prices
+its latency and token cost while preserving the long-horizon effect on the
+task [<a href="../../references.html#ref-5">5</a>] [<a href="../../references.html#ref-4">4</a>]. This is
+the formal version of a practical truth: always retrieving is slow, never
+retrieving is reckless.</p>
+<h3 id="separating-the-retrieval-policy-from-the-generation-policy">Separating the Retrieval Policy from the Generation Policy</h3>
+<p>An agentic retrieval policy should therefore be separate from the generation
+policy. A policy is simply a rule for choosing actions.</p>
+<p>The retrieval policy observes:</p>
+<ul>
+<li>the task type;</li>
+<li>current uncertainty;</li>
+<li>freshness requirements;</li>
+<li>source permissions;</li>
+<li>and cost.</li>
+</ul>
+<p>It then chooses among local search, vector memory, web search, database lookup,
+tool documentation, or no retrieval. The generation policy receives a bounded
+evidence set with provenance and conflict information. Provenance means the
+record of where each item came from.</p>
+<h3 id="a-small-control-program-for-retrieval">A Small Control Program for Retrieval</h3>
+<p>The following pseudocode shows that separation: estimate need, list
+permitted sources, compare value against cost, then either answer from the
+current state or retrieve, rank, and answer with citations.</p>
+<pre><code class="language-text">need = uncertainty(task, history)
+sources = allowed_sources(task, caller)
+if value_of_information(need, sources) &lt;= retrieval_cost:
+  answer_from_current_state()
+else:
+  evidence = retrieve_and_rank(task, sources)
+  answer_with_citations(evidence)
+</code></pre>
+<h3 id="typed-evidence-instead-of-context-sludge">Typed Evidence Instead of Context Sludge</h3>
+<p>The small program hides a difficult discipline: retrieved text must not become
+untyped context sludge. Each item should carry source, timestamp, access path,
+rank score, and the claim it supports.</p>
+<p>If two sources disagree, the agent should surface the conflict or acquire
+higher-authority evidence. It should not smooth the contradiction into fluent
+prose.</p>
+<p>For a beginner builder, this is where retrieval becomes tool design instead of
+text stuffing. A source may be:</p>
+<ul>
+<li>relevant but stale;</li>
+<li>authoritative but outside the caller permission boundary;</li>
+<li>fresh but contradicted by a higher-authority manual;</li>
+<li>or cheap but too vague to change the decision.</li>
+</ul>
+<p>A well-designed retrieval tool returns enough metadata for the interpreter to
+reason about those differences. Topic 1 (Tool Interfaces and Function Calling)
+sets out the contract style that makes such metadata declarable.</p>
+<h2 id="where-retrieval-belongs">Where Retrieval Belongs</h2>
+<p>Retrieval should often precede irreversible action. Four examples make the rule
+concrete:</p>
+<ul>
+<li>A coding agent should inspect relevant symbols before editing.</li>
+<li>A compliance agent should fetch the current rule before advising.</li>
+<li>A data agent should retrieve schema and sample rows before writing a query.</li>
+<li>A deployment agent should inspect recent incidents and service health before
+  changing production.</li>
+</ul>
+<p>In each case, retrieval is valuable only if it can change the rational next
+move. Topic 4 (Safety Constraints and Guardrails) takes up what to do when the
+next move is dangerous.</p>
+<h3 id="measuring-retrieval-quality">Measuring Retrieval Quality</h3>
+<p>This also explains why retrieval quality cannot be judged by answer style
+alone. Measure Recall@(k), nDCG, citation faithfulness, contradiction rate,
+freshness error, tool-call efficiency, and end-task utility under fixed
+retrieval budgets.</p>
+<p>Then compare three policies: always-retrieve, never-retrieve, and an
+uncertainty or value-of-information policy. The comparison matters because each
+policy fails differently:</p>
+<ul>
+<li>always-retrieve spends tokens and time even when the state is already
+  sufficient;</li>
+<li>never-retrieve turns stale memory into false confidence;</li>
+<li>a conditional policy can still be wrong if its uncertainty signal is
+  miscalibrated.</li>
+</ul>
+<p>If retrieval cannot buy measurable uncertainty reduction per unit latency, it is
+ritual rather than reasoning.</p>
+<p>Recall@(k) asks whether the needed evidence appears somewhere in the top
+(k) retrieved items. Set (k = 5), and if the needed passage lands at rank 4,
+Recall@5 counts it as found. nDCG, normalized discounted cumulative gain, also
+cares about order: useful evidence near rank 1 counts more than the same
+evidence buried near rank 20.</p>
+<p>These metrics are not literary judgments of the final answer. They are tests of
+whether the observation step gave the interpreter a fair chance to know what it
+needed.</p>
+<h3 id="over-retrieval-and-under-retrieval">Over-Retrieval and Under-Retrieval</h3>
+<p>The theory pays off by preventing two expensive pathologies. Over-retrieval
+bloats context, slows execution, and admits distractors. Under-retrieval lets
+fluent priors masquerade as evidence.</p>
+<p>A retrieval-augmented agent is better not because it keeps more documents
+nearby, but because it knows when an external document deserves to govern the
+next interpreter step.</p>
+<h3 id="how-composition-and-memory-change-the-calculation">How Composition and Memory Change the Calculation</h3>
+<p>Composition can improve this judgment or spoil it. A planner that retrieves
+fresh evidence once, then passes the evidence and provenance to subtasks, can
+save calls and keep the collective anchored. A planner that retrieves
+redundantly for every subtask may spend its budget proving the same fact four
+times.</p>
+<p>Memory can help by remembering what was already checked. Stale memory can also
+suppress retrieval that the current task plainly needs.</p>
+<p>Retrieval is therefore most valuable for tasks with four properties together:
+high uncertainty, fresh external facts, inspectable evidence, and enough
+consequence that the delay is cheaper than the mistake.</p>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-05-15 03:11 UTC
+      Last generated: 2026-07-27 18:55 UTC
     </footer>
   </body>
 </html>
