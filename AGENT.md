@@ -109,6 +109,24 @@ This file defines the durable principles and operating instructions for future a
 - Preserved clickable numeric citation style and reference-anchor compatibility across all updated topic text.
 
 
+## Rewrite milestone: beginner-accessibility pass (completed)
+
+- Every published section (preface, four chapter index files, sixteen topic files) was rewritten for
+  entry-level readers using competing writer agents plus a selecting judge agent per section.
+- Accessibility contract applied to each file: plain-language runway before formalism, descriptive
+  content-specific headings roughly every 200-350 words, first-use definitions and expanded acronyms,
+  read-aloud glosses for symbols, tiny verifiable numeric examples, shorter sentences and paragraphs,
+  introduced tables and code blocks, and no meaning that depends on colour, layout, or position.
+- Preservation rule for that pass: no concept, equation, citation number, table, code block, exercise, or
+  cross-reference was removed. A deterministic checker compared every file against its pre-rewrite
+  baseline for citation multisets, display-math counts, code fences, table rows, title lines, and word
+  count. Average Flesch reading ease rose from roughly 34 to roughly 45 while word count grew about 1.5x.
+- Heading capitalization was normalized to Title Case in chapter and topic files; the preface keeps its
+  sentence-case headings because the build matches `## Chapter map`, `## How to read this book`, and
+  `## Throughline` by exact text.
+- Repeated scaffolding phrasing is forbidden in this manuscript. Do not reintroduce uniform openings such
+  as "This section is about ..." or uniform table lead-ins such as "several symbols arrive at once".
+
 ## Current status
 - Core scaffold is complete: chapter/topic sources, companion rewrite notes, references, build scripts, site template, stylesheet, and deployment workflow.
 - Documentation baseline is refreshed: `.gitignore`, `README.md`, and `AGENT.md` now reflect project conventions and voice requirements.
@@ -117,6 +135,7 @@ This file defines the durable principles and operating instructions for future a
 - LaTeX PDF rendering pipeline added to produce `dist/book.tex` and `dist/book-latex.pdf` for cleaner mathematical typesetting.
 - Chapter 2 topics and notes now reflect full three-pass rewrites with storyline outlines, equation harvests, and polished narrative synthesis.
 - Chapters 3 and 4 topics and notes now reflect full three-pass rewrites with storyline outlines, equation harvests, and polished narrative synthesis.
+- All twenty-one published sections now reflect the beginner-accessibility pass, with content preservation verified against the pre-rewrite baseline and artifacts rebuilt from source.
 
 ## Next steps
 1. Add runnable code exercises per chapter (especially interpreter and planner sections).

@@ -17,7 +17,30 @@
       </aside>
       <article class="content">
         <h1 id="chapter-3-tool-use-and-embodiment">Chapter 3: Tool Use and Embodiment</h1>
-<p>Intelligence without interfaces is monologue. This chapter turns reasoning into action through APIs, retrieval, and environment-coupled feedback.</p>
+<p>Intelligence without interfaces is monologue. This chapter turns reasoning into action through APIs (application programming interfaces, the entry points other software exposes), retrieval, and feedback from the environment the agent is coupled to.</p>
+<h2 id="the-interpreter-gains-a-body">The Interpreter Gains a Body</h2>
+<p>In earlier chapters, an action could be treated as a mathematical choice. Here an action crosses a boundary. It lands in a filesystem, a browser, a database, a search index, a queue, or a human approval process.</p>
+<h2 id="what-crossing-the-boundary-costs">What Crossing the Boundary Costs</h2>
+<p>At that crossing, structural choices acquire observable costs. Five of them recur throughout the chapter:</p>
+<ul>
+<li>Permissions must be checked before the action is allowed.</li>
+<li>Latency, the waiting time between request and response, must be paid.</li>
+<li>Side effects may be irreversible, so there is no undo.</li>
+<li>Feedback may arrive late, long after the decision that caused it.</li>
+<li>The world may stubbornly continue existing after the model has finished its sentence.</li>
+</ul>
+<p>A small example makes the cost real. If one file read takes 200 milliseconds, and the agent reads twelve files before editing, it has spent 2.4 seconds on looking.</p>
+<h2 id="the-questions-this-chapter-asks">The Questions This Chapter Asks</h2>
+<p>The running example carries forward Chapter 2's coding agent, now working on this book's own publication pipeline, which is the same workflow Chapter 4 will treat as a small society. The interesting questions shift away from "what should it think?" Three sharper questions replace it:</p>
+<ol>
+<li>What may it do?</li>
+<li>What evidence must it fetch first?</li>
+<li>How does it learn whether the world actually changed?</li>
+</ol>
+<h2 id="reading-this-chapter-as-engineering">Reading This Chapter as Engineering</h2>
+<p>Read this chapter as the engineering chapter of the book's formal story. Three plain readings carry most of the weight.</p>
+<p>A schema, meaning a declared shape for arguments and results, is a grammar for external action. A retrieval result is a purchased observation: evidence you paid tokens and time to obtain. A sensor is any channel by which the world reports back, and an actuator is any channel by which the agent can affect that world.</p>
+<p>The mathematics in the four topics that follow gives names to these ordinary design choices.</p>
 <h2 id="topics">Topics</h2>
 <ol>
 <li><a href="topic-01-tool-interfaces-and-function-calling.html">Tool Interfaces and Function Calling</a></li>
@@ -28,7 +51,7 @@
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-05-15 03:11 UTC
+      Last generated: 2026-07-27 18:55 UTC
     </footer>
   </body>
 </html>

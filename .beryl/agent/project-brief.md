@@ -44,6 +44,23 @@ Key outcomes from that pass:
 - Formal corrections were made for idempotent effects, MPC control sequences, causal replay assumptions, lag-aware state augmentation, no-regret equilibrium distinctions, and dominant-strategy truthfulness.
 - `scripts/build_latex_pdf.py` now builds a real LaTeX `book` document with front matter, author metadata, unnumbered preface/references, chapter/topic hierarchy, internal reference links, and no decorative source separators.
 
+## Beginner-Accessibility Pass
+
+A later pass rewrote all twenty-one published sections for entry-level readers, per publication criterion 5.
+Each section was drafted by two competing writer agents and selected by a judge agent, then audited by
+independent reviewer agents. Durable rules that came out of it:
+
+- Preserve first-heading lines byte-identically; the LaTeX build resolves cross-file links through them.
+- Preserve the preface headings `## Chapter map`, `## How to read this book`, and `## Throughline`, and the
+  `## Topics` heading in chapter index files, because the build matches them by exact text.
+- Chapter and topic headings use Title Case; the preface keeps sentence case.
+- Cross-references are written by name, as `Topic N (Exact Title)` within a chapter and
+  `Chapter M, Topic N (Exact Title)` across chapters, never as "above" or "below".
+- Symbols reused with a new meaning (for example \(R\), \(\gamma\), \(\sigma\)) must say so where reused.
+- Do not reintroduce uniform scaffolding phrasing across files.
+- Content preservation is checked against the pre-rewrite baseline: citation multisets, display-math
+  counts, code fences, table rows, title lines, and word counts.
+
 ## Non-Goals
 
 - Do not turn SIAP into a generic AI survey.

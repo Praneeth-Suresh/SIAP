@@ -17,29 +17,92 @@
       </aside>
       <article class="content">
         <h1 id="goals-environments-and-actions">Goals, Environments, and Actions</h1>
-<p>Every agent story begins like an old sea tale: fog everywhere, limited instruments, and one irretrievable move at a time. If we cannot say what counts as “north,” what currents the world obeys, and which moves are legal, then we do not have an agent architecture yet—we have charisma and wishful thinking. The disciplined alternative is to specify goals, environment dynamics, and action semantics so that behavior can be analyzed, improved, and held accountable [<a href="../../references.html#ref-2">2</a>].</p>
-<h2 id="running-example-a-coding-agent-under-deadline">Running example: a coding agent under deadline</h2>
-<p>Imagine a coding agent tasked with shipping a bug fix before a release freeze. Its <strong>goal</strong> is not “write something clever,” but maximize expected task value (tests pass, regression risk low, deadline met). Its <strong>environment</strong> includes a partially observed repository state, flaky CI, and hidden downstream dependencies. Its <strong>actions</strong> include reading files, editing code, running tests, and opening a pull request. At each step it sees only a slice of the truth, chooses one action, and changes the very world it must reason about next [<a href="../../references.html#ref-3">3</a>] [<a href="../../references.html#ref-7">7</a>].</p>
-<h2 id="formal-model-and-how-it-maps-to-code">Formal model (and how it maps to code)</h2>
-<p>Let the agent-environment system be
-[
-\mathcal{M}=(\mathcal{S},\mathcal{O},\mathcal{A},T,\Omega,R,C,\gamma),
-]
-where (\mathcal{S}) is latent state, (\mathcal{O}) observations, (\mathcal{A}) actions, (T(s'\mid s,a)) transition dynamics, (\Omega(o\mid s,a)) observation dynamics, (R) reward, (C) constraint costs, and (\gamma\in(0,1)) discount [<a href="../../references.html#ref-4">4</a>] [<a href="../../references.html#ref-7">7</a>] [<a href="../../references.html#ref-51">51</a>].</p>
-<p>A policy (\pi(a\mid h_t)), with history (h_t=(o_{0:t},a_{0:t-1})), solves the constrained objective
-[
+<p>Before anything clever can happen, an agent needs three things: something it is trying to achieve, a world it is acting inside, and a list of moves it is allowed to make. Those three things get written down here as a contract. Every later chapter extends that contract, and it is the first thing you inspect when an agent misbehaves.</p>
+<p>An agent is not a model that emits impressive text. It is an interpreter for situated action. At each step it does four things:</p>
+<ul>
+<li>it reads a partial observation, meaning it sees only some of what is going on;</li>
+<li>it updates what it thinks is going on;</li>
+<li>it chooses an admissible action, meaning one the system permits;</li>
+<li>it accepts that the action changes the next problem it must solve.</li>
+</ul>
+<p>Before we can discuss belief, memory, planning, or control, we need the contract that this interpreter is running.</p>
+<h2 id="the-three-parts-of-the-contract">The Three Parts of the Contract</h2>
+<p>The contract has three parts, and each answers a different question:</p>
+<ul>
+<li>A <strong>goal</strong> says what outcomes count as better or worse.</li>
+<li>An <strong>environment</strong> says what can change outside the agent, and what the agent can observe.</li>
+<li>An <strong>action vocabulary</strong> says which interventions are legal, costly, reversible, and checkable.</li>
+</ul>
+<p>Without these parts, the system may still be useful. But its behavior is difficult to compare, debug, or govern [<a href="../../references.html#ref-2">2</a>]. That difficulty is the practical cost of leaving the contract implicit.</p>
+<h2 id="a-coding-agent-under-deadline">A Coding Agent Under Deadline</h2>
+<p>Imagine a coding agent tasked with shipping a bug fix before a release freeze. Its goal is not "write something clever." A defensible goal combines four pressures at once:</p>
+<ul>
+<li>the value of the task itself;</li>
+<li>the risk of causing a regression, meaning breaking something that used to work;</li>
+<li>deadline pressure;</li>
+<li>cost.</li>
+</ul>
+<p>Its environment is only partly visible to it. That environment includes a partially observed repository, flaky continuous integration (CI, the automated system that builds and tests each change), hidden downstream dependencies, and a user whose constraints may be underspecified.</p>
+<p>Its actions are ordinary engineering moves: reading files, editing code, running tests, asking for clarification, and opening a pull request. Each action does three things at once. It produces an observation, it consumes budget, and it may make later actions easier or harder [<a href="../../references.html#ref-3">3</a>] [<a href="../../references.html#ref-7">7</a>].</p>
+<h2 id="the-smallest-agent-interpreter">The Smallest Agent Interpreter</h2>
+<p>This is already enough to write the smallest agent interpreter. The pseudocode below keeps a running <code>state</code> and a <code>history</code> of what happened, then loops: observe, update, choose, execute, record.</p>
+<pre><code class="language-text">state &lt;- initial_state()
+history &lt;- []
+
+while not terminated(state, history):
+    observation &lt;- observe(environment, state)
+    state &lt;- update_state(state, observation)
+    action &lt;- choose_action(goal, state, legal_actions(state))
+    outcome &lt;- execute(action)
+    history &lt;- history + [(observation, action, outcome)]
+</code></pre>
+<p>This loop is the experimental baseline for the rest of the book. Before adding retrieval, planning, reflection, tool governance, or multiple agents, we can ask what this plain interpreter achieves on its own. Five measurements are enough to start:</p>
+<ul>
+<li>whether it completes the task;</li>
+<li>how far it gets before stopping;</li>
+<li>how many tokens and tool calls it spends;</li>
+<li>how long it waits on feedback;</li>
+<li>which failures remain.</li>
+</ul>
+<p>Later patterns are not magic additions. They are controlled mutations of this loop, and each one should be judged against the baseline this plain interpreter sets.</p>
+<p>The rest of the chapter refines the three vague functions in this loop. Topic 2 (Belief, Uncertainty, and Decision) asks what <code>update_state</code> should mean when the world is uncertain. Topic 3 (World Models and State Abstractions) asks what information belongs in <code>state</code> rather than in the raw transcript. Topic 4 (Policies, Value, and Control) asks how <code>choose_action</code> becomes a policy that remains useful under constraints and feedback.</p>
+<h2 id="formal-contract">Formal Contract</h2>
+<p>A common mathematical model is a partially observable Markov decision process (POMDP) with constraints. "Partially observable" means the agent cannot see the true state directly. The model is written as an eight-part tuple:</p>
+<p>[
+\mathcal{M}=(\mathcal{S},\mathcal{O},\mathcal{A},T,\Omega,R,C,\gamma).
+]</p>
+<p>Read that aloud as "the model M consists of states S, observations O, actions A, transitions T, observation model Omega, reward R, cost C, and discount gamma." Eight symbols in a single line is a lot to hold in mind, so the table in "From Symbols to Interfaces" maps each one to a field you would actually implement.</p>
+<h3 id="states-observations-and-actions">States, Observations, and Actions</h3>
+<p>Here (\mathcal{S}) is <strong>latent world state</strong>: the complete condition of the world that matters but is not directly visible. For the coding agent, (s\in\mathcal{S}) ("a state s drawn from the set S") might include the real bug location, whether a dependency is stale, and whether an unseen integration test will fail. The word latent simply means "present in the world, hidden from the agent's sensors."</p>
+<p>(\mathcal{O}) is the set of observations, such as file contents, test output, logs, and user messages. (\mathcal{A}) is the action set, including <code>read_file</code>, <code>edit_file</code>, <code>run_tests</code>, <code>ask_user</code>, and <code>open_pr</code>.</p>
+<h3 id="how-the-world-moves-and-what-the-agent-sees">How the World Moves and What the Agent Sees</h3>
+<p>The term (T(s'\mid s,a)) is the <strong>transition dynamics</strong>. Read it as "the chance the next hidden state is s-prime, given the current state s and action a." If (a) is <code>edit_file</code>, (T) describes how likely that edit is to move the repository from "bug present" to "bug fixed" or, less gloriously, to "new regression introduced."</p>
+<p>The term (\Omega(o\mid s,a)) is the <strong>observation model</strong>. Read it as "the chance the agent sees observation o after action a when the world is in state s." A flaky test suite has an observation model with noise: the same hidden state can produce a pass one minute and a failure the next.</p>
+<p>The last three symbols are the scoring machinery. (R(s,a)) is reward, (C(s,a)) is constraint cost, and (\gamma\in(0,1)) is a <strong>discount factor</strong>, a number strictly between zero and one that makes nearer consequences count more than distant ones [<a href="../../references.html#ref-4">4</a>] [<a href="../../references.html#ref-7">7</a>] [<a href="../../references.html#ref-51">51</a>].</p>
+<h3 id="the-markov-assumption-is-a-design-choice">The Markov Assumption Is a Design Choice</h3>
+<p>The Markov assumption is an interpretation, not a fact about reality. It says that the state representation is rich enough that the next transition can be modeled from the current state and action alone. When that assumption fails, the repair is usually one of three moves: better state, better memory, or a more cautious policy.</p>
+<h3 id="reading-the-objective-with-two-numbers">Reading the Objective, with Two Numbers</h3>
+<p>A policy (\pi(a\mid h_t)), with history (h_t=(o_{0:t},a_{0:t-1})), is evaluated by expected return subject to constraints. A <strong>policy</strong> is the rule for choosing actions. The notation (\pi(a\mid h_t)) reads "the probability that the policy chooses action (a) given history (h_t)," where the history holds every observation up to step (t) and every action before it.</p>
+<p>Before the infinite sum appears, consider two concrete steps with (\gamma=0.9). Suppose <code>read_file</code> earns immediate reward (R_0=1) because it gathers useful evidence, and <code>edit_file</code> earns (R_1=8) after the evidence points to the right line. The two-step discounted return is</p>
+<p>[
+R_0+\gamma R_1 = 1 + 0.9\cdot 8 = 8.2.
+]</p>
+<p>If the first action instead rushed an edit with (R_0=4) but caused a next-step regression (R_1=-5), the return would be (4+0.9(-5)=-0.5). Patience wins here by more than eight points. Discounting does not worship delay; it merely lets the contract compare immediate temptation with later consequence.</p>
+<p>The full objective extends that arithmetic over all future steps, and adds a budget line for every kind of cost:</p>
+<p>[
 \max_{\pi}\;J(\pi)=\mathbb{E}<em t="0">{\pi,T,\Omega}!\left[\sum</em>\gamma^t R(s_t,a_t)\right]
 \quad\text{s.t.}\quad
 \mathbb{E}}^{\infty<em t="0">{\pi}!\left[\sum</em>\gamma^t C_j(s_t,a_t)\right]\le\kappa_j\;\forall j.
-]
-Natural-language prompts are therefore only the front door; the house is built from explicit (R), (C), and stopping criteria.}^{\infty</p>
-<p>A practical Python mapping might look like this:</p>
+]}^{\infty</p>
+<p>Read it as "choose the policy with the largest expected discounted reward, subject to each expected discounted cost (C_j) staying under its own ceiling (\kappa_j)." This equation should not be mistaken for a demand that every product team hand-code a perfect reward function. Its practical use is diagnostic. It forces the designer to say three things out loud: which outcomes are being optimized, which costs are merely tradeoffs, and which constraints should stop the agent even when the short-term reward looks attractive.</p>
+<h2 id="from-symbols-to-interfaces">From Symbols to Interfaces</h2>
+<p>The same contract can be expressed as ordinary engineering fields. The table below pairs each formal symbol with its plain meaning and with the kind of field or method that carries it in code.</p>
 <table>
 <thead>
 <tr>
 <th>Formal symbol</th>
 <th>Meaning</th>
-<th>Typical Python field</th>
+<th>Typical implementation field</th>
 </tr>
 </thead>
 <tbody>
@@ -60,12 +123,12 @@ Natural-language prompts are therefore only the front door; the house is built f
 </tr>
 <tr>
 <td>(C(s_t,a_t))</td>
-<td>safety/budget costs</td>
+<td>safety, budget, or policy costs</td>
 <td><code>AgentStep.costs</code></td>
 </tr>
 <tr>
 <td>(T,\Omega)</td>
-<td>world and sensing models</td>
+<td>world and sensing assumptions</td>
 <td><code>WorldModel.transition()</code>, <code>WorldModel.observe()</code></td>
 </tr>
 <tr>
@@ -75,22 +138,38 @@ Natural-language prompts are therefore only the front door; the house is built f
 </tr>
 </tbody>
 </table>
-<p>When these fields are explicit, “agent behavior” stops being mystical and becomes inspectable engineering.</p>
-<h2 id="three-theory-braid">Three-theory braid</h2>
-<p>Expected-utility theory gives us the compass by declaring that rational choice under uncertainty is to pick (a^\star) maximizing (\sum_s P(s\mid a)U(s)), so preference becomes computation rather than rhetoric [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>]; sequential decision theory then warns that single-step cleverness is a trap because each move reshapes tomorrow’s opportunity set, captured by (V^\star(s)=\max_a{R(s,a)+\gamma\sum_{s'}T(s'\mid s,a)V^\star(s')}) and, under partial observability, by belief updates (b_{t+1}(s')=\eta\,\Omega(o_{t+1}\mid s',a_t)\sum_s T(s'\mid s,a_t)b_t(s)), which force planning over information as well as outcomes [<a href="../../references.html#ref-4">4</a>] [<a href="../../references.html#ref-5">5</a>] [<a href="../../references.html#ref-7">7</a>]; and feedback control finally keeps this entire edifice honest by insisting that plans must survive noisy reality through closed loops such as (x_{t+1}=Ax_t+Bu_t+w_t), (y_t=Cx_t+v_t), and corrective control (u_t=-K\hat{x}_t), with state estimation continuously updating (\hat{x}_t) from observations, so intelligence is not perfect prediction but graceful correction under disturbance [<a href="../../references.html#ref-36">36</a>] [<a href="../../references.html#ref-39">39</a>] [<a href="../../references.html#ref-41">41</a>].</p>
-<h2 id="short-exercise">Short exercise</h2>
-<p>Take a real prompt you use (for example, “Refactor this module safely and quickly”) and formalize it as ((R,C,\text{termination})): define one reward term for functional correctness, one for latency or token cost, at least one hard safety constraint, and a measurable stopping condition. Then write one sentence explaining which part of your spec corresponds to utility, dynamics, and feedback.</p>
-<h2 id="how-to-study-this-formally">How to study this formally</h2>
-<p>Build small benchmark tasks where (R) and (C) are explicit, perturb observations and transition assumptions, and compare policies by constrained return, regret, and violation rate. If a system cannot state its objective and constraints mathematically, it may still be impressive—but it has not yet earned the full title of agent.</p>
-<h2 id="translating-the-theory-into-agentic-practice">Translating the Theory into Agentic Practice</h2>
-<p>The practical gift of this topic is a design discipline: before building a clever loop, write the agent's charter. A production agent should begin with an explicit goal specification, an environment boundary, an action vocabulary, constraint budgets, and termination rules. For a coding agent, this means distinguishing "produce a patch" from "produce a patch that passes named tests, preserves public contracts, avoids unsafe files, fits within a time budget, and escalates when evidence is insufficient." The first sentence is a wish. The second is an architecture.</p>
-<p>In implementation terms, treat (R), (C), and (\mathcal{A}) as configuration objects, not as folklore trapped in a prompt. The action registry should say which operations exist, what inputs are legal, what side effects they may cause, how much they cost, and what postconditions must be checked. The planner should score candidate actions against the current belief state and constraint ledger. The runtime should record each observation-action-transition triple so that later debugging can ask: did the agent choose badly, observe badly, or operate under a badly specified objective?</p>
-<p>This also changes how we design human oversight. A vague agent needs vague supervision: "please be careful." A formalized agent can expose precise gates: "this edit touches authentication," "this command exceeds budget," "this step reduces expected reward unless it obtains new evidence." Escalation becomes part of the state machine rather than an apology after the machine has wandered into the machinery room with a lit candle.</p>
-<p>The value of learning the theory is therefore immediate. It teaches us to replace prompt charisma with inspectable control. Goals become reward models and acceptance tests; environments become typed sources of observation and uncertainty; actions become contracts; constraints become budgets and guards; feedback becomes telemetry and correction. Once these pieces are explicit, better agents can be compared, improved, and governed. Without them, every success is anecdote and every failure is an interpretive fog.</p>
+<p>Read the table as a promise: every symbol in this table must eventually become something you can log and inspect at runtime.</p>
+<h3 id="utility-option-value-and-correction-after-measurement">Utility, Option Value, and Correction After Measurement</h3>
+<p>Three older fields each contribute one rule to this contract.</p>
+<p>Expected-utility theory supplies the local decision criterion: choose the action with greatest expected utility under the current interpretation of the world [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>].</p>
+<p>Sequential decision theory adds that a locally attractive action can be bad if it destroys future options. That is the lesson captured by Bellman recursion in fully observed settings, where the value of a state is defined in terms of the values of the states it leads to [<a href="../../references.html#ref-5">5</a>].</p>
+<p>Feedback control adds the implementation discipline: plans must be corrected after new measurements arrive, because disturbances and model error are normal rather than exceptional [<a href="../../references.html#ref-36">36</a>] [<a href="../../references.html#ref-39">39</a>] [<a href="../../references.html#ref-41">41</a>].</p>
+<h3 id="what-this-demands-of-an-action-registry">What This Demands of an Action Registry</h3>
+<p>For the coding agent, this means the action registry should say more than "can run shell commands." It should record five things per action:</p>
+<ul>
+<li>which commands are allowed;</li>
+<li>what they may modify;</li>
+<li>what evidence they are expected to produce;</li>
+<li>how much budget they consume;</li>
+<li>which postconditions must be checked afterwards.</li>
+</ul>
+<p>A vague prompt asks the agent to be careful. A contract gives the runtime something to inspect.</p>
+<h2 id="exercise">Exercise</h2>
+<p>Take a real prompt you use, such as "refactor this module safely and quickly." Rewrite it as a small agent contract with these parts:</p>
+<ul>
+<li>One reward term for functional correctness.</li>
+<li>One task-success condition that says what "done well enough" means.</li>
+<li>One meaningful intermediate milestone, such as "the failing test is reproduced" or "the risky subsystem has been identified."</li>
+<li>One reward or cost term for latency, money, or token use.</li>
+<li>At least one hard constraint.</li>
+<li>A measurable stopping condition, including when to stop after partial progress rather than spend the budget theatrically.</li>
+<li>The legal actions available to the agent.</li>
+</ul>
+<p>Then identify which part of your spec describes utility, which part describes dynamics, and which part creates feedback. A good answer names a specific field for each of the three, and states each stopping condition as a number or a checkable test rather than an adjective. If you cannot answer those questions, the agent is still being steered by prose where it needs an interface.</p>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-05-15 03:11 UTC
+      Last generated: 2026-07-27 18:55 UTC
     </footer>
   </body>
 </html>

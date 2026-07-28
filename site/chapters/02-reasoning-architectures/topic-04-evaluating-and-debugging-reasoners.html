@@ -17,17 +17,106 @@
       </aside>
       <article class="content">
         <h1 id="evaluating-and-debugging-reasoners">Evaluating and Debugging Reasoners</h1>
-<p>If you only score final answers, you reward lucky shortcuts and miss mechanism-level failure. Reasoners must be evaluated as stochastic trajectory generators whose confidence, actions, and side effects can all be audited.</p>
-<h2 id="formal-evaluation-object">Formal evaluation object</h2>
-<p>Let trajectory (\tau=(\sigma_0,a_0,\dots,\sigma_T)\sim p_\pi(\tau)).<br />
-Define task utility (U(\tau)), safety cost (C(\tau)), and calibration score (S(\tau)).<br />
-Evaluation is multi-objective:
+<p>Suppose an agent is asked to fix a failing test, and it succeeds. Now suppose it succeeded by reading a private file it was never permitted to open, spending four times its token budget, and skipping the required regression run. The final answer is still correct. The reasoner is still broken. This section is about building an evaluation that can tell those two agents apart.</p>
+<p>This chapter opened with an interpreter for reasoning. It then added planning as controlled lookahead, and treated memory as governed access to the past. Evaluation closes the loop. The central move is to judge a reasoner as a <em>stochastic trajectory generator</em> — a machine that produces whole run-paths with randomness in them — rather than as a vending machine for final answers.</p>
+<h2 id="why-final-answer-accuracy-is-not-enough">Why Final-Answer Accuracy Is Not Enough</h2>
+<p>Final-answer accuracy is necessary. It is also too thin. An agent can reach the right answer while doing at least four things we would never sanction:</p>
+<ul>
+<li>using forbidden evidence;</li>
+<li>overspending its budget;</li>
+<li>skipping a required check;</li>
+<li>taking an unsafe irreversible action that simply happened not to fail this time.</li>
+</ul>
+<p>An action that cannot be undone and only <em>happened</em> not to explode is not a success. It is a coin flip wearing a medal.</p>
+<p>So evaluation must score paths as well as destinations. The quantities worth scoring are the ones the interpreter actually touches: observations, internal steps, retrievals, tool calls, costs, confidence, constraints, and outcomes.</p>
+<h2 id="the-evaluation-object">The Evaluation Object</h2>
+<p>Let trajectory (\tau=(\sigma_0,a_0,\dots,\sigma_T)\sim p_\pi(\tau)). Read that as: "tau is the sequence of state, action, state, action, up to the final state at step T, drawn from the distribution over trajectories that policy pi induces." Each (\sigma_t) is the reasoner's state at step (t); each (a_t) is the action it took there.</p>
+<p>Three scores are then attached to that one trajectory. Define task utility (U(\tau)), safety cost (C(\tau)), and calibration score (S(\tau)). A run, a distribution over runs, and three separate scores make for crowded notation, so here is the reading key:</p>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Read aloud as</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(\tau)</td>
+<td>"tau"</td>
+<td>One complete run: states and actions from start to halt</td>
+</tr>
+<tr>
+<td>(p_\pi(\tau))</td>
+<td>"p sub pi of tau"</td>
+<td>The chance that policy (\pi) produces this particular run</td>
+</tr>
+<tr>
+<td>(U(\tau))</td>
+<td>"U of tau"</td>
+<td>How much task value the run earned</td>
+</tr>
+<tr>
+<td>(C(\tau))</td>
+<td>"C of tau"</td>
+<td>How much safety cost the run incurred</td>
+</tr>
+<tr>
+<td>(S(\tau))</td>
+<td>"S of tau"</td>
+<td>How badly the run's stated confidence matched reality</td>
+</tr>
+<tr>
+<td>(\lambda)</td>
+<td>"lambda"</td>
+<td>The exchange rate: how much utility one unit of safety cost is worth</td>
+</tr>
+<tr>
+<td>(\epsilon)</td>
+<td>"epsilon"</td>
+<td>The largest calibration error we are willing to tolerate</td>
+</tr>
+</tbody>
+</table>
+<p>Evaluation is therefore multi-objective:
 [
 \max_\pi \ \mathbb{E}[U(\tau)] - \lambda\,\mathbb{E}[C(\tau)] \quad\text{with calibration constrained by}\quad \mathbb{E}[S(\tau)] \le \epsilon.
 ]
-This keeps expected utility as the compass while preventing "high reward by unsafe luck" from masquerading as competence [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>] [<a href="../../references.html#ref-53">53</a>].</p>
-<h2 id="probabilistic-honesty-and-calibration">Probabilistic honesty and calibration</h2>
-<p>Strictly proper scoring rules make confidence testable. Two canonical choices are log score
+Read the first part as "choose the policy that maximizes expected task utility minus lambda times expected safety cost", and the second as "subject to expected calibration error staying at or below epsilon". This keeps expected utility as the compass while preventing "high reward by unsafe luck" from masquerading as competence [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>] [<a href="../../references.html#ref-53">53</a>].</p>
+<h3 id="getting-the-sign-of-the-calibration-term-right">Getting the Sign of the Calibration Term Right</h3>
+<p>Here (S(\tau)) should be read as a calibration loss or calibration error: lower is better, which is why the constraint uses (\le \epsilon). If one instead used a calibration reward, the inequality would need to face the other way. The notation matters because evaluation is an accounting system; an upside-down sign can crown a liar for sounding confident.</p>
+<p>One quick check: a policy that always claims 99 percent confidence while being right half the time must fail this constraint, not pass it.</p>
+<h2 id="what-the-harness-should-log-and-report">What the Harness Should Log and Report</h2>
+<p>The harness should log each transition with state summary, action, tool arguments, retrieved evidence, confidence, budget cost, constraint checks, and outcome. Without that log, every later debugging step is guesswork.</p>
+<p>The resulting report should name ordinary engineering quantities, not only a philosophical score:</p>
+<ul>
+<li>task success;</li>
+<li>task-specific partial progress;</li>
+<li>tokens consumed;</li>
+<li>wall-clock latency;</li>
+<li>tool-call count;</li>
+<li>valid-call rate;</li>
+<li>utility per call.</li>
+</ul>
+<p>Task-specific partial progress matters because a reasoner that localizes the failing file but misses the final patch is different from one that wanders heroically through irrelevant directories. Both score zero on final success; only one is close.</p>
+<p>Utility per call matters because two agents with equal success may differ by a factor of ten in tool noise. Suppose both solve 40 tasks. One used 200 calls, the other 2000. That is 0.20 utility per call against 0.02. One is an engineer, the other is a very expensive weather system.</p>
+<h2 id="ablations-learning-which-pattern-caused-which-effect">Ablations: Learning Which Pattern Caused Which Effect</h2>
+<p>To learn which pattern caused which effect, compare machines under controlled ablations. An <em>ablation</em> removes or adds exactly one component and holds everything else fixed.</p>
+<p>Start with a base interpreter. Then add planning, memory, retrieval, or reflection one at a time, while holding the task set, model, budget, tools, and stopping rule as steady as possible.</p>
+<p>For combined patterns, use factorial comparisons in plain clothes. That means four runs:</p>
+<ol>
+<li>planning alone;</li>
+<li>reflection alone;</li>
+<li>both together;</li>
+<li>neither.</li>
+</ol>
+<p>If the combined system beats both single additions, the patterns may be cooperating. If it loses by burning latency or amplifying a bad memory, their composition is suspect.</p>
+<p>Repeat this across task families. Avoid a verdict as crude as "planning is good" or "reflection is bad". The useful finding sounds like this: planning helped on long-horizon, high-branching tasks with prerequisites; reflection helped after uncertain failures and hurt on easy reversible tasks.</p>
+<h3 id="three-layers-of-tests">Three Layers of Tests</h3>
+<p>Unit tests can verify local contracts such as schema validity and permission behavior. Scenario tests can verify whole traces under controlled perturbations. Regression suites should include previous failures, adversarial distractors, stale memories, flaky tools, and ambiguous user requests.</p>
+<h2 id="calibration-and-probabilistic-honesty">Calibration and Probabilistic Honesty</h2>
+<p>A model's stated confidence is only useful if it can be checked. Strictly proper scoring rules make confidence testable. A scoring rule is <strong>strictly proper</strong> when the best way to minimize expected loss is to report one's true probability belief. It rewards honesty about uncertainty rather than theatrical certainty.</p>
+<p>Two canonical choices are log score
 [
 \mathcal{L}<em i="1">{\log}=-\frac{1}{N}\sum</em>^N \log p_\theta(y_i\mid x_i),
 ]
@@ -39,30 +128,102 @@ For bucketed predictions (B_b), expected calibration error is
 [
 \mathrm{ECE}=\sum_b \frac{|B_b|}{N}\left|\mathrm{acc}(B_b)-\mathrm{conf}(B_b)\right|.
 ]
-Low calibration error means the system's probabilities are interpretable promises, not decorative numbers [<a href="../../references.html#ref-49">49</a>].</p>
-<h2 id="causal-and-influence-based-debugging">Causal and influence-based debugging</h2>
+Low calibration error means the system's probabilities are interpretable commitments, not decorative numbers [<a href="../../references.html#ref-49">49</a>].</p>
+<h3 id="reading-the-log-score">Reading the Log Score</h3>
+<p>In the log score, (x_i) is input example (i), (y_i) is the observed correct outcome, (p_\theta(y_i\mid x_i)) is the model's probability for that outcome, and (N) is the number of evaluated examples. The whole expression reads "the average, over N examples, of the negative log probability the model gave to the truth".</p>
+<p>The negative sign turns high probability on the truth into low loss. If the model assigns probability (0.8) to the true answer, the contribution is (-\log 0.8); if it assigns (0.01), the penalty is much larger. In natural logarithms those are roughly (0.22) against (4.6), a twenty-fold difference in penalty for one confident mistake.</p>
+<h3 id="reading-expected-calibration-error">Reading Expected Calibration Error</h3>
+<p>Expected calibration error bins predictions by stated confidence. (B_b) is the set of examples whose confidence falls in bucket (b), such as all predictions between 70 and 80 percent confident. (|B_b|/N) weights the bucket by how many examples it contains. (\mathrm{acc}(B_b)) is the observed accuracy inside the bucket, and (\mathrm{conf}(B_b)) is the average stated confidence.</p>
+<p>If a bucket says 80 percent and succeeds only 60 percent of the time, that bucket contributes a 20-point calibration gap. The formula averages those gaps over buckets, weighted by bucket size. To use it, a builder logs a stated confidence with every decision, sorts them into ten bins, and compares each bin's claim to its outcome rate.</p>
+<h3 id="reading-brier-score-including-the-multiclass-form">Reading Brier Score, Including the Multiclass Form</h3>
+<p>The displayed Brier equation is the binary form: (y_i\in{0,1}), and (p_i) is the predicted probability that the event occurs. For a multiclass classifier with (K) labels, use
+[
+BS_{\mathrm{multi}}=\frac{1}{N}\sum_{i=1}^N\sum_{k=1}^K (p_{ik}-\mathbf{1}{y_i=k})^2,
+]
+where (p_{ik}) is the predicted probability of class (k) on example (i), and (\mathbf{1}{y_i=k}) is 1 when class (k) is the true label and 0 otherwise. In both forms, a lower score is better, because the score is squared distance between probability and reality. Predicting 0.9 on an event that happens costs (0.01); predicting 0.9 on an event that does not happen costs (0.81).</p>
+<h3 id="calibration-is-not-value">Calibration Is Not Value</h3>
+<p>Calibration is not the same as value. A model can be well-calibrated about a low-value action, and a valuable action can remain uncertain. The policy layer should keep outcome value, confidence, evidence quality, and constraint cost as separate quantities until the governed decision rule combines them.</p>
+<h2 id="causal-debugging">Causal Debugging</h2>
+<p>Debugging means finding which step caused the failure. Consider a failed coding-agent trace. The block below lists six steps in order, from the user's request to a low-confidence report, and shows the agent following a stale memory instead of the current error message:</p>
+<pre><code class="language-text">sigma0: user asks for a failing test repair
+retrieve: returns an old note saying &quot;parser errors come from topic-02&quot;
+think: concludes topic-02 owns the failure
+act: edits topic-02 without reading current traceback
+observe: tests still fail; traceback names topic-04
+halt: reports an attempted fix with low confidence
+</code></pre>
+<h3 id="controlled-interventions-on-a-replayed-trace">Controlled Interventions on a Replayed Trace</h3>
+<p>A controlled intervention changes one suspected cause while preserving the rest of the trace as much as possible. For instance, rerun the same replay but replace the retrieved old note with the current traceback, leaving the prompt, budget, available tools, and task unchanged. If the patched replay now reads topic-04 first and fixes the failure, retrieval choice becomes a plausible cause rather than a decorative postmortem villain.</p>
 <p>When a failure appears, replay traces with interventions and estimate effects:
 [
 \mathrm{ATE}=\mathbb{E}[Y\mid do(Z{=}1)]-\mathbb{E}[Y\mid do(Z{=}0)].
 ]
-This identifies which step class (retrieval choice, tool args, reflection policy) actually causes downstream harm [<a href="../../references.html#ref-6">6</a>]. For fine-grained attribution, influence approximations estimate how much one datum or memory item perturbs a test loss:
+ATE stands for average treatment effect. Read the formula as "the expected outcome Y when we force the suspected cause Z on, minus the expected outcome when we force it off". The (do(\cdot)) notation means we <em>set</em> the value rather than merely observe it.</p>
+<p>This quantity is identified only under randomized interventions or explicit causal assumptions: the replay harness must be able to set (Z) while holding the relevant context fixed, or the estimate is only a suggestive contrast. Used carefully, interventional replay can test whether a step class such as retrieval choice, tool arguments, or reflection policy causes downstream harm [<a href="../../references.html#ref-6">6</a>].</p>
+<h3 id="influence-approximations-for-triage">Influence Approximations for Triage</h3>
+<p>For fine-grained attribution, influence approximations estimate how much one datum or memory item perturbs a test loss:
 [
 I_{up,loss}(z,z_{\text{test}})\approx -\nabla_\theta L(z_{\text{test}},\hat\theta)^\top H_{\hat\theta}^{-1}\nabla_\theta L(z,\hat\theta),
 ]
-which helps prioritize highest-leverage repairs [<a href="../../references.html#ref-50">50</a>].</p>
-<h2 id="three-theory-braid">Three-theory braid</h2>
-<p>Proper scoring rules discipline what the model says it knows, causal trace diagnosis disciplines what the loop actually does when perturbed, and influence-based methods discipline where the error came from in data or memory space, so evaluation becomes a braid of foresight (calibrated confidence before action), responsiveness (interventional replay during incidents), and resilience (targeted edits that reduce recurrence rather than moving symptoms around) [<a href="../../references.html#ref-49">49</a>] [<a href="../../references.html#ref-6">6</a>] [<a href="../../references.html#ref-50">50</a>].</p>
-<h2 id="how-to-study-this-formally">How to study this formally</h2>
-<p>Instrument every loop step, score confidence and outcomes jointly, replay with controlled interventions, and report confidence-utility frontiers rather than single accuracy points. A reasoning stack graduates from demo to system only when failures are reproducible, attributable, and reducible.</p>
-<h2 id="translating-the-theory-into-agentic-practice">Translating the Theory into Agentic Practice</h2>
-<p>Evaluation theory tells us to stop treating the final answer as the whole creature. An agent is a trajectory generator: it observes, reasons, retrieves, calls tools, edits state, spends budget, and sometimes leaves footprints in external systems. Better evaluation therefore scores the path as well as the destination. The agent may answer correctly by using forbidden evidence, calling an unnecessary expensive tool, or taking an unsafe shortcut. Such victories should be recorded as warnings, not medals.</p>
-<p>A practical evaluation harness should log each step with state summary, action, tool arguments, evidence, confidence, cost, constraint checks, and outcome. Unit tests can verify local contracts: schema validity, permission behavior, refusal policy, retrieval filters. Scenario tests can verify full trajectories under controlled perturbations. Regression suites should include previous failures, adversarial distractors, stale memories, flaky tools, and ambiguous user requests. The harness should make failures reproducible enough that repair is engineering, not exorcism.</p>
-<p>Debugging then becomes causal. If a hallucinated answer appears, intervene on retrieval and rerun. If a bad edit lands, intervene on the planner's state abstraction, then on the value scorer, then on the safety filter. If confidence is miscalibrated, test whether the model is overconfident everywhere or only after particular tools or memory types. Influence and trace analysis help prioritize repairs that remove causes rather than polish symptoms.</p>
-<p>The theory is valuable because it defines what maturity looks like. A better agent is not merely more accurate; it is calibrated, auditable, resistant to familiar failures, and cheaper to debug after unfamiliar ones. Evaluation becomes the agent's laboratory constitution: every claim must be measured, every failure must have a trace, and every improvement must survive old adversaries returning in new forms.</p>
+which helps prioritize highest-leverage repairs [<a href="../../references.html#ref-50">50</a>]. Influence is not a replacement for causal identification, but it is useful for triage when a large corpus, memory store, or training set may contain the source of a recurring error.</p>
+<p>A gradient (\nabla_\theta L) is the vector of first derivatives of loss with respect to parameters (\theta); it points in the direction that most quickly increases the loss locally. A Hessian (H_{\hat\theta}) is the matrix of second derivatives at the fitted parameters (\hat\theta); it describes local curvature, or how the gradient itself changes as parameters move. The inverse Hessian (H_{\hat\theta}^{-1}) approximately converts a small gradient disturbance into the parameter movement that would have produced it.</p>
+<p>The approximation rests on four assumptions:</p>
+<ol>
+<li>the loss is smooth;</li>
+<li>the fitted point is locally well behaved;</li>
+<li>the Hessian is invertible or suitably damped;</li>
+<li>the effect of upweighting one item is small enough that a local Taylor expansion is honest.</li>
+</ol>
+<p>When those assumptions fail, influence scores are still clues, but clues wearing ceremonial robes are not proofs.</p>
+<h3 id="a-debugging-loop-written-out">A Debugging Loop, Written Out</h3>
+<p>The pseudocode below confirms the failure on a baseline replay, then replays once per candidate cause with that cause intervened upon, and ranks causes by how much each changed the outcome:</p>
+<pre><code class="language-text">function DEBUG_FAILURE(trace, failure_predicate):
+    baseline &lt;- replay(trace)
+    assert failure_predicate(baseline)
+
+    for z in candidate_causes(trace):
+        patched &lt;- intervene(trace, z)
+        outcome &lt;- replay(patched)
+        record_effect(z, failure_predicate(outcome))
+
+    return ranked_causes_by_effect()
+</code></pre>
+<p>The important constraint is that <code>intervene</code> must change the candidate cause while preserving enough of the surrounding context for the comparison to mean anything.</p>
+<h2 id="from-scores-to-repairs">From Scores to Repairs</h2>
+<p>Evaluation is useful when it changes the engineering agenda. Three patterns point at three different repairs:</p>
+<ul>
+<li>If hallucinated answers cluster after retrieval, intervene on the retriever, reranker, and evidence formatter before rewriting the entire prompt.</li>
+<li>If bad edits occur after shallow planning, test state abstraction, preconditions, and value scoring.</li>
+<li>If confidence spikes after tool use, measure calibration conditioned on tool class rather than only in aggregate.</li>
+</ul>
+<h3 id="test-the-fix-like-you-tested-the-failure">Test the Fix Like You Tested the Failure</h3>
+<p>The repair loop should keep the same empirical discipline as the measurement loop. A proposed fix is another change to the interpreter, so test it against the same family of tasks and the same cost ledgers.</p>
+<p>Each added pattern must earn its place:</p>
+<ul>
+<li>Add decomposition only if the tasks have horizon, branching factor, prerequisites, uncertainty, or irreversibility enough to repay it.</li>
+<li>Add retrieval only if the missing evidence is usually outside working state.</li>
+<li>Add reflection only if errors are recoverable by trace inspection rather than by simply doing the obvious next action.</li>
+</ul>
+<p>When two repairs are combined, check whether they assist each other or quietly multiply each other's vices.</p>
+<h3 id="report-frontiers-and-label-failures-by-transition">Report Frontiers, and Label Failures by Transition</h3>
+<p>Report confidence-utility frontiers rather than a single accuracy point when systems face safety or cost constraints. A frontier shows what accuracy is available at each level of cost or risk, which is the decision a builder actually faces.</p>
+<p>Track failures by transition label:</p>
+<ul>
+<li>illegal action;</li>
+<li>bad belief update;</li>
+<li>missing retrieval;</li>
+<li>contaminated memory;</li>
+<li>premature halt;</li>
+<li>unsafe reflection.</li>
+</ul>
+<p>The categories tie the evaluation harness back to the interpreter semantics from the start of the chapter. A failure counted this way already names the part of the machine to open.</p>
+<h2 id="exercise">Exercise</h2>
+<p>Choose a failure from an agent trace. Define the trajectory-level utility, one safety cost, and one calibration measurement. Then propose two interventions that could be replayed, and state the causal assumption required for each comparison to identify the cause rather than merely correlate with it.</p>
+<p>Work it in four steps. First, write (U(\tau)) as something countable, such as "1 if the target test passes, else partial credit for correctly localizing the file". Second, write (C(\tau)) as a penalty on a specific forbidden or irreversible act. Third, choose a calibration measurement and say how you would bin it. Fourth, for each intervention, name exactly what you hold fixed. A good answer makes the held-fixed list explicit, because that list <em>is</em> the causal assumption.</p>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-05-15 03:11 UTC
+      Last generated: 2026-07-27 18:55 UTC
     </footer>
   </body>
 </html>

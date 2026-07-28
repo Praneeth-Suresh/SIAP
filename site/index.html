@@ -18,9 +18,46 @@
       <article class="content">
         <h1 id="structure-and-interpretation-of-agentic-patterns">Structure and Interpretation of Agentic Patterns</h1>
 <blockquote>
-<p>A text for those who suspect that orchestration is not a bag of tricks, but a branch of science with its own laws, invariants, and delightful surprises.</p>
+<p>A text for readers who suspect that agentic systems are not a bag of orchestration tricks, but programmable structures with laws, invariants, and failure modes.</p>
 </blockquote>
-<p>This draft is organized to mirror the pedagogical arc that made classic CS texts durable: from primitives, to interpreters, to systems, to society.</p>
+<p>This is a book about programs that act. Some software answers a question and stops. The software in this book keeps going: it looks at the world, decides something, does something, and then has to live with the result. That loop is the object of study here, and it turns out to have structure worth teaching.</p>
+<p>The book follows the arc of <em>Structure and Interpretation of Computer Programs</em>. We start with the primitive elements of agency. We assemble them into interpreters. We study the architectures that make those interpreters useful. Then we examine what happens when many such systems act in one shared environment.</p>
+<h2 id="a-first-trace-before-any-theory">A first trace, before any theory</h2>
+<p>Watch one small machine work. Suppose a coding agent sees this line of test output:</p>
+<pre><code>test_auth.py::test_expired_token FAILED
+</code></pre>
+<p>A careless system would jump straight to editing a file. This one writes down what it now believes:</p>
+<pre><code>{failing_behavior: &quot;expired token&quot;,
+ suspects: [&quot;auth/session.py&quot;],
+ risk: &quot;login regression&quot;}
+</code></pre>
+<p>Then it chooses the action <code>read auth/session.py</code>. It observes a changed comparison against the token expiry time. It revises what it believes:</p>
+<pre><code>{suspected_cause: &quot;off-by-one expiry check&quot;, evidence: &quot;source inspected&quot;}
+</code></pre>
+<p>Only now does it choose <code>edit auth/session.py</code>. Two ordinary actions, one small structure between them. That structure is the whole point: the observation became internal state before it became an action. Everything else in this book is an argument about what belongs in that state, who may change it, and what it costs to carry.</p>
+<h2 id="four-words-used-precisely">Four words used precisely</h2>
+<p>Four terms recur constantly, so they are pinned down here rather than left to context:</p>
+<ul>
+<li>An <strong>agent</strong> is a system that observes some environment, keeps an internal account of what is going on, chooses actions, and receives consequences that shape its later choices.</li>
+<li>An <strong>interpreter</strong> is the explicit loop that gives those steps operational meaning: observe, update internal state, choose an action, execute, repeat.</li>
+<li>A <strong>state abstraction</strong> is the compressed representation the interpreter actually uses when deciding. It is not the whole raw transcript of everything that has happened. In the trace above, the short dictionary is the state abstraction; the full test log is not.</li>
+<li><strong>Orchestration</strong> is the engineering discipline of arranging models, tools, memory, policies, budgets, safety checks, and human escalation so that the loop behaves like a governed machine rather than an improvising monologue. A <strong>policy</strong>, in the sense used throughout, is simply the agent's rule for choosing actions.</li>
+</ul>
+<h2 id="every-pattern-is-an-edit-to-the-interpreter">Every pattern is an edit to the interpreter</h2>
+<p>The research program of this book begins with a modest trick. Treat each agentic pattern not as a recipe, but as a change to that interpreter. A pattern may alter any of the following:</p>
+<ul>
+<li>the state the agent carries,</li>
+<li>the control flow by which it reasons,</li>
+<li>the feedback it listens to,</li>
+<li>the memory it may consult,</li>
+<li>the authority it is permitted to exercise,</li>
+<li>the condition under which it must stop.</li>
+</ul>
+<p>Making the change visible lets us ask the less glamorous but more useful question: did it earn its keep? So the questions this book keeps returning to are these four.</p>
+<p><strong>First, how is a pattern represented structurally?</strong> Name the part of the interpreter it edits. A vague pattern cannot be compared with anything.</p>
+<p><strong>Second, what does it do to the measurable outcomes?</strong> The evidence we care about is final task success, partial progress before failure, token use, latency, tool-call efficiency, and a smaller number of dangerous almost-actions. A pattern that lifts success from 60 to 66 tasks out of 100 while tripling token cost has not obviously won.</p>
+<p><strong>Third, how do combined patterns interact?</strong> Patterns collide as often as they cooperate. Retrieval may make planning sharper, or it may flood the policy with irrelevant facts. Oversight may prevent a bad deployment, or it may spend ceremony on a cheap, reversible step.</p>
+<p><strong>Fourth, which task characteristics predict when a pattern helps?</strong> Uncertainty, action stakes, reversibility, horizon length, available feedback, and budget all shift the answer. The right design is therefore a function of the task, not a fashion.</p>
 <h2 id="chapter-map">Chapter map</h2>
 <ol>
 <li><a href="chapters/01-foundations-of-agency/index.html">Chapter 1 - Foundations of Agency</a></li>
@@ -28,18 +65,70 @@
 <li><a href="chapters/03-tool-use-and-embodiment/index.html">Chapter 3 - Tool Use and Embodiment</a></li>
 <li><a href="chapters/04-multi-agent-systems/index.html">Chapter 4 - Multi-Agent Systems</a></li>
 </ol>
-<h2 id="how-to-read-this-draft">How to read this draft</h2>
-<ul>
-<li>Each topic file is the current primary narrative.</li>
-<li>Each <code>*-notes.md</code> companion file contains revision ideas plus at least one alternative rewrite.</li>
-<li>Citations use clickable numeric references like [<a href="references.html#ref-1">1</a>].</li>
-</ul>
+<h2 id="how-to-read-this-book">How to read this book</h2>
+<p>The prerequisites are modest but real. You should be comfortable reading short Python-like pseudocode. You should be able to read a basic probability statement such as (P(A\mid B)), which reads "the chance of A given that B holds." You should also be able to read a summation such as (\sum_t), which means "add this quantity over the indicated steps."</p>
+<p>No reinforcement-learning background is assumed. The early chapters build the needed vocabulary as they go. Numeric citations like [<a href="references.html#ref-1">1</a>] point to the reference list, where you can trace the scholarly ancestry of an idea.</p>
+<p>Notation follows a small and stable convention. Time is written with subscripts, and sets are written with calligraphic letters. The following table lists the symbols that recur across the whole book, with the way to read each one aloud. Each chapter introduces further notation where it is needed, and defines it there:</p>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Read it as</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(o_t)</td>
+<td>"o sub t"</td>
+<td>the observation at step (t)</td>
+</tr>
+<tr>
+<td>(a_t)</td>
+<td>"a sub t"</td>
+<td>the action at step (t)</td>
+</tr>
+<tr>
+<td>(s_t)</td>
+<td>"s sub t"</td>
+<td>the world state at step (t), whether hidden from the agent or fully described</td>
+</tr>
+<tr>
+<td>(\mathcal{A})</td>
+<td>"script A"</td>
+<td>the action space, meaning the set of actions available</td>
+</tr>
+<tr>
+<td>(\pi)</td>
+<td>"pi"</td>
+<td>a policy: a rule for choosing actions</td>
+</tr>
+<tr>
+<td>(R)</td>
+<td>"R"</td>
+<td>a reward, which says what helped</td>
+</tr>
+<tr>
+<td>(C)</td>
+<td>"C"</td>
+<td>a cost, which says what was spent or risked</td>
+</tr>
+<tr>
+<td>(\gamma)</td>
+<td>"gamma"</td>
+<td>a discount, which says that nearer consequences count more heavily than distant ones</td>
+</tr>
+</tbody>
+</table>
+<p>A worked reading of the last row: with (\gamma = 0.9), a reward of 10 arriving one step from now is valued at 9, and the same reward two steps away is valued at 8.1. Impatience, written as arithmetic.</p>
 <h2 id="throughline">Throughline</h2>
-<p>The central claim of this project is that agentic AI is a science of interaction and orchestration, not merely API plumbing. We seek principles that are testable, compositional, and programmable.</p>
+<p>The central claim of this project is that agentic AI is a science of interaction and orchestration, not merely API plumbing.</p>
+<p>Chapter 1 (Foundations of Agency) develops the core interpreter. Goals specify what matters. Belief tracks uncertainty. State abstraction makes history usable. Control turns action into a feedback loop. The later chapters elaborate that same interpreter with reasoning patterns, tools, memory, embodiment, and social coordination.</p>
+<p>The method is constant. Each chapter changes the running interpreter, then asks when that change earns its cost in success, progress, efficiency, safety, or governability.</p>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-05-15 03:11 UTC
+      Last generated: 2026-07-27 18:55 UTC
     </footer>
   </body>
 </html>
