@@ -46,10 +46,12 @@
       <article class="content">
         <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../index.html">Book</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><a href="index.html">Chapter 4: Multi-Agent Systems</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><span aria-current="page">Negotiation and Mechanism Design</span></nav>
         <h1 id="negotiation-and-mechanism-design">Negotiation and Mechanism Design</h1>
+<section class="epigraph epigraph--opening">
 <blockquote>
 <p><em>“It is not from the benevolence of the butcher, the brewer, or the baker that we expect our dinner”</em></p>
-<p>— Adam Smith, <em>An Inquiry into the Nature and Causes of the Wealth of Nations</em> (1776), Book I, chapter II. <a href="https://www.gutenberg.org/files/38194/38194-h/38194-h.htm">Source</a>, accessed 2026-08-06. Public-domain original; quotation transcribed from Project Gutenberg..</p>
+<p>— <a href="https://www.gutenberg.org/files/38194/38194-h/38194-h.htm">Adam Smith</a>, <em>An Inquiry into the Nature and Causes of the Wealth of Nations</em> (1776), Book I, chapter II.</p>
 </blockquote>
+</section>
 <p>Coordination assumes that agents must fit their actions together. Negotiation adds a sharper difficulty: the agents may not value the same outcomes. This section is about writing the rules of the game itself, so that agents find it more attractive to reveal useful information than to generate strategic noise. Once many interpreters share one environment with scarce resources, private information, and local objectives, somebody has to design that rulebook. That designer is you.</p>
 <h2 id="one-edit-slot-two-eager-agents">One Edit Slot, Two Eager Agents</h2>
 <p>Start with a toy scarcity problem.</p>
@@ -254,6 +256,7 @@ inside its probability-like range. Trust borrowed today costs evidence tomorrow.
 High decay is appropriate when the environment shifts quickly or effects are
 dangerous; low decay suits stable, repeatedly verified work. Reputation is not
 forgiveness in decimal form. It is a prior that expires.<sup id="fnref:trust-bank"><a class="footnote-ref" href="#fn:trust-bank">1</a></sup></p>
+<p><img alt="Router, delegate, verifier, and ledger exchange request, acceptance, evidence, and verification while unsupported reputation decays and expired leases revoke authority." src="../../assets/diagrams/15-trust-delegation-handshake.png" /></p>
 <h3 id="lying-about-type">Lying About Type</h3>
 <p>D-12 privately expects a conceptual rewrite to take 18 minutes, but reports 8
 minutes to win the only edit slot. If R-3 scores the claim only at assignment
@@ -343,10 +346,13 @@ manipulation limits [<a href="../../references.html#ref-60">60</a>]
 to make verification independent when models, retrieval indexes, and training
 data remain correlated beneath nominally separate roles.</p>
 </section>
+<section class="epigraph epigraph--closing">
 <blockquote>
 <p><em>“Nobody but a beggar chooses to depend chiefly upon the benevolence of his fellow-citizens.”</em></p>
-<p>— Adam Smith, <em>An Inquiry into the Nature and Causes of the Wealth of Nations</em> (1776), Book I, chapter II. <a href="https://www.gutenberg.org/files/38194/38194-h/38194-h.htm">Source</a>, accessed 2026-08-06. Public-domain original; quotation transcribed from Project Gutenberg..</p>
+<p>— <a href="https://www.gutenberg.org/files/38194/38194-h/38194-h.htm">Adam Smith</a>, <em>An Inquiry into the Nature and Causes of the Wealth of Nations</em> (1776), Book I, chapter II.</p>
 </blockquote>
+</section>
+<p><img alt="Agent-427 and C-9 negotiate over one edit slot while both hide suspiciously large type cards." class="cartoon terminal-visual" src="../../assets/cartoons/20-ch04-mechanism.png" /></p>
 <div class="footnote">
 <hr />
 <ol>
@@ -362,7 +368,7 @@ routers have found more creative collateral.&#160;<a class="footnote-backref" hr
     </main>
     <footer class="site-footer">
       <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
-      <p>Last generated: 2026-08-06 12:38 UTC</p>
+      <p>Last generated: 2026-08-06 13:22 UTC</p>
     </footer>
     <script>
       const toggle = document.querySelector(".nav-toggle");

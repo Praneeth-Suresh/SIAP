@@ -119,7 +119,11 @@ Q(s,a)+c\sqrt{\frac{\ln N(s)}{N(s,a)}}
 
 Rollouts trade exploitation of promising branches against exploration of neglected ones [[45](../../references.md#ref-45)]. Under change, timestamps matter: a thousand rollouts through yesterday's model are a beautifully estimated obsolete policy.
 
-Anytime planning returns its best available candidate when interrupted [[44](../../references.md#ref-44)]. Receding-horizon control goes farther: optimize several steps, execute one, observe, and solve again:
+Anytime planning returns its best available candidate when interrupted [[44](../../references.md#ref-44)].
+
+![A search tree grows scored frontier nodes until a budget line interrupts it, returning the best surviving plan for one action before observation and replanning.](../../assets/diagrams/12-budgeted-search-frontier.png)
+
+Receding-horizon control goes farther: optimize several steps, execute one, observe, and solve again:
 
 \[
 \mathbf{u}_{t:t+H-1}^{\star}

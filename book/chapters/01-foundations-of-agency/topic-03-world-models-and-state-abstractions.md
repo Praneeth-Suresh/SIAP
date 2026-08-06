@@ -25,6 +25,8 @@ A homomorphism is a structure-preserving map. In ordinary programming terms, \(\
 
 The barred symbols \(\bar R\) and \(\bar T\) live in the abstract world \(\mathcal Z\). So \(\bar T(z'\mid z,a)\) means "the transition probability between abstract states after compression". The sum on the left collects all detailed next states \(s'\) that \(\phi\) maps into the same abstract state \(z'\).
 
+![A detailed agent history passes through phi into a compact decision state that preserves branch, authority, budget, and action-relevant distinctions while discarding irrelevant detail.](../../assets/diagrams/11-state-abstraction-compression.png)
+
 ### A Four-State Coding Example You Can Check by Hand
 
 Here is a four-state coding example. Let the detailed states be:

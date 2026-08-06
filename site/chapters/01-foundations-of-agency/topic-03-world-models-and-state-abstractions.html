@@ -46,10 +46,12 @@
       <article class="content">
         <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../index.html">Book</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><a href="index.html">Chapter 1: Foundations of Agency</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><span aria-current="page">World Models and State Abstractions</span></nav>
         <h1 id="world-models-and-state-abstractions">World Models and State Abstractions</h1>
+<section class="epigraph epigraph--opening">
 <blockquote>
 <p><em>“how dangerous it always is to reason from insufficient data.”</em></p>
-<p>— Arthur Conan Doyle, <em>The Adventures of Sherlock Holmes</em> (1892), The Adventure of the Speckled Band. <a href="https://dev.gutenberg.org/cache/epub/48320/pg48320-images.html">Source</a>, accessed 2026-08-06. Public-domain original; quotation transcribed from Project Gutenberg..</p>
+<p>— <a href="https://dev.gutenberg.org/cache/epub/48320/pg48320-images.html">Arthur Conan Doyle</a>, <em>The Adventures of Sherlock Holmes</em> (1892), The Adventure of the Speckled Band.</p>
 </blockquote>
+</section>
 <p>What should an agent carry in its head from one decision to the next? Two ideas answer that question. A <strong>world model</strong> says how the world tends to change. A <strong>state abstraction</strong> says which parts of the past are worth keeping when choosing the next action. Get these wrong and the agent either forgets what it needed or chokes on what it did not.</p>
 <p>Belief cannot remain an ever-growing transcript. Newborn Agent-427 has no durable memory at all; within one run, even its temporary history can outgrow the useful decision state. An agent that treats every token as equally available state has not become wise; it has made planning expensive and brittle.</p>
 <p>The design problem is selective forgetting. Forget too much and the agent loses the variables that make action competent. Retain too much and the policy drowns in irrelevant distinctions. Good abstraction is compression in service of control.</p>
@@ -66,6 +68,7 @@ R(s,a)=\bar R(\phi(s),a),\qquad
 </blockquote>
 <p>A homomorphism is a structure-preserving map. In ordinary programming terms, \(\phi\) is a compression function. It is allowed to rename and merge states only when the merged states still behave the same way for decisions.</p>
 <p>The barred symbols \(\bar R\) and \(\bar T\) live in the abstract world \(\mathcal Z\). So \(\bar T(z'\mid z,a)\) means "the transition probability between abstract states after compression". The sum on the left collects all detailed next states \(s'\) that \(\phi\) maps into the same abstract state \(z'\).</p>
+<p><img alt="A detailed agent history passes through phi into a compact decision state that preserves branch, authority, budget, and action-relevant distinctions while discarding irrelevant detail." src="../../assets/diagrams/11-state-abstraction-compression.png" /></p>
 <h3 id="a-four-state-coding-example-you-can-check-by-hand">A Four-State Coding Example You Can Check by Hand</h3>
 <p>Here is a four-state coding example. Let the detailed states be:</p>
 <ul>
@@ -161,10 +164,6 @@ P(s_{t+1},r_t\mid h_t,a_t)=P(s_{t+1},r_t\mid z_t,a_t),\qquad z_t=\psi(h_t).
 <h2 id="when-it-fails">When It Fails</h2>
 <p>The sufficiency equation is falsifiable. Find two histories that map to the same \(z_t\), hold the proposed action fixed, and compare next-state or reward distributions. In the workspace example, <code>inspect draft-a</code> is useful in one history and wrong in the other. The equality fails, so the summarizer must restore <code>target_workspace</code> or force a fresh inspection before acting.</p>
 <p>Approximation bounds fail more quietly. If tests cover common states but omit the release-freeze tail, measured \(\varepsilon_P\) can look tiny while the actual policy changes exactly when the stakes rise. The repair is stratified evaluation: measure action preservation and value loss across task regimes, especially rare ones, and include an <code>unknown</code> state that makes missing distinctions visible rather than silently defaulting them.</p>
-<blockquote>
-<p><em>“In order to be used in Reasoning, Sensation must become Observation”</em></p>
-<p>— William Whewell, <em>History of Scientific Ideas</em> (1858), Book I, chapter I, section 5, Ideas and Sensations. <a href="https://www.gutenberg.org/files/69093/69093-h/69093-h.htm">Source</a>, accessed 2026-08-06. Public-domain original; quotation transcribed from Project Gutenberg..</p>
-</blockquote>
 <h2 id="behavioral-and-causal-fidelity">Behavioral and Causal Fidelity</h2>
 <h3 id="measuring-close-enough-with-bisimulation-distance">Measuring "Close Enough" with Bisimulation Distance</h3>
 <p>Bisimulation metrics sharpen the idea of "close enough" by measuring whether two states behave similarly under action [<a href="../../references.html#ref-38">38</a>]:</p>
@@ -220,6 +219,13 @@ P(x_1,\dots,x_n\mid \mathrm{do}(X_j=x))=\mathbf{1}[x_j=x]\prod_{i\neq j}P(x_i\mi
 <p>Implement two Python functions over synthetic agent traces. <code>last_n_tokens(history, n)</code> keeps a fixed suffix. <code>decision_state(history)</code> extracts target workspace, check status, evidence freshness, permissions, unresolved hypotheses, and remaining budget. Generate at least 1,000 seeded traces in which the decisive target or permission appears early, while later log noise is longer than the suffix budget.</p>
 <p>For each abstraction, measure token count, action-preservation rate, and realized value under a reference policy that sees full history. Add a second dataset where cache clearing correlates with success but dependency refresh is the true intervention. Your test must demonstrate one state pair with distance zero under the naive abstraction but different optimal actions, then repair the abstraction until the pair separates. No prose-only victory conditions: submit the generator, assertions, and a table of measured failures.</p>
 </section>
+<section class="epigraph epigraph--closing">
+<blockquote>
+<p><em>“In order to be used in Reasoning, Sensation must become Observation”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/69093/69093-h/69093-h.htm">William Whewell</a>, <em>History of Scientific Ideas</em> (1858), Book I, chapter I, section 5, Ideas and Sensations.</p>
+</blockquote>
+</section>
+<p><img alt="Agent-427 packs an unruly history into a tiny suitcase labeled state while one vital branch name sticks out." class="cartoon terminal-visual" src="../../assets/cartoons/06-ch01-state.png" /></p>
 <div class="footnote">
 <hr />
 <ol>
@@ -233,7 +239,7 @@ P(x_1,\dots,x_n\mid \mathrm{do}(X_j=x))=\mathbf{1}[x_j=x]\prod_{i\neq j}P(x_i\mi
     </main>
     <footer class="site-footer">
       <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
-      <p>Last generated: 2026-08-06 12:38 UTC</p>
+      <p>Last generated: 2026-08-06 13:22 UTC</p>
     </footer>
     <script>
       const toggle = document.querySelector(".nav-toggle");

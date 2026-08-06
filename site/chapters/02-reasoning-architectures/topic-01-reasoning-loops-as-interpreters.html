@@ -46,20 +46,18 @@
       <article class="content">
         <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../index.html">Book</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><a href="index.html">Chapter 2: Reasoning Architectures</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><span aria-current="page">Reasoning Loops as Interpreters</span></nav>
         <h1 id="reasoning-loops-as-interpreters">Reasoning Loops as Interpreters</h1>
+<section class="epigraph epigraph--opening">
 <blockquote>
 <p><em>“The Analytical Engine has no pretensions whatever to originate anything.”</em></p>
-<p>— Ada Lovelace, <em>Notes on the Analytical Engine</em> (1843), Note G. <a href="https://hsm.ox.ac.uk/imagining-ai">Source</a>, accessed 2026-08-06. Public-domain original; quotation verified against the History of Science Museum, Oxford..</p>
+<p>— <a href="https://hsm.ox.ac.uk/imagining-ai">Ada Lovelace</a>, <em>Notes on the Analytical Engine</em> (1843), Note G.</p>
 </blockquote>
+</section>
 <p>At 3:47:12 AM, Agent-427 receives its first tool, <code>inspect_file</code>, and reads <code>signature verification failed: invalid timestamp</code>. It proposes importing <code>clock_skew_guard</code> from <code>auth.compat</code>. That module does not exist. At 3:47:19 it opens the runbook's “authoritative” link and receives <code>404 Not Found</code>. At 3:47:23 it is one confident token away from editing production code on the testimony of an error message, an imaginary import, and a vanished document.</p>
 <p>This is why we read a reasoning loop as a small programming language. A language has state, legal moves, guards, and a rule for finishing. Once reasoning has those things, we can reject a bad step before it becomes an external fact. Without them, a transcript is merely a diary written by the suspect.</p>
 <p><img alt="A hand-drawn interpreter loop in which thought, action, observation, and reflection return through guarded state and feedback" src="../../assets/diagrams/04-interpreter-loop.png" /></p>
 <h2 id="what-the-inner-interpreter-adds">What the Inner Interpreter Adds</h2>
 <p>Chapter 1 gave Agent-427 an outer cycle: observe, update belief, abstract state, choose a governed action, execute, and repeat. A reasoning architecture refines the interval between observation and consequence. It decides which internal computations count as legal steps before an external action may occur.</p>
 <p>A pattern therefore changes something mechanical. It adds state, such as a plan frontier or memory handle; adds a transition, such as <code>retrieve</code>; adds feedback; strengthens an authority guard; or changes the halt predicate. A pattern that changes none of these is not a pattern. It is incense marketed by the token.<sup id="fnref:interpreter-incense"><a class="footnote-ref" href="#fn:interpreter-incense">1</a></sup></p>
-<blockquote>
-<p><em>“It can do whatever we know how to order it to perform.”</em></p>
-<p>— Ada Lovelace, <em>Notes on the Analytical Engine</em> (1843), Note G. <a href="https://hsm.ox.ac.uk/imagining-ai">Source</a>, accessed 2026-08-06. Public-domain original; quotation verified against the History of Science Museum, Oxford..</p>
-</blockquote>
 <h2 id="the-machine-state">The Machine State</h2>
 <p>Let the inner machine state be</p>
 <p>\[
@@ -242,6 +240,13 @@ F^\sharp=\alpha\circ F\circ\gamma.
 </ol>
 <p>The submission is the interpreter, its tests, and a trace report. If the only evidence is “the agent looked sensible,” the interpreter has escaped custody.</p>
 </section>
+<section class="epigraph epigraph--closing">
+<blockquote>
+<p><em>“It can do whatever we know how to order it to perform.”</em></p>
+<p>— <a href="https://hsm.ox.ac.uk/imagining-ai">Ada Lovelace</a>, <em>Notes on the Analytical Engine</em> (1843), Note G.</p>
+</blockquote>
+</section>
+<p><img alt="Agent-427 runs around a thought-action-observation loop while Mira quietly moves the stop condition into view." class="cartoon terminal-visual" src="../../assets/cartoons/09-ch02-interpreter.png" /></p>
 <div class="footnote">
 <hr />
 <ol>
@@ -255,7 +260,7 @@ F^\sharp=\alpha\circ F\circ\gamma.
     </main>
     <footer class="site-footer">
       <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
-      <p>Last generated: 2026-08-06 12:38 UTC</p>
+      <p>Last generated: 2026-08-06 13:22 UTC</p>
     </footer>
     <script>
       const toggle = document.querySelector(".nav-toggle");

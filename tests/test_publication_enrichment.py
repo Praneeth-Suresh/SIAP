@@ -104,9 +104,10 @@ class PublicationEnrichmentTests(unittest.TestCase):
 
             self.assertLess(rendered.index("Begin with doubt."), rendered.index("Body."))
             self.assertLess(rendered.index("End with evidence."), rendered.index("topic.png"))
-            self.assertLess(rendered.index("topic.png"), rendered.index("[^one]:"))
+            self.assertLess(rendered.index("[^one]:"), rendered.index("topic.png"))
             self.assertIn("../assets/cartoons/topic.png", rendered)
-            self.assertIn("accessed 2026-08-06", rendered)
+            self.assertIn("::: {.epigraph .epigraph--opening}", rendered)
+            self.assertNotIn("accessed 2026-08-06", rendered)
 
     def test_semantic_divs_render_as_html_sections_and_unnumbered_latex(self) -> None:
         source = textwrap.dedent(
@@ -122,6 +123,12 @@ class PublicationEnrichmentTests(unittest.TestCase):
 
             Because state leaked.
             :::
+
+            ::: {.epigraph .epigraph--opening}
+            > *“A compact thought.”*
+            >
+            > — A Human, *A Work* (1900), page 1.
+            :::
             """
         )
 
@@ -131,10 +138,12 @@ class PublicationEnrichmentTests(unittest.TestCase):
 
         self.assertIn('<section class="exercise" markdown="1">', html_markdown)
         self.assertIn('<section class="reader-question" markdown="1">', html_markdown)
+        self.assertIn('<section class="epigraph epigraph--opening" markdown="1">', html_markdown)
         self.assertIn('<section class="exercise">', html)
         self.assertIn(">Exercise: Break It</h2>", html)
         self.assertIn(r"\siapexercisebegin", latex_markdown)
         self.assertIn(r"\siapreaderquestionbegin", latex_markdown)
+        self.assertIn(r"\siapepigraphbegin", latex_markdown)
         self.assertIn("## Exercise: Break It {.unnumbered}", latex_markdown)
         self.assertIn("## Why does it fail? {.provocation .unnumbered}", latex_markdown)
 

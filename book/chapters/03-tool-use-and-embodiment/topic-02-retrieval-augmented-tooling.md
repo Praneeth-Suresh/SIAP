@@ -231,6 +231,8 @@ If two sources disagree, the agent should surface the conflict or acquire
 higher-authority evidence. It should not smooth the contradiction into fluent
 prose.
 
+![Candidate vector, lexical, memory, and prompt hits pass through permission, freshness, provenance, and conflict filters before becoming typed evidence or quarantine.](../../assets/diagrams/13-retrieval-evidence-funnel.png)
+
 ### Stale, Correlated, and Poisoned Evidence
 
 Agent-427 searches for the publication manifest loader and receives three hits:

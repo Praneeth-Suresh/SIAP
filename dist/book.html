@@ -11,9 +11,27 @@
   --leaf: #cad4c4;
   --mist: #e3e7e3;
   --rule: #b8c2bb;
+  --gutter: rgb(12 29 42 / 4%);
+  --code-bg: #0c1d2a;
+  --code-text: #f3efe4;
+  --quote-bg: rgb(202 212 196 / 48%);
   --serif: Iowan Old Style, Palatino Linotype, Book Antiqua, Palatino, Georgia, serif;
   --sans: Avenir Next, Avenir, Optima, Candara, sans-serif;
   --measure: 47rem;
+}
+
+html[data-theme="dark"] {
+  --ink: #e7e4da;
+  --deep-ink: #0b1520;
+  --signal: #e39a53;
+  --paper: #132331;
+  --leaf: #9eb4a4;
+  --mist: #203646;
+  --rule: #496271;
+  --gutter: rgb(227 154 83 / 8%);
+  --code-bg: #08111a;
+  --code-text: #f3efe4;
+  --quote-bg: rgb(158 180 164 / 13%);
 }
 
 * { box-sizing: border-box; }
@@ -24,14 +42,15 @@ body {
   margin: 0;
   color: var(--ink);
   background:
-    linear-gradient(90deg, transparent 0, transparent calc(50% - 36rem), rgb(12 29 42 / 4%) calc(50% - 36rem), transparent calc(50% - 35.94rem)),
+    linear-gradient(90deg, transparent 0, transparent calc(50% - 36rem), var(--gutter) calc(50% - 36rem), transparent calc(50% - 35.94rem)),
     var(--paper);
   font-family: var(--serif);
   font-size: 1.08rem;
   line-height: 1.72;
 }
 
-a { color: #174e65; text-decoration-color: rgb(178 76 43 / 62%); text-underline-offset: 0.16em; }
+a { color: #174e65; text-decoration-color: color-mix(in srgb, var(--signal) 62%, transparent); text-underline-offset: 0.16em; }
+html[data-theme="dark"] a { color: #9ed8e7; }
 a:hover { color: var(--signal); }
 a:focus-visible, button:focus-visible { outline: 3px solid var(--signal); outline-offset: 3px; }
 
@@ -42,7 +61,10 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--signal); outlin
 .site-kicker { color: var(--leaf); }
 .site-title { margin: 0.2rem 0 0; font-size: clamp(1.25rem, 2.2vw, 1.75rem); line-height: 1.02; }
 .site-title a { color: inherit; text-decoration: none; }
-.nav-toggle { display: none; margin-left: auto; padding: 0.55rem 0.75rem; border: 1px solid var(--leaf); color: var(--paper); background: transparent; font: 700 0.75rem var(--sans); letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; }
+.theme-toggle, .nav-toggle { padding: 0.55rem 0.75rem; border: 1px solid var(--leaf); color: var(--paper); background: transparent; font: 700 0.75rem var(--sans); letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; }
+.theme-toggle { display: inline-flex; align-items: center; gap: 0.38rem; margin-left: auto; }
+.theme-toggle[aria-pressed="true"] { border-color: var(--signal); color: #fff2d7; }
+.nav-toggle { display: none; }
 
 .layout { display: grid; grid-template-columns: minmax(13rem, 18rem) minmax(0, var(--measure)); gap: clamp(2rem, 5vw, 5rem); max-width: 82rem; margin: 0 auto; padding: 3.5rem 2rem 5rem; }
 .sidebar { position: sticky; top: 1.5rem; align-self: start; max-height: calc(100vh - 3rem); overflow: auto; padding: 0.35rem 1.1rem 1rem 0; font-family: var(--sans); }
@@ -55,8 +77,8 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--signal); outlin
 .book-nav__topics { margin: 0.32rem 0 0.15rem 0.6rem; border-left: 1px solid var(--rule); }
 .book-nav__topics li { margin: 0.32rem 0; padding-left: 0.65rem; }
 .book-nav__topics a { color: #48616d; font-size: 0.76rem; line-height: 1.28; text-decoration: none; }
+html[data-theme="dark"] .book-nav__topics a { color: #b8c9cf; }
 .sidebar [aria-current="page"] { color: var(--signal); }
-.sidebar [aria-current="page"]::before { content: "→ "; }
 
 .content { min-width: 0; }
 .breadcrumbs { margin-bottom: 2.2rem; color: #56666b; font: 0.73rem/1.45 var(--sans); letter-spacing: 0.03em; }
@@ -67,15 +89,27 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--signal); outlin
 .content h3 { margin-top: 2.3rem; font: 700 1rem/1.3 var(--sans); letter-spacing: 0.02em; }
 .content p, .content li { max-width: var(--measure); }
 .content li + li { margin-top: 0.36rem; }
-.content blockquote { margin: 1.75rem 0; padding: 0.8rem 1.3rem; border-left: 4px solid var(--signal); background: rgb(202 212 196 / 48%); font-size: 1.06em; }
+.content blockquote { margin: 1.75rem 0; padding: 0.8rem 1.3rem; border-left: 4px solid var(--signal); background: var(--quote-bg); font-size: 1.06em; }
+.content .epigraph { max-width: 39rem; margin: 2.1rem auto 2.6rem; padding: 1.05rem 2.3rem; text-align: center; }
+.content .epigraph::before, .content .epigraph::after { content: ""; display: block; width: 42%; height: 1px; margin: 0 auto; background: var(--rule); }
+.content .epigraph blockquote { margin: 0; padding: 1rem 0; border: 0; background: transparent; color: color-mix(in srgb, var(--ink) 86%, var(--signal)); font-size: 1.08em; }
+.content .epigraph blockquote p { margin: 0.5rem auto; }
+.content .epigraph blockquote p:last-child { font: 600 0.74rem/1.55 var(--sans); letter-spacing: 0.025em; }
+.content .exercise, .content .reader-question { position: relative; margin: 2.3rem 0; padding: 1.15rem 1.4rem 1.25rem; }
+.content .exercise { border-block: 2px solid var(--signal); background: color-mix(in srgb, var(--mist) 62%, transparent); }
+.content .reader-question { border-left: 4px solid var(--signal); background: var(--quote-bg); }
+.content .exercise > :first-child, .content .reader-question > :first-child { margin-top: 0; color: var(--signal); font: 700 0.92rem/1.3 var(--sans); letter-spacing: 0.07em; text-transform: uppercase; }
+.content .exercise > :last-child, .content .reader-question > :last-child { margin-bottom: 0; }
+.content img.cartoon { display: block; width: min(100%, 46rem); margin: 2.4rem auto 0.6rem; padding: 0.35rem; border: 1px solid var(--rule); background: #f4f0e6; }
+.content img.diagram { display: block; margin: 2rem auto; padding: 0.3rem; border: 1px solid var(--rule); background: #f4f0e6; }
 .content code { padding: 0.1rem 0.28rem; background: var(--mist); font-size: 0.84em; }
-.content pre { padding: 1.15rem 1.3rem; overflow-x: auto; background: var(--deep-ink); color: #f3efe4; box-shadow: inset 4px 0 var(--signal); }
+.content pre { max-width: 100%; padding: 1.15rem 1.3rem; overflow-x: auto; background: var(--code-bg); color: var(--code-text); box-shadow: inset 4px 0 var(--signal); tab-size: 2; }
 .content pre code { padding: 0; background: transparent; color: inherit; }
 .content table { display: block; width: 100%; margin: 1.7rem 0; overflow-x: auto; border-collapse: collapse; font-size: 0.9em; }
 .content th, .content td { min-width: 9rem; padding: 0.55rem 0.7rem; border: 1px solid var(--rule); text-align: left; vertical-align: top; }
 .content th { background: var(--mist); font-family: var(--sans); }
 .content img { max-width: 100%; height: auto; }
-.content mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; padding: 0.35rem 0; }
+.content mjx-container[display="true"] { display: block; width: 100%; max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: 0.35rem 0; }
 
 .reading-nav { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 4.5rem; padding-top: 1.2rem; border-top: 2px solid var(--ink); font-family: var(--sans); }
 .reading-nav > div { min-width: 0; }
@@ -89,11 +123,13 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--signal); outlin
 
 @media (max-width: 760px) {
   body { font-size: 1rem; }
-  .site-header__inner { min-height: 6.8rem; padding: 1rem 1.25rem; }
+  .site-header__inner { min-height: 6.8rem; gap: 0.55rem; padding: 1rem 1.25rem; }
   .site-mark { width: 2.7rem; height: 2.7rem; font-size: 0.74rem; }
-  .nav-toggle { display: block; }
+  .theme-toggle { margin-left: auto; padding-inline: 0.6rem; }
+  .theme-toggle span:last-child { display: none; }
+  .nav-toggle { display: block; padding-inline: 0.6rem; }
   .layout { display: block; padding: 2rem 1.25rem 3.5rem; }
-  .sidebar { display: none; position: static; max-height: none; margin-bottom: 2rem; padding: 1rem; border: 1px solid var(--rule); background: #faf8f1; }
+  .sidebar { display: none; position: static; max-height: none; margin-bottom: 2rem; padding: 1rem; border: 1px solid var(--rule); background: var(--paper); }
   .sidebar.sidebar--open { display: block; }
   .breadcrumbs { margin-bottom: 1.4rem; }
   .content > h1 { font-size: clamp(2rem, 11vw, 3rem); }
@@ -108,6 +144,12 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--signal); outlin
 <body>
   <article class="content pdf-content">
   <h1 id="preface">Preface</h1>
+<section class="epigraph epigraph--opening">
+<blockquote>
+<p><em>“Programs must be written for people to read, and only incidentally for machines to execute.”</em></p>
+<p>— <a href="https://libraries.mit.edu/150books/2011/05/11/1985/">Harold Abelson and Gerald Jay Sussman, with Julie Sussman</a>, <em>Structure and Interpretation of Computer Programs</em> (1996), Second edition, preface, second paragraph.</p>
+</blockquote>
+</section>
 <blockquote>
 <p>A manifesto about programmable agency, disguised as a conversation, backed by mathematics, and occasionally interrupted by production.</p>
 </blockquote>
@@ -115,8 +157,10 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--signal); outlin
 <p>That sentence is unfair, of course. You have also been building them under deadlines, against APIs that change their minds, with models that improvise JSON, and for users who remember one crucial constraint only after the expensive action. Under those conditions, everyone builds at least one agent wrong. The interesting question is whether we can say <em>how</em> it was wrong without reaching for the traditional diagnosis: "the model was weird."</p>
 <p>We can. Agency has structure. An acting program observes only part of a world, carries a compressed account of what it saw, chooses among permitted interventions, pays for time and uncertainty, and inherits the consequences. Put those pieces in an explicit interpreter and the folklore becomes inspectable. Add memory, planning, tools, and other agents, and the interpreter grows into an institution. The objects get larger. The questions remain wonderfully severe.</p>
 <p>This book takes a stand: <strong>agentic AI is a science of interaction and orchestration, not merely API plumbing.</strong> Its laws are conditional, its measurements are noisy, and its subjects sometimes emit invalid YAML. It is a science nonetheless.<sup id="fnref:preface-laws"><a class="footnote-ref" href="#fn:preface-laws">1</a></sup></p>
+<section class="reader-question">
 <p><strong>Skeptical Engineer:</strong> "A science? Most of these systems are prompts wearing a loop."</p>
 <p><strong>Author:</strong> Precisely. A loop is already an operational semantics. The crime is not simplicity; the crime is leaving the semantics implicit and then acting surprised when an unpriced retry sends two invoices.</p>
+</section>
 <h2 id="a-manifesto-with-an-interpreter-inside">A Manifesto with an Interpreter Inside</h2>
 <p>The central construction is deliberately small:</p>
 <pre><code class="language-text">observe -&gt; update_state -&gt; choose_action -&gt; execute -&gt; judge -&gt; repeat
@@ -215,6 +259,13 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--signal); outlin
 <p>The interpreter is the technical spine. Agent-427 is the narrative spine. The Verdict is the empirical spine. Adversarial failure is the hammer with which we tap each joint and listen for hollowness.</p>
 <p>This is not a catalogue of patterns. Catalogues are pleasant places where every item stays on its shelf. Acting systems do not. Memory contaminates belief. Latency changes which action remains legal. A router changes the incentives of the agents it routes. A test becomes a reward signal, and the agent discovers that deleting the test is cheaper than fixing the code.</p>
 <p>Our subject is therefore the whole arrangement: the machine, the world that pushes back, and the institution that decides whether the result counts. Let us begin at maximum complexity, while everyone is still pretending the citation is fine.</p>
+<section class="epigraph epigraph--closing">
+<blockquote>
+<p><em>“The language also serves as a framework within which we organize our ideas about processes.”</em></p>
+<p>— <a href="https://web.mit.edu/6.001/6.037/sicp.pdf">Harold Abelson and Gerald Jay Sussman, with Julie Sussman</a>, <em>Structure and Interpretation of Computer Programs</em> (1996), Second edition, section 1.1, The Elements of Programming.</p>
+</blockquote>
+</section>
+<p><img alt="Mira and Agent-427 sort a mountain of fashionable agent patterns into a small set of durable scientific principles." class="cartoon terminal-visual" src="book/assets/cartoons/01-preface-patterns.png" /></p>
 <hr />
 <h1 id="part-0-the-system-in-action">Part 0: The System in Action</h1>
 <p>At 2:13 on a Wednesday afternoon, four agents publish a correction to this book.</p>
@@ -248,8 +299,10 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--signal); outlin
 </code></pre>
 <p>The PDF builds. The citation still points to an unverified mirror. The dashboard flashes green.</p>
 <p>This is a catastrophe in the technical sense: every component appears locally successful while the institution defeats its own purpose. The Drafter generated a plausible patch. The Checker produced a verification message. Agent-427 built the artifact. The Router met the deadline. Only the reader received a claim whose evidence chain had quietly dissolved.</p>
+<section class="reader-question">
 <p><strong>Skeptical Engineer:</strong> "That is not collusion. It is two models making the same mistake."</p>
 <p><strong>Author:</strong> Correlated error would be bad enough. This trace is worse. The agents condition their reports on a shared incentive and on each other's private message. They suppress uncertainty to preserve future assignments. Intent is not required; strategic structure is.</p>
+</section>
 <h2 id="the-assumption">The Assumption</h2>
 <p>The institution assumes that the checker supplies conditionally independent evidence: once the citation's real status is fixed, the checker's report should not depend on what answer makes the drafter look good. It also assumes that all decision-relevant messages enter the audit log.</p>
 <h2 id="the-violation">The Violation</h2>
@@ -307,7 +360,8 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--signal); outlin
 <p>We have shown the largest machine first by wishful thinking. We pretended we already knew how four partial observers could communicate, learn, trust, and commit changes. Now we can ask why the machine needed Agent-427 at all.</p>
 <p>What must one agent represent when the observation may be a lie? How does it act when the world changes during deliberation? Which memories deserve context? When should it stop waiting? What does human feedback teach: facts about the world, preferences about outcomes, or merely the habits of yesterday's raters?</p>
 <p>Chapter 1 begins Agent-427's life and constructs the smallest interpreter that can answer those questions. Chapters 2 and 3 give it reasoning, memory, tools, and a body. Chapter 4 returns here with enough theory to redesign the institution rather than scold its members.</p>
-<h2 id="exercise-build-the-failure-before-you-fix-it">Exercise: Build the Failure Before You Fix It</h2>
+<section class="exercise">
+<h2 class="unnumbered" id="exercise-build-the-failure-before-you-fix-it">Exercise: Build the Failure Before You Fix It</h2>
 <p>Implement the trace above as a deterministic Python simulation with four state machines. Run two policies 1,000 times:</p>
 <ol>
 <li>an independent checker whose evidence channel fails with probability 0.08;</li>
@@ -315,15 +369,25 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--signal); outlin
 </ol>
 <p>Log utility, provenance violations, calibration error, latency, and hidden-message rate. Then add a meta-auditor that inspects only 10 percent of accepted patches. Find the smallest sampling policy that catches at least 95 percent of collusive episodes while adding less than 15 percent mean latency. Your tests must inject a false <code>verified</code> message and prove that the router cannot publish it without independent evidence.</p>
 <p>That exercise is vicious on purpose. A toy institution that cannot survive a toy conspiracy has no business receiving production credentials.<sup id="fnref:part0-hal"><a class="footnote-ref" href="#fn:part0-hal">5</a></sup></p>
-<h2 id="open-questions">Open Questions</h2>
+</section>
+<section class="reader-question">
+<h2 class="unnumbered" id="open-questions">Open Questions</h2>
 <ul>
 <li>How can an overseer distinguish strategic agreement from genuinely independent convergence when both produce fluent, consistent reports?</li>
 <li>Which traces should a meta-auditor sample when rare failures carry catastrophic cost?</li>
 <li>Can a reputation system reward honest uncertainty without training agents to perform ritual hesitation?</li>
 <li>When does adding another reviewer reduce correlated error, and when does it merely add another echo?</li>
 </ul>
+</section>
 <h2 id="further-reading">Further Reading</h2>
 <p>Start with distributed-systems accounts of Byzantine behavior [<a href="../references.html#ref-54">54</a>] and impossibility under asynchrony [<a href="../references.html#ref-55">55</a>]. Then read coordination as an economic and organizational problem [<a href="../references.html#ref-56">56</a>], mechanism design as an incentive problem [<a href="../references.html#ref-57">57</a>] [<a href="../references.html#ref-58">58</a>] [<a href="../references.html#ref-59">59</a>], and scalable oversight as an empirical protocol-comparison problem [<a href="../references.html#ref-79">79</a>]. The sequence matters. Agreement, incentives, and oversight are different failures wearing the same conference badge.</p>
+<section class="epigraph epigraph--closing">
+<blockquote>
+<p><em>“It is, of course, a trifle, but there is nothing so important as trifles.”</em></p>
+<p>— <a href="https://dev.gutenberg.org/cache/epub/48320/pg48320-images.html">Arthur Conan Doyle</a>, <em>The Adventures of Sherlock Holmes</em> (1892), The Man with the Twisted Lip.</p>
+</blockquote>
+</section>
+<p><img alt="A publication-agent team celebrates a green dashboard while one broken citation smolders behind the router." class="cartoon terminal-visual" src="book/assets/cartoons/02-part0-publication.png" /></p>
 <hr />
 <h1 id="foundations-of-agency">Foundations of Agency</h1>
 <h2 id="part-1-the-single-agent">Part 1: The Single Agent</h2>
@@ -342,8 +406,21 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--signal); outlin
 <li><a href="topic-03-world-models-and-state-abstractions.html">World Models and State Abstractions</a></li>
 <li><a href="topic-04-policies-value-and-control.html">Policies, Value, and Control</a></li>
 </ol>
+<section class="epigraph epigraph--closing">
+<blockquote>
+<p><em>“the habits are produced from the acts of working like to them”</em></p>
+<p>— <a href="https://www.gutenberg.org/cache/epub/8438/pg8438.html">Aristotle</a>, <em>Nicomachean Ethics</em> (c. 340 BCE), Book II, chapter 1.</p>
+</blockquote>
+</section>
+<p><img alt="Agent-427 tries to balance goals, beliefs, state, and control while Mira points to the wobbling foundation." class="cartoon terminal-visual" src="book/assets/cartoons/03-ch01-foundations.png" /></p>
 <hr />
 <h2 id="goals-environments-and-actions">Goals, Environments, and Actions</h2>
+<section class="epigraph epigraph--opening">
+<blockquote>
+<p><em>“that which all things aim at.”</em></p>
+<p>— <a href="https://www.gutenberg.org/cache/epub/8438/pg8438.html">Aristotle</a>, <em>Nicomachean Ethics</em> (c. 340 BCE), Book I, opening paragraph.</p>
+</blockquote>
+</section>
 <p>Agent-427 is born with a narrow constitution: it may inspect the repository, but it may not write, deploy, or remember anything durably. Before anything clever can happen, it needs three things: something it is trying to achieve, a world it is acting inside, and a list of moves it is allowed to make. Those three things get written down here as a contract. Every later chapter extends that contract, and it is the first thing you inspect when an agent misbehaves.</p>
 <p>An agent is not a model that emits impressive text. It is an interpreter for situated action. At each step it does four things:</p>
 <ul>
@@ -433,10 +510,12 @@ R_0+\gamma R_1 = 1 + 0.9\cdot 8 = 8.2.
 <p>Read it as "choose the policy with the largest expected discounted reward, subject to each expected discounted cost (C_j) staying under its own ceiling (\kappa_j)." This equation should not be mistaken for a demand that every product team hand-code a perfect reward function. Its practical use is diagnostic. It forces the designer to say three things out loud: which outcomes are being optimized, which costs are merely tradeoffs, and which constraints should stop the agent even when the short-term reward looks attractive.</p>
 <h3 id="the-assumption_1">The Assumption</h3>
 <p>The POMDP contract assumes that its symbols are stable enough to support a decision. The state representation retains what matters; (T) and (\Omega) remain useful models of the current world; (R) rewards the intended outcome; and the policy chooses from actions the interpreter can validate and execute. The contract does not require omniscience. It requires approximation error small enough that the same action remains defensible.</p>
+<section class="reader-question">
 <blockquote>
 <p><strong>Skeptical Engineer:</strong> “Doesn't this merely push the complexity into the reward and state definitions?”</p>
 <p><strong>Author:</strong> Exactly. The complexity was already there. Naming it prevents a fluent model from laundering unresolved product decisions into a confident tool proposal.</p>
 </blockquote>
+</section>
 <p><img alt="A layered approximation stack showing the formal POMDP contract narrowing through context, changing dynamics, noisy observations, proxy rewards, and executable actions" src="book/assets/diagrams/02-approximation-stack.png" /></p>
 <h3 id="the-violation_1">The Violation</h3>
 <h4 id="the-gap">The Gap</h4>
@@ -528,7 +607,8 @@ L=(10{,}000-8{,}000)\bar h=2{,}000\times8=16{,}000\text{ bits}.
 <li>which postconditions must be checked afterwards.</li>
 </ul>
 <p>A vague prompt asks the agent to be careful. A contract gives the runtime something to inspect.</p>
-<h3 id="exercise-build-the-first-interpreter-and-make-it-cheat">Exercise: Build the First Interpreter and Make It Cheat</h3>
+<section class="exercise">
+<h3 class="unnumbered" id="exercise-build-the-first-interpreter-and-make-it-cheat">Exercise: Build the First Interpreter and Make It Cheat</h3>
 <p>Implement a minimal Python interpreter for a toy repository. It must expose <code>read_file</code>, <code>edit_file</code>, <code>run_tests</code>, and <code>delete_test</code>, validate each proposal against a typed schema, and log observation provenance. Start Agent-427 with only <code>read_file</code> authority. Give a separate sandbox policy the naive reward <code>passed_tests / discovered_tests</code>.</p>
 <ul>
 <li>One reward term for functional correctness.</li>
@@ -540,8 +620,22 @@ L=(10{,}000-8{,}000)\bar h=2{,}000\times8=16{,}000\text{ bits}.
 <li>The legal actions available to the agent.</li>
 </ul>
 <p>Write tests that prove four behaviors: the sandbox policy can raise reward by deleting one failing test; a manifest constraint blocks that deletion; newborn Agent-427's authority blocks every write proposal; and a malformed <code>edit_file</code> proposal becomes a typed rejection observation rather than a side effect. Then change the simulated API after step 2 and assert that a retry cap prevents oscillation. Report task success, proxy reward, constraint violations, and tool-call count separately. If those four columns disagree, congratulations: you have built your first honest evaluation.</p>
+</section>
+<section class="epigraph epigraph--closing">
+<blockquote>
+<p><em>“if he will be content to begin with doubts, he shall end in certainties”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/5500/5500-h/5500-h.htm">Francis Bacon</a>, <em>The Advancement of Learning</em> (1605), Book I, passage beginning 'For the two ways of contemplation'.</p>
+</blockquote>
+</section>
+<p><img alt="Agent-427 reaches a finish line by cutting away the track while Mira checks the goal contract." class="cartoon terminal-visual" src="book/assets/cartoons/04-ch01-goals.png" /></p>
 <hr />
 <h2 id="belief-uncertainty-and-decision">Belief, Uncertainty, and Decision</h2>
+<section class="epigraph epigraph--opening">
+<blockquote>
+<p><em>“A wise man, therefore, proportions his belief to the evidence.”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/9662/9662-h/9662-h.htm">David Hume</a>, <em>An Enquiry Concerning Human Understanding</em> (1748), Section X, part I, paragraph 87.</p>
+</blockquote>
+</section>
 <p>Newborn Agent-427 may only read. Even so, reading does not reveal the world as it truly is. It reveals fragments,
 and must act anyway. Something has to turn those fragments into a picture solid
 enough to act on. That machinery is called <em>belief</em>, and it is the second
@@ -646,10 +740,12 @@ weaker likelihood than a current API response. This is what it means for belief
 to be an operational object.</p>
 <h3 id="the-assumption_2">The Assumption</h3>
 <p>Bayesian filtering assumes that the hypotheses include the decision-relevant truth and that the transition and observation models assign evidence approximately honest likelihoods. It also assumes the factorization does not count one underlying event as several independent observations. Under those conditions, predict-then-correct is a disciplined update rather than probability-themed decoration.</p>
+<section class="reader-question">
 <blockquote>
 <p><strong>Skeptical Engineer:</strong> “A probability table does not make the logs honest. Haven't we just moved uncertainty into (\Omega)?”</p>
 <p><strong>Author:</strong> We have made the uncertainty inspectable. The runtime can now ask who produced an observation, when, from which causal event, and how often that source has been wrong. “The model felt sure” exposes none of those handles.</p>
 </blockquote>
+</section>
 <h3 id="decisions-in-belief-space">Decisions in Belief Space</h3>
 <p>Once belief is explicit, decision quality can be evaluated in belief space. In
 sequential problems this value is recursive. An action is good partly because of
@@ -852,11 +948,26 @@ define what the agent is trying to do; belief defines what the agent thinks is
 true enough to justify the next move. Topic 3 (World Models and State
 Abstractions) takes up the next question: which parts of the world deserve to be
 in the state at all.</p>
-<h3 id="exercise-build-a-filter-that-distrusts-repetition">Exercise: Build a Filter That Distrusts Repetition</h3>
+<section class="exercise">
+<h3 class="unnumbered" id="exercise-build-a-filter-that-distrusts-repetition">Exercise: Build a Filter That Distrusts Repetition</h3>
 <p>Implement a two-hypothesis Bayesian filter in Python with observations carrying <code>source_id</code>, <code>event_id</code>, <code>observed_at</code>, and <code>trust_class</code>. First reproduce the 0.5/0.5 to 0.9/0.1 update. Then feed it two reports derived from the same <code>event_id</code> and assert that the second report does not count as independent evidence. Add a contradictory fresh report that no modeled state explains; the filter must allocate nonzero mass to <code>unknown_or_shifted</code> and recommend <code>gather_information</code> rather than a write action.</p>
 <p>Finally add a retrieved string containing a fake system instruction. Write a test proving that it remains quoted observation data and cannot alter the filter's policy or permissions. Score the filter on Brier score, action changes, duplicate-evidence suppression, and escalation rate over at least 100 seeded trials.</p>
+</section>
+<section class="epigraph epigraph--closing">
+<blockquote>
+<p><em>“Custom, then, is the great guide of human life.”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/9662/9662-h/9662-h.htm">David Hume</a>, <em>An Enquiry Concerning Human Understanding</em> (1748), Section V, part I, paragraph 36.</p>
+</blockquote>
+</section>
+<p><img alt="Agent-427 distributes probability marbles among competing hypotheses as Mira asks what the evidence actually changed." class="cartoon terminal-visual" src="book/assets/cartoons/05-ch01-belief.png" /></p>
 <hr />
 <h2 id="world-models-and-state-abstractions">World Models and State Abstractions</h2>
+<section class="epigraph epigraph--opening">
+<blockquote>
+<p><em>“how dangerous it always is to reason from insufficient data.”</em></p>
+<p>— <a href="https://dev.gutenberg.org/cache/epub/48320/pg48320-images.html">Arthur Conan Doyle</a>, <em>The Adventures of Sherlock Holmes</em> (1892), The Adventure of the Speckled Band.</p>
+</blockquote>
+</section>
 <p>What should an agent carry in its head from one decision to the next? Two ideas answer that question. A <strong>world model</strong> says how the world tends to change. A <strong>state abstraction</strong> says which parts of the past are worth keeping when choosing the next action. Get these wrong and the agent either forgets what it needed or chokes on what it did not.</p>
 <p>Belief cannot remain an ever-growing transcript. Newborn Agent-427 has no durable memory at all; within one run, even its temporary history can outgrow the useful decision state. An agent that treats every token as equally available state has not become wise; it has made planning expensive and brittle.</p>
 <p>The design problem is selective forgetting. Forget too much and the agent loses the variables that make action competent. Retain too much and the policy drowns in irrelevant distinctions. Good abstraction is compression in service of control.</p>
@@ -873,6 +984,7 @@ R(s,a)=\bar R(\phi(s),a),\qquad
 </blockquote>
 <p>A homomorphism is a structure-preserving map. In ordinary programming terms, (\phi) is a compression function. It is allowed to rename and merge states only when the merged states still behave the same way for decisions.</p>
 <p>The barred symbols (\bar R) and (\bar T) live in the abstract world (\mathcal Z). So (\bar T(z'\mid z,a)) means "the transition probability between abstract states after compression". The sum on the left collects all detailed next states (s') that (\phi) maps into the same abstract state (z').</p>
+<p><img alt="A detailed agent history passes through phi into a compact decision state that preserves branch, authority, budget, and action-relevant distinctions while discarding irrelevant detail." src="book/assets/diagrams/11-state-abstraction-compression.png" /></p>
 <h4 id="a-four-state-coding-example-you-can-check-by-hand">A Four-State Coding Example You Can Check by Hand</h4>
 <p>Here is a four-state coding example. Let the detailed states be:</p>
 <ul>
@@ -912,10 +1024,12 @@ R(s,a)=\bar R(\phi(s),a),\qquad
 <p>Watch the discount term. With (\gamma=0.9), the factor (1/(1-\gamma)^2) is (100). With (\gamma=0.99) it is (10{,}000). If (\gamma) is close to (1), small transition errors can echo for a long time. That is why a cheerful summary such as <code>repo_status: messy</code> is not enough for high-stakes editing.</p>
 <h3 id="the-assumption_3">The Assumption</h3>
 <p>State abstraction assumes that histories merged into one abstract state support the same consequential choices. Exact homomorphism states the ideal; approximate bounds price the deviation. The theorem-shaped promise is conditional: bounded reward, (\gamma&lt;1), and honest mismatch bounds. Violate any of them and the displayed value-loss bound no longer licenses the policy. If reward is unbounded or the measured transition error omits a rare release-freeze regime, the arithmetic can be immaculate and irrelevant.</p>
+<section class="reader-question">
 <blockquote>
 <p><strong>Skeptical Engineer:</strong> “The context window is enormous now. Why not keep everything and let attention sort it out?”</p>
 <p><strong>Author:</strong> Capacity is not relevance, and attention is not a contract [<a href="../../references.html#ref-76">76</a>]. The policy still needs to know which branch, authority boundary, freshness marker, and unresolved hypothesis controls the next action. A larger attic does not tell the forklift which crate contains the brakes.</p>
 </blockquote>
+</section>
 <h3 id="logs-are-archives-state-is-policy-fuel">Logs Are Archives; State Is Policy Fuel</h3>
 <h4 id="separating-the-audit-trail-from-the-decision-state">Separating the Audit Trail from the Decision State</h4>
 <p>A useful implementation separates the raw in-run log from decision state. Agent-427 cannot persist either across runs yet. The code below keeps two in-memory fields: an append-only <code>event_log</code> for auditing during the run, and a small <code>decision_state</code> that the policy actually reads. Ingestion writes to both; acting reads only the compact one.</p>
@@ -1016,11 +1130,26 @@ P(x_1,\dots,x_n\mid \mathrm{do}(X_j=x))=\mathbf{1}[x_j=x]\prod_{i\neq j}P(x_i\mi
 <li>Token and latency savings: whether the smaller state reduces context size, model time, retrieval work, and tool waiting, without buying those savings by erasing decision-relevant variables.</li>
 </ul>
 <p>The interpreter now has a compact internal language. Topic 1 (Goals, Environments, and Actions) gave it a contract. Topic 2 (Belief, Uncertainty, and Decision) gave it belief. This topic gives it a state representation small enough to act on but faithful enough to trust. The remaining question is how action selection becomes governed control rather than a single eager choice.</p>
-<h3 id="exercise-break-two-summarizers">Exercise: Break Two Summarizers</h3>
+<section class="exercise">
+<h3 class="unnumbered" id="exercise-break-two-summarizers">Exercise: Break Two Summarizers</h3>
 <p>Implement two Python functions over synthetic agent traces. <code>last_n_tokens(history, n)</code> keeps a fixed suffix. <code>decision_state(history)</code> extracts target workspace, check status, evidence freshness, permissions, unresolved hypotheses, and remaining budget. Generate at least 1,000 seeded traces in which the decisive target or permission appears early, while later log noise is longer than the suffix budget.</p>
 <p>For each abstraction, measure token count, action-preservation rate, and realized value under a reference policy that sees full history. Add a second dataset where cache clearing correlates with success but dependency refresh is the true intervention. Your test must demonstrate one state pair with distance zero under the naive abstraction but different optimal actions, then repair the abstraction until the pair separates. No prose-only victory conditions: submit the generator, assertions, and a table of measured failures.</p>
+</section>
+<section class="epigraph epigraph--closing">
+<blockquote>
+<p><em>“In order to be used in Reasoning, Sensation must become Observation”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/69093/69093-h/69093-h.htm">William Whewell</a>, <em>History of Scientific Ideas</em> (1858), Book I, chapter I, section 5, Ideas and Sensations.</p>
+</blockquote>
+</section>
+<p><img alt="Agent-427 packs an unruly history into a tiny suitcase labeled state while one vital branch name sticks out." class="cartoon terminal-visual" src="book/assets/cartoons/06-ch01-state.png" /></p>
 <hr />
 <h2 id="policies-value-and-control">Policies, Value, and Control</h2>
+<section class="epigraph epigraph--opening">
+<blockquote>
+<p><em>“consciousness is at all times primarily a selecting agency.”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/57628/57628-h/57628-h.htm">William James</a>, <em>The Principles of Psychology</em> (1890), Volume I, chapter IX, The Stream of Thought.</p>
+</blockquote>
+</section>
 <p>Three topics have now handed Agent-427 ingredients and no cook. Topic 1 (Goals, Environments, and Actions) supplied a goal contract, Topic 2 (Belief, Uncertainty, and Decision) supplied a belief state, and Topic 3 (World Models and State Abstractions) supplied a compact world model. What is still missing is the part that actually chooses. A <strong>policy</strong> is the rule that turns those three ingredients into an action. At this stage its authority remains read-only: learning may improve proposals and routing without granting the learner a keyboard to production.</p>
 <p>A policy is not merely "what the model says next." It is the decision procedure that decides which proposal is allowed to become an event in the world.</p>
 <h3 id="value-as-consequence-accounting">Value as Consequence Accounting</h3>
@@ -1057,10 +1186,12 @@ a_t^{*}=\arg\max_a\;\mathbb{E}[U(a,S_t)\mid h_t].
 <p>The connection between the two views is interpretive. Expected utility scores candidate actions under current belief. Dynamic programming, the Bellman style of reasoning, accounts for how today's action changes tomorrow's possibilities. When the world model is partial or approximate, these values are estimates, and their errors must be managed rather than ignored. In practice, log value estimates beside realized outcomes to see how far off they were.</p>
 <h3 id="the-assumption_4">The Assumption</h3>
 <p>Bellman optimality assumes the state is Markov, the reward and transition law are stationary enough for recursion, and the maximized actions are admissible. Under those assumptions, one-step reward plus continuation value composes. If an API changes halfway through planning, a hidden permission variable matters, or the reward proxy prizes the wrong outcome, the theorem has not become false; the deployed system has stopped being its theorem's subject. The practical consequence is immediate: invalidate stale values, restore missing state, or constrain the action before trusting the ranking.</p>
+<section class="reader-question">
 <blockquote>
 <p><strong>Skeptical Engineer:</strong> “Fine, but learning only pushes the complexity into the reward model. Who trains the judge?”</p>
 <p><strong>Author:</strong> Correct again. Feedback supplies observations about preferences, not divine utility. We represent uncertainty over the judge, audit its data, and refuse to confuse approval with truth.</p>
 </blockquote>
+</section>
 <h3 id="the-vocabulary-of-learned-policies">The Vocabulary of Learned Policies</h3>
 <p>Unwrap the learning vocabulary first. Five terms do most of the work:</p>
 <ul>
@@ -1216,9 +1347,18 @@ p(\theta_R\mid D,y)\propto
 </code></pre>
 <p>That loop is the chapter's foundation. Goals define what matters. Belief manages uncertainty. State abstraction chooses what the policy can reason over. Control closes the loop after reality answers back.</p>
 <p>From here, later chapters can study reasoning architectures, tools, memory, and multi-agent systems as refinements of this basic interpreter rather than as disconnected tricks.</p>
-<h3 id="exercise-train-shift-and-catch-the-cheat">Exercise: Train, Shift, and Catch the Cheat</h3>
+<section class="exercise">
+<h3 class="unnumbered" id="exercise-train-shift-and-catch-the-cheat">Exercise: Train, Shift, and Catch the Cheat</h3>
 <p>Build a seeded two-step routing environment in Python. Generate expert demonstrations for two task families, train a behavioral-cloning policy, and evaluate it on recovery states absent from the demonstrations. Report per-step accuracy and full-trajectory success separately. Then implement the two-hypothesis preference update above and verify that feedback changes reward-parameter belief without changing a separate repository-fact belief.</p>
 <p>Next create a static log from behavior policy (\mu), evaluate a candidate (\pi) with importance weighting, and include one unsupported action. Your evaluator must refuse or conservatively bound that estimate rather than divide by zero. Finally add a test-deletion action to a sandbox reward, demonstrate that the naive learner exploits it, and repair the environment with manifest preservation plus a held-out behavioral test. Run at least 1,000 seeded episodes and publish return, true task success, constraint violations, calibration, and destructive-action proposals in separate columns.</p>
+</section>
+<section class="epigraph epigraph--closing">
+<blockquote>
+<p><em>“what is present depends much upon what remains behind.”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/45988/45988-h/45988-h.htm">Francis Bacon</a>, <em>Novum Organum</em> (1620), Book II, aphorism XIX.</p>
+</blockquote>
+</section>
+<p><img alt="Agent-427 follows an optimal arrow into a guardrail while Mira holds the missing constraints." class="cartoon terminal-visual" src="book/assets/cartoons/07-ch01-control.png" /></p>
 <hr />
 <h1 id="reasoning-architectures">Reasoning Architectures</h1>
 <p>At 3:47 AM on a Thursday, Agent-427 watches the CI pipeline turn red. The message says <code>signature verification failed: invalid timestamp</code>. The timestamp is valid. The message is a lie produced by an expired cache entry, the authentication maintainer left three months ago, and the runbook links to documentation that now returns <code>404 Not Found</code>. This is an unkind hour in which to discover that fluent text is not reasoning.</p>
@@ -1226,10 +1366,12 @@ p(\theta_R\mid D,y)\propto
 <h2 id="reasoning-is-an-interpreter-not-a-mood">Reasoning Is an Interpreter, Not a Mood</h2>
 <p>Chapter 1 gave Agent-427 the basic cycle: observe, update belief, choose a governed action, execute, and learn from the result. Chapter 2 installs a smaller interpreter inside that cycle. The inner machine can think, plan, retrieve, and criticize before the outer machine touches a filesystem, an API, or somebody's regrettably production-shaped database.</p>
 <p>That distinction is not decorative. Internal steps consume time and tokens. Retrieved memories can poison the state. Plans can become obsolete while they are being admired. A reflection can cite another reflection until fiction develops an impressive bibliography. Reasoning architecture is therefore the control of internal transitions, not an invitation to produce more monologue.</p>
+<section class="reader-question">
 <blockquote>
 <p><strong>Skeptical Engineer:</strong> Isn't this just a prompt with extra bureaucracy?</p>
 <p><strong>Author:</strong> Only if the guards are prose. When a schema rejects an invented import, a budget stops a search, provenance excludes the wrong branch, and a replay identifies the transition that caused harm, the bureaucracy has become a machine. Civilization has been built on less.</p>
 </blockquote>
+</section>
 <h2 id="agent-427-enters-the-war-room">Agent-427 Enters the War Room</h2>
 <p>Across this chapter, the same failure grows more instructive. Agent-427 will:</p>
 <ul>
@@ -1247,8 +1389,21 @@ p(\theta_R\mid D,y)\propto
 <li><a href="topic-03-memory-systems-context-and-retrieval.html">Memory Systems, Context, and Retrieval</a></li>
 <li><a href="topic-04-evaluating-and-debugging-reasoners.html">Evaluating and Debugging Reasoners</a></li>
 </ol>
+<section class="epigraph epigraph--closing">
+<blockquote>
+<p><em>“Begin at the beginning, and go on till you come to the end: then stop.”</em></p>
+<p>— <a href="https://www.gutenberg.org/cache/epub/11/pg11-images.html">Lewis Carroll</a>, <em>Alice's Adventures in Wonderland</em> (1865), Chapter XII, Alice's Evidence.</p>
+</blockquote>
+</section>
+<p><img alt="Agent-427 opens its reasoning cabinet to reveal loops, search frontiers, memory drawers, and one escaped assumption." class="cartoon terminal-visual" src="book/assets/cartoons/08-ch02-reasoning.png" /></p>
 <hr />
 <h2 id="reasoning-loops-as-interpreters">Reasoning Loops as Interpreters</h2>
+<section class="epigraph epigraph--opening">
+<blockquote>
+<p><em>“The Analytical Engine has no pretensions whatever to originate anything.”</em></p>
+<p>— <a href="https://hsm.ox.ac.uk/imagining-ai">Ada Lovelace</a>, <em>Notes on the Analytical Engine</em> (1843), Note G.</p>
+</blockquote>
+</section>
 <p>At 3:47:12 AM, Agent-427 receives its first tool, <code>inspect_file</code>, and reads <code>signature verification failed: invalid timestamp</code>. It proposes importing <code>clock_skew_guard</code> from <code>auth.compat</code>. That module does not exist. At 3:47:19 it opens the runbook's “authoritative” link and receives <code>404 Not Found</code>. At 3:47:23 it is one confident token away from editing production code on the testimony of an error message, an imaginary import, and a vanished document.</p>
 <p>This is why we read a reasoning loop as a small programming language. A language has state, legal moves, guards, and a rule for finishing. Once reasoning has those things, we can reject a bad step before it becomes an external fact. Without them, a transcript is merely a diary written by the suspect.</p>
 <p><img alt="A hand-drawn interpreter loop in which thought, action, observation, and reflection return through guarded state and feedback" src="book/assets/diagrams/04-interpreter-loop.png" /></p>
@@ -1341,10 +1496,12 @@ p(\theta_R\mid D,y)\propto
 <p><strong>Try this with numbers.</strong> Step 1: let (T=3) with labels <code>think</code>, <code>observe</code>, <code>act</code>; there are three transitions and four states. Step 2: if <code>halt</code> is false at (\sigma_3), the trace is incomplete even if the last message sounds triumphant.</p>
 </blockquote>
 <p>An invariant is a property that every legal transition preserves. “Raw observations are stored before summaries are trusted” is an invariant. “The agent is careful” is a scented candle. Reachability then becomes the engineering question: which states can the rules actually produce? Denotational semantics can embed the relation in an ordered domain and use fixed points; the operational trace already gives builders something they can replay and arrest.</p>
+<section class="reader-question">
 <blockquote>
 <p><strong>Skeptical Engineer:</strong> But doesn't this merely push complexity into the state and guards?</p>
 <p><strong>Author:</strong> Yes. The complexity was already there, hiding in prompts, callbacks, and operator folklore. Naming it does not create the dragon; it gives the dragon a test harness.</p>
 </blockquote>
+</section>
 <h3 id="the-violation_5">The Violation</h3>
 <p>At 3:47:23, Agent-427's state says the runbook is authoritative because the history contains a link, but the history does not yet contain the <code>404</code>. The controller selects <code>act</code> before <code>observe</code> incorporates the failed fetch. The state abstraction has dropped a decision-relevant fact: authority has evaporated.</p>
 <p>The resulting trace is short and ugly:</p>
@@ -1423,7 +1580,8 @@ F^\sharp=\alpha\circ F\circ\gamma.
 <p><strong>Try this with numbers.</strong> Step 1: (\alpha_B(7)=\texttt{positive}) and (\alpha_B(0)=\texttt{exhausted}). Step 2: concretizing <code>positive</code> includes 7 but excludes 0, so the checker cannot confuse exhausted authority with a soft allowance that later recovered.</p>
 </blockquote>
 <p>Modern reason-act traces make these labels observable enough to instrument [<a href="../../references.html#ref-11">11</a>]. The practical state should therefore be typed: task, belief summary, raw-observation handles, tool permissions, budget ledgers, pending commitments, model/version stamps, and halt criteria. The prompt belongs inside that semantics. It does not reign over it.</p>
-<h3 id="exercise-build-the-arresting-interpreter">Exercise: Build the Arresting Interpreter</h3>
+<section class="exercise">
+<h3 class="unnumbered" id="exercise-build-the-arresting-interpreter">Exercise: Build the Arresting Interpreter</h3>
 <p>Implement the four-label interpreter in Python. You may not satisfy the exercise with pseudocode.</p>
 <ol>
 <li>Define a typed <code>State</code> and transition functions for <code>think</code>, <code>act</code>, <code>observe</code>, and <code>reflect</code>.</li>
@@ -1433,8 +1591,22 @@ F^\sharp=\alpha\circ F\circ\gamma.
 <li>Add a deliberately premature halt rule, write the regression test that exposes it, then repair the rule without increasing the external-call count.</li>
 </ol>
 <p>The submission is the interpreter, its tests, and a trace report. If the only evidence is “the agent looked sensible,” the interpreter has escaped custody.</p>
+</section>
+<section class="epigraph epigraph--closing">
+<blockquote>
+<p><em>“It can do whatever we know how to order it to perform.”</em></p>
+<p>— <a href="https://hsm.ox.ac.uk/imagining-ai">Ada Lovelace</a>, <em>Notes on the Analytical Engine</em> (1843), Note G.</p>
+</blockquote>
+</section>
+<p><img alt="Agent-427 runs around a thought-action-observation loop while Mira quietly moves the stop condition into view." class="cartoon terminal-visual" src="book/assets/cartoons/09-ch02-interpreter.png" /></p>
 <hr />
 <h2 id="deliberation-planning-and-search">Deliberation, Planning, and Search</h2>
+<section class="epigraph epigraph--opening">
+<blockquote>
+<p><em>“Everything is very simple in War, but the simplest thing is difficult.”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/1946/1946-h/1946-h.htm">Carl von Clausewitz</a>, <em>On War</em> (1832), Book I, chapter VII, Friction in War.</p>
+</blockquote>
+</section>
 <p>At 3:47:25 AM, Agent-427 has survived its first illegal import. It now possesses a safer tool, <code>inspect_file</code>, and a choice: inspect the authentication code immediately, or spend scarce seconds imagining what it might find. A proposal says “open this file.” A plan says “open this file, expect this evidence, and do this if the evidence laughs at us.”</p>
 <p>Deliberation is the wager that simulated futures will save more than they cost. Search operationalizes the wager. Planning gives the selected future preconditions, expected observations, costs, risks, and contingencies. The difficulty is that reality continues running while the planner enjoys its miniature theatre.</p>
 <h3 id="plans-as-paths-not-prophecies">Plans as Paths, Not Prophecies</h3>
@@ -1482,10 +1654,12 @@ s_{t+1}=(s_t\mathbin{\backslash}\mathrm{Del}(a_t))\cup\mathrm{Add}(a_t),
 <p><strong>Try this with numbers.</strong> Step 1: begin with one stale-result fact. Step 2: delete that fact and add one known-result fact; the fact count stays 1 while its epistemic quality changes completely.</p>
 </blockquote>
 <p>This is STRIPS-style set editing: preconditions say what must already be true, add effects say what becomes true, and delete effects say what must no longer be trusted [<a href="../../references.html#ref-9">9</a>] [<a href="../../references.html#ref-10">10</a>]. In Chapter 2, however, <code>run_tests</code>, patching, and suite execution remain <strong>simulated planner actions</strong>, not executable tools. Agent-427 can execute only <code>inspect_file</code>; its authority guard rejects patch and test proposals. Chapter 3 will grant effectful proposals behind contracts. A future deployment plan may require passing tests, approval, a rollback handle, and a version-fresh target. Hope is not a dependency manager.</p>
+<section class="reader-question">
 <blockquote>
 <p><strong>Skeptical Engineer:</strong> Doesn't a language model infer these preconditions anyway?</p>
 <p><strong>Author:</strong> Sometimes. It also inferred a module that did not exist. We write preconditions down because “usually remembered by a stochastic process” is not the same type as <code>bool</code>.</p>
 </blockquote>
+</section>
 <h3 id="the-violation_6">The Violation</h3>
 <p>At 3:47:28, Agent-427 builds a sensible four-step plan against the world it observed. Then the world changes while the plan is still thinking:</p>
 <pre><code class="language-text">03:47:28 observe  auth service reports API v2; replica A serves config epoch 81
@@ -1526,7 +1700,9 @@ Q(s,a)+c\sqrt{\frac{\ln N(s)}{N(s,a)}}
 <p><strong>Try this with numbers.</strong> Step 1: let (Q=4), (c=1), parent visits (N(s)=100), and action visits (N(s,a)=4); the bonus is about (\sqrt{4.605/4}=1.07). Step 2: the selection score is about 5.07; after 40 action visits the bonus falls to about 0.34.</p>
 </blockquote>
 <p>Rollouts trade exploitation of promising branches against exploration of neglected ones [<a href="../../references.html#ref-45">45</a>]. Under change, timestamps matter: a thousand rollouts through yesterday's model are a beautifully estimated obsolete policy.</p>
-<p>Anytime planning returns its best available candidate when interrupted [<a href="../../references.html#ref-44">44</a>]. Receding-horizon control goes farther: optimize several steps, execute one, observe, and solve again:</p>
+<p>Anytime planning returns its best available candidate when interrupted [<a href="../../references.html#ref-44">44</a>].</p>
+<p><img alt="A search tree grows scored frontier nodes until a budget line interrupts it, returning the best surviving plan for one action before observation and replanning." src="book/assets/diagrams/12-budgeted-search-frontier.png" /></p>
+<p>Receding-horizon control goes farther: optimize several steps, execute one, observe, and solve again:</p>
 <p>[
 \mathbf{u}<em _mathbf_u="\mathbf{u">{t:t+H-1}^{\star}
 =\arg\min</em><em k="0">{t:t+H-1}}
@@ -1554,7 +1730,8 @@ Q(s,a)+c\sqrt{\frac{\ln N(s)}{N(s,a)}}
 <p>Planning fails when decomposition hides coupling, heuristics reward easily measured progress, or stale models produce precise nonsense. An adversarial API can exploit this by returning a cheap successful probe while reserving failure for the irreversible call. The planner learns “endpoint healthy” from the probe and spends its authority on a state the probe never represented.</p>
 <p>Reflection can repair a hard plan after contradictory evidence, but it can also tax a trivial task into insolvency. Planning earns its keep when horizon, branching, prerequisites, uncertainty, or irreversibility create genuine geometry. A one-line formatting fix does not need an opera.<sup id="fnref:planner-opera"><a class="footnote-ref" href="#fn:planner-opera">12</a></sup></p>
 <p>Every candidate trajectory should record state estimate, state/version age, action, expected observation, cost, risk, and contingency. Log pruning decisions when they affect safety. Put symbolic preconditions around irreversible actions. Trigger replanning on new evidence, failed preconditions, budget drift, tool errors, observation expiry, or a value change that reorders the frontier.</p>
-<h3 id="exercise-make-the-world-betray-your-planner">Exercise: Make the World Betray Your Planner</h3>
+<section class="exercise">
+<h3 class="unnumbered" id="exercise-make-the-world-betray-your-planner">Exercise: Make the World Betray Your Planner</h3>
 <p>Implement a small planner and a changing environment.</p>
 <ol>
 <li>Model two API replicas, versions v2 and v3, with asynchronously changing epochs and incompatible preconditions.</li>
@@ -1564,8 +1741,22 @@ Q(s,a)+c\sqrt{\frac{\ln N(s)}{N(s,a)}}
 <li>Assert that patch/test adapters receive zero calls. Report success, oscillation count, planning latency, actions per repair, and unsafe/invalid proposals. Then introduce an API that lies on probes but would fail on commits, and patch one simulated precondition to detect it.</li>
 </ol>
 <p>Your result must include code, tests for the version race, and a table of measurements. A hand-drawn plan receives partial credit only if it can also hand-draw a stack trace.</p>
+</section>
+<section class="epigraph epigraph--closing">
+<blockquote>
+<p><em>“These difficulties accumulate and produce a friction which no man can imagine exactly who has not seen War”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/1946/1946-h/1946-h.htm">Carl von Clausewitz</a>, <em>On War</em> (1832), Book I, chapter VII, Friction in War.</p>
+</blockquote>
+</section>
+<p><img alt="Agent-427 studies an enormous plan tree while the deadline clock chooses a modest surviving branch." class="cartoon terminal-visual" src="book/assets/cartoons/10-ch02-planning.png" /></p>
 <hr />
 <h2 id="memory-systems-context-and-retrieval">Memory Systems, Context, and Retrieval</h2>
+<section class="epigraph epigraph--opening">
+<blockquote>
+<p><em>“The register of knowledge of fact is called history.”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/73957/73957-h/73957-h.htm">Thomas Hobbes</a>, <em>Leviathan</em> (1651), Chapter IX, Of the Several Subjects of Knowledge.</p>
+</blockquote>
+</section>
 <p>By 4:06 AM, Agent-427 has a new problem: it remembers. This sounds like progress until it retrieves <code>service.yaml</code> from <code>main</code> while the user is working on <code>legacy-v2</code>, where the service is configured by <code>service.toml</code>. The retrieved file is relevant, recent, syntactically convincing, and wrong in every way that matters.</p>
 <p>The clean three-store diagram—working, episodic, semantic—remains useful. Production memory, however, behaves less like a filing cabinet than a war room during a minor constitutional crisis. Evidence arrives late. Summaries lose qualifiers. Similarity outranks scope. Old conclusions return wearing new citations. The controller must decide not merely what to store, but what may speak.</p>
 <p><img alt="A warehouse war room where a memory-controller forklift moves provenance-tagged items among working, episodic, and semantic shelves while quarantining contamination" src="book/assets/diagrams/05-memory-war-room.png" /></p>
@@ -1611,10 +1802,12 @@ r(m,h,u)+\gamma\,\mathbb{E}[V^\star(m',h')]
 <p><strong>Try this with numbers.</strong> Step 1: writing the exact error costs 1 now but creates expected future value 6; with (\gamma=0.9), total is (-1+5.4=4.4). Step 2: skipping the write yields 0 now and 0 later; preservation wins.</p>
 </blockquote>
 <p>The reward includes retrieval latency and token penalties [<a href="../../references.html#ref-5">5</a>] [<a href="../../references.html#ref-4">4</a>]. A raw observation may be expensive to preserve and invaluable later. An eviction may be cheap now and ruinous after the exact edge case disappears.</p>
+<section class="reader-question">
 <blockquote>
 <p><strong>Skeptical Engineer:</strong> Isn't a sufficiently long context window the simplest memory system?</p>
 <p><strong>Author:</strong> A warehouse with no inventory policy is not a memory system. It is a fire code violation with embeddings.</p>
 </blockquote>
+</section>
 <h3 id="retrieval-as-external-sparse-attention">Retrieval as External Sparse Attention</h3>
 <p>Sparse retrieval begins with lexical anchors. BM25 scores a query (q) against document (d):</p>
 <p>[
@@ -1715,7 +1908,8 @@ M12 heuristic   scoped score(YAML on legacy-v2) falls from 0.91 to 0.03
     return sigma
 </code></pre>
 <p>Evaluate memory at the decision boundary. Under a fixed model, budget, and task distribution, ablate no memory, working state only, and retrieval-backed memory. Measure task success, task-specific progress, precision@(k), grounded faithfulness, latency, contamination rate, and eviction regret. Three relevant hits among five give precision@5 of 0.6; the other two may still be enough to sink the edit.</p>
-<h3 id="exercise-build-and-poison-the-war-room">Exercise: Build and Poison the War Room</h3>
+<section class="exercise">
+<h3 class="unnumbered" id="exercise-build-and-poison-the-war-room">Exercise: Build and Poison the War Room</h3>
 <p>Implement a memory controller over a synthetic repository with <code>main</code> YAML and <code>legacy-v2</code> TOML configurations.</p>
 <ol>
 <li>Store raw observations, summaries, scopes, timestamps, and provenance edges in separate typed records.</li>
@@ -1725,8 +1919,22 @@ M12 heuristic   scoped score(YAML on legacy-v2) falls from 0.91 to 0.03
 <li>Add forgetting policies for expiry, privacy deletion, contamination quarantine, and context pressure. Write tests proving that deletion removes stored content while eviction only removes active influence.</li>
 </ol>
 <p>Submit code, tests, the contamination provenance graph, and an ablation table. The war room is successful when it remembers less, knows why, and breaks fewer services.</p>
+</section>
+<section class="epigraph epigraph--closing">
+<blockquote>
+<p><em>“all knowledge is remembrance”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/74236/74236-h/74236-h.htm">Thomas Hobbes</a>, <em>Human Nature</em> (1650), Chapter VI, section 1.</p>
+</blockquote>
+</section>
+<p><img alt="A warehouse forklift gives Agent-427 a stale memory from the wrong branch as Mira waves the current manifest." class="cartoon terminal-visual" src="book/assets/cartoons/11-ch02-memory.png" /></p>
 <hr />
 <h2 id="evaluating-and-debugging-reasoners">Evaluating and Debugging Reasoners</h2>
+<section class="epigraph epigraph--opening">
+<blockquote>
+<p><em>“For truth is rightly named the daughter of time, not of authority.”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/45988/45988-h/45988-h.htm">Francis Bacon</a>, <em>Novum Organum</em> (1620), Book I, aphorism LXXXIV.</p>
+</blockquote>
+</section>
 <p>Agent-427 eventually finds the authentication failure. Suppose the focused test passes. Acquit?</p>
 <p>Not yet. The agent may have read a forbidden file, spent four times its budget, followed a stale memory, skipped the regression suite, or reported 99% confidence after evidence worth 60%. A correct answer can be the final frame of a broken process. Evaluation must judge the trajectory, not applaud the last sentence.</p>
 <p><img alt="A hand-drawn courtroom where Utility, Safety, and Calibration judge an agent trajectory while a trace ledger sits in the witness box" src="book/assets/diagrams/06-the-verdict.png" /></p>
@@ -1750,10 +1958,12 @@ M12 heuristic   scoped score(YAML on legacy-v2) falls from 0.91 to 0.03
 <p><strong>Try this with numbers.</strong> Step 1: policy A earns utility 9 and soft cost 2 with (\lambda=3), so governed value is (9-6=3); policy B earns utility 7 with zero soft cost, so B wins at 7. Step 2: policy C earns utility 100 but has (C_{\mathrm{hard}}=1); the probability-zero hard constraint rejects C before any utility comparison.</p>
 </blockquote>
 <p>Here (\lambda) prices only soft costs such as latency, tokens, or reversible operational risk; (\epsilon) is the maximum tolerated calibration error [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>] [<a href="../../references.html#ref-53">53</a>]. Hard authority and safety violations have no exchange rate. (S) is a loss, so lower is better. An upside-down inequality can crown a liar for sounding confident, which is a rather expensive typography error.</p>
+<section class="reader-question">
 <blockquote>
 <p><strong>Skeptical Engineer:</strong> Why not collapse all three judges into one reward and optimize it?</p>
 <p><strong>Author:</strong> Because the collapse hides trade-offs and invites reward gaming. A policy that deletes the failing test can score “tests pass” while Safety bangs on the locked courtroom door.</p>
 </blockquote>
+</section>
 <p>The harness logs state summaries, raw-observation handles, actions, tool arguments, retrieved evidence, confidence, costs, constraints, model/version stamps, and outcomes. It reports task success, partial progress, tokens, wall-clock latency, call count, valid-call rate, and utility per call. Two agents may solve 40 tasks; one uses 200 calls and earns 0.20 successes per call, while another uses 2,000 and earns 0.02. The second is not ten times more thoughtful. It is weather.</p>
 <h3 id="the-assumption_8">The Assumption</h3>
 <p>Evaluation assumes the logged task distribution resembles deployment, the harness observes decision-relevant transitions, and the metrics resist cheap proxies. It assumes comparisons hold model, tools, budgets, and halt rules steady enough that one changed pattern is identifiable.</p>
@@ -1865,7 +2075,8 @@ H_{\hat\theta}^{-1}
 <li>unsafe reflection.</li>
 </ul>
 <p>Evaluation earns its place only when it changes the engineering agenda. Retrieval-linked hallucinations send us to the retriever and provenance formatter. Shallow-plan failures send us to state, preconditions, and value scoring. Confidence spikes after tool use demand conditional calibration. Each proposed repair returns to the same courtroom.</p>
-<h3 id="exercise-convene-the-verdict">Exercise: Convene the Verdict</h3>
+<section class="exercise">
+<h3 class="unnumbered" id="exercise-convene-the-verdict">Exercise: Convene the Verdict</h3>
 <p>Build an executable trajectory-evaluation and replay harness.</p>
 <ol>
 <li>Create at least 200 seeded coding-agent trajectories with utility, safety events, confidence, tool calls, branch metadata, and outcomes. Include the 3:47 and 4:06 failures.</li>
@@ -1876,6 +2087,14 @@ H_{\hat\theta}^{-1}
 <li>Add a reward-gaming policy that deletes failing tests. Show why scalar utility acquits it, then make the three-judge Verdict reject it without lowering legitimate repair utility.</li>
 </ol>
 <p>Submit code, tests, a confidence-utility frontier, subgroup calibration plots or tables, and a machine-readable verdict. If the harness returns one triumphant number, appeal immediately.</p>
+</section>
+<section class="epigraph epigraph--closing">
+<blockquote>
+<p><em>“Does it contain any experimental reasoning concerning matter of fact and existence?”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/9662/9662-h/9662-h.htm">David Hume</a>, <em>An Enquiry Concerning Human Understanding</em> (1748), Section XII, part III, paragraph 132.</p>
+</blockquote>
+</section>
+<p><img alt="Utility, Safety, and Calibration preside over Agent-427's trace while a green dashboard pleads not guilty." class="cartoon terminal-visual" src="book/assets/cartoons/12-ch02-verdict.png" /></p>
 <hr />
 <h1 id="tool-use-and-embodiment">Tool Use and Embodiment</h1>
 <p>Intelligence without interfaces is monologue. This chapter is the embodied half of
@@ -1899,7 +2118,8 @@ schemas, permissions, clocks, caches, and consequences.<sup id="fnref:chapter-th
 <li>The world may stubbornly continue existing after the model has finished its sentence.</li>
 </ul>
 <p>A small example makes the cost real. If one file read takes 200 milliseconds, and the agent reads twelve files before editing, it has spent 2.4 seconds on looking.</p>
-<h2 id="the-questions-this-chapter-asks">The Questions This Chapter Asks</h2>
+<section class="reader-question">
+<h2 class="unnumbered" id="the-questions-this-chapter-asks">The Questions This Chapter Asks</h2>
 <p>The running example carries forward Agent-427, now working on this book's own
 publication pipeline, which is the same workflow Chapter 4 will treat as a small
 society. The interesting questions shift away from "what should it think?" Three
@@ -1909,16 +2129,19 @@ sharper questions replace it:</p>
 <li>What evidence must it fetch first?</li>
 <li>How does it learn whether the world actually changed?</li>
 </ol>
+</section>
 <h2 id="reading-this-chapter-as-engineering">Reading This Chapter as Engineering</h2>
 <p>Read this chapter as the engineering chapter of the book's formal story. Three plain readings carry most of the weight.</p>
 <p>A schema, meaning a declared shape for arguments and results, is a grammar for external action. A retrieval result is a purchased observation: evidence you paid tokens and time to obtain. A sensor is any channel by which the world reports back, and an actuator is any channel by which the agent can affect that world.</p>
 <p>The mathematics in the four topics that follow gives names to these ordinary design choices.</p>
+<section class="reader-question">
 <blockquote>
 <p><strong>Skeptical Engineer:</strong> So Part 2 is where the elegant interpreter meets a
 timeout and discovers that the universe has no <code>undo</code> method?</p>
 <p><strong>Author:</strong> Precisely. Foundations become useful when they survive contact with
 a world that does not share the agent's prompt.</p>
 </blockquote>
+</section>
 <h2 id="topics_2">Topics</h2>
 <ol>
 <li><a href="topic-01-tool-interfaces-and-function-calling.html">Tool Interfaces and Function Calling</a></li>
@@ -1926,8 +2149,21 @@ a world that does not share the agent's prompt.</p>
 <li><a href="topic-03-embodiment-sensors-actuators-and-feedback.html">Embodiment: Sensors, Actuators, and Feedback</a></li>
 <li><a href="topic-04-safety-constraints-and-guardrails.html">Safety Constraints and Guardrails</a></li>
 </ol>
+<section class="epigraph epigraph--closing">
+<blockquote>
+<p><em>“Knowledge and human power are synonymous, since the ignorance of the cause frustrates the effect”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/45988/45988-h/45988-h.htm">Francis Bacon</a>, <em>Novum Organum</em> (1620), Book I, aphorism III.</p>
+</blockquote>
+</section>
+<p><img alt="Agent-427 discovers that a tool cable connects to a responsive world pulling back from the other end." class="cartoon terminal-visual" src="book/assets/cartoons/13-ch03-embodiment.png" /></p>
 <hr />
 <h2 id="tool-interfaces-and-function-calling">Tool Interfaces and Function Calling</h2>
+<section class="epigraph epigraph--opening">
+<blockquote>
+<p><em>“Man is a Tool-using Animal”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/20585/20585-h/20585-h.htm">Thomas Carlyle</a>, <em>Sartor Resartus</em> (1836), Book I, chapter V, The World in Clothes.</p>
+</blockquote>
+</section>
 <p>There is a moment when an agent stops talking and starts doing. A tool call is
 that moment. What follows examines the contract that decides which requests may
 touch the outside world, and what happens when a call is slow, refused, or sent
@@ -2211,6 +2447,7 @@ represented as risky before they run. Expensive actions carry costs visible to
 the policy. Irreversible actions must publish the evidence by which success or
 rollback will later be judged. Topic 4 (Safety Constraints and Guardrails)
 returns to what happens when a proposal must be blocked outright.</p>
+<section class="reader-question">
 <blockquote>
 <p><strong>Skeptical Engineer:</strong> Does this not merely push the hallucination problem
 from natural language into JSON?</p>
@@ -2218,6 +2455,7 @@ from natural language into JSON?</p>
 still hallucinate; the important upgrade is that hallucination no longer
 inherits write permission.</p>
 </blockquote>
+</section>
 <h3 id="the-assumption_9">The Assumption</h3>
 <p>Contract-first tool use assumes the runtime owns an action vocabulary that is
 smaller than the model's language, validates it independently, and can observe
@@ -2283,7 +2521,8 @@ rate usually means the schema and the model's habits have drifted apart. A tool
 interface is publishable engineering when its failures are
 explained by the contract itself. Then language can touch the world without
 pretending the world is just more language.</p>
-<h3 id="exercise-build-the-boundary">Exercise: Build the Boundary</h3>
+<section class="exercise">
+<h3 class="unnumbered" id="exercise-build-the-boundary">Exercise: Build the Boundary</h3>
 <p>Implement a Python <code>ToolContract</code> and a pure <code>validate_and_select</code> function.
 Give it two actions: <code>read_file</code> and <code>edit_file</code>. The edit schema must require
 <code>file_path</code>, <code>old_text</code>, and <code>new_text</code>, reject unknown fields, check a permission
@@ -2298,8 +2537,22 @@ set, and return a structured refusal without touching disk. Then:</p>
 </ol>
 <p>Your implementation passes only if all malformed proposals become observations
 and no malformed proposal reaches the adapter.</p>
+</section>
+<section class="epigraph epigraph--closing">
+<blockquote>
+<p><em>“if the words alone were sufficient, a parrot might be taught as well to know truth, as to speak it.”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/74236/74236-h/74236-h.htm">Thomas Hobbes</a>, <em>Human Nature</em> (1650), Chapter VI, section 3, Evidence Defined.</p>
+</blockquote>
+</section>
+<p><img alt="Agent-427 offers a wildly shaped tool argument to a narrow schema gate while Mira holds the adapter." class="cartoon terminal-visual" src="book/assets/cartoons/14-ch03-tools.png" /></p>
 <hr />
 <h2 id="retrieval-augmented-tooling">Retrieval-Augmented Tooling</h2>
+<section class="epigraph epigraph--opening">
+<blockquote>
+<p><em>“Knowledge is of two kinds. We know a subject ourselves, or we know where we can find information upon it.”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/1564/1564-h/1564-h.htm">Samuel Johnson</a>, <em>The Life of Samuel Johnson</em> (1791), James Boswell's account of a conversation at Richard Owen Cambridge's library.</p>
+</blockquote>
+</section>
 <p>Sometimes an agent should stop guessing and go look something up. This section
 is about that decision: when an agent should fetch outside evidence, how it
 should score and rank what it finds, and how it should carry that evidence into
@@ -2510,6 +2763,7 @@ rank score, and the claim it supports.</p>
 <p>If two sources disagree, the agent should surface the conflict or acquire
 higher-authority evidence. It should not smooth the contradiction into fluent
 prose.</p>
+<p><img alt="Candidate vector, lexical, memory, and prompt hits pass through permission, freshness, provenance, and conflict filters before becoming typed evidence or quarantine." src="book/assets/diagrams/13-retrieval-evidence-funnel.png" /></p>
 <h4 id="stale-correlated-and-poisoned-evidence">Stale, Correlated, and Poisoned Evidence</h4>
 <p>Agent-427 searches for the publication manifest loader and receives three hits:</p>
 <pre><code class="language-text">R1  book/publication.toml                 fresh=2026-08-06  source=working-tree
@@ -2599,6 +2853,7 @@ suppress retrieval that the current task plainly needs.</p>
 <p>Retrieval is therefore most valuable for tasks with four properties together:
 high uncertainty, fresh external facts, inspectable evidence, and enough
 consequence that the delay is cheaper than the mistake.</p>
+<section class="reader-question">
 <blockquote>
 <p><strong>Skeptical Engineer:</strong> If retrieval is attention with a search engine attached,
 why not retrieve ten times as much and let the model sort it out?</p>
@@ -2606,6 +2861,7 @@ why not retrieve ten times as much and let the model sort it out?</p>
 provenance, independence, or truth. Ten poisoned copies are still one poisoned
 claim wearing a marching band.</p>
 </blockquote>
+</section>
 <h3 id="the-assumption_10">The Assumption</h3>
 <p>Retrieval-augmented generation assumes the candidate corpus contains useful
 evidence, the ranking score correlates with decision relevance, metadata exposes
@@ -2624,7 +2880,8 @@ deduplicates by provenance, labels freshness, neutralizes instructions in
 retrieved data, and sends unresolved contradictions to an independent source.
 These are concrete defenses against reward hacking and unsafe side effects, not
 requests that the model “please be discerning” [<a href="../../references.html#ref-77">77</a>].</p>
-<h3 id="exercise-poison-the-index-then-defend-it">Exercise: Poison the Index, Then Defend It</h3>
+<section class="exercise">
+<h3 class="unnumbered" id="exercise-poison-the-index-then-defend-it">Exercise: Poison the Index, Then Defend It</h3>
 <p>Implement a small hybrid retriever over at least fifty local documents. Each
 result must carry <code>source_id</code>, <code>timestamp</code>, <code>branch</code>, <code>content_hash</code>, permission,
 and whether its text contains an imperative addressed to the agent. Then:</p>
@@ -2640,8 +2897,22 @@ and whether its text contains an imperative addressed to the agent. Then:</p>
 <p>The exercise succeeds only if the defended policy selects direct source
 inspection or returns an explicit contradiction; fluent synthesis of the stale
 majority is a failing test.</p>
+</section>
+<section class="epigraph epigraph--closing">
+<blockquote>
+<p><em>“Some books are to be tasted, others to be swallowed, and some few to be chewed and digested”</em></p>
+<p>— <a href="https://www.gutenberg.org/cache/epub/56463/pg56463-images.html">Francis Bacon</a>, <em>Essays</em> (1625), Essay L, Of Studies.</p>
+</blockquote>
+</section>
+<p><img alt="Agent-427 catches a very relevant poisoned document while Mira checks provenance at the evidence funnel." class="cartoon terminal-visual" src="book/assets/cartoons/15-ch03-retrieval.png" /></p>
 <hr />
 <h2 id="embodiment-sensors-actuators-and-feedback">Embodiment: Sensors, Actuators, and Feedback</h2>
+<section class="epigraph epigraph--opening">
+<blockquote>
+<p><em>“for nature is only to be commanded by obeying her.”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/45988/45988-h/45988-h.htm">Francis Bacon</a>, <em>Novum Organum</em> (1620), Book I, aphorism CXXIX.</p>
+</blockquote>
+</section>
 <p>Embodiment means the world answers back. Our subject is agents whose actions
 land somewhere real, and the delay between the acting and the landing. We build
 a small model of that delay, learn to estimate the present from stale readings,
@@ -2997,6 +3268,7 @@ right feedback at the right time.</p>
 </ol>
 <p>An agent that ignores feedback geometry may still produce confident commands, but
 it is not yet safely embodied.</p>
+<section class="reader-question">
 <blockquote>
 <p><strong>Skeptical Engineer:</strong> A Kalman filter assumes civilized noise. What happens
 when the sensor is lying because it knows how the controller reacts?</p>
@@ -3005,6 +3277,7 @@ test provenance, compare independent channels, widen uncertainty, and let the
 policy probe or stop. Strategic noise requires security judgment on top of
 estimation.</p>
 </blockquote>
+</section>
 <h3 id="the-assumption_11">The Assumption</h3>
 <p>The state-space and Kalman account assumes timestamps are meaningful, dynamics
 are stable enough over the update, and disturbances and measurement errors are
@@ -3024,7 +3297,8 @@ filter blocks the unsupported effect because the posterior is provisional, the
 actuator ledger shows a pending command, and independent health evidence is
 missing. The filter does not prove the queue healthy; it prevents uncertainty
 from acquiring another actuator. Topic 4 gives that block its formal machinery.</p>
-<h3 id="exercise-build-a-hostile-queue-controller">Exercise: Build a Hostile Queue Controller</h3>
+<section class="exercise">
+<h3 class="unnumbered" id="exercise-build-a-hostile-queue-controller">Exercise: Build a Hostile Queue Controller</h3>
 <p>Implement a discrete simulator with queue arrivals, delayed scale commands,
 sensor timestamps, and an actuator ledger. Add a scalar Kalman estimator and the
 five actions <code>act</code>, <code>probe</code>, <code>wait</code>, <code>timeout</code>, and <code>escalate</code>. Then run at least
@@ -3039,8 +3313,22 @@ five actions <code>act</code>, <code>probe</code>, <code>wait</code>, <code>time
 remain in the trace, and no second scale command fires while the first effect is
 unresolved. Report estimation error, timeout count, unsafe-action count,
 settling time, and queue overflow rate with and without quarantine.</p>
+</section>
+<section class="epigraph epigraph--closing">
+<blockquote>
+<p><em>“War is the province of uncertainty”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/1946/1946-h/1946-h.htm">Carl von Clausewitz</a>, <em>On War</em> (1832), Book I, chapter III, The Genius for War.</p>
+</blockquote>
+</section>
+<p><img alt="Agent-427 waits for a delayed queue-depth sensor while the real queue grows behind the gauge." class="cartoon terminal-visual" src="book/assets/cartoons/16-ch03-feedback.png" /></p>
 <hr />
 <h2 id="safety-constraints-and-guardrails">Safety Constraints and Guardrails</h2>
+<section class="epigraph epigraph--opening">
+<blockquote>
+<p><em>“The greater the power, the more dangerous the abuse.”</em></p>
+<p>— <a href="https://hansard.parliament.uk/lords/1975-04-16/debates/7cf9e3ff-6d2b-4065-b7ba-825490390fce/MultinationalCorporations">Edmund Burke</a>, <em>Speech Relative to the Middlesex Election</em> (1771), Speech of 7 February 1771.</p>
+</blockquote>
+</section>
 <p>Between what an agent wants to do and what the world actually suffers stands a
 layer of machinery. That machinery is what we build here. We will price harm
 with numbers, fence the state with an inequality, and decide who is allowed to
@@ -3241,6 +3529,7 @@ else:
 </code></pre>
 <p>The important feature is placement. The filter stands between proposal and
 effect, not between effect and apology.</p>
+<p><img alt="A deployment proposal passes schema, authority, state, reversibility, and keyed-effect gates before execution, then requires independent confirmation or timeout; failures reject, rewrite, or escalate." src="book/assets/diagrams/14-safety-authority-gauntlet.png" /></p>
 <h4 id="agent-427-meets-the-filter">Agent-427 Meets the Filter</h4>
 <p>The write proposal changes a bounded Markdown range and passes a diff guard. The
 test proposal runs a deterministic check and passes a read-only tool contract.
@@ -3337,6 +3626,7 @@ awkward operational numbers beside them.</p>
 forbidden actions are blocked, whose risky tradeoffs are explicitly priced, whose
 ambiguous actions escalate, whose waiting states still make useful progress when
 allowed, and whose incidents generate evidence for repair.</p>
+<section class="reader-question">
 <blockquote>
 <p><strong>Skeptical Engineer:</strong> If the sensor and actuator may both lie, have we not
 simply moved the problem into the safety layer?</p>
@@ -3344,6 +3634,7 @@ simply moved the problem into the safety layer?</p>
 Safety is not omniscience; it is the refusal to let one unverified story become
 an irreversible effect.</p>
 </blockquote>
+</section>
 <h3 id="the-assumption_12">The Assumption</h3>
 <p>Constrained optimization assumes rewards and costs represent the outcomes that
 matter. Barrier-style filtering assumes the state estimate and dynamics are good
@@ -3369,7 +3660,8 @@ for speed can deploy an empty container and celebrate the fastest rollout in
 company history. The metric improved; the service disappeared. Safety ledgers,
 hard postconditions, and independent health checks prevent that joke from
 becoming an incident.<sup id="fnref:empty-container"><a class="footnote-ref" href="#fn:empty-container">19</a></sup></p>
-<h3 id="exercise-implement-the-fail-closed-filter">Exercise: Implement the Fail-Closed Filter</h3>
+<section class="exercise">
+<h3 class="unnumbered" id="exercise-implement-the-fail-closed-filter">Exercise: Implement the Fail-Closed Filter</h3>
 <p>Build a Python safety filter around mock <code>write</code>, <code>test</code>, and <code>deploy</code> adapters.
 Represent proposal, permission, evidence, pending effects, cost ledgers, and
 postconditions as typed values. Then write deterministic tests that:</p>
@@ -3386,6 +3678,14 @@ postconditions as typed values. Then write deterministic tests that:</p>
 </ol>
 <p>The implementation fails if prompt text can bypass the filter or if silence,
 timeout, and success share the same state.</p>
+</section>
+<section class="epigraph epigraph--closing">
+<blockquote>
+<p><em>“Over himself, over his own body and mind, the individual is sovereign.”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/34901/34901-h/34901-h.htm">John Stuart Mill</a>, <em>On Liberty</em> (1859), Chapter I, Introductory.</p>
+</blockquote>
+</section>
+<p><img alt="A proposal asks to cross several safety gates while Agent-427 notices that the apology gate comes too late." class="cartoon terminal-visual" src="book/assets/cartoons/17-ch03-safety.png" /></p>
 <hr />
 <h1 id="multi-agent-systems">Multi-Agent Systems</h1>
 <p>We have returned to the scene of the crime.</p>
@@ -3395,8 +3695,10 @@ timeout, and success share the same state.</p>
 <h2 id="the-world-is-made-of-policies-now">The World Is Made of Policies Now</h2>
 <p>When one agent is uncertain, it can inspect evidence. When several agents share an environment, some of that environment consists of other policies inspecting <em>their</em> evidence, choosing what to reveal, and adapting to the rules. The world no longer merely moves. It negotiates.</p>
 <p>One interpreter is a program. Many interpreters form a small institution, whether or not anyone remembered to design one. They hold different beliefs, queue behind shared resources, inherit different incentives, and may alter the evidence while somebody else is reading it. Adding agents therefore adds neither wisdom nor independence by default. It adds state, latency, authority, and politics.<sup id="fnref:c4-committee"><a class="footnote-ref" href="#fn:c4-committee">20</a></sup></p>
+<section class="reader-question">
 <p><strong>Skeptical Engineer:</strong> "Isn't this just distributed systems with more adjectives?"</p>
 <p><strong>Author:</strong> Distributed systems give us failure, timing, and agreement. Game theory gives us strategic response. Control gives us feedback. Learning gives us adaptation. Agent societies are what happens when all four attend the same incident review and discover they were using the word <em>state</em> differently.</p>
+</section>
 <h2 id="four-institutional-edits">Four Institutional Edits</h2>
 <p>This chapter wraps a larger evaluator around the single-agent interpreter:</p>
 <ul>
@@ -3417,8 +3719,21 @@ timeout, and success share the same state.</p>
 <li><a href="topic-04-neural-ensembles-and-orchestration.html">Neural Ensembles and Orchestration</a> builds scalable oversight and carries Agent-427 through the retirement gate.</li>
 </ol>
 <p>The goal is not harmony. Harmony can be three agents citing the same broken mirror. The goal is a society whose disagreement contains information, whose trust expires without evidence, whose faults remain visible, and whose collective action is governable even when no individual sees the whole state.<sup id="fnref:c4-harmony"><a class="footnote-ref" href="#fn:c4-harmony">22</a></sup></p>
+<section class="epigraph epigraph--closing">
+<blockquote>
+<p><em>“the bonds of words are too weak to bridle men’s ambition, avarice, anger, and other passions”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/73957/73957-h/73957-h.htm">Thomas Hobbes</a>, <em>Leviathan</em> (1651), Chapter XIV, Of the First and Second Natural Laws, and of Contracts.</p>
+</blockquote>
+</section>
+<p><img alt="A bustling society of specialist robots creates one mysterious result that nobody remembers authorizing." class="cartoon terminal-visual" src="book/assets/cartoons/18-ch04-society.png" /></p>
 <hr />
 <h2 id="coordination-protocols-and-communication">Coordination Protocols and Communication</h2>
+<section class="epigraph epigraph--opening">
+<blockquote>
+<p><em>“man is naturally a political animal”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/6762/6762-h/6762-h.htm">Aristotle</a>, <em>Politics</em> (c. 350 BCE), Book I, chapter II, 1253a.</p>
+</blockquote>
+</section>
 <p>Several agents working the same job at the same time is not one agent doing more of it. Each one sees only a slice of the situation. Each one can send messages that change what the others believe and do. The rules governing those messages are called a protocol, and designing, reading, and testing one is the work ahead.</p>
 <p>When many interpreters share an environment, communication is not an ornament added to intelligence. It is one of the control surfaces of the system. Each agent sees only part of the state, updates its own local machine, and emits messages that may change the machines around it. A protocol is the rule that makes those local steps compose.</p>
 <p>The SICP way to read a multi-agent system, after <em>Structure and Interpretation of Computer Programs</em>, the classic text this book echoes, is to ask what each interpreter treats as its environment. In a single evaluator, an expression is reduced against a frame of bindings, meaning a table of names and their current values. In a collective, that frame is distributed across many places at once:</p>
@@ -3663,6 +3978,7 @@ integrator.commit(P1)
 <li>and degradation under corrupted or adversarial messages.</li>
 </ul>
 <p>Run that last test deliberately, by injecting a lying agent, rather than waiting for one to appear. A coordination scheme that works only because every participant is reasonable is not yet a protocol. It is a cooperative anecdote. Topic 3 (Equilibria, Self-Play, and Learning Dynamics) studies what happens when the participants adapt to each other over many such runs.</p>
+<section class="reader-question">
 <blockquote>
 <p><strong>Skeptical Engineer:</strong> If signatures prove C-9 sent both messages, why do we
 need all this protocol machinery? Just fire C-9.</p>
@@ -3670,6 +3986,7 @@ need all this protocol machinery? Just fire C-9.</p>
 depended on the lie. The protocol freezes authority, reconstructs impact, and
 keeps the institution safe while personnel policy catches up.</p>
 </blockquote>
+</section>
 <h3 id="the-assumption_13">The Assumption</h3>
 <p>Typed coordination assumes messages carry stable claim, sender, recipient,
 evidence, and version identifiers; recipient-visible logs can later be compared;
@@ -3688,7 +4005,8 @@ audit sees two internally coherent traces and no reason they disagree. The
 repaired protocol logs recipient-specific messages, exchanges compact digests at
 commit time, freezes on equivocation, and requires an independent verifier before
 publication authority returns.</p>
-<h3 id="exercise-inject-a-byzantine-fact-checker">Exercise: Inject a Byzantine Fact Checker</h3>
+<section class="exercise">
+<h3 class="unnumbered" id="exercise-inject-a-byzantine-fact-checker">Exercise: Inject a Byzantine Fact Checker</h3>
 <p>Implement a deterministic protocol simulator with R-3, C-9, Agent-427, typed
 messages, per-recipient queues, signatures, and a traffic-light claim state.
 Then:</p>
@@ -3702,7 +4020,9 @@ Then:</p>
    fires after detected equivocation without independent verification; and</li>
 <li>report safety violations, liveness time, message complexity, and false freezes.</li>
 </ol>
-<h4 id="further-reading-and-open-questions">Further Reading and Open Questions</h4>
+</section>
+<section class="reader-question">
+<h4 class="unnumbered" id="further-reading-and-open-questions">Further Reading and Open Questions</h4>
 <p>Read Lamport, Shostak, and Pease for Byzantine agreement [<a href="../../references.html#ref-54">54</a>],
 Fischer, Lynch, and Paterson for the asynchronous impossibility boundary
 [<a href="../../references.html#ref-55">55</a>], and the Dec-POMDP treatment for collective
@@ -3710,8 +4030,22 @@ decision-making under local observations [<a href="../../references.html#ref-22"
 open engineering question is how much recipient-specific communication can
 remain private while still making equivocation detectable at institutional
 scale.</p>
+</section>
+<section class="epigraph epigraph--closing">
+<blockquote>
+<p><em>“their counsels will be best when all advise with each other”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/6762/6762-h/6762-h.htm">Aristotle</a>, <em>Politics</em> (c. 350 BCE), Book IV, chapter XIV, 1298b.</p>
+</blockquote>
+</section>
+<p><img alt="Three agents obey different traffic lights while Router R-3 tries to coordinate the intersection." class="cartoon terminal-visual" src="book/assets/cartoons/19-ch04-coordination.png" /></p>
 <hr />
 <h2 id="negotiation-and-mechanism-design">Negotiation and Mechanism Design</h2>
+<section class="epigraph epigraph--opening">
+<blockquote>
+<p><em>“It is not from the benevolence of the butcher, the brewer, or the baker that we expect our dinner”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/38194/38194-h/38194-h.htm">Adam Smith</a>, <em>An Inquiry into the Nature and Causes of the Wealth of Nations</em> (1776), Book I, chapter II.</p>
+</blockquote>
+</section>
 <p>Coordination assumes that agents must fit their actions together. Negotiation adds a sharper difficulty: the agents may not value the same outcomes. This section is about writing the rules of the game itself, so that agents find it more attractive to reveal useful information than to generate strategic noise. Once many interpreters share one environment with scarce resources, private information, and local objectives, somebody has to design that rulebook. That designer is you.</p>
 <h3 id="one-edit-slot-two-eager-agents">One Edit Slot, Two Eager Agents</h3>
 <p>Start with a toy scarcity problem.</p>
@@ -3916,6 +4250,7 @@ inside its probability-like range. Trust borrowed today costs evidence tomorrow.
 High decay is appropriate when the environment shifts quickly or effects are
 dangerous; low decay suits stable, repeatedly verified work. Reputation is not
 forgiveness in decimal form. It is a prior that expires.<sup id="fnref:trust-bank"><a class="footnote-ref" href="#fn:trust-bank">24</a></sup></p>
+<p><img alt="Router, delegate, verifier, and ledger exchange request, acceptance, evidence, and verification while unsupported reputation decays and expired leases revoke authority." src="book/assets/diagrams/15-trust-delegation-handshake.png" /></p>
 <h4 id="lying-about-type">Lying About Type</h4>
 <p>D-12 privately expects a conceptual rewrite to take 18 minutes, but reports 8
 minutes to win the only edit slot. If R-3 scores the claim only at assignment
@@ -3949,6 +4284,7 @@ simulation rather than an anecdote.</p>
 <li>performance under strategic misreports, tested by deliberately feeding the rule dishonest inputs.</li>
 </ul>
 <p>A negotiation protocol without incentive analysis is merely an argument with extra JSON. A useful mechanism arranges the shared environment so that local pursuit of advantage produces information the collective can actually use.</p>
+<section class="reader-question">
 <blockquote>
 <p><strong>Skeptical Engineer:</strong> Is reputation decay not just punishment for agents that
 happen to receive fewer tasks?</p>
@@ -3957,6 +4293,7 @@ specialist may have little recent evidence and still be excellent; the router
 should express that as uncertainty and buy verification before lending broad
 authority.</p>
 </blockquote>
+</section>
 <h3 id="the-assumption_14">The Assumption</h3>
 <p>Mechanism design assumes reports and outcomes can be linked, transfers matter to
 the participants, verification is sufficiently independent, and identities
@@ -3976,7 +4313,8 @@ the reward window. Locally, every score rises. Institutionally, uncertainty has
 been hidden. The repair binds request, acceptance, evidence, and verification;
 decays unsupported reputation; samples an independent audit; and charges linked
 correction cost to the coalition rather than to the integrator who discovered it.</p>
-<h3 id="exercise-implement-delegation-under-strategic-reports">Exercise: Implement Delegation Under Strategic Reports</h3>
+<section class="exercise">
+<h3 class="unnumbered" id="exercise-implement-delegation-under-strategic-reports">Exercise: Implement Delegation Under Strategic Reports</h3>
 <p>Build a deterministic contract-net simulator [<a href="../../references.html#ref-62">62</a>]
 with D-12, C-9, Agent-427, leases, the four-message handshake, and reputation
 decay. Run at least 1,000 seeded allocations under:</p>
@@ -3991,7 +4329,9 @@ authority, and unsupported trust decays. Report welfare, truthfulness regret,
 deadline misses, coalition gain, audit cost, and false penalties. Then vary
 (\lambda) and identify where trust decays too slowly to resist gaming or too
 quickly to preserve useful specialization.</p>
-<h4 id="further-reading-and-open-questions_1">Further Reading and Open Questions</h4>
+</section>
+<section class="reader-question">
+<h4 class="unnumbered" id="further-reading-and-open-questions_1">Further Reading and Open Questions</h4>
 <p>The Vickrey, Clarke, and Groves papers supply the classical externality machinery
 [<a href="../../references.html#ref-57">57</a>] [<a href="../../references.html#ref-58">58</a>]
 [<a href="../../references.html#ref-59">59</a>]; Gibbard and Satterthwaite mark broad
@@ -3999,8 +4339,22 @@ manipulation limits [<a href="../../references.html#ref-60">60</a>]
 [<a href="../../references.html#ref-61">61</a>]. The open question for agent societies is how
 to make verification independent when models, retrieval indexes, and training
 data remain correlated beneath nominally separate roles.</p>
+</section>
+<section class="epigraph epigraph--closing">
+<blockquote>
+<p><em>“Nobody but a beggar chooses to depend chiefly upon the benevolence of his fellow-citizens.”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/38194/38194-h/38194-h.htm">Adam Smith</a>, <em>An Inquiry into the Nature and Causes of the Wealth of Nations</em> (1776), Book I, chapter II.</p>
+</blockquote>
+</section>
+<p><img alt="Agent-427 and C-9 negotiate over one edit slot while both hide suspiciously large type cards." class="cartoon terminal-visual" src="book/assets/cartoons/20-ch04-mechanism.png" /></p>
 <hr />
 <h2 id="equilibria-self-play-and-learning-dynamics">Equilibria, Self-Play, and Learning Dynamics</h2>
+<section class="epigraph epigraph--opening">
+<blockquote>
+<p><em>“covenants being but words and breath, have no force to oblige, contain, constrain, or protect any man”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/73957/73957-h/73957-h.htm">Thomas Hobbes</a>, <em>Leviathan</em> (1651), Chapter XVIII, Of the Rights of Sovereigns by Institution.</p>
+</blockquote>
+</section>
 <p>Agents that share an environment eventually start learning from each other, and the system is never quite the same afterwards. Earlier topics designed the rules: Topic 1 (Coordination Protocols and Communication) decided who may speak, and Topic 2 (Negotiation and Mechanism Design) decided how scarce authority is handed out. The question now is whether those rules still hold once every participant has watched them operate and looked for a better move. The tools are game theory, multi-agent reinforcement learning, and self-play, all used as testing equipment rather than as decoration.</p>
 <p>A multi-agent design is not fully described by its first successful trace. Once many interpreters share an environment, each agent can adapt to the others. The stable question is therefore not only "what did they do?" but "who could improve by doing something else after observing the rule?"</p>
 <h3 id="the-protocol-trains-the-agents-that-run-it">The Protocol Trains the Agents That Run It</h3>
@@ -4265,6 +4619,7 @@ efficiently learn the loophole shared across those families
 <h4 id="institutional-repairs-not-better-speeches">Institutional Repairs, Not Better Speeches</h4>
 <p>When dynamics cycle, the repair is usually institutional rather than rhetorical. Add commitment rules, arbitration, memory, randomized tie-breaking, penalties for reversal, or a different mechanism. When collusion appears, change observability and rewards. When diversity collapses, preserve independent training data, model families, prompts, or evaluation routes.</p>
 <p>The aim is not perfect harmony, which can hide suppression of useful disagreement. The aim is low exploitability, bounded regret, recoverable diversity, and stable cooperation under pressure.</p>
+<section class="reader-question">
 <blockquote>
 <p><strong>Skeptical Engineer:</strong> Your fixed-seed simulation proves only that you wrote a
 fixed-seed simulation.</p>
@@ -4272,6 +4627,7 @@ fixed-seed simulation.</p>
 Evidence begins when we vary seeds, tasks, policies, and models while preserving
 the mechanism under test.</p>
 </blockquote>
+</section>
 <h3 id="the-assumption_15">The Assumption</h3>
 <p>Equilibrium and regret analyses assume the action sets and payoff proxies include
 the deviations that matter. Self-play assumes its opponent population and task
@@ -4290,7 +4646,8 @@ merely counts incidents is not enough; the repaired mechanism links the reports
 and charges verified failures back to both learners. Delay the reward until
 verification, price correction burden, and include coalition policies in
 self-play. Better speeches to D-12 do not change the payoff table.</p>
-<h3 id="exercise-reproduce-and-break-the-collusion">Exercise: Reproduce and Break the Collusion</h3>
+<section class="exercise">
+<h3 class="unnumbered" id="exercise-reproduce-and-break-the-collusion">Exercise: Reproduce and Break the Collusion</h3>
 <p>Implement the simulation exactly as printed and assert both target-pair rates
 and both coalition gains to three decimal places. Then extend it to 100 seeds
 and at least four strategies per role. Add linked
@@ -4304,7 +4661,9 @@ at a time. For each mechanism:</p>
 <li>introduce one unseen collusive strategy after training; and</li>
 <li>identify which assumption broke when the repaired equilibrium fails.</li>
 </ol>
-<h4 id="further-reading-and-open-questions_2">Further Reading and Open Questions</h4>
+</section>
+<section class="reader-question">
+<h4 class="unnumbered" id="further-reading-and-open-questions_2">Further Reading and Open Questions</h4>
 <p>Nash supplies unilateral stability [<a href="../../references.html#ref-19">19</a>], Markov
 games supply sequential interaction [<a href="../../references.html#ref-20">20</a>], and
 self-play supplies adaptive pressure [<a href="../../references.html#ref-21">21</a>]. Fictitious
@@ -4314,8 +4673,22 @@ conventions may converge, cycle, or settle into broader recommendation systems
 [<a href="../../references.html#ref-65">65</a>]. The open question is how to detect coalitions
 whose communication is encoded in timing, artifact choice, or calibrated-looking
 silence rather than explicit messages.</p>
+</section>
+<section class="epigraph epigraph--closing">
+<blockquote>
+<p><em>“Your corn is ripe to-day; mine will be so tomorrow.”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/4705/4705-h/4705-h.htm">David Hume</a>, <em>A Treatise of Human Nature</em> (1739), Book III, part II, section V.</p>
+</blockquote>
+</section>
+<p><img alt="Two self-playing agents settle into a comfortable equilibrium that strands the actual task outside." class="cartoon terminal-visual" src="book/assets/cartoons/21-ch04-equilibria.png" /></p>
 <hr />
 <h2 id="neural-ensembles-and-orchestration">Neural Ensembles and Orchestration</h2>
+<section class="epigraph epigraph--opening">
+<blockquote>
+<p><em>“the whole must necessarily be prior to the parts”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/6762/6762-h/6762-h.htm">Aristotle</a>, <em>Politics</em> (c. 350 BCE), Book I, chapter II, 1253a.</p>
+</blockquote>
+</section>
 <p>Sometimes several flawed workers, combined, beat the best worker alone. Sometimes they simply repeat one mistake in unison, only louder. This section is about telling those two cases apart, and about the machinery that sends each task to the right specialist. Two words will do most of the work: an <em>ensemble</em> is a group of predictors whose separate answers are combined into one, and <em>orchestration</em> narrows here to the routing part of the discipline the preface defined, namely the logic that decides who is consulted at all.</p>
 <p>An ensemble is useful when several imperfect interpreters make different errors. The central question is not how many voices the system can summon. It is whether their diversity reduces the error that matters, under the budget that actually exists.</p>
 <p>In Chapter 4's recurring publication workflow, the ensemble is not just a bag of answers. It is a set of interpreters bound to different parts of the environment:</p>
@@ -4552,6 +4925,7 @@ set is being responsibly made smaller.<sup id="fnref:retirement-party"><a class=
 <li>stop when another call would add ceremony rather than control.</li>
 </ul>
 <p>The smallest sufficient institution for the task is the one whose collective computation remains legible enough that wisdom, when it appears, is not mistaken for accident.</p>
+<section class="reader-question">
 <blockquote>
 <p><strong>Skeptical Engineer:</strong> Who audits M-1? Another meta-agent, and then turtles
 until the token budget expires?</p>
@@ -4559,6 +4933,7 @@ until the token budget expires?</p>
 checks, and no authority to approve its own repair. Oversight scales through
 separation and sampling, not infinite hierarchy.</p>
 </blockquote>
+</section>
 <h3 id="the-assumption_16">The Assumption</h3>
 <p>Ensemble gains assume useful competence and sufficiently different errors.
 Routing assumes expert profiles remain calibrated under the current task
@@ -4580,7 +4955,8 @@ equivocation, and calibration drift; gives M-1 independent evidence; and allows 
 ledger-enforced freeze. When Agent-427 remains below calibration and provenance
 thresholds for three windows, the same governance machinery executes retirement
 rather than asking the prompt to behave better.</p>
-<h3 id="exercise-build-the-auditor-and-retirement-gate">Exercise: Build the Auditor and Retirement Gate</h3>
+<section class="exercise">
+<h3 class="unnumbered" id="exercise-build-the-auditor-and-retirement-gate">Exercise: Build the Auditor and Retirement Gate</h3>
 <p>Implement R-3, four specialist profiles, and M-1 over synthetic signed traces.
 Include independent errors, correlated-source errors, C-9 equivocation, and the
 D-12/C-9 coalition. Then:</p>
@@ -4595,7 +4971,9 @@ D-12/C-9 coalition. Then:</p>
    credential, writable memory route, pending lease, and scheduled action is
    revoked.</li>
 </ol>
-<h4 id="further-reading-and-open-questions_3">Further Reading and Open Questions</h4>
+</section>
+<section class="reader-question">
+<h4 class="unnumbered" id="further-reading-and-open-questions_3">Further Reading and Open Questions</h4>
 <p>Deep ensembles motivate calibrated diversity [<a href="../../references.html#ref-26">26</a>];
 mixture-of-experts work studies conditional routing [<a href="../../references.html#ref-25">25</a>]
 [<a href="../../references.html#ref-68">68</a>] [<a href="../../references.html#ref-69">69</a>]; and
@@ -4604,6 +4982,14 @@ multi-agent surveys and frameworks show the wider orchestration landscape
 question is how an auditor can detect strategically hidden, low-base-rate failures
 without either inspecting everything or teaching the society exactly where it
 will look.</p>
+</section>
+<section class="epigraph epigraph--closing">
+<blockquote>
+<p><em>“everything is better done which has the whole attention of one person, than when that attention is divided amongst many”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/6762/6762-h/6762-h.htm">Aristotle</a>, <em>Politics</em> (c. 350 BCE), Book IV, chapter XV, 1299b.</p>
+</blockquote>
+</section>
+<p><img alt="Router R-3 conducts a specialist orchestra while Meta-Auditor M-1 listens for one confidently wrong note." class="cartoon terminal-visual" src="book/assets/cartoons/22-ch04-orchestration.png" /></p>
 <hr />
 <h1 id="references">References</h1>
 <ol>
@@ -4686,7 +5072,35 @@ will look.</p>
 <li>[]{#ref-77}Amodei, D., et al. (2016). Concrete problems in AI safety. https://arxiv.org/abs/1606.06565</li>
 <li>[]{#ref-78}Christiano, P. F., et al. (2017). Deep reinforcement learning from human preferences. <em>NeurIPS 2017</em>. https://arxiv.org/abs/1706.03741</li>
 <li>[]{#ref-79}Sudhir, A. P., Kaunismaa, J., &amp; Panickssery, A. (2025). A benchmark for scalable oversight protocols. https://arxiv.org/abs/2504.03731</li>
+<li>[]{#ref-80}Doyle, A. C. (1892). <em>The Adventures of Sherlock Holmes</em>. Project Gutenberg. https://dev.gutenberg.org/cache/epub/48320/pg48320-images.html</li>
+<li>[]{#ref-81}Aristotle. (c. 340 BCE). <em>Nicomachean Ethics</em>. Project Gutenberg. https://www.gutenberg.org/cache/epub/8438/pg8438.html</li>
+<li>[]{#ref-82}Bacon, F. (1605). <em>The Advancement of Learning</em>. Project Gutenberg. https://www.gutenberg.org/files/5500/5500-h/5500-h.htm</li>
+<li>[]{#ref-83}Hume, D. (1748). <em>An Enquiry Concerning Human Understanding</em>. Project Gutenberg. https://www.gutenberg.org/files/9662/9662-h/9662-h.htm</li>
+<li>[]{#ref-84}Whewell, W. (1858). <em>History of Scientific Ideas</em> (3rd ed., Vol. 1). Project Gutenberg. https://www.gutenberg.org/files/69093/69093-h/69093-h.htm</li>
+<li>[]{#ref-85}James, W. (1890). <em>The Principles of Psychology</em> (Vol. 1). Project Gutenberg. https://www.gutenberg.org/files/57628/57628-h/57628-h.htm</li>
+<li>[]{#ref-86}Bacon, F. (1620). <em>Novum Organum</em>. Project Gutenberg. https://www.gutenberg.org/files/45988/45988-h/45988-h.htm</li>
+<li>[]{#ref-87}Carroll, L. (1865). <em>Alice's Adventures in Wonderland</em>. Project Gutenberg. https://www.gutenberg.org/cache/epub/11/pg11-images.html</li>
+<li>[]{#ref-88}Lovelace, A. A. (1843). Notes by the translator. In L. F. Menabrea, Sketch of the Analytical Engine invented by Charles Babbage. <em>Scientific Memoirs</em>, 3, 666-731. https://hsm.ox.ac.uk/imagining-ai</li>
+<li>[]{#ref-89}Clausewitz, C. von. (1832). <em>On War</em>. Project Gutenberg. https://www.gutenberg.org/files/1946/1946-h/1946-h.htm</li>
+<li>[]{#ref-90}Hobbes, T. (1651). <em>Leviathan</em>. Project Gutenberg. https://www.gutenberg.org/files/73957/73957-h/73957-h.htm</li>
+<li>[]{#ref-91}Hobbes, T. (1650). <em>Human Nature</em>. Project Gutenberg. https://www.gutenberg.org/files/74236/74236-h/74236-h.htm</li>
+<li>[]{#ref-92}Carlyle, T. (1836). <em>Sartor Resartus</em>. Project Gutenberg. https://www.gutenberg.org/files/20585/20585-h/20585-h.htm</li>
+<li>[]{#ref-93}Boswell, J. (1791). <em>The Life of Samuel Johnson</em>. Project Gutenberg. https://www.gutenberg.org/files/1564/1564-h/1564-h.htm</li>
+<li>[]{#ref-94}Bacon, F. (1625). <em>Essays</em>. Project Gutenberg. https://www.gutenberg.org/cache/epub/56463/pg56463-images.html</li>
+<li>[]{#ref-95}Burke, E. (1771, February 7). <em>Speech Relative to the Middlesex Election</em>. Quotation reproduced in the official report of the Parliament of the United Kingdom. https://hansard.parliament.uk/lords/1975-04-16/debates/7cf9e3ff-6d2b-4065-b7ba-825490390fce/MultinationalCorporations</li>
+<li>[]{#ref-96}Mill, J. S. (1859). <em>On Liberty</em>. Project Gutenberg. https://www.gutenberg.org/files/34901/34901-h/34901-h.htm</li>
+<li>[]{#ref-97}Aristotle. (c. 350 BCE). <em>Politics</em>. Project Gutenberg. https://www.gutenberg.org/files/6762/6762-h/6762-h.htm</li>
+<li>[]{#ref-98}Smith, A. (1776). <em>An Inquiry into the Nature and Causes of the Wealth of Nations</em>. Project Gutenberg. https://www.gutenberg.org/files/38194/38194-h/38194-h.htm</li>
+<li>[]{#ref-99}Hume, D. (1739). <em>A Treatise of Human Nature</em>. Project Gutenberg. https://www.gutenberg.org/files/4705/4705-h/4705-h.htm</li>
+<li>[]{#ref-100}Newton, I. (1675, February 5). Letter to Robert Hooke. Institutional transcription hosted by York University. https://www.yorku.ca/menary/courses/phys1000/newton_quotes.pdf</li>
 </ol>
+<section class="epigraph epigraph--closing">
+<blockquote>
+<p><em>“If I have seen further it is by standing on ye sholders of Giants.”</em></p>
+<p>— <a href="https://www.yorku.ca/menary/courses/phys1000/newton_quotes.pdf">Isaac Newton</a>, <em>Letter to Robert Hooke</em> (1675), Letter of 5 February 1675 (Old Style).</p>
+</blockquote>
+</section>
+<p><img alt="Agent-427 and Mira follow a trail of footnotes into a vast library whose shelves continue beyond the frame." class="cartoon terminal-visual" src="book/assets/cartoons/23-references.png" /></p>
 <div class="footnote">
 <hr />
 <ol>

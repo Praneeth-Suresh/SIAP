@@ -1,0 +1,119 @@
+- generic [ref=f3e2]:
+  - heading [level=1] [ref=f3e3]:
+    - link "SIAP" [ref=f3e4] [cursor=pointer]:
+      - /url: https://praneeth-suresh.github.io/SIAP/
+  - heading "Structure and Interpretation of Agentic Patterns" [level=1] [ref=f3e5]
+  - paragraph [ref=f3e6]:
+    - img "Build Pipeline" [ref=f3e7]
+    - img "Output" [ref=f3e8]
+    - img "Deploy" [ref=f3e9]
+    - img "Citations" [ref=f3e10]
+  - paragraph [ref=f3e11]: "This repository is a scratchpad for a somewhat audacious goal: to do for agentic systems what classic CS texts did for programming itself. We are not collecting clever prompts; we are constructing a theory-backed craft of orchestration."
+  - heading [level=2] [ref=f3e12]:
+    - text: Project goals
+    - link "Anchor" [ref=f3e13] [cursor=pointer]:
+      - /url: "#project-goals"
+      - text: 
+  - list [ref=f3e14]:
+    - listitem [ref=f3e15]:
+      - text: Build a pedagogical path for agentic AI using
+      - strong [ref=f3e16]: Python and modern agent/tooling frameworks
+      - text: as today’s teaching language.
+    - listitem [ref=f3e17]:
+      - text: Walk readers through constructing
+      - strong [ref=f3e18]: interpreters for reasoning loops, planners, and tool-using agents
+      - text: ", so architecture is learned by building."
+    - listitem [ref=f3e19]:
+      - text: Present a unifying conceptual frame for
+      - strong [ref=f3e20]: autonomy, memory, and collaboration
+      - text: rather than treating them as unrelated hacks.
+    - listitem [ref=f3e21]: Balance formal foundations (decision theory, reinforcement learning, symbolic methods, game theory) with practical systems work (LLM APIs, retrieval, orchestration runtimes).
+    - listitem [ref=f3e22]: Maintain a voice that is explanatory, witty, and slightly grandiose because big ideas deserve theatrical lighting.
+  - heading [level=2] [ref=f3e23]:
+    - text: Why this manuscript matters
+    - link "Anchor" [ref=f3e24] [cursor=pointer]:
+      - /url: "#why-this-manuscript-matters"
+      - text: 
+  - paragraph [ref=f3e25]: "The counterfactual matters. If this manuscript did not exist, agent development would not stop. Teams would still ship useful systems with contemporary frameworks, papers, eval suites, model APIs, retrieval systems, and a fair amount of production trial and error. The claim for SIAP is therefore not that it invents agency from nothing. The claim is that agent engineering is still too often carried by local craft knowledge, prompt folklore, framework defaults, and scattered intuitions borrowed from older fields. SIAP tries to turn that scattered inheritance into a usable computer science of orchestration: objectives, belief states, transition semantics, memory policies, tool contracts, safety constraints, feedback loops, protocols, incentives, and evaluation traces, all made explicit enough to teach, test, and improve."
+  - paragraph [ref=f3e26]: "The first argument is that SIAP makes the hidden control structure of agents visible. Without this contribution, builders can still define goals, call tools, and set constraints, but those commitments often remain implicit in prompts, product requirements, or the habits of a particular engineering team. That makes systems harder to compare and govern. A useful agent may appear to work, yet no one can say precisely what objective it is optimizing, what action space it is allowed to inhabit, which constraints are hard boundaries, what budget it is spending, or when it should stop. By grounding agents in goals, environments, actions, constraints, rewards, and control loops, SIAP turns “the model decided” into a sharper engineering question: what did the policy see, what did it value, what was it permitted to do, and what feedback changed its next step? The practical gain is inspectability. Agent development without this formalization is possible, but it remains more dependent on taste, anecdotes, and post-hoc interpretation."
+  - paragraph [ref=f3e27]: The second argument is that reasoning loops become easier to debug when they are treated as interpreters. A skeptical reader might say that production teams already inspect traces, logs, tool calls, and model outputs, and that operational semantics sounds too formal for probabilistic systems. That objection is partly right for simple assistants. It fails for long-running, stateful, tool-using agents whose mistakes have external consequences. In those systems, transcript reading is not enough. A failure may come from a bad state abstraction, an illegal transition, a missing guard, a corrupted observation, an exhausted budget, or a halt condition that fired too early or too late. SIAP’s interpreter frame gives names and contracts to those moving parts. It does not make messy model behavior magically deterministic, but it gives builders a disciplined way to localize causal responsibility inside the loop. Without that frame, agent debugging is still possible, but it is more like reading a dramatic diary than inspecting a machine.
+  - paragraph [ref=f3e28]: "The third argument is that memory and retrieval should be decision policies, not feature checkboxes. RAG, vector databases, long-context models, and memory stores already exist, so SIAP should not claim credit for making agents retrieve information. Its stronger contribution is to clarify when memory helps and when it harms. Without a value-of-information lens, systems drift toward two poor defaults: retrieve everything and invite distractors into the control state, or retrieve too little and let fluent priors masquerade as evidence. SIAP treats retrieval, compression, preservation, and forgetting as costly epistemic actions. The relevant question is not whether a document is semantically similar, but whether the evidence changes the next action enough to justify its latency, token cost, permission risk, and contamination risk. That distinction matters in practice. It tells a coding agent when to inspect another file before editing, a compliance agent when current policy must be fetched before advice, and a research agent when another source will no longer change the answer."
+  - paragraph [ref=f3e29]: "The fourth argument is that tool use, embodiment, feedback, and safety belong to one theory of consequential action. Modern frameworks already offer schemas, permissions, retries, approval gates, monitors, and guardrails, so SIAP’s practical value is not the isolated existence of any one mechanism. Its value is showing why these mechanisms are structurally connected. A tool call is not just a function call wrapped in JSON. It is an action with preconditions, side effects, delay, reversibility, failure modes, risk, cost, confirmation signals, and postconditions. Once that is explicit, safety is no longer a layer of apologetic prose placed after capability. It becomes part of the action semantics: unsafe actions can be made unrepresentable, risky actions can be priced, ambiguous actions can escalate, retries can be idempotent, and failures can be classified by contract category. Without this synthesis, teams may still add guardrails, but they are more likely to add them piecemeal, after incidents, and without a shared account of how action should be bounded."
+  - paragraph [ref=f3e30]: "The fifth argument is that multi-agent systems need institutional design, not merely more participants. Many useful systems will remain single-agent systems, and many multi-agent demos add latency, cost, and ceremonial disagreement without improving decisions. SIAP should therefore not argue that more agents are inherently better. It should argue that agent collectives only become useful when communication, specialization, incentives, and evaluation are designed. Without that frame, it is easy to create a “researcher, critic, planner” workflow and mistake message volume for reasoning quality. The hard questions are institutional: who may speak, what kind of message binds the group, when is communication worth its cost, how are commitments represented, what incentives encourage honest competence claims, how is exploitability measured, and whether disagreement actually reduces correlated error. SIAP brings coordination protocols, mechanism design, equilibria, self-play, and ensemble theory into the practical work of agent orchestration. That makes multi-agent design less like assembling a room of confident voices and more like building a small institution whose behavior can survive pressure."
+  - paragraph [ref=f3e31]: "Taken together, these arguments define the practical research program behind the manuscript. SIAP advances the goal of building better agents by making agent systems more formal where formality pays rent: objectives become inspectable, uncertainty becomes actionable, memory becomes governed, tool use becomes contract-bound, safety becomes architectural, and collaboration becomes institutional. The field would continue without this synthesis, but it would be worse off in a specific way: more fragmented, less precise about failure, less disciplined about evidence and side effects, and more dependent on the private craft of individual teams. SIAP’s wager is that better agents will come not only from stronger models, but from a clearer science of the systems that let models perceive, decide, act, recover, and cooperate."
+  - heading [level=2] [ref=f3e32]:
+    - text: Project layout
+    - link "Anchor" [ref=f3e33] [cursor=pointer]:
+      - /url: "#project-layout"
+      - text: 
+  - table [ref=f3e34]:
+    - rowgroup [ref=f3e35]:
+      - row [ref=f3e36]:
+        - columnheader "Path" [ref=f3e37]
+        - columnheader "Purpose" [ref=f3e38]
+    - rowgroup [ref=f3e39]:
+      - row [ref=f3e40]:
+        - cell [ref=f3e41]:
+          - code [ref=f3e42]: book/
+        - cell "Chapter and topic markdown sources, rewrite-notes companions, references, and stylesheet" [ref=f3e43]
+      - row [ref=f3e44]:
+        - cell [ref=f3e45]:
+          - code [ref=f3e46]: scripts/
+        - cell "Python build scripts for website, HTML/CSS PDF, and LaTeX PDF generation" [ref=f3e47]
+      - row [ref=f3e48]:
+        - cell [ref=f3e49]:
+          - code [ref=f3e50]: templates/
+        - cell "HTML page template used by the site builder" [ref=f3e51]
+      - row [ref=f3e52]:
+        - cell [ref=f3e53]:
+          - code [ref=f3e54]: site/
+        - cell "Generated static website (deployment artifact)" [ref=f3e55]
+      - row [ref=f3e56]:
+        - cell [ref=f3e57]:
+          - code [ref=f3e58]: dist/
+        - cell [ref=f3e59]:
+          - text: Generated print artifacts (
+          - code [ref=f3e60]: book.html
+          - text: ","
+          - code [ref=f3e61]: book.pdf
+          - text: )
+  - heading [level=2] [ref=f3e62]:
+    - text: Build and publish
+    - link "Anchor" [ref=f3e63] [cursor=pointer]:
+      - /url: "#build-and-publish"
+      - text: 
+  - code [ref=f3e67]: uv venv uv pip install -r requirements.txt uv run python scripts/build_site.py uv run python scripts/build_pdf.py uv run python scripts/build_latex_pdf.py
+  - paragraph [ref=f3e68]:
+    - text: The site output in
+    - code [ref=f3e69]: site/
+    - text: is GitHub Pages-compatible. Print outputs are emitted to
+    - code [ref=f3e70]: dist/
+    - text: ":"
+  - list [ref=f3e71]:
+    - listitem [ref=f3e72]:
+      - code [ref=f3e73]: book.pdf
+      - text: (WeasyPrint from HTML/CSS)
+    - listitem [ref=f3e74]:
+      - code [ref=f3e75]: book-latex.pdf
+      - text: and
+      - code [ref=f3e76]: book.tex
+      - text: (Pandoc + LaTeX engine for cleaner math)
+  - paragraph [ref=f3e77]: "For the LaTeX build, install system binaries:"
+  - code [ref=f3e81]: sudo apt-get install pandoc tectonic
+  - heading [level=2] [ref=f3e82]:
+    - text: Writing conventions
+    - link "Anchor" [ref=f3e83] [cursor=pointer]:
+      - /url: "#writing-conventions"
+      - text: 
+  - list [ref=f3e84]:
+    - listitem [ref=f3e85]:
+      - text: "Every externally sourced idea must have a clickable numeric citation:"
+      - code [ref=f3e86]: "[[n](...)]"
+      - text: .
+    - listitem [ref=f3e87]:
+      - code [ref=f3e88]: book/references.md
+      - text: is the canonical bibliography index.
+    - listitem [ref=f3e89]:
+      - text: Every topic file has a companion
+      - code [ref=f3e90]: "*-notes.md"
+      - text: file with revision notes and at least one alternate rewrite.

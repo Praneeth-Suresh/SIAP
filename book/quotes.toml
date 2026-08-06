@@ -1,5 +1,5 @@
 schema_version = 1
-strict = false
+strict = true
 
 # Opening quotations appear only at the start of the book and of topic sources.
 # Every published source has one closing quotation. The quotation text preserves

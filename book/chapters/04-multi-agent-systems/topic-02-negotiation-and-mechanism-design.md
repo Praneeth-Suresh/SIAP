@@ -218,6 +218,8 @@ High decay is appropriate when the environment shifts quickly or effects are
 dangerous; low decay suits stable, repeatedly verified work. Reputation is not
 forgiveness in decimal form. It is a prior that expires.[^trust-bank]
 
+![Router, delegate, verifier, and ledger exchange request, acceptance, evidence, and verification while unsupported reputation decays and expired leases revoke authority.](../../assets/diagrams/15-trust-delegation-handshake.png)
+
 ### Lying About Type
 
 D-12 privately expects a conceptual rewrite to take 18 minutes, but reports 8

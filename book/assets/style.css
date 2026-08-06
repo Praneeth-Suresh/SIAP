@@ -85,6 +85,18 @@ html[data-theme="dark"] .book-nav__topics a { color: #b8c9cf; }
 .content p, .content li { max-width: var(--measure); }
 .content li + li { margin-top: 0.36rem; }
 .content blockquote { margin: 1.75rem 0; padding: 0.8rem 1.3rem; border-left: 4px solid var(--signal); background: var(--quote-bg); font-size: 1.06em; }
+.content .epigraph { max-width: 39rem; margin: 2.1rem auto 2.6rem; padding: 1.05rem 2.3rem; text-align: center; }
+.content .epigraph::before, .content .epigraph::after { content: ""; display: block; width: 42%; height: 1px; margin: 0 auto; background: var(--rule); }
+.content .epigraph blockquote { margin: 0; padding: 1rem 0; border: 0; background: transparent; color: color-mix(in srgb, var(--ink) 86%, var(--signal)); font-size: 1.08em; }
+.content .epigraph blockquote p { margin: 0.5rem auto; }
+.content .epigraph blockquote p:last-child { font: 600 0.74rem/1.55 var(--sans); letter-spacing: 0.025em; }
+.content .exercise, .content .reader-question { position: relative; margin: 2.3rem 0; padding: 1.15rem 1.4rem 1.25rem; }
+.content .exercise { border-block: 2px solid var(--signal); background: color-mix(in srgb, var(--mist) 62%, transparent); }
+.content .reader-question { border-left: 4px solid var(--signal); background: var(--quote-bg); }
+.content .exercise > :first-child, .content .reader-question > :first-child { margin-top: 0; color: var(--signal); font: 700 0.92rem/1.3 var(--sans); letter-spacing: 0.07em; text-transform: uppercase; }
+.content .exercise > :last-child, .content .reader-question > :last-child { margin-bottom: 0; }
+.content img.cartoon { display: block; width: min(100%, 46rem); margin: 2.4rem auto 0.6rem; padding: 0.35rem; border: 1px solid var(--rule); background: #f4f0e6; }
+.content img.diagram { display: block; margin: 2rem auto; padding: 0.3rem; border: 1px solid var(--rule); background: #f4f0e6; }
 .content code { padding: 0.1rem 0.28rem; background: var(--mist); font-size: 0.84em; }
 .content pre { max-width: 100%; padding: 1.15rem 1.3rem; overflow-x: auto; background: var(--code-bg); color: var(--code-text); box-shadow: inset 4px 0 var(--signal); tab-size: 2; }
 .content pre code { padding: 0; background: transparent; color: inherit; }

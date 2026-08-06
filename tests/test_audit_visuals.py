@@ -17,6 +17,7 @@ except ImportError:  # The project dependency is installed by requirements.txt.
     ImageDraw = None
 
 from audit_visuals import audit_visuals  # noqa: E402
+from normalize_visual_assets import normalize  # noqa: E402
 
 
 @unittest.skipUnless(Image is not None, "Pillow is required for visual-audit tests")
@@ -119,6 +120,20 @@ class VisualAuditTests(unittest.TestCase):
         issues = audit_visuals(book_dir, strict=True)
 
         self.assertTrue(any("references.md" in issue and "terminal cartoon" in issue for issue in issues))
+
+    def test_normalizer_preserves_aspect_ratio_and_is_idempotent(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            image_path = Path(temporary) / "wide.png"
+            Image.new("RGB", (300, 200), "red").save(image_path, format="PNG")
+
+            self.assertTrue(normalize(image_path, canvas=(600, 400), matte=40))
+            self.assertFalse(normalize(image_path, canvas=(600, 400), matte=40))
+
+            with Image.open(image_path) as framed:
+                self.assertEqual(framed.size, (600, 400))
+                self.assertEqual(framed.getpixel((0, 0)), (244, 240, 230))
+                self.assertEqual(framed.getpixel((60, 40)), (255, 0, 0))
+                self.assertEqual(framed.getpixel((539, 359)), (255, 0, 0))
 
 
 if __name__ == "__main__":

@@ -1,0 +1,217 @@
+- generic [active] [ref=f4e1]:
+  - banner [ref=f4e2]:
+    - heading [level=1] [ref=f4e3]:
+      - link "Structure and Interpretation of Agentic Patterns" [ref=f4e4] [cursor=pointer]:
+        - /url: index.html
+  - main [ref=f4e5]:
+    - complementary [ref=f4e6]:
+      - heading "Contents" [level=2] [ref=f4e7]
+      - navigation [ref=f4e8]:
+        - link "chapters/01-foundations-of-agency/index" [ref=f4e10] [cursor=pointer]:
+          - /url: chapters/01-foundations-of-agency/index.html
+        - link "chapters/01-foundations-of-agency/topic-01-goals-environments-actions-notes" [ref=f4e12] [cursor=pointer]:
+          - /url: chapters/01-foundations-of-agency/topic-01-goals-environments-actions-notes.html
+        - link "chapters/01-foundations-of-agency/topic-01-goals-environments-actions" [ref=f4e14] [cursor=pointer]:
+          - /url: chapters/01-foundations-of-agency/topic-01-goals-environments-actions.html
+        - link "chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision-notes" [ref=f4e16] [cursor=pointer]:
+          - /url: chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision-notes.html
+        - link "chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision" [ref=f4e18] [cursor=pointer]:
+          - /url: chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision.html
+        - link "chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions-notes" [ref=f4e20] [cursor=pointer]:
+          - /url: chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions-notes.html
+        - link "chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions" [ref=f4e22] [cursor=pointer]:
+          - /url: chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions.html
+        - link "chapters/01-foundations-of-agency/topic-04-policies-value-and-control-notes" [ref=f4e24] [cursor=pointer]:
+          - /url: chapters/01-foundations-of-agency/topic-04-policies-value-and-control-notes.html
+        - link "chapters/01-foundations-of-agency/topic-04-policies-value-and-control" [ref=f4e26] [cursor=pointer]:
+          - /url: chapters/01-foundations-of-agency/topic-04-policies-value-and-control.html
+        - link "chapters/02-reasoning-architectures/index" [ref=f4e28] [cursor=pointer]:
+          - /url: chapters/02-reasoning-architectures/index.html
+        - link "chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters-notes" [ref=f4e30] [cursor=pointer]:
+          - /url: chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters-notes.html
+        - link "chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters" [ref=f4e32] [cursor=pointer]:
+          - /url: chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters.html
+        - link "chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search-notes" [ref=f4e34] [cursor=pointer]:
+          - /url: chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search-notes.html
+        - link "chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search" [ref=f4e36] [cursor=pointer]:
+          - /url: chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search.html
+        - link "chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval-notes" [ref=f4e38] [cursor=pointer]:
+          - /url: chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval-notes.html
+        - link "chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval" [ref=f4e40] [cursor=pointer]:
+          - /url: chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval.html
+        - link "chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners-notes" [ref=f4e42] [cursor=pointer]:
+          - /url: chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners-notes.html
+        - link "chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners" [ref=f4e44] [cursor=pointer]:
+          - /url: chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners.html
+        - link "chapters/03-tool-use-and-embodiment/index" [ref=f4e46] [cursor=pointer]:
+          - /url: chapters/03-tool-use-and-embodiment/index.html
+        - link "chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling-notes" [ref=f4e48] [cursor=pointer]:
+          - /url: chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling-notes.html
+        - link "chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling" [ref=f4e50] [cursor=pointer]:
+          - /url: chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling.html
+        - link "chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling-notes" [ref=f4e52] [cursor=pointer]:
+          - /url: chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling-notes.html
+        - link "chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling" [ref=f4e54] [cursor=pointer]:
+          - /url: chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling.html
+        - link "chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback-notes" [ref=f4e56] [cursor=pointer]:
+          - /url: chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback-notes.html
+        - link "chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback" [ref=f4e58] [cursor=pointer]:
+          - /url: chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback.html
+        - link "chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails-notes" [ref=f4e60] [cursor=pointer]:
+          - /url: chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails-notes.html
+        - link "chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails" [ref=f4e62] [cursor=pointer]:
+          - /url: chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails.html
+        - link "chapters/04-multi-agent-systems/index" [ref=f4e64] [cursor=pointer]:
+          - /url: chapters/04-multi-agent-systems/index.html
+        - link "chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication-notes" [ref=f4e66] [cursor=pointer]:
+          - /url: chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication-notes.html
+        - link "chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication" [ref=f4e68] [cursor=pointer]:
+          - /url: chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication.html
+        - link "chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design-notes" [ref=f4e70] [cursor=pointer]:
+          - /url: chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design-notes.html
+        - link "chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design" [ref=f4e72] [cursor=pointer]:
+          - /url: chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design.html
+        - link "chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics-notes" [ref=f4e74] [cursor=pointer]:
+          - /url: chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics-notes.html
+        - link "chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics" [ref=f4e76] [cursor=pointer]:
+          - /url: chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics.html
+        - link "chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration-notes" [ref=f4e78] [cursor=pointer]:
+          - /url: chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration-notes.html
+        - link "chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration" [ref=f4e80] [cursor=pointer]:
+          - /url: chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration.html
+        - link "index" [ref=f4e82] [cursor=pointer]:
+          - /url: index.html
+        - link "references" [ref=f4e84] [cursor=pointer]:
+          - /url: references.html
+    - article [ref=f4e85]:
+      - heading "Structure and Interpretation of Agentic Patterns" [level=1] [ref=f4e86]
+      - blockquote [ref=f4e87]:
+        - paragraph [ref=f4e88]: A text for readers who suspect that agentic systems are not a bag of orchestration tricks, but programmable structures with laws, invariants, and failure modes.
+      - paragraph [ref=f4e89]: "This is a book about programs that act. Some software answers a question and stops. The software in this book keeps going: it looks at the world, decides something, does something, and then has to live with the result. That loop is the object of study here, and it turns out to have structure worth teaching."
+      - paragraph [ref=f4e90]:
+        - text: The book follows the arc of
+        - emphasis [ref=f4e91]: Structure and Interpretation of Computer Programs
+        - text: . We start with the primitive elements of agency. We assemble them into interpreters. We study the architectures that make those interpreters useful. Then we examine what happens when many such systems act in one shared environment.
+      - heading "A first trace, before any theory" [level=2] [ref=f4e92]
+      - paragraph [ref=f4e93]: "Watch one small machine work. Suppose a coding agent sees this line of test output:"
+      - code [ref=f4e95]: test_auth.py::test_expired_token FAILED
+      - paragraph [ref=f4e96]: "A careless system would jump straight to editing a file. This one writes down what it now believes:"
+      - code [ref=f4e98]: "{failing_behavior: \"expired token\", suspects: [\"auth/session.py\"], risk: \"login regression\"}"
+      - paragraph [ref=f4e99]:
+        - text: Then it chooses the action
+        - code [ref=f4e100]: read auth/session.py
+        - text: ". It observes a changed comparison against the token expiry time. It revises what it believes:"
+      - code [ref=f4e102]: "{suspected_cause: \"off-by-one expiry check\", evidence: \"source inspected\"}"
+      - paragraph [ref=f4e103]:
+        - text: Only now does it choose
+        - code [ref=f4e104]: edit auth/session.py
+        - text: ". Two ordinary actions, one small structure between them. That structure is the whole point: the observation became internal state before it became an action. Everything else in this book is an argument about what belongs in that state, who may change it, and what it costs to carry."
+      - heading "Four words used precisely" [level=2] [ref=f4e105]
+      - paragraph [ref=f4e106]: "Four terms recur constantly, so they are pinned down here rather than left to context:"
+      - list [ref=f4e107]:
+        - listitem [ref=f4e108]:
+          - text: An
+          - strong [ref=f4e109]: agent
+          - text: is a system that observes some environment, keeps an internal account of what is going on, chooses actions, and receives consequences that shape its later choices.
+        - listitem [ref=f4e110]:
+          - text: An
+          - strong [ref=f4e111]: interpreter
+          - text: "is the explicit loop that gives those steps operational meaning: observe, update internal state, choose an action, execute, repeat."
+        - listitem [ref=f4e112]:
+          - text: A
+          - strong [ref=f4e113]: state abstraction
+          - text: is the compressed representation the interpreter actually uses when deciding. It is not the whole raw transcript of everything that has happened. In the trace above, the short dictionary is the state abstraction; the full test log is not.
+        - listitem [ref=f4e114]:
+          - strong [ref=f4e115]: Orchestration
+          - text: is the engineering discipline of arranging models, tools, memory, policies, budgets, safety checks, and human escalation so that the loop behaves like a governed machine rather than an improvising monologue. A
+          - strong [ref=f4e116]: policy
+          - text: ", in the sense used throughout, is simply the agent's rule for choosing actions."
+      - heading "Every pattern is an edit to the interpreter" [level=2] [ref=f4e117]
+      - paragraph [ref=f4e118]: "The research program of this book begins with a modest trick. Treat each agentic pattern not as a recipe, but as a change to that interpreter. A pattern may alter any of the following:"
+      - list [ref=f4e119]:
+        - listitem [ref=f4e120]: the state the agent carries,
+        - listitem [ref=f4e121]: the control flow by which it reasons,
+        - listitem [ref=f4e122]: the feedback it listens to,
+        - listitem [ref=f4e123]: the memory it may consult,
+        - listitem [ref=f4e124]: the authority it is permitted to exercise,
+        - listitem [ref=f4e125]: the condition under which it must stop.
+      - paragraph [ref=f4e126]: "Making the change visible lets us ask the less glamorous but more useful question: did it earn its keep? So the questions this book keeps returning to are these four."
+      - paragraph [ref=f4e127]:
+        - strong [ref=f4e128]: First, how is a pattern represented structurally?
+        - text: Name the part of the interpreter it edits. A vague pattern cannot be compared with anything.
+      - paragraph [ref=f4e129]:
+        - strong [ref=f4e130]: Second, what does it do to the measurable outcomes?
+        - text: The evidence we care about is final task success, partial progress before failure, token use, latency, tool-call efficiency, and a smaller number of dangerous almost-actions. A pattern that lifts success from 60 to 66 tasks out of 100 while tripling token cost has not obviously won.
+      - paragraph [ref=f4e131]:
+        - strong [ref=f4e132]: Third, how do combined patterns interact?
+        - text: Patterns collide as often as they cooperate. Retrieval may make planning sharper, or it may flood the policy with irrelevant facts. Oversight may prevent a bad deployment, or it may spend ceremony on a cheap, reversible step.
+      - paragraph [ref=f4e133]:
+        - strong [ref=f4e134]: Fourth, which task characteristics predict when a pattern helps?
+        - text: Uncertainty, action stakes, reversibility, horizon length, available feedback, and budget all shift the answer. The right design is therefore a function of the task, not a fashion.
+      - heading "Chapter map" [level=2] [ref=f4e135]
+      - list [ref=f4e136]:
+        - listitem [ref=f4e137]:
+          - link "Chapter 1 - Foundations of Agency" [ref=f4e138] [cursor=pointer]:
+            - /url: chapters/01-foundations-of-agency/index.html
+        - listitem [ref=f4e139]:
+          - link "Chapter 2 - Reasoning Architectures" [ref=f4e140] [cursor=pointer]:
+            - /url: chapters/02-reasoning-architectures/index.html
+        - listitem [ref=f4e141]:
+          - link "Chapter 3 - Tool Use and Embodiment" [ref=f4e142] [cursor=pointer]:
+            - /url: chapters/03-tool-use-and-embodiment/index.html
+        - listitem [ref=f4e143]:
+          - link "Chapter 4 - Multi-Agent Systems" [ref=f4e144] [cursor=pointer]:
+            - /url: chapters/04-multi-agent-systems/index.html
+      - heading "How to read this book" [level=2] [ref=f4e145]
+      - paragraph [ref=f4e146]: The prerequisites are modest but real. You should be comfortable reading short Python-like pseudocode. You should be able to read a basic probability statement such as (P(A\mid B)), which reads "the chance of A given that B holds." You should also be able to read a summation such as (\sum_t), which means "add this quantity over the indicated steps."
+      - paragraph [ref=f4e147]:
+        - text: No reinforcement-learning background is assumed. The early chapters build the needed vocabulary as they go. Numeric citations like [
+        - link "1" [ref=f4e148] [cursor=pointer]:
+          - /url: references.html#ref-1
+        - text: "] point to the reference list, where you can trace the scholarly ancestry of an idea."
+      - paragraph [ref=f4e149]: "Notation follows a small and stable convention. Time is written with subscripts, and sets are written with calligraphic letters. The following table lists the symbols that recur across the whole book, with the way to read each one aloud. Each chapter introduces further notation where it is needed, and defines it there:"
+      - table [ref=f4e150]:
+        - rowgroup [ref=f4e151]:
+          - row [ref=f4e152]:
+            - columnheader "Symbol" [ref=f4e153]
+            - columnheader "Read it as" [ref=f4e154]
+            - columnheader "What it means" [ref=f4e155]
+        - rowgroup [ref=f4e156]:
+          - row [ref=f4e157]:
+            - cell "(o_t)" [ref=f4e158]
+            - cell "\"o sub t\"" [ref=f4e159]
+            - cell "the observation at step (t)" [ref=f4e160]
+          - row [ref=f4e161]:
+            - cell "(a_t)" [ref=f4e162]
+            - cell "\"a sub t\"" [ref=f4e163]
+            - cell "the action at step (t)" [ref=f4e164]
+          - row [ref=f4e165]:
+            - cell "(s_t)" [ref=f4e166]
+            - cell "\"s sub t\"" [ref=f4e167]
+            - cell "the world state at step (t), whether hidden from the agent or fully described" [ref=f4e168]
+          - row [ref=f4e169]:
+            - 'cell "(\\mathcal{A})" [ref=f4e170]'
+            - cell "\"script A\"" [ref=f4e171]
+            - cell "the action space, meaning the set of actions available" [ref=f4e172]
+          - row [ref=f4e173]:
+            - cell "(\\pi)" [ref=f4e174]
+            - cell "\"pi\"" [ref=f4e175]
+            - 'cell "a policy: a rule for choosing actions" [ref=f4e176]'
+          - row [ref=f4e177]:
+            - cell "(R)" [ref=f4e178]
+            - cell "\"R\"" [ref=f4e179]
+            - cell "a reward, which says what helped" [ref=f4e180]
+          - row [ref=f4e181]:
+            - cell "(C)" [ref=f4e182]
+            - cell "\"C\"" [ref=f4e183]
+            - cell "a cost, which says what was spent or risked" [ref=f4e184]
+          - row [ref=f4e185]:
+            - cell "(\\gamma)" [ref=f4e186]
+            - cell "\"gamma\"" [ref=f4e187]
+            - cell "a discount, which says that nearer consequences count more heavily than distant ones" [ref=f4e188]
+      - paragraph [ref=f4e189]: "A worked reading of the last row: with (\\gamma = 0.9), a reward of 10 arriving one step from now is valued at 9, and the same reward two steps away is valued at 8.1. Impatience, written as arithmetic."
+      - heading "Throughline" [level=2] [ref=f4e190]
+      - paragraph [ref=f4e191]: The central claim of this project is that agentic AI is a science of interaction and orchestration, not merely API plumbing.
+      - paragraph [ref=f4e192]: Chapter 1 (Foundations of Agency) develops the core interpreter. Goals specify what matters. Belief tracks uncertainty. State abstraction makes history usable. Control turns action into a feedback loop. The later chapters elaborate that same interpreter with reasoning patterns, tools, memory, embodiment, and social coordination.
+      - paragraph [ref=f4e193]: The method is constant. Each chapter changes the running interpreter, then asks when that change earns its cost in success, progress, efficiency, safety, or governability.
+  - contentinfo [ref=f4e194]: "Last generated: 2026-07-27 18:55 UTC"

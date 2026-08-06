@@ -30,6 +30,7 @@ SIAP is a compact, publishable monograph organized around an agent interpreter. 
 | Publication ordering | Declare reader-facing source order and section kind in `book/publication.toml`; all builders and manuscript audits consume the same manifest | 2026-08-06 | [ADR 0008](adr/0008-publication-spine-and-recursive-arc.md) |
 | Exercise contract | Every topic ends in an implementable, code-required exercise; reference implementations may be added later without weakening the assignment | 2026-08-06 | n/a |
 | Editorial contract | Audit formula examples, pattern assumptions/violations/failures, diagrams, citations, footnotes, and required production case studies deterministically | 2026-08-06 | [ADR 0008](adr/0008-publication-spine-and-recursive-arc.md) |
+| Publication enrichment | Keep sourced epigraphs and visual placements in strict registries; inject them across every builder; require semantic unnumbered reader blocks and measured image safe areas | 2026-08-06 | [ADR 0009](adr/0009-publication-enrichment-contracts.md) |
 
 ## Publication Pass Record
 

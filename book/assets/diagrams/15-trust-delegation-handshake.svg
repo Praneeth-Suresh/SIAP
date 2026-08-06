@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">Trust delegation handshake</title>
+  <desc id="desc">Router, delegate, verifier, and ledger exchange request, acceptance, evidence, and verification messages while unsupported reputation decays and expired leases revoke authority.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="10" refX="10" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#172a3a"/></marker>
+    <marker id="red-arrow" markerWidth="12" markerHeight="10" refX="10" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b24c2b"/></marker>
+    <filter id="wobble" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="1" seed="427" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="1.2"/></filter>
+    <style>
+      .paper { fill:#f4f0e6; }
+      text { fill:#172a3a; font-family:"Courier New",monospace; }
+      .title { font-family:Georgia,serif; font-size:34px; font-weight:bold; }
+      .subtitle { font-size:16px; letter-spacing:1px; }
+      .label { font-size:19px; font-weight:bold; }
+      .detail { font-size:14px; }
+      .tiny { font-size:13px; font-weight:bold; paint-order:stroke; stroke:#f4f0e6; stroke-width:5px; stroke-linejoin:round; }
+      .rough { filter:url(#wobble); }
+      rect, circle, ellipse, path, line, polygon { fill:#fbf8ef; stroke:#172a3a; stroke-width:3; }
+      .arrow { fill:none; marker-end:url(#arrow); }
+      .red .arrow, .red path, .red line, .red rect, .red circle { stroke:#b24c2b; }
+      .red .arrow { marker-end:url(#red-arrow); }
+      .red text, text.red { fill:#b24c2b; }
+      .green rect, .green circle { fill:#dbe4d5; }
+      .amber rect, .amber circle { fill:#efe0b8; }
+      .danger rect, .danger circle { fill:#f0c9bb; stroke:#b24c2b; }
+      .ghost rect, .ghost circle { fill:#e3e7e3; stroke-dasharray:9 7; }
+      .scribble { fill:none; stroke:#b24c2b; stroke-width:4; stroke-linecap:round; }
+    </style>
+  </defs>
+  <rect class="paper" width="1200" height="700" stroke="none"/>
+  <text class="title" x="56" y="62">TRUST IS A FOUR-MESSAGE LOAN</text><text class="subtitle" x="58" y="94">authority is leased; reputation decays until evidence settles it</text><path class="scribble" d="M56,108 C260,101 410,116 620,107"/><text class="label" x="120" y="150" text-anchor="middle">ROUTER</text><line x1="120" y1="170" x2="120" y2="505" stroke-dasharray="8 8"/><text class="label" x="415" y="150" text-anchor="middle">DELEGATE</text><line x1="415" y1="170" x2="415" y2="505" stroke-dasharray="8 8"/><text class="label" x="710" y="150" text-anchor="middle">VERIFIER</text><line x1="710" y1="170" x2="710" y2="505" stroke-dasharray="8 8"/><text class="label" x="1010" y="150" text-anchor="middle">LEDGER</text><line x1="1010" y1="170" x2="1010" y2="505" stroke-dasharray="8 8"/><g class=""><path class="arrow rough" d="M120,215 C267.5,207 267.5,223 415,215"/><text class="tiny" x="267.5" y="205.0" text-anchor="middle">1  REQUEST + SCOPE</text></g><g class=""><path class="arrow rough" d="M415,285 C267.5,277 267.5,293 120,285"/><text class="tiny" x="267.5" y="275.0" text-anchor="middle">2  ACCEPT + LEASE</text></g><g class=""><path class="arrow rough" d="M415,355 C562.5,347 562.5,363 710,355"/><text class="tiny" x="562.5" y="345.0" text-anchor="middle">3  EVIDENCE + PROVENANCE</text></g><g class=""><path class="arrow rough" d="M710,425 C860.0,417 860.0,433 1010,425"/><text class="tiny" x="860.0" y="415.0" text-anchor="middle">4  VERIFY + OUTCOME</text></g><g class=""><path class="arrow rough" d="M1010,475 C565.0,467 565.0,483 120,475"/><text class="tiny" x="565.0" y="465.0" text-anchor="middle">UPDATE REPUTATION</text></g><g class="rough amber"><rect x="80" y="545" width="250" height="78" rx="18"/><text class="label" x="205.0" y="576.0" text-anchor="middle">UNVERIFIED</text><text class="detail" x="205.0" y="608.0" text-anchor="middle">rho  .80 -&gt; .60</text></g><g class="rough green"><rect x="475" y="545" width="250" height="78" rx="18"/><text class="label" x="600.0" y="576.0" text-anchor="middle">VERIFIED</text><text class="detail" x="600.0" y="608.0" text-anchor="middle">rho  .60 + evidence</text></g><g class="rough danger"><rect x="870" y="545" width="250" height="78" rx="18"/><text class="label" x="995.0" y="576.0" text-anchor="middle">EXPIRED</text><text class="detail" x="995.0" y="608.0" text-anchor="middle">lease -&gt; no authority</text></g><g class=""><path class="arrow rough" d="M330,584 C402.5,576 402.5,592 475,584"/><text class="tiny" x="402.5" y="574.0" text-anchor="middle">v arrives</text></g><g class="red"><path class="arrow rough" d="M725,584 C797.5,576 797.5,592 870,584"/><text class="tiny" x="797.5" y="574.0" text-anchor="middle">timeout</text></g><text class="tiny" x="600" y="660" text-anchor="middle">TRUST BORROWED TODAY COSTS CHECKABLE EVIDENCE TOMORROW.</text>
+</svg>

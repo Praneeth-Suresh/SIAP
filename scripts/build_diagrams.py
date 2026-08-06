@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import argparse
 from pathlib import Path
 import html
 import shutil
 import subprocess
+
+from normalize_visual_assets import normalize
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -227,6 +230,135 @@ def diagram_society() -> str:
     return svg_document("Agent society", "Router delegates to specialists and a human while a meta-auditor samples evidence, decays trust, and controls a retirement gate.", body)
 
 
+def diagram_state_abstraction() -> str:
+    body = title_block("STATE ABSTRACTION", "compress the history; preserve the choice")
+    body += box(60, 155, 280, 340, "DETAILED HISTORY", "many true things, one decision", "ghost")
+    history = [
+        (205, "branch = legacy-v2"),
+        (255, "tests = red"),
+        (305, "cache = stale"),
+        (355, "authority = read-only"),
+        (405, "budget = 3 calls"),
+        (455, "two jokes about YAML"),
+    ]
+    for y, label in history:
+        body += f'<text class="detail" x="200" y="{y}" text-anchor="middle">{words(label)}</text>'
+    body += '<polygon class="rough" points="405,185 610,260 610,390 405,465" fill="#efe0b8"/>'
+    body += '<text class="label" x="500" y="315" text-anchor="middle">PHI</text><text class="detail" x="500" y="345" text-anchor="middle">decision compression</text>'
+    body += arrow(340, 325, 430, 325, "MERGE")
+    body += box(680, 160, 440, 105, "ABSTRACT STATE z", "legacy-v2 / red / read-only / 3 calls", "green")
+    body += box(680, 325, 205, 105, "LEGAL ACTION", "inspect manifest", "green")
+    body += box(915, 325, 205, 105, "BLOCKED ACTION", "edit + deploy", "danger")
+    body += arrow(610, 325, 680, 212, "PRESERVE") + arrow(900, 265, 785, 325, "CHOOSE") + arrow(900, 265, 1015, 325, "GUARD", "red")
+    body += '<g class="red"><path class="arrow rough" d="M500,465 C500,540 360,555 300,520"/><text class="tiny red" x="470" y="560" text-anchor="middle">DROP THE JOKE; KEEP THE BRANCH.</text></g>'
+    body += '<text class="tiny" x="600" y="635" text-anchor="middle">TWO HISTORIES MAY MERGE ONLY IF THE CONSEQUENT ACTIONS STILL AGREE.</text>'
+    return svg_document(
+        "State abstraction and compression",
+        "A detailed agent history passes through phi into a compact decision state that preserves legal action, authority, branch, and budget while discarding irrelevant detail.",
+        body,
+    )
+
+
+def diagram_search_frontier() -> str:
+    body = title_block("THE BUDGETED SEARCH FRONTIER", "the clock interrupts; the best surviving plan answers")
+    body += '<g class="rough green"><circle cx="115" cy="270" r="45"/><text class="label" x="115" y="278" text-anchor="middle">s0</text></g>'
+    nodes = [
+        (295, 175, "A", "4.8"),
+        (295, 300, "B", "5.3"),
+        (295, 425, "C", "3.1"),
+        (485, 140, "A1", "5.0"),
+        (485, 245, "A2", "4.2"),
+        (485, 350, "B1", "6.1"),
+        (485, 455, "B2", "5.6"),
+    ]
+    for x, y, name, score in nodes:
+        css = "green" if name == "B1" else "amber" if name in {"A1", "B2"} else "ghost"
+        body += f'<g class="rough {css}"><circle cx="{x}" cy="{y}" r="38"/><text class="label" x="{x}" y="{y - 3}" text-anchor="middle">{name}</text><text class="detail" x="{x}" y="{y + 21}" text-anchor="middle">{score}</text></g>'
+    body += arrow(158, 250, 257, 190) + arrow(160, 270, 257, 300) + arrow(158, 290, 257, 410)
+    body += arrow(333, 175, 447, 140) + arrow(333, 185, 447, 235) + arrow(333, 300, 447, 350) + arrow(333, 315, 447, 445)
+    body += '<g class="red"><line x1="575" y1="135" x2="575" y2="515" stroke-dasharray="12 9"/><text class="label red" x="575" y="555" text-anchor="middle">BUDGET EXPIRES</text></g>'
+    body += box(655, 155, 220, 95, "FRONTIER", "A1  B1  B2", "amber")
+    body += box(655, 320, 220, 95, "BEST SO FAR", "B -> B1  score 6.1", "green")
+    body += box(945, 235, 195, 115, "EXECUTE ONE", "observe; replan", "green")
+    body += arrow(575, 350, 655, 367, "INTERRUPT") + arrow(875, 367, 945, 292, "RETURN")
+    body += '<text class="tiny red" x="760" y="500" text-anchor="middle">PRUNED BRANCHES STILL BELONG IN THE TRACE.</text>'
+    body += '<text class="tiny" x="600" y="635" text-anchor="middle">AN ANYTIME PLANNER OWES YOU A PLAN BEFORE IT OWES YOU OPTIMALITY.</text>'
+    return svg_document(
+        "Budgeted search frontier",
+        "A search tree accumulates scored frontier nodes until a budget line interrupts it, returning the best surviving plan for one action before observation and replanning.",
+        body,
+    )
+
+
+def diagram_retrieval_funnel() -> str:
+    body = title_block("THE EVIDENCE FUNNEL", "similarity nominates; provenance, freshness, and authority decide")
+    body += box(55, 250, 205, 100, "QUERY", "manifest loader?", "amber")
+    body += box(330, 135, 230, 78, "VECTOR HIT", "old tutorial mirror", "danger")
+    body += box(330, 245, 230, 78, "LEXICAL HIT", "current source tree", "green")
+    body += box(330, 355, 230, 78, "MEMORY HIT", "legacy branch note", "amber")
+    body += box(330, 465, 230, 78, "PROMPT HIT", "ignore previous rules", "danger")
+    body += arrow(260, 300, 330, 174) + arrow(260, 300, 330, 284) + arrow(260, 300, 330, 394) + arrow(260, 300, 330, 504)
+    body += '<polygon class="rough" points="630,135 845,215 845,465 630,545" fill="#efe0b8"/>'
+    filters = [(250, "PERMISSION"), (315, "FRESHNESS"), (380, "PROVENANCE"), (445, "CONFLICT")]
+    for y, label in filters:
+        body += f'<text class="label" x="735" y="{y}" text-anchor="middle">{label}</text>'
+    body += arrow(560, 284, 655, 300, "FILTER") + arrow(845, 340, 930, 300, "TYPE")
+    body += box(930, 220, 220, 145, "EVIDENCE SET", "source + time + claim", "green")
+    body += box(900, 465, 250, 82, "QUARANTINE", "stale / copied / hostile", "danger")
+    body += '<g class="red"><path class="arrow rough" d="M740,465 C770,545 850,560 900,515"/><text class="tiny red" x="800" y="570" text-anchor="middle">DO NOT AVERAGE POISON.</text></g>'
+    body += '<text class="tiny" x="600" y="635" text-anchor="middle">A RELEVANT PASSAGE IS A CANDIDATE OBSERVATION, NOT A CERTIFICATE OF TRUTH.</text>'
+    return svg_document(
+        "Retrieval evidence funnel",
+        "Candidate vector, lexical, memory, and prompt hits pass through permission, freshness, provenance, and conflict filters before becoming a typed evidence set or quarantine item.",
+        body,
+    )
+
+
+def diagram_safety_gauntlet() -> str:
+    body = title_block("THE SAFETY GAUNTLET", "a proposal crosses authority gates before reality notices")
+    body += box(55, 250, 190, 100, "PROPOSAL", "deploy chapter-3", "amber")
+    body += box(305, 160, 190, 82, "SCHEMA", "arguments valid", "green")
+    body += box(305, 285, 190, 82, "AUTHORITY", "caller may act?", "danger")
+    body += box(305, 410, 190, 82, "STATE", "evidence fresh?", "amber")
+    body += box(570, 220, 210, 100, "REVERSIBILITY", "rollback + lease", "amber")
+    body += box(850, 220, 210, 100, "KEYED EFFECT", "execute once", "green")
+    body += arrow(245, 300, 305, 201, "PARSE") + arrow(245, 300, 305, 326, "CHECK") + arrow(245, 300, 305, 451, "OBSERVE")
+    body += arrow(495, 201, 570, 270, "PASS") + arrow(495, 326, 570, 270, "PASS") + arrow(495, 451, 570, 270, "PASS")
+    body += arrow(780, 270, 850, 270, "BOUND")
+    body += box(890, 405, 220, 92, "INDEPENDENT SENSOR", "confirm or timeout", "green")
+    body += arrow(955, 320, 995, 405, "VERIFY")
+    body += box(365, 555, 390, 70, "REJECT / REWRITE / ESCALATE", "no effect crosses on silence", "danger")
+    body += '<g class="red"><path class="arrow rough" d="M400,367 C400,505 500,525 520,555"/><path class="arrow rough" d="M400,492 C430,535 470,545 520,555"/></g>'
+    body += '<text class="tiny" x="600" y="655" text-anchor="middle">THE FILTER STANDS BETWEEN PROPOSAL AND EFFECT, NOT BETWEEN EFFECT AND APOLOGY.</text>'
+    return svg_document(
+        "Safety authority gauntlet",
+        "A deployment proposal must pass schema, authority, state, reversibility, and idempotency gates before an effect, then receive independent confirmation or timeout; failures reject, rewrite, or escalate.",
+        body,
+    )
+
+
+def diagram_trust_handshake() -> str:
+    body = title_block("TRUST IS A FOUR-MESSAGE LOAN", "authority is leased; reputation decays until evidence settles it")
+    columns = [(120, "ROUTER"), (415, "DELEGATE"), (710, "VERIFIER"), (1010, "LEDGER")]
+    for x, name in columns:
+        body += f'<text class="label" x="{x}" y="150" text-anchor="middle">{name}</text><line x1="{x}" y1="170" x2="{x}" y2="505" stroke-dasharray="8 8"/>'
+    body += arrow(120, 215, 415, 215, "1  REQUEST + SCOPE")
+    body += arrow(415, 285, 120, 285, "2  ACCEPT + LEASE")
+    body += arrow(415, 355, 710, 355, "3  EVIDENCE + PROVENANCE")
+    body += arrow(710, 425, 1010, 425, "4  VERIFY + OUTCOME")
+    body += arrow(1010, 475, 120, 475, "UPDATE REPUTATION")
+    body += box(80, 545, 250, 78, "UNVERIFIED", "rho  .80 -> .60", "amber")
+    body += box(475, 545, 250, 78, "VERIFIED", "rho  .60 + evidence", "green")
+    body += box(870, 545, 250, 78, "EXPIRED", "lease -> no authority", "danger")
+    body += arrow(330, 584, 475, 584, "v arrives") + arrow(725, 584, 870, 584, "timeout", "red")
+    body += '<text class="tiny" x="600" y="660" text-anchor="middle">TRUST BORROWED TODAY COSTS CHECKABLE EVIDENCE TOMORROW.</text>'
+    return svg_document(
+        "Trust delegation handshake",
+        "Router, delegate, verifier, and ledger exchange request, acceptance, evidence, and verification messages while unsupported reputation decays and expired leases revoke authority.",
+        body,
+    )
+
+
 DIAGRAMS = {
     "01-publication-institution": diagram_publication,
     "02-approximation-stack": diagram_approximation,
@@ -238,6 +370,11 @@ DIAGRAMS = {
     "08-responsive-environment": diagram_environment,
     "09-byzantine-traffic-light": diagram_byzantine,
     "10-society-oversight": diagram_society,
+    "11-state-abstraction-compression": diagram_state_abstraction,
+    "12-budgeted-search-frontier": diagram_search_frontier,
+    "13-retrieval-evidence-funnel": diagram_retrieval_funnel,
+    "14-safety-authority-gauntlet": diagram_safety_gauntlet,
+    "15-trust-delegation-handshake": diagram_trust_handshake,
 }
 
 
@@ -260,12 +397,23 @@ def render_png(svg_path: Path, png_path: Path) -> None:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description="Build SIAP's code-native diagrams")
+    parser.add_argument(
+        "--only",
+        nargs="+",
+        choices=tuple(DIAGRAMS),
+        help="build only the named diagram IDs",
+    )
+    args = parser.parse_args()
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    for name, build in DIAGRAMS.items():
+    selected = args.only or tuple(DIAGRAMS)
+    for name in selected:
+        build = DIAGRAMS[name]
         svg_path = OUTPUT_DIR / f"{name}.svg"
         png_path = OUTPUT_DIR / f"{name}.png"
         svg_path.write_text(build(), encoding="utf-8")
         render_png(svg_path, png_path)
+        normalize(png_path, canvas=(WIDTH, HEIGHT), matte=48)
         print(f"Wrote {svg_path.relative_to(ROOT)} and {png_path.relative_to(ROOT)}")
 
 

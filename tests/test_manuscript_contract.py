@@ -18,6 +18,7 @@ class ManuscriptContractTests(unittest.TestCase):
         self.assertGreaterEqual(counts["unique_diagrams"], 10)
         self.assertGreaterEqual(counts["footnotes"], 12)
         self.assertGreater(counts["formulas"], 0)
+        self.assertEqual(counts["quotes"], 40)
 
 
 if __name__ == "__main__":

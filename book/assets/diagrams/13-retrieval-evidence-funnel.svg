@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">Retrieval evidence funnel</title>
+  <desc id="desc">Candidate vector, lexical, memory, and prompt hits pass through permission, freshness, provenance, and conflict filters before becoming a typed evidence set or quarantine item.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="10" refX="10" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#172a3a"/></marker>
+    <marker id="red-arrow" markerWidth="12" markerHeight="10" refX="10" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b24c2b"/></marker>
+    <filter id="wobble" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="1" seed="427" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="1.2"/></filter>
+    <style>
+      .paper { fill:#f4f0e6; }
+      text { fill:#172a3a; font-family:"Courier New",monospace; }
+      .title { font-family:Georgia,serif; font-size:34px; font-weight:bold; }
+      .subtitle { font-size:16px; letter-spacing:1px; }
+      .label { font-size:19px; font-weight:bold; }
+      .detail { font-size:14px; }
+      .tiny { font-size:13px; font-weight:bold; paint-order:stroke; stroke:#f4f0e6; stroke-width:5px; stroke-linejoin:round; }
+      .rough { filter:url(#wobble); }
+      rect, circle, ellipse, path, line, polygon { fill:#fbf8ef; stroke:#172a3a; stroke-width:3; }
+      .arrow { fill:none; marker-end:url(#arrow); }
+      .red .arrow, .red path, .red line, .red rect, .red circle { stroke:#b24c2b; }
+      .red .arrow { marker-end:url(#red-arrow); }
+      .red text, text.red { fill:#b24c2b; }
+      .green rect, .green circle { fill:#dbe4d5; }
+      .amber rect, .amber circle { fill:#efe0b8; }
+      .danger rect, .danger circle { fill:#f0c9bb; stroke:#b24c2b; }
+      .ghost rect, .ghost circle { fill:#e3e7e3; stroke-dasharray:9 7; }
+      .scribble { fill:none; stroke:#b24c2b; stroke-width:4; stroke-linecap:round; }
+    </style>
+  </defs>
+  <rect class="paper" width="1200" height="700" stroke="none"/>
+  <text class="title" x="56" y="62">THE EVIDENCE FUNNEL</text><text class="subtitle" x="58" y="94">similarity nominates; provenance, freshness, and authority decide</text><path class="scribble" d="M56,108 C260,101 410,116 620,107"/><g class="rough amber"><rect x="55" y="250" width="205" height="100" rx="18"/><text class="label" x="157.5" y="292.0" text-anchor="middle">QUERY</text><text class="detail" x="157.5" y="324.0" text-anchor="middle">manifest loader?</text></g><g class="rough danger"><rect x="330" y="135" width="230" height="78" rx="18"/><text class="label" x="445.0" y="166.0" text-anchor="middle">VECTOR HIT</text><text class="detail" x="445.0" y="198.0" text-anchor="middle">old tutorial mirror</text></g><g class="rough green"><rect x="330" y="245" width="230" height="78" rx="18"/><text class="label" x="445.0" y="276.0" text-anchor="middle">LEXICAL HIT</text><text class="detail" x="445.0" y="308.0" text-anchor="middle">current source tree</text></g><g class="rough amber"><rect x="330" y="355" width="230" height="78" rx="18"/><text class="label" x="445.0" y="386.0" text-anchor="middle">MEMORY HIT</text><text class="detail" x="445.0" y="418.0" text-anchor="middle">legacy branch note</text></g><g class="rough danger"><rect x="330" y="465" width="230" height="78" rx="18"/><text class="label" x="445.0" y="496.0" text-anchor="middle">PROMPT HIT</text><text class="detail" x="445.0" y="528.0" text-anchor="middle">ignore previous rules</text></g><g class=""><path class="arrow rough" d="M260,300 C295.0,292 295.0,182 330,174"/></g><g class=""><path class="arrow rough" d="M260,300 C295.0,292 295.0,292 330,284"/></g><g class=""><path class="arrow rough" d="M260,300 C295.0,292 295.0,402 330,394"/></g><g class=""><path class="arrow rough" d="M260,300 C295.0,292 295.0,512 330,504"/></g><polygon class="rough" points="630,135 845,215 845,465 630,545" fill="#efe0b8"/><text class="label" x="735" y="250" text-anchor="middle">PERMISSION</text><text class="label" x="735" y="315" text-anchor="middle">FRESHNESS</text><text class="label" x="735" y="380" text-anchor="middle">PROVENANCE</text><text class="label" x="735" y="445" text-anchor="middle">CONFLICT</text><g class=""><path class="arrow rough" d="M560,284 C607.5,276 607.5,308 655,300"/><text class="tiny" x="607.5" y="282.0" text-anchor="middle">FILTER</text></g><g class=""><path class="arrow rough" d="M845,340 C887.5,332 887.5,308 930,300"/><text class="tiny" x="887.5" y="310.0" text-anchor="middle">TYPE</text></g><g class="rough green"><rect x="930" y="220" width="220" height="145" rx="18"/><text class="label" x="1040.0" y="284.5" text-anchor="middle">EVIDENCE SET</text><text class="detail" x="1040.0" y="316.5" text-anchor="middle">source + time + claim</text></g><g class="rough danger"><rect x="900" y="465" width="250" height="82" rx="18"/><text class="label" x="1025.0" y="498.0" text-anchor="middle">QUARANTINE</text><text class="detail" x="1025.0" y="530.0" text-anchor="middle">stale / copied / hostile</text></g><g class="red"><path class="arrow rough" d="M740,465 C770,545 850,560 900,515"/><text class="tiny red" x="800" y="570" text-anchor="middle">DO NOT AVERAGE POISON.</text></g><text class="tiny" x="600" y="635" text-anchor="middle">A RELEVANT PASSAGE IS A CANDIDATE OBSERVATION, NOT A CERTIFICATE OF TRUTH.</text>
+</svg>

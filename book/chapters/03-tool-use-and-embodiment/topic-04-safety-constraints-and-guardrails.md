@@ -203,6 +203,8 @@ else:
 The important feature is placement. The filter stands between proposal and
 effect, not between effect and apology.
 
+![A deployment proposal passes schema, authority, state, reversibility, and keyed-effect gates before execution, then requires independent confirmation or timeout; failures reject, rewrite, or escalate.](../../assets/diagrams/14-safety-authority-gauntlet.png)
+
 ### Agent-427 Meets the Filter
 
 The write proposal changes a bounded Markdown range and passes a diff guard. The

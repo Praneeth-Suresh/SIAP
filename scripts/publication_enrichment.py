@@ -11,7 +11,7 @@ import tomllib
 
 SCHEMA_VERSION = 1
 STABLE_ID = re.compile(r"^[a-z0-9][a-z0-9-]*$")
-SEMANTIC_CLASSES = frozenset({"exercise", "reader-question"})
+SEMANTIC_CLASSES = frozenset({"exercise", "reader-question", "epigraph"})
 QUOTE_FIELDS = frozenset(
     {
         "id",
@@ -274,9 +274,11 @@ def _source_key(section_path: Path, book_dir: Path) -> str:
 def _quote_markdown(quote: QuoteRecord) -> str:
     text = " ".join(quote.text.splitlines())
     return (
+        f"::: {{.epigraph .epigraph--{quote.placement}}}\n"
         f"> *“{text}”*\n>\n"
-        f"> — {quote.speaker}, *{quote.work}* ({quote.year}), {quote.locator}. "
-        f"[Source]({quote.url}), accessed {quote.accessed}. {quote.rights}."
+        f"> — [{quote.speaker}]({quote.url}), *{quote.work}* "
+        f"({quote.year}), {quote.locator}.\n"
+        ":::"
     )
 
 
@@ -284,13 +286,6 @@ def _visual_markdown(visual: VisualRecord, section_path: Path, book_dir: Path) -
     target = book_dir / visual.path
     relative = Path(os.path.relpath(target, section_path.parent)).as_posix()
     return f"![{visual.alt}]({relative}){{.{visual.kind} .{visual.placement}-visual}}"
-
-
-def _terminal_footnote_index(lines: list[str]) -> int:
-    for index, line in enumerate(lines):
-        if re.match(r"^\[\^[^\]]+\]:", line):
-            return index
-    return len(lines)
 
 
 def enrich_section_markdown(
@@ -326,8 +321,10 @@ def enrich_section_markdown(
             raise ValueError(f"{source}: cannot place opening enrichment without an H1")
         lines[heading_index + 1 : heading_index + 1] = ["", "\n\n".join(opening), ""]
     if terminal:
-        insertion = _terminal_footnote_index(lines)
-        lines[insertion:insertion] = ["", "\n\n".join(terminal), ""]
+        # Footnote definitions may occur before later exercises and questions.
+        # Both renderers collect them independently, so terminal enrichment must
+        # follow the complete source rather than guess where the note block starts.
+        lines.extend(["", "\n\n".join(terminal), ""])
     return "\n".join(lines).rstrip() + "\n"
 
 
@@ -374,20 +371,32 @@ def adapt_semantic_divs(markdown_text: str, *, target: str) -> str:
                 raise ValueError("nested semantic fenced divs are not supported")
             active = classes
             heading_seen = False
-            primary = "exercise" if "exercise" in classes else "reader-question"
+            primary = next(
+                name for name in ("exercise", "reader-question", "epigraph") if name in classes
+            )
             if target == "html":
                 class_names = " ".join(classes)
                 output.append(f'<section class="{class_names}" markdown="1">')
             else:
-                macro = "siapexercisebegin" if primary == "exercise" else "siapreaderquestionbegin"
+                macro = {
+                    "exercise": "siapexercisebegin",
+                    "reader-question": "siapreaderquestionbegin",
+                    "epigraph": "siapepigraphbegin",
+                }[primary]
                 output.extend([f"\\{macro}", ""])
             continue
         if active is not None and code_fence is None and line.strip() == ":::":
-            primary = "exercise" if "exercise" in active else "reader-question"
+            primary = next(
+                name for name in ("exercise", "reader-question", "epigraph") if name in active
+            )
             if target == "html":
                 output.append("</section>")
             else:
-                macro = "siapexerciseend" if primary == "exercise" else "siapreaderquestionend"
+                macro = {
+                    "exercise": "siapexerciseend",
+                    "reader-question": "siapreaderquestionend",
+                    "epigraph": "siapepigraphend",
+                }[primary]
                 output.extend(["", f"\\{macro}"])
             active = None
             continue

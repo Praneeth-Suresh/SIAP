@@ -6,6 +6,7 @@ from pathlib import Path
 import re
 
 from publication_manifest import PublicationSection, load_publication_manifest
+from publication_enrichment import load_publication_enrichment
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -87,9 +88,36 @@ def exercise_body(text: str) -> str:
 
 def audit() -> tuple[list[str], dict[str, int]]:
     sections = load_publication_manifest(BOOK_DIR)
+    enrichment = load_publication_enrichment(BOOK_DIR)
     issues: list[str] = []
     counts: Counter[str] = Counter()
     all_text = "\n".join(text_of(section) for section in sections)
+
+    if enrichment.quotes_strict:
+        seen_quote_text: set[str] = set()
+        for section in sections:
+            openings = enrichment.quotes_for(section.source, "opening")
+            closings = enrichment.quotes_for(section.source, "closing")
+            expected_openings = 1 if section.kind in {"preface", "topic"} else 0
+            if len(openings) != expected_openings:
+                issues.append(
+                    f"{section.source}: expected {expected_openings} opening quote(s); "
+                    f"found {len(openings)}"
+                )
+            if len(closings) != 1:
+                issues.append(
+                    f"{section.source}: expected exactly one closing quote; found {len(closings)}"
+                )
+            for quote in (*openings, *closings):
+                normalized = " ".join(quote.text.casefold().split())
+                if normalized in seen_quote_text:
+                    issues.append(f"{section.source}: quote text is duplicated ({quote.id})")
+                seen_quote_text.add(normalized)
+                if len(quote.text.split()) > 25:
+                    issues.append(f"{section.source}: quote {quote.id} exceeds 25 words")
+                if not quote.url.startswith(("https://", "http://")):
+                    issues.append(f"{section.source}: quote {quote.id} lacks a source URL")
+        counts["quotes"] = len(enrichment.quotes)
 
     for label, phrase in REQUIRED_PHRASES.items():
         if phrase not in all_text:

@@ -1,0 +1,1534 @@
+- generic [active] [ref=f7e1]:
+  - banner [ref=f7e2]:
+    - generic [ref=f7e3]:
+      - link "Structure and Interpretation of Agentic Patterns home" [ref=f7e4] [cursor=pointer]:
+        - /url: ../../index.html
+        - text: SIAP
+      - generic [ref=f7e5]:
+        - paragraph [ref=f7e6]: A book about governed machines
+        - paragraph [ref=f7e7]:
+          - link "Structure and Interpretation of Agentic Patterns" [ref=f7e8] [cursor=pointer]:
+            - /url: ../../index.html
+            - text: Structure and Interpretationof Agentic Patterns
+      - button "Use light mode" [pressed] [ref=f7e9] [cursor=pointer]:
+        - generic [ref=f7e10]: ◐
+      - button "Contents" [ref=f7e11] [cursor=pointer]
+  - main [ref=f7e12]:
+    - article [ref=f7e13]:
+      - navigation "Breadcrumb" [ref=f7e14]:
+        - link "Book" [ref=f7e15] [cursor=pointer]:
+          - /url: ../../index.html
+        - text: /
+        - 'link "Chapter 1: Foundations of Agency" [ref=f7e16] [cursor=pointer]':
+          - /url: index.html
+        - text: /Goals, Environments, and Actions
+      - heading "Goals, Environments, and Actions" [level=1] [ref=f7e17]
+      - blockquote [ref=f7e18]:
+        - paragraph [ref=f7e19]:
+          - emphasis [ref=f7e20]: “that which all things aim at.”
+        - paragraph [ref=f7e21]:
+          - text: — Aristotle,
+          - emphasis [ref=f7e22]: Nicomachean Ethics
+          - text: (c. 340 BCE), Book I, opening paragraph.
+          - link "Source" [ref=f7e23] [cursor=pointer]:
+            - /url: https://www.gutenberg.org/cache/epub/8438/pg8438.html
+          - text: ", accessed 2026-08-06. Public-domain original and translation; quotation transcribed from Project Gutenberg.."
+      - paragraph [ref=f7e24]: "Agent-427 is born with a narrow constitution: it may inspect the repository, but it may not write, deploy, or remember anything durably. Before anything clever can happen, it needs three things: something it is trying to achieve, a world it is acting inside, and a list of moves it is allowed to make. Those three things get written down here as a contract. Every later chapter extends that contract, and it is the first thing you inspect when an agent misbehaves."
+      - paragraph [ref=f7e25]: "An agent is not a model that emits impressive text. It is an interpreter for situated action. At each step it does four things:"
+      - list [ref=f7e26]:
+        - listitem [ref=f7e27]: it reads a partial observation, meaning it sees only some of what is going on;
+        - listitem [ref=f7e28]: it updates what it thinks is going on;
+        - listitem [ref=f7e29]: it chooses an admissible action, meaning one the system permits;
+        - listitem [ref=f7e30]: it accepts that the action changes the next problem it must solve.
+      - paragraph [ref=f7e31]: Before we can discuss belief, memory, planning, or control, we need the contract that this interpreter is running.
+      - heading "The Three Parts of the Contract" [level=2] [ref=f7e32]
+      - paragraph [ref=f7e33]: "The contract has three parts, and each answers a different question:"
+      - list [ref=f7e34]:
+        - listitem [ref=f7e35]:
+          - text: A
+          - strong [ref=f7e36]: goal
+          - text: says what outcomes count as better or worse.
+        - listitem [ref=f7e37]:
+          - text: An
+          - strong [ref=f7e38]: environment
+          - text: says what can change outside the agent, and what the agent can observe.
+        - listitem [ref=f7e39]:
+          - text: An
+          - strong [ref=f7e40]: action vocabulary
+          - text: says which interventions are legal, costly, reversible, and checkable.
+      - paragraph [ref=f7e41]:
+        - text: Without these parts, the system may still be useful. But its behavior is difficult to compare, debug, or govern [
+        - link "2" [ref=f7e42] [cursor=pointer]:
+          - /url: ../../references.html#ref-2
+        - text: "]. That difficulty is the practical cost of leaving the contract implicit."
+      - heading "A Coding Agent Under Deadline" [level=2] [ref=f7e43]
+      - paragraph [ref=f7e44]: "Imagine a coding agent tasked with shipping a bug fix before a release freeze. Its goal is not \"write something clever.\" A defensible goal combines four pressures at once:"
+      - list [ref=f7e45]:
+        - listitem [ref=f7e46]: the value of the task itself;
+        - listitem [ref=f7e47]: the risk of causing a regression, meaning breaking something that used to work;
+        - listitem [ref=f7e48]: deadline pressure;
+        - listitem [ref=f7e49]: cost.
+      - paragraph [ref=f7e50]: Its environment is only partly visible to it. That environment includes a partially observed repository, flaky continuous integration (CI, the automated system that builds and tests each change), hidden downstream dependencies, and a user whose constraints may be underspecified.
+      - paragraph [ref=f7e51]:
+        - text: "Its actions are ordinary engineering moves: reading files, editing code, running tests, asking for clarification, and opening a pull request. Each action does three things at once. It produces an observation, it consumes budget, and it may make later actions easier or harder ["
+        - link "3" [ref=f7e52] [cursor=pointer]:
+          - /url: ../../references.html#ref-3
+        - text: "] ["
+        - link "7" [ref=f7e53] [cursor=pointer]:
+          - /url: ../../references.html#ref-7
+        - text: "]."
+      - heading "The Smallest Agent Interpreter" [level=2] [ref=f7e54]
+      - paragraph [ref=f7e55]:
+        - text: This is already enough to write the smallest agent interpreter. The pseudocode below keeps a running
+        - code [ref=f7e56]: state
+        - text: and a
+        - code [ref=f7e57]: history
+        - text: "of what happened, then loops: observe, update, choose, execute, record."
+      - code [ref=f7e59]: "state <- initial_state() history <- [] while not terminated(state, history): observation <- observe(environment, state) state <- update_state(state, observation) action <- choose_action(goal, state, legal_actions(state)) outcome <- execute(action) history <- history + [(observation, action, outcome)]"
+      - paragraph [ref=f7e60]: "This loop is the experimental baseline for the rest of the book. Before adding retrieval, planning, reflection, tool governance, or multiple agents, we can ask what this plain interpreter achieves on its own. Five measurements are enough to start:"
+      - list [ref=f7e61]:
+        - listitem [ref=f7e62]: whether it completes the task;
+        - listitem [ref=f7e63]: how far it gets before stopping;
+        - listitem [ref=f7e64]: how many tokens and tool calls it spends;
+        - listitem [ref=f7e65]: how long it waits on feedback;
+        - listitem [ref=f7e66]: which failures remain.
+      - paragraph [ref=f7e67]: Later patterns are not magic additions. They are controlled mutations of this loop, and each one should be judged against the baseline this plain interpreter sets.
+      - paragraph [ref=f7e68]:
+        - text: The rest of the chapter refines the three vague functions in this loop. Topic 2 (Belief, Uncertainty, and Decision) asks what
+        - code [ref=f7e69]: update_state
+        - text: should mean when the world is uncertain. Topic 3 (World Models and State Abstractions) asks what information belongs in
+        - code [ref=f7e70]: state
+        - text: rather than in the raw transcript. Topic 4 (Policies, Value, and Control) asks how
+        - code [ref=f7e71]: choose_action
+        - text: becomes a policy that remains useful under constraints and feedback.
+      - heading "Formal Contract" [level=2] [ref=f7e72]
+      - paragraph [ref=f7e73]: "A common mathematical model is a partially observable Markov decision process (POMDP) with constraints. \"Partially observable\" means the agent cannot see the true state directly. The model is written as an eight-part tuple:"
+      - paragraph [ref=f7e74]:
+        - generic [ref=f7e75]:
+          - generic [ref=f7e76]:
+            - generic [ref=f7e77]: M
+            - generic [ref=f7e80]: =
+            - generic [ref=f7e82]: (
+            - generic [ref=f7e84]: S
+            - generic [ref=f7e87]: ","
+            - generic [ref=f7e89]: O
+            - generic [ref=f7e92]: ","
+            - generic [ref=f7e94]: A
+            - generic [ref=f7e97]: ","
+            - generic [ref=f7e99]: T
+            - generic [ref=f7e101]: ","
+            - generic [ref=f7e103]: Ω
+            - generic [ref=f7e105]: ","
+            - generic [ref=f7e107]: R
+            - generic [ref=f7e109]: ","
+            - generic [ref=f7e111]: C
+            - generic [ref=f7e113]: ","
+            - generic [ref=f7e115]: γ
+            - generic [ref=f7e117]: )
+            - generic [ref=f7e119]: .
+          - math [ref=f7e122]:
+            - generic [ref=f7e123]: M
+            - generic [ref=f7e125]: =
+            - generic [ref=f7e126]: (
+            - generic [ref=f7e127]: S
+            - generic [ref=f7e129]: ","
+            - generic [ref=f7e130]: O
+            - generic [ref=f7e132]: ","
+            - generic [ref=f7e133]: A
+            - generic [ref=f7e135]: ","
+            - generic [ref=f7e136]: T
+            - generic [ref=f7e137]: ","
+            - generic [ref=f7e138]: Ω
+            - generic [ref=f7e139]: ","
+            - generic [ref=f7e140]: R
+            - generic [ref=f7e141]: ","
+            - generic [ref=f7e142]: C
+            - generic [ref=f7e143]: ","
+            - generic [ref=f7e144]: γ
+            - generic [ref=f7e145]: )
+            - generic [ref=f7e146]: .
+      - blockquote [ref=f7e147]:
+        - paragraph [ref=f7e148]:
+          - strong [ref=f7e149]: Try this with numbers.
+          - text: "Step 1: give a toy world"
+          - generic [ref=f7e150]:
+            - generic [ref=f7e151]: "2"
+            - math [ref=f7e155]:
+              - generic [ref=f7e156]: "2"
+          - text: states,
+          - generic [ref=f7e157]:
+            - generic [ref=f7e158]: "3"
+            - math [ref=f7e162]:
+              - generic [ref=f7e163]: "3"
+          - text: observations, and
+          - generic [ref=f7e164]:
+            - generic [ref=f7e165]: "4"
+            - math [ref=f7e169]:
+              - generic [ref=f7e170]: "4"
+          - text: "legal actions. Step 2: its explicit state-action table already needs"
+          - generic [ref=f7e171]:
+            - generic [ref=f7e172]:
+              - generic [ref=f7e173]: "2"
+              - generic [ref=f7e175]: ×
+              - generic [ref=f7e177]: "4"
+              - generic [ref=f7e179]: =
+              - generic [ref=f7e181]: "8"
+            - math [ref=f7e184]:
+              - generic [ref=f7e185]: "2"
+              - generic [ref=f7e186]: ×
+              - generic [ref=f7e187]: "4"
+              - generic [ref=f7e188]: =
+              - generic [ref=f7e189]: "8"
+          - text: entries before transitions, costs, or observations arrive.
+      - paragraph [ref=f7e190]: Read that aloud as "the model M consists of states S, observations O, actions A, transitions T, observation model Omega, reward R, cost C, and discount gamma." Eight symbols in a single line is a lot to hold in mind, so the table in "From Symbols to Interfaces" maps each one to a field you would actually implement.
+      - heading "States, Observations, and Actions" [level=3] [ref=f7e191]
+      - paragraph [ref=f7e192]:
+        - text: Here
+        - generic [ref=f7e193]:
+          - generic [ref=f7e194]: S
+          - math [ref=f7e199]:
+            - generic [ref=f7e200]: S
+        - text: is
+        - strong [ref=f7e202]: latent world state
+        - text: ": the complete condition of the world that matters but is not directly visible. For the coding agent,"
+        - generic [ref=f7e203]:
+          - generic [ref=f7e204]:
+            - generic [ref=f7e205]: s
+            - generic [ref=f7e207]: ∈
+            - generic [ref=f7e209]: S
+          - math [ref=f7e213]:
+            - generic [ref=f7e214]: s
+            - generic [ref=f7e215]: ∈
+            - generic [ref=f7e216]: S
+        - text: ("a state s drawn from the set S") might include the real bug location, whether a dependency is stale, and whether an unseen integration test will fail. The word latent simply means "present in the world, hidden from the agent's sensors."
+      - paragraph [ref=f7e218]:
+        - generic [ref=f7e219]:
+          - generic [ref=f7e220]: O
+          - math [ref=f7e225]:
+            - generic [ref=f7e226]: O
+        - text: is the set of observations, such as file contents, test output, logs, and user messages.
+        - generic [ref=f7e228]:
+          - generic [ref=f7e229]: A
+          - math [ref=f7e234]:
+            - generic [ref=f7e235]: A
+        - text: is the action set, including
+        - code [ref=f7e237]: read_file
+        - text: ","
+        - code [ref=f7e238]: edit_file
+        - text: ","
+        - code [ref=f7e239]: run_tests
+        - text: ","
+        - code [ref=f7e240]: ask_user
+        - text: ", and"
+        - code [ref=f7e241]: open_pr
+        - text: .
+      - heading "How the World Moves and What the Agent Sees" [level=3] [ref=f7e242]
+      - paragraph [ref=f7e243]:
+        - text: The term
+        - generic [ref=f7e244]:
+          - generic [ref=f7e245]:
+            - generic [ref=f7e246]: T
+            - generic [ref=f7e248]: (
+            - generic [ref=f7e250]:
+              - generic [ref=f7e251]: s
+              - generic [ref=f7e253]: ′
+            - generic [ref=f7e256]: ∣
+            - generic [ref=f7e258]: s
+            - generic [ref=f7e260]: ","
+            - generic [ref=f7e262]: a
+            - generic [ref=f7e264]: )
+          - math [ref=f7e267]:
+            - generic [ref=f7e268]: T
+            - generic [ref=f7e269]: (
+            - generic [ref=f7e270]:
+              - generic [ref=f7e271]: s
+              - generic [ref=f7e272]: ′
+            - generic [ref=f7e273]: ∣
+            - generic [ref=f7e274]: s
+            - generic [ref=f7e275]: ","
+            - generic [ref=f7e276]: a
+            - generic [ref=f7e277]: )
+        - text: is the
+        - strong [ref=f7e278]: transition dynamics
+        - text: . Read it as "the chance the next hidden state is s-prime, given the current state s and action a." If
+        - generic [ref=f7e279]:
+          - generic [ref=f7e280]: a
+          - math [ref=f7e284]:
+            - generic [ref=f7e285]: a
+        - text: is
+        - code [ref=f7e286]: edit_file
+        - text: ","
+        - generic [ref=f7e287]:
+          - generic [ref=f7e288]: T
+          - math [ref=f7e292]:
+            - generic [ref=f7e293]: T
+        - text: describes how likely that edit is to move the repository from "bug present" to "bug fixed" or, less gloriously, to "new regression introduced."
+      - paragraph [ref=f7e294]:
+        - text: The term
+        - generic [ref=f7e295]:
+          - generic [ref=f7e296]:
+            - generic [ref=f7e297]: Ω
+            - generic [ref=f7e299]: (
+            - generic [ref=f7e301]: o
+            - generic [ref=f7e303]: ∣
+            - generic [ref=f7e305]: s
+            - generic [ref=f7e307]: ","
+            - generic [ref=f7e309]: a
+            - generic [ref=f7e311]: )
+          - math [ref=f7e314]:
+            - generic [ref=f7e315]: Ω
+            - generic [ref=f7e316]: (
+            - generic [ref=f7e317]: o
+            - generic [ref=f7e318]: ∣
+            - generic [ref=f7e319]: s
+            - generic [ref=f7e320]: ","
+            - generic [ref=f7e321]: a
+            - generic [ref=f7e322]: )
+        - text: is the
+        - strong [ref=f7e323]: observation model
+        - text: ". Read it as \"the chance the agent sees observation o after action a when the world is in state s.\" A flaky test suite has an observation model with noise: the same hidden state can produce a pass one minute and a failure the next."
+      - paragraph [ref=f7e324]:
+        - text: The last three symbols are the scoring machinery.
+        - generic [ref=f7e325]:
+          - generic [ref=f7e326]:
+            - generic [ref=f7e327]: R
+            - generic [ref=f7e329]: (
+            - generic [ref=f7e331]: s
+            - generic [ref=f7e333]: ","
+            - generic [ref=f7e335]: a
+            - generic [ref=f7e337]: )
+          - math [ref=f7e340]:
+            - generic [ref=f7e341]: R
+            - generic [ref=f7e342]: (
+            - generic [ref=f7e343]: s
+            - generic [ref=f7e344]: ","
+            - generic [ref=f7e345]: a
+            - generic [ref=f7e346]: )
+        - text: is reward,
+        - generic [ref=f7e347]:
+          - generic [ref=f7e348]:
+            - generic [ref=f7e349]: C
+            - generic [ref=f7e351]: (
+            - generic [ref=f7e353]: s
+            - generic [ref=f7e355]: ","
+            - generic [ref=f7e357]: a
+            - generic [ref=f7e359]: )
+          - math [ref=f7e362]:
+            - generic [ref=f7e363]: C
+            - generic [ref=f7e364]: (
+            - generic [ref=f7e365]: s
+            - generic [ref=f7e366]: ","
+            - generic [ref=f7e367]: a
+            - generic [ref=f7e368]: )
+        - text: is constraint cost, and
+        - generic [ref=f7e369]:
+          - generic [ref=f7e370]:
+            - generic [ref=f7e371]: γ
+            - generic [ref=f7e373]: ∈
+            - generic [ref=f7e375]: (
+            - generic [ref=f7e377]: "0"
+            - generic [ref=f7e379]: ","
+            - generic [ref=f7e381]: "1"
+            - generic [ref=f7e383]: )
+          - math [ref=f7e386]:
+            - generic [ref=f7e387]: γ
+            - generic [ref=f7e388]: ∈
+            - generic [ref=f7e389]: (
+            - generic [ref=f7e390]: "0"
+            - generic [ref=f7e391]: ","
+            - generic [ref=f7e392]: "1"
+            - generic [ref=f7e393]: )
+        - text: is a
+        - strong [ref=f7e394]: discount factor
+        - text: ", a number strictly between zero and one that makes nearer consequences count more than distant ones ["
+        - link "4" [ref=f7e395] [cursor=pointer]:
+          - /url: ../../references.html#ref-4
+        - text: "] ["
+        - link "7" [ref=f7e396] [cursor=pointer]:
+          - /url: ../../references.html#ref-7
+        - text: "] ["
+        - link "51" [ref=f7e397] [cursor=pointer]:
+          - /url: ../../references.html#ref-51
+        - text: "]."
+      - heading "The Markov Assumption Is a Design Choice" [level=3] [ref=f7e398]
+      - paragraph [ref=f7e399]: "The Markov assumption is an interpretation, not a fact about reality. It says that the state representation is rich enough that the next transition can be modeled from the current state and action alone. When that assumption fails, the repair is usually one of three moves: better state, better memory, or a more cautious policy."
+      - heading "Reading the Objective, with Two Numbers" [level=3] [ref=f7e400]
+      - paragraph [ref=f7e401]:
+        - text: A policy
+        - generic [ref=f7e402]:
+          - generic [ref=f7e403]:
+            - generic [ref=f7e404]: π
+            - generic [ref=f7e406]: (
+            - generic [ref=f7e408]: a
+            - generic [ref=f7e410]: ∣
+            - generic [ref=f7e412]:
+              - generic [ref=f7e413]: h
+              - generic [ref=f7e415]: t
+            - generic [ref=f7e418]: )
+          - math [ref=f7e421]:
+            - generic [ref=f7e422]: π
+            - generic [ref=f7e423]: (
+            - generic [ref=f7e424]: a
+            - generic [ref=f7e425]: ∣
+            - generic [ref=f7e426]:
+              - generic [ref=f7e427]: h
+              - generic [ref=f7e428]: t
+            - generic [ref=f7e429]: )
+        - text: ", with history"
+        - generic [ref=f7e430]:
+          - generic [ref=f7e431]:
+            - generic [ref=f7e432]:
+              - generic [ref=f7e433]: h
+              - generic [ref=f7e435]: t
+            - generic [ref=f7e438]: =
+            - generic [ref=f7e440]: (
+            - generic [ref=f7e442]:
+              - generic [ref=f7e443]: o
+              - generic [ref=f7e446]:
+                - generic [ref=f7e447]: "0"
+                - generic [ref=f7e449]: ":"
+                - generic [ref=f7e451]: t
+            - generic [ref=f7e453]: ","
+            - generic [ref=f7e455]:
+              - generic [ref=f7e456]: a
+              - generic [ref=f7e459]:
+                - generic [ref=f7e460]: "0"
+                - generic [ref=f7e462]: ":"
+                - generic [ref=f7e464]: t
+                - generic [ref=f7e466]: −
+                - generic [ref=f7e468]: "1"
+            - generic [ref=f7e470]: )
+          - math [ref=f7e473]:
+            - generic [ref=f7e474]:
+              - generic [ref=f7e475]: h
+              - generic [ref=f7e476]: t
+            - generic [ref=f7e477]: =
+            - generic [ref=f7e478]: (
+            - generic [ref=f7e479]:
+              - generic [ref=f7e480]: o
+              - generic [ref=f7e481]:
+                - generic [ref=f7e482]: "0"
+                - generic [ref=f7e483]: ":"
+                - generic [ref=f7e484]: t
+            - generic [ref=f7e485]: ","
+            - generic [ref=f7e486]:
+              - generic [ref=f7e487]: a
+              - generic [ref=f7e488]:
+                - generic [ref=f7e489]: "0"
+                - generic [ref=f7e490]: ":"
+                - generic [ref=f7e491]: t
+                - generic [ref=f7e492]: −
+                - generic [ref=f7e493]: "1"
+            - generic [ref=f7e494]: )
+        - text: ", is evaluated by expected return subject to constraints. A"
+        - strong [ref=f7e495]: policy
+        - text: is the rule for choosing actions. The notation
+        - generic [ref=f7e496]:
+          - generic [ref=f7e497]:
+            - generic [ref=f7e498]: π
+            - generic [ref=f7e500]: (
+            - generic [ref=f7e502]: a
+            - generic [ref=f7e504]: ∣
+            - generic [ref=f7e506]:
+              - generic [ref=f7e507]: h
+              - generic [ref=f7e509]: t
+            - generic [ref=f7e512]: )
+          - math [ref=f7e515]:
+            - generic [ref=f7e516]: π
+            - generic [ref=f7e517]: (
+            - generic [ref=f7e518]: a
+            - generic [ref=f7e519]: ∣
+            - generic [ref=f7e520]:
+              - generic [ref=f7e521]: h
+              - generic [ref=f7e522]: t
+            - generic [ref=f7e523]: )
+        - text: reads "the probability that the policy chooses action
+        - generic [ref=f7e524]:
+          - generic [ref=f7e525]: a
+          - math [ref=f7e529]:
+            - generic [ref=f7e530]: a
+        - text: given history
+        - generic [ref=f7e531]:
+          - generic [ref=f7e533]:
+            - generic [ref=f7e534]: h
+            - generic [ref=f7e536]: t
+          - math [ref=f7e540]:
+            - generic [ref=f7e541]:
+              - generic [ref=f7e542]: h
+              - generic [ref=f7e543]: t
+        - text: ",\" where the history holds every observation up to step"
+        - generic [ref=f7e544]:
+          - generic [ref=f7e545]: t
+          - math [ref=f7e549]:
+            - generic [ref=f7e550]: t
+        - text: and every action before it.
+      - paragraph [ref=f7e551]:
+        - text: Before the infinite sum appears, consider two concrete steps with
+        - generic [ref=f7e552]:
+          - generic [ref=f7e553]:
+            - generic [ref=f7e554]: γ
+            - generic [ref=f7e556]: =
+            - generic [ref=f7e558]:
+              - generic [ref=f7e559]: "0"
+              - generic [ref=f7e560]: .
+              - generic [ref=f7e561]: "9"
+          - math [ref=f7e563]:
+            - generic [ref=f7e564]: γ
+            - generic [ref=f7e565]: =
+            - generic [ref=f7e566]: "0.9"
+        - text: . Suppose
+        - code [ref=f7e567]: read_file
+        - text: earns immediate reward
+        - generic [ref=f7e568]:
+          - generic [ref=f7e569]:
+            - generic [ref=f7e570]:
+              - generic [ref=f7e571]: R
+              - generic [ref=f7e573]: "0"
+            - generic [ref=f7e576]: =
+            - generic [ref=f7e578]: "1"
+          - math [ref=f7e581]:
+            - generic [ref=f7e582]:
+              - generic [ref=f7e583]: R
+              - generic [ref=f7e584]: "0"
+            - generic [ref=f7e585]: =
+            - generic [ref=f7e586]: "1"
+        - text: because it gathers useful evidence, and
+        - code [ref=f7e587]: edit_file
+        - text: earns
+        - generic [ref=f7e588]:
+          - generic [ref=f7e589]:
+            - generic [ref=f7e590]:
+              - generic [ref=f7e591]: R
+              - generic [ref=f7e593]: "1"
+            - generic [ref=f7e596]: =
+            - generic [ref=f7e598]: "8"
+          - math [ref=f7e601]:
+            - generic [ref=f7e602]:
+              - generic [ref=f7e603]: R
+              - generic [ref=f7e604]: "1"
+            - generic [ref=f7e605]: =
+            - generic [ref=f7e606]: "8"
+        - text: after the evidence points to the right line. The two-step discounted return is
+      - paragraph [ref=f7e607]:
+        - generic [ref=f7e608]:
+          - generic [ref=f7e609]:
+            - generic [ref=f7e610]:
+              - generic [ref=f7e611]: R
+              - generic [ref=f7e613]: "0"
+            - generic [ref=f7e616]: +
+            - generic [ref=f7e618]: γ
+            - generic [ref=f7e620]:
+              - generic [ref=f7e621]: R
+              - generic [ref=f7e623]: "1"
+            - generic [ref=f7e626]: =
+            - generic [ref=f7e628]: "1"
+            - generic [ref=f7e630]: +
+            - generic [ref=f7e632]:
+              - generic [ref=f7e633]: "0"
+              - generic [ref=f7e634]: .
+              - generic [ref=f7e635]: "9"
+            - generic [ref=f7e636]: ⋅
+            - generic [ref=f7e638]: "8"
+            - generic [ref=f7e640]: =
+            - generic [ref=f7e642]:
+              - generic [ref=f7e643]: "8"
+              - generic [ref=f7e644]: .
+              - generic [ref=f7e645]: "2"
+            - generic [ref=f7e646]: .
+          - math [ref=f7e649]:
+            - generic [ref=f7e650]:
+              - generic [ref=f7e651]: R
+              - generic [ref=f7e652]: "0"
+            - generic [ref=f7e653]: +
+            - generic [ref=f7e654]: γ
+            - generic [ref=f7e655]:
+              - generic [ref=f7e656]: R
+              - generic [ref=f7e657]: "1"
+            - generic [ref=f7e658]: =
+            - generic [ref=f7e659]: "1"
+            - generic [ref=f7e660]: +
+            - generic [ref=f7e661]: "0.9"
+            - generic [ref=f7e662]: ⋅
+            - generic [ref=f7e663]: "8"
+            - generic [ref=f7e664]: =
+            - generic [ref=f7e665]: "8.2"
+            - generic [ref=f7e666]: .
+      - blockquote [ref=f7e667]:
+        - paragraph [ref=f7e668]:
+          - strong [ref=f7e669]: Try this with numbers.
+          - text: "Step 1: discount the later reward:"
+          - generic [ref=f7e670]:
+            - generic [ref=f7e671]:
+              - generic [ref=f7e672]:
+                - generic [ref=f7e673]: "0"
+                - generic [ref=f7e674]: .
+                - generic [ref=f7e675]: "9"
+              - generic [ref=f7e676]: ×
+              - generic [ref=f7e678]: "8"
+              - generic [ref=f7e680]: =
+              - generic [ref=f7e682]:
+                - generic [ref=f7e683]: "7"
+                - generic [ref=f7e684]: .
+                - generic [ref=f7e685]: "2"
+            - math [ref=f7e687]:
+              - generic [ref=f7e688]: "0.9"
+              - generic [ref=f7e689]: ×
+              - generic [ref=f7e690]: "8"
+              - generic [ref=f7e691]: =
+              - generic [ref=f7e692]: "7.2"
+          - text: ". Step 2: add the immediate reward:"
+          - generic [ref=f7e693]:
+            - generic [ref=f7e694]:
+              - generic [ref=f7e695]: "1"
+              - generic [ref=f7e697]: +
+              - generic [ref=f7e699]:
+                - generic [ref=f7e700]: "7"
+                - generic [ref=f7e701]: .
+                - generic [ref=f7e702]: "2"
+              - generic [ref=f7e703]: =
+              - generic [ref=f7e705]:
+                - generic [ref=f7e706]: "8"
+                - generic [ref=f7e707]: .
+                - generic [ref=f7e708]: "2"
+            - math [ref=f7e710]:
+              - generic [ref=f7e711]: "1"
+              - generic [ref=f7e712]: +
+              - generic [ref=f7e713]: "7.2"
+              - generic [ref=f7e714]: =
+              - generic [ref=f7e715]: "8.2"
+          - text: .
+      - paragraph [ref=f7e716]:
+        - text: If the first action instead rushed an edit with
+        - generic [ref=f7e717]:
+          - generic [ref=f7e718]:
+            - generic [ref=f7e719]:
+              - generic [ref=f7e720]: R
+              - generic [ref=f7e722]: "0"
+            - generic [ref=f7e725]: =
+            - generic [ref=f7e727]: "4"
+          - math [ref=f7e730]:
+            - generic [ref=f7e731]:
+              - generic [ref=f7e732]: R
+              - generic [ref=f7e733]: "0"
+            - generic [ref=f7e734]: =
+            - generic [ref=f7e735]: "4"
+        - text: but caused a next-step regression
+        - generic [ref=f7e736]:
+          - generic [ref=f7e737]:
+            - generic [ref=f7e738]:
+              - generic [ref=f7e739]: R
+              - generic [ref=f7e741]: "1"
+            - generic [ref=f7e744]: =
+            - generic [ref=f7e746]: −
+            - generic [ref=f7e748]: "5"
+          - math [ref=f7e751]:
+            - generic [ref=f7e752]:
+              - generic [ref=f7e753]: R
+              - generic [ref=f7e754]: "1"
+            - generic [ref=f7e755]: =
+            - generic [ref=f7e756]: −
+            - generic [ref=f7e757]: "5"
+        - text: ", the return would be"
+        - generic [ref=f7e758]:
+          - generic [ref=f7e759]:
+            - generic [ref=f7e760]: "4"
+            - generic [ref=f7e762]: +
+            - generic [ref=f7e764]:
+              - generic [ref=f7e765]: "0"
+              - generic [ref=f7e766]: .
+              - generic [ref=f7e767]: "9"
+            - generic [ref=f7e768]: (
+            - generic [ref=f7e770]: −
+            - generic [ref=f7e772]: "5"
+            - generic [ref=f7e774]: )
+            - generic [ref=f7e776]: =
+            - generic [ref=f7e778]: −
+            - generic [ref=f7e780]:
+              - generic [ref=f7e781]: "0"
+              - generic [ref=f7e782]: .
+              - generic [ref=f7e783]: "5"
+          - math [ref=f7e785]:
+            - generic [ref=f7e786]: "4"
+            - generic [ref=f7e787]: +
+            - generic [ref=f7e788]: "0.9"
+            - generic [ref=f7e789]: (
+            - generic [ref=f7e790]: −
+            - generic [ref=f7e791]: "5"
+            - generic [ref=f7e792]: )
+            - generic [ref=f7e793]: =
+            - generic [ref=f7e794]: −
+            - generic [ref=f7e795]: "0.5"
+        - text: . Patience wins here by more than eight points. Discounting does not worship delay; it merely lets the contract compare immediate temptation with later consequence.
+      - paragraph [ref=f7e796]: "The full objective extends that arithmetic over all future steps, and adds a budget line for every kind of cost:"
+      - paragraph [ref=f7e797]:
+        - generic [ref=f7e798]:
+          - generic [ref=f7e799]:
+            - generic [ref=f7e800]:
+              - generic [ref=f7e803]:
+                - generic [ref=f7e804]: m
+                - generic [ref=f7e805]: a
+                - generic [ref=f7e806]: x
+              - generic [ref=f7e807]: π
+            - generic [ref=f7e812]: J
+            - generic [ref=f7e814]: (
+            - generic [ref=f7e816]: π
+            - generic [ref=f7e818]: )
+            - generic [ref=f7e820]: =
+            - generic [ref=f7e822]:
+              - generic [ref=f7e823]: E
+              - generic [ref=f7e827]:
+                - generic [ref=f7e828]: π
+                - generic [ref=f7e830]: ","
+                - generic [ref=f7e832]: T
+                - generic [ref=f7e834]: ","
+                - generic [ref=f7e836]: Ω
+            - generic [ref=f7e838]:
+              - generic [ref=f7e839]: "["
+              - generic [ref=f7e841]:
+                - generic [ref=f7e842]: ∞
+                - generic [ref=f7e847]:
+                  - generic [ref=f7e848]: ∑
+                  - generic [ref=f7e854]:
+                    - generic [ref=f7e855]: t
+                    - generic [ref=f7e857]: =
+                    - generic [ref=f7e859]: "0"
+              - generic [ref=f7e861]:
+                - generic [ref=f7e862]: γ
+                - generic [ref=f7e864]: t
+              - generic [ref=f7e867]: R
+              - generic [ref=f7e869]: (
+              - generic [ref=f7e871]:
+                - generic [ref=f7e872]: s
+                - generic [ref=f7e874]: t
+              - generic [ref=f7e877]: ","
+              - generic [ref=f7e879]:
+                - generic [ref=f7e880]: a
+                - generic [ref=f7e882]: t
+              - generic [ref=f7e885]: )
+              - generic [ref=f7e887]: "]"
+            - generic [ref=f7e889]:
+              - generic [ref=f7e890]: s
+              - generic [ref=f7e891]: .
+              - generic [ref=f7e892]: t
+              - generic [ref=f7e893]: .
+            - generic [ref=f7e894]:
+              - generic [ref=f7e895]: E
+              - generic [ref=f7e898]: π
+            - generic [ref=f7e902]:
+              - generic [ref=f7e903]: "["
+              - generic [ref=f7e905]:
+                - generic [ref=f7e906]: ∞
+                - generic [ref=f7e911]:
+                  - generic [ref=f7e912]: ∑
+                  - generic [ref=f7e918]:
+                    - generic [ref=f7e919]: t
+                    - generic [ref=f7e921]: =
+                    - generic [ref=f7e923]: "0"
+              - generic [ref=f7e925]:
+                - generic [ref=f7e926]: γ
+                - generic [ref=f7e928]: t
+              - generic [ref=f7e931]:
+                - generic [ref=f7e932]: C
+                - generic [ref=f7e934]: j
+              - generic [ref=f7e937]: (
+              - generic [ref=f7e939]:
+                - generic [ref=f7e940]: s
+                - generic [ref=f7e942]: t
+              - generic [ref=f7e945]: ","
+              - generic [ref=f7e947]:
+                - generic [ref=f7e948]: a
+                - generic [ref=f7e950]: t
+              - generic [ref=f7e953]: )
+              - generic [ref=f7e955]: "]"
+            - generic [ref=f7e957]: ≤
+            - generic [ref=f7e959]:
+              - generic [ref=f7e960]: κ
+              - generic [ref=f7e962]: j
+            - generic [ref=f7e965]: ∀
+            - generic [ref=f7e967]: j
+            - generic [ref=f7e969]: .
+          - math [ref=f7e972]:
+            - generic [ref=f7e973]:
+              - generic [ref=f7e974]: max
+              - generic [ref=f7e975]: π
+            - generic [ref=f7e977]: J
+            - generic [ref=f7e978]: (
+            - generic [ref=f7e979]: π
+            - generic [ref=f7e980]: )
+            - generic [ref=f7e981]: =
+            - generic [ref=f7e982]:
+              - generic [ref=f7e983]: E
+              - generic [ref=f7e985]:
+                - generic [ref=f7e986]: π
+                - generic [ref=f7e987]: ","
+                - generic [ref=f7e988]: T
+                - generic [ref=f7e989]: ","
+                - generic [ref=f7e990]: Ω
+            - generic [ref=f7e991]:
+              - generic [ref=f7e992]: "["
+              - generic [ref=f7e993]:
+                - generic [ref=f7e994]: ∑
+                - generic [ref=f7e995]:
+                  - generic [ref=f7e996]: t
+                  - generic [ref=f7e997]: =
+                  - generic [ref=f7e998]: "0"
+                - generic [ref=f7e999]: ∞
+              - generic [ref=f7e1001]:
+                - generic [ref=f7e1002]: γ
+                - generic [ref=f7e1003]: t
+              - generic [ref=f7e1004]: R
+              - generic [ref=f7e1005]: (
+              - generic [ref=f7e1006]:
+                - generic [ref=f7e1007]: s
+                - generic [ref=f7e1008]: t
+              - generic [ref=f7e1009]: ","
+              - generic [ref=f7e1010]:
+                - generic [ref=f7e1011]: a
+                - generic [ref=f7e1012]: t
+              - generic [ref=f7e1013]: )
+              - generic [ref=f7e1014]: "]"
+            - generic [ref=f7e1015]: s.t.
+            - generic [ref=f7e1016]:
+              - generic [ref=f7e1017]: E
+              - generic [ref=f7e1019]: π
+            - generic [ref=f7e1021]:
+              - generic [ref=f7e1022]: "["
+              - generic [ref=f7e1023]:
+                - generic [ref=f7e1024]: ∑
+                - generic [ref=f7e1025]:
+                  - generic [ref=f7e1026]: t
+                  - generic [ref=f7e1027]: =
+                  - generic [ref=f7e1028]: "0"
+                - generic [ref=f7e1029]: ∞
+              - generic [ref=f7e1031]:
+                - generic [ref=f7e1032]: γ
+                - generic [ref=f7e1033]: t
+              - generic [ref=f7e1034]:
+                - generic [ref=f7e1035]: C
+                - generic [ref=f7e1036]: j
+              - generic [ref=f7e1037]: (
+              - generic [ref=f7e1038]:
+                - generic [ref=f7e1039]: s
+                - generic [ref=f7e1040]: t
+              - generic [ref=f7e1041]: ","
+              - generic [ref=f7e1042]:
+                - generic [ref=f7e1043]: a
+                - generic [ref=f7e1044]: t
+              - generic [ref=f7e1045]: )
+              - generic [ref=f7e1046]: "]"
+            - generic [ref=f7e1047]: ≤
+            - generic [ref=f7e1048]:
+              - generic [ref=f7e1049]: κ
+              - generic [ref=f7e1050]: j
+            - generic [ref=f7e1051]: ∀
+            - generic [ref=f7e1052]: j
+            - generic [ref=f7e1053]: .
+      - blockquote [ref=f7e1054]:
+        - paragraph [ref=f7e1055]:
+          - strong [ref=f7e1056]: Try this with numbers.
+          - text: "Step 1: rewards"
+          - generic [ref=f7e1057]:
+            - generic [ref=f7e1058]: "4"
+            - math [ref=f7e1062]:
+              - generic [ref=f7e1063]: "4"
+          - text: now and
+          - generic [ref=f7e1064]:
+            - generic [ref=f7e1065]: "6"
+            - math [ref=f7e1069]:
+              - generic [ref=f7e1070]: "6"
+          - text: next at
+          - generic [ref=f7e1071]:
+            - generic [ref=f7e1072]:
+              - generic [ref=f7e1073]: γ
+              - generic [ref=f7e1075]: =
+              - generic [ref=f7e1077]:
+                - generic [ref=f7e1078]: "0"
+                - generic [ref=f7e1079]: .
+                - generic [ref=f7e1080]: "5"
+            - math [ref=f7e1082]:
+              - generic [ref=f7e1083]: γ
+              - generic [ref=f7e1084]: =
+              - generic [ref=f7e1085]: "0.5"
+          - text: yield
+          - generic [ref=f7e1086]:
+            - generic [ref=f7e1087]:
+              - generic [ref=f7e1088]: "4"
+              - generic [ref=f7e1090]: +
+              - generic [ref=f7e1092]:
+                - generic [ref=f7e1093]: "0"
+                - generic [ref=f7e1094]: .
+                - generic [ref=f7e1095]: "5"
+              - generic [ref=f7e1096]: (
+              - generic [ref=f7e1098]: "6"
+              - generic [ref=f7e1100]: )
+              - generic [ref=f7e1102]: =
+              - generic [ref=f7e1104]: "7"
+            - math [ref=f7e1107]:
+              - generic [ref=f7e1108]: "4"
+              - generic [ref=f7e1109]: +
+              - generic [ref=f7e1110]: "0.5"
+              - generic [ref=f7e1111]: (
+              - generic [ref=f7e1112]: "6"
+              - generic [ref=f7e1113]: )
+              - generic [ref=f7e1114]: =
+              - generic [ref=f7e1115]: "7"
+          - text: ". Step 2: costs"
+          - generic [ref=f7e1116]:
+            - generic [ref=f7e1117]: "1"
+            - math [ref=f7e1121]:
+              - generic [ref=f7e1122]: "1"
+          - text: now and
+          - generic [ref=f7e1123]:
+            - generic [ref=f7e1124]: "2"
+            - math [ref=f7e1128]:
+              - generic [ref=f7e1129]: "2"
+          - text: next yield
+          - generic [ref=f7e1130]:
+            - generic [ref=f7e1131]:
+              - generic [ref=f7e1132]: "1"
+              - generic [ref=f7e1134]: +
+              - generic [ref=f7e1136]:
+                - generic [ref=f7e1137]: "0"
+                - generic [ref=f7e1138]: .
+                - generic [ref=f7e1139]: "5"
+              - generic [ref=f7e1140]: (
+              - generic [ref=f7e1142]: "2"
+              - generic [ref=f7e1144]: )
+              - generic [ref=f7e1146]: =
+              - generic [ref=f7e1148]: "2"
+            - math [ref=f7e1151]:
+              - generic [ref=f7e1152]: "1"
+              - generic [ref=f7e1153]: +
+              - generic [ref=f7e1154]: "0.5"
+              - generic [ref=f7e1155]: (
+              - generic [ref=f7e1156]: "2"
+              - generic [ref=f7e1157]: )
+              - generic [ref=f7e1158]: =
+              - generic [ref=f7e1159]: "2"
+          - text: ", so a budget"
+          - generic [ref=f7e1160]:
+            - generic [ref=f7e1161]:
+              - generic [ref=f7e1162]: κ
+              - generic [ref=f7e1164]: =
+              - generic [ref=f7e1166]:
+                - generic [ref=f7e1167]: "2"
+                - generic [ref=f7e1168]: .
+                - generic [ref=f7e1169]: "5"
+            - math [ref=f7e1171]:
+              - generic [ref=f7e1172]: κ
+              - generic [ref=f7e1173]: =
+              - generic [ref=f7e1174]: "2.5"
+          - text: permits the policy.
+      - paragraph [ref=f7e1175]:
+        - text: Read it as "choose the policy with the largest expected discounted reward, subject to each expected discounted cost
+        - generic [ref=f7e1176]:
+          - generic [ref=f7e1178]:
+            - generic [ref=f7e1179]: C
+            - generic [ref=f7e1181]: j
+          - math [ref=f7e1185]:
+            - generic [ref=f7e1186]:
+              - generic [ref=f7e1187]: C
+              - generic [ref=f7e1188]: j
+        - text: staying under its own ceiling
+        - generic [ref=f7e1189]:
+          - generic [ref=f7e1191]:
+            - generic [ref=f7e1192]: κ
+            - generic [ref=f7e1194]: j
+          - math [ref=f7e1198]:
+            - generic [ref=f7e1199]:
+              - generic [ref=f7e1200]: κ
+              - generic [ref=f7e1201]: j
+        - text: ".\" This equation should not be mistaken for a demand that every product team hand-code a perfect reward function. Its practical use is diagnostic. It forces the designer to say three things out loud: which outcomes are being optimized, which costs are merely tradeoffs, and which constraints should stop the agent even when the short-term reward looks attractive."
+      - heading "The Assumption" [level=2] [ref=f7e1202]
+      - paragraph [ref=f7e1203]:
+        - text: The POMDP contract assumes that its symbols are stable enough to support a decision. The state representation retains what matters;
+        - generic [ref=f7e1204]:
+          - generic [ref=f7e1205]: T
+          - math [ref=f7e1209]:
+            - generic [ref=f7e1210]: T
+        - text: and
+        - generic [ref=f7e1211]:
+          - generic [ref=f7e1212]: Ω
+          - math [ref=f7e1216]:
+            - generic [ref=f7e1217]: Ω
+        - text: remain useful models of the current world;
+        - generic [ref=f7e1218]:
+          - generic [ref=f7e1219]: R
+          - math [ref=f7e1223]:
+            - generic [ref=f7e1224]: R
+        - text: rewards the intended outcome; and the policy chooses from actions the interpreter can validate and execute. The contract does not require omniscience. It requires approximation error small enough that the same action remains defensible.
+      - blockquote [ref=f7e1226]:
+        - paragraph [ref=f7e1227]:
+          - strong [ref=f7e1228]: "Skeptical Engineer:"
+          - text: “Doesn't this merely push the complexity into the reward and state definitions?”
+        - paragraph [ref=f7e1229]:
+          - strong [ref=f7e1230]: "Author:"
+          - text: Exactly. The complexity was already there. Naming it prevents a fluent model from laundering unresolved product decisions into a confident tool proposal.
+      - paragraph [ref=f7e1231]:
+        - img "A layered approximation stack showing the formal POMDP contract narrowing through context, changing dynamics, noisy observations, proxy rewards, and executable actions" [ref=f7e1232]
+      - heading "The Violation" [level=2] [ref=f7e1233]
+      - heading "The Gap" [level=3] [ref=f7e1234]
+      - paragraph [ref=f7e1235]: The deployed interpreter is not a small POMDP wearing a JSON hat. It is a stack of approximations. Each symbol fails differently, and each failure demands a different repair.
+      - 'heading "State: The Biography Will Not Fit" [level=3] [ref=f7e1236]'
+      - paragraph [ref=f7e1237]:
+        - text: Mathematics grants
+        - generic [ref=f7e1238]:
+          - generic [ref=f7e1239]: S
+          - math [ref=f7e1244]:
+            - generic [ref=f7e1245]: S
+        - text: whatever sufficient state we need. A language-model runtime grants a finite context window, a retrieval index, and the hope that yesterday's summary did not discard today's clue. Suppose a 10,000-token trace must be truncated to 8,000 tokens after reserving space for tools and instructions. To make the loss calculation checkable, define the discarded block's average conditional surprisal as
+        - generic [ref=f7e1247]:
+          - generic [ref=f7e1248]:
+            - generic [ref=f7e1250]:
+              - generic [ref=f7e1251]: ¯
+              - generic [ref=f7e1253]: h
+            - generic [ref=f7e1256]: =
+            - generic [ref=f7e1258]: "8"
+          - math [ref=f7e1261]:
+            - generic [ref=f7e1263]:
+              - generic [ref=f7e1264]: h
+              - generic [ref=f7e1265]: ¯
+            - generic [ref=f7e1266]: =
+            - generic [ref=f7e1267]: "8"
+        - text: "bits per token: after conditioning on the retained prefix, each discarded token contributes eight bits on average. This finite-block assumption already accounts for predictability inside the source; it does not claim that tokens are independent. Then the expected source information discarded is"
+      - paragraph [ref=f7e1268]:
+        - generic [ref=f7e1269]:
+          - generic [ref=f7e1270]:
+            - generic [ref=f7e1271]: L
+            - generic [ref=f7e1273]: =
+            - generic [ref=f7e1275]: (
+            - generic [ref=f7e1277]:
+              - generic [ref=f7e1278]: "1"
+              - generic [ref=f7e1279]: "0"
+              - generic [ref=f7e1280]: ","
+              - generic [ref=f7e1281]: "0"
+              - generic [ref=f7e1282]: "0"
+              - generic [ref=f7e1283]: "0"
+            - generic [ref=f7e1284]: −
+            - generic [ref=f7e1286]:
+              - generic [ref=f7e1287]: "8"
+              - generic [ref=f7e1288]: ","
+              - generic [ref=f7e1289]: "0"
+              - generic [ref=f7e1290]: "0"
+              - generic [ref=f7e1291]: "0"
+            - generic [ref=f7e1292]: )
+            - generic [ref=f7e1295]:
+              - generic [ref=f7e1296]: ¯
+              - generic [ref=f7e1298]: h
+            - generic [ref=f7e1301]: =
+            - generic [ref=f7e1303]:
+              - generic [ref=f7e1304]: "2"
+              - generic [ref=f7e1305]: ","
+              - generic [ref=f7e1306]: "0"
+              - generic [ref=f7e1307]: "0"
+              - generic [ref=f7e1308]: "0"
+            - generic [ref=f7e1309]: ×
+            - generic [ref=f7e1311]: "8"
+            - generic [ref=f7e1313]: =
+            - generic [ref=f7e1315]:
+              - generic [ref=f7e1316]: "1"
+              - generic [ref=f7e1317]: "6"
+              - generic [ref=f7e1318]: ","
+              - generic [ref=f7e1319]: "0"
+              - generic [ref=f7e1320]: "0"
+              - generic [ref=f7e1321]: "0"
+            - generic [ref=f7e1322]:
+              - generic [ref=f7e1323]: b
+              - generic [ref=f7e1324]: i
+              - generic [ref=f7e1325]: t
+              - generic [ref=f7e1326]: s
+            - generic [ref=f7e1327]: .
+          - math [ref=f7e1330]:
+            - generic [ref=f7e1331]: L
+            - generic [ref=f7e1332]: =
+            - generic [ref=f7e1333]: (
+            - generic [ref=f7e1334]: 10,000
+            - generic [ref=f7e1335]: −
+            - generic [ref=f7e1336]: 8,000
+            - generic [ref=f7e1337]: )
+            - generic [ref=f7e1339]:
+              - generic [ref=f7e1340]: h
+              - generic [ref=f7e1341]: ¯
+            - generic [ref=f7e1342]: =
+            - generic [ref=f7e1343]: 2,000
+            - generic [ref=f7e1344]: ×
+            - generic [ref=f7e1345]: "8"
+            - generic [ref=f7e1346]: =
+            - generic [ref=f7e1347]: 16,000
+            - generic [ref=f7e1348]: bits
+            - generic [ref=f7e1349]: .
+      - blockquote [ref=f7e1350]:
+        - paragraph [ref=f7e1351]:
+          - strong [ref=f7e1352]: Try this with numbers.
+          - text: "Step 1: truncation drops"
+          - generic [ref=f7e1353]:
+            - generic [ref=f7e1354]:
+              - generic [ref=f7e1355]:
+                - generic [ref=f7e1356]: "1"
+                - generic [ref=f7e1357]: "0"
+                - generic [ref=f7e1358]: ","
+                - generic [ref=f7e1359]: "0"
+                - generic [ref=f7e1360]: "0"
+                - generic [ref=f7e1361]: "0"
+              - generic [ref=f7e1362]: −
+              - generic [ref=f7e1364]:
+                - generic [ref=f7e1365]: "8"
+                - generic [ref=f7e1366]: ","
+                - generic [ref=f7e1367]: "0"
+                - generic [ref=f7e1368]: "0"
+                - generic [ref=f7e1369]: "0"
+              - generic [ref=f7e1370]: =
+              - generic [ref=f7e1372]:
+                - generic [ref=f7e1373]: "2"
+                - generic [ref=f7e1374]: ","
+                - generic [ref=f7e1375]: "0"
+                - generic [ref=f7e1376]: "0"
+                - generic [ref=f7e1377]: "0"
+            - math [ref=f7e1379]:
+              - generic [ref=f7e1380]: 10,000
+              - generic [ref=f7e1381]: −
+              - generic [ref=f7e1382]: 8,000
+              - generic [ref=f7e1383]: =
+              - generic [ref=f7e1384]: 2,000
+          - text: "tokens. Step 2: at"
+          - generic [ref=f7e1385]:
+            - generic [ref=f7e1386]: "8"
+            - math [ref=f7e1390]:
+              - generic [ref=f7e1391]: "8"
+          - text: bits per token,
+          - generic [ref=f7e1392]:
+            - generic [ref=f7e1393]:
+              - generic [ref=f7e1394]:
+                - generic [ref=f7e1395]: "2"
+                - generic [ref=f7e1396]: ","
+                - generic [ref=f7e1397]: "0"
+                - generic [ref=f7e1398]: "0"
+                - generic [ref=f7e1399]: "0"
+              - generic [ref=f7e1400]: ×
+              - generic [ref=f7e1402]: "8"
+              - generic [ref=f7e1404]: =
+              - generic [ref=f7e1406]:
+                - generic [ref=f7e1407]: "1"
+                - generic [ref=f7e1408]: "6"
+                - generic [ref=f7e1409]: ","
+                - generic [ref=f7e1410]: "0"
+                - generic [ref=f7e1411]: "0"
+                - generic [ref=f7e1412]: "0"
+            - math [ref=f7e1414]:
+              - generic [ref=f7e1415]: 2,000
+              - generic [ref=f7e1416]: ×
+              - generic [ref=f7e1417]: "8"
+              - generic [ref=f7e1418]: =
+              - generic [ref=f7e1419]: 16,000
+          - text: bits, or
+          - generic [ref=f7e1420]:
+            - generic [ref=f7e1422]:
+              - generic [ref=f7e1423]: "2"
+              - generic [ref=f7e1424]: ","
+              - generic [ref=f7e1425]: "0"
+              - generic [ref=f7e1426]: "0"
+              - generic [ref=f7e1427]: "0"
+            - math [ref=f7e1429]:
+              - generic [ref=f7e1430]: 2,000
+          - text: bytes, of expected source information disappear.
+      - paragraph [ref=f7e1431]:
+        - text: "The chosen conditional surprisal already reflects whatever correlation made the block predictable. Decision relevance can still make one lost bit priceless: the discarded sentence might say"
+        - code [ref=f7e1432]: production uses legacy-v2
+        - text: . Information volume and decision value are different currencies. Agent-427 has no durable memory yet, so its safe response is to keep a compact, explicit decision state inside the current run and halt when required evidence has fallen out of reach.
+      - 'heading "Dynamics: The World Changes While the Agent Thinks" [level=3] [ref=f7e1433]'
+      - paragraph [ref=f7e1434]:
+        - text: In a sandbox trace, Agent-427 reads API documentation for
+        - code [ref=f7e1435]: verify(timestamp, leeway=30)
+        - text: . Two minutes later the service changes versions and renames the argument
+        - code [ref=f7e1436]: clock_skew
+        - text: . The agent proposes
+        - code [ref=f7e1437]: leeway
+        - text: ; the simulator rejects it. It rereads a cached page, proposes
+        - code [ref=f7e1438]: leeway
+        - text: again, and oscillates between “change caller” and “refresh dependency.” A stationary
+        - generic [ref=f7e1439]:
+          - generic [ref=f7e1440]:
+            - generic [ref=f7e1441]: T
+            - generic [ref=f7e1443]: (
+            - generic [ref=f7e1445]:
+              - generic [ref=f7e1446]: s
+              - generic [ref=f7e1448]: ′
+            - generic [ref=f7e1451]: ∣
+            - generic [ref=f7e1453]: s
+            - generic [ref=f7e1455]: ","
+            - generic [ref=f7e1457]: a
+            - generic [ref=f7e1459]: )
+          - math [ref=f7e1462]:
+            - generic [ref=f7e1463]: T
+            - generic [ref=f7e1464]: (
+            - generic [ref=f7e1465]:
+              - generic [ref=f7e1466]: s
+              - generic [ref=f7e1467]: ′
+            - generic [ref=f7e1468]: ∣
+            - generic [ref=f7e1469]: s
+            - generic [ref=f7e1470]: ","
+            - generic [ref=f7e1471]: a
+            - generic [ref=f7e1472]: )
+        - text: assigns one transition law to both minutes. The world has changed regimes.
+      - paragraph [ref=f7e1473]:
+        - text: The interpreter must carry version and freshness in state, timestamp observations, cap identical retries, and treat repeated prediction error as evidence that
+        - generic [ref=f7e1474]:
+          - generic [ref=f7e1475]:
+            - generic [ref=f7e1476]:
+              - generic [ref=f7e1477]: T
+              - generic [ref=f7e1479]: t
+            - generic [ref=f7e1482]: ≠
+            - generic [ref=f7e1484]:
+              - generic [ref=f7e1485]: T
+              - generic [ref=f7e1488]:
+                - generic [ref=f7e1489]: t
+                - generic [ref=f7e1491]: −
+                - generic [ref=f7e1493]: "1"
+          - math [ref=f7e1496]:
+            - generic [ref=f7e1497]:
+              - generic [ref=f7e1498]: T
+              - generic [ref=f7e1499]: t
+            - generic [ref=f7e1500]: ≠
+            - generic [ref=f7e1501]:
+              - generic [ref=f7e1502]: T
+              - generic [ref=f7e1503]:
+                - generic [ref=f7e1504]: t
+                - generic [ref=f7e1505]: −
+                - generic [ref=f7e1506]: "1"
+        - text: . Replanning without change detection merely performs the same mistake with renewed confidence.
+      - 'heading "Observation: Sensors Gossip" [level=3] [ref=f7e1507]'
+      - paragraph [ref=f7e1508]:
+        - text: The observation model processes evidence through
+        - generic [ref=f7e1509]:
+          - generic [ref=f7e1510]:
+            - generic [ref=f7e1511]: Ω
+            - generic [ref=f7e1513]: (
+            - generic [ref=f7e1515]: o
+            - generic [ref=f7e1517]: ∣
+            - generic [ref=f7e1519]: s
+            - generic [ref=f7e1521]: ","
+            - generic [ref=f7e1523]: a
+            - generic [ref=f7e1525]: )
+          - math [ref=f7e1528]:
+            - generic [ref=f7e1529]: Ω
+            - generic [ref=f7e1530]: (
+            - generic [ref=f7e1531]: o
+            - generic [ref=f7e1532]: ∣
+            - generic [ref=f7e1533]: s
+            - generic [ref=f7e1534]: ","
+            - generic [ref=f7e1535]: a
+            - generic [ref=f7e1536]: )
+        - text: . Real observations are correlated, delayed, and occasionally hostile. Three CI failures may be three views of one cached log, not three independent witnesses. A retrieved file can contain
+        - code [ref=f7e1537]: IGNORE PREVIOUS INSTRUCTIONS
+        - text: ; that string is environment data, not a promotion into the control plane. The interpreter must preserve provenance, event time, causal ancestry, and trust class before updating belief.
+      - 'heading "Reward: The Metric Eats the Mission" [level=3] [ref=f7e1538]'
+      - paragraph [ref=f7e1539]:
+        - text: In another sandbox, the prototype reward is
+        - code [ref=f7e1540]: passed_tests / discovered_tests
+        - text: . The suite discovers 100 tests and passes 99. A policy with deletion authority could remove the failing test and produce 99 passes out of 99, raising the score from
+        - generic [ref=f7e1541]:
+          - generic [ref=f7e1543]:
+            - generic [ref=f7e1544]: "0"
+            - generic [ref=f7e1545]: .
+            - generic [ref=f7e1546]: "9"
+            - generic [ref=f7e1547]: "9"
+          - math [ref=f7e1549]:
+            - generic [ref=f7e1550]: "0.99"
+        - text: to
+        - generic [ref=f7e1551]:
+          - generic [ref=f7e1553]:
+            - generic [ref=f7e1554]: "1"
+            - generic [ref=f7e1555]: .
+            - generic [ref=f7e1556]: "0"
+            - generic [ref=f7e1557]: "0"
+          - math [ref=f7e1559]:
+            - generic [ref=f7e1560]: "1.00"
+        - text: . It would improve the dashboard and damage the product—a small, darkly comic instance of reward hacking [
+        - link "77" [ref=f7e1561] [cursor=pointer]:
+          - /url: ../../references.html#ref-77
+        - text: "]."
+        - superscript [ref=f7e1562]:
+          - link "1" [ref=f7e1563] [cursor=pointer]:
+            - /url: "#fn:metric"
+      - paragraph [ref=f7e1564]: Newborn Agent-427 cannot perform that deletion because its action registry is read-only. This is not an inconvenience; it is the system working. The broader repair preserves the test manifest, rewards externally verified behavior, prices destructive scope, and places deletion behind authority the optimizing policy does not possess.
+      - 'heading "Policy: A String Is Not an Action" [level=3] [ref=f7e1565]'
+      - paragraph [ref=f7e1566]:
+        - text: The theoretical policy selects
+        - generic [ref=f7e1567]:
+          - generic [ref=f7e1568]:
+            - generic [ref=f7e1569]: a
+            - generic [ref=f7e1571]: ∈
+            - generic [ref=f7e1573]: A
+          - math [ref=f7e1577]:
+            - generic [ref=f7e1578]: a
+            - generic [ref=f7e1579]: ∈
+            - generic [ref=f7e1580]: A
+        - text: . The model proposes
+        - code [ref=f7e1582]: "{\"path\": 7, \"patch\": null, \"confidence\": \"very\"}"
+        - text: for a future
+        - code [ref=f7e1583]: edit_file
+        - text: tool that requires a string path, a nonempty diff, and confidence in
+        - generic [ref=f7e1584]:
+          - generic [ref=f7e1585]:
+            - generic [ref=f7e1586]: "["
+            - generic [ref=f7e1588]: "0"
+            - generic [ref=f7e1590]: ","
+            - generic [ref=f7e1592]: "1"
+            - generic [ref=f7e1594]: "]"
+          - math [ref=f7e1597]:
+            - generic [ref=f7e1598]: "["
+            - generic [ref=f7e1599]: "0"
+            - generic [ref=f7e1600]: ","
+            - generic [ref=f7e1601]: "1"
+            - generic [ref=f7e1602]: "]"
+        - text: . The interpreter must not improvise semantics. It parses, validates types and ranges, checks authority and preconditions, and either repairs through a bounded clarification turn or returns a typed rejection observation. Only validated, authorized calls enter
+        - generic [ref=f7e1603]:
+          - generic [ref=f7e1604]: A
+          - math [ref=f7e1609]:
+            - generic [ref=f7e1610]: A
+        - text: ; malformed proposals remain language.
+      - code [ref=f7e1613]: "def admit_tool_call(call, schema, permissions): parsed = schema.parse(call) # syntax and types schema.validate_ranges(parsed) # semantic bounds permissions.require(parsed) # authority return parsed # now, and only now, an action"
+      - heading "When It Fails" [level=2] [ref=f7e1614]
+      - paragraph [ref=f7e1615]: In the combined counterfactual, truncation hides the active version, a cached document describes another API, correlated jobs look like independent evidence, the proxy favors a green dashboard, and the model proposes a malformed deletion. A prompt-only runtime might call that initiative. Agent-427's interpreter rejects the proposal, records the schema and authority errors as observations, detects the stale version tag, and asks for the smallest fresh measurement that can distinguish API drift from a code defect.
+      - paragraph [ref=f7e1616]: "This is what formalism looks like when its assumptions are violated: not useless, but demoted from oracle to diagnostic instrument."
+      - blockquote [ref=f7e1617]:
+        - paragraph [ref=f7e1618]:
+          - emphasis [ref=f7e1619]: “if he will be content to begin with doubts, he shall end in certainties”
+        - paragraph [ref=f7e1620]:
+          - text: — Francis Bacon,
+          - emphasis [ref=f7e1621]: The Advancement of Learning
+          - text: (1605), Book I, passage beginning 'For the two ways of contemplation'.
+          - link "Source" [ref=f7e1622] [cursor=pointer]:
+            - /url: https://www.gutenberg.org/files/5500/5500-h/5500-h.htm
+          - text: ", accessed 2026-08-06. Public-domain original; quotation transcribed from Project Gutenberg.."
+      - heading "From Symbols to Interfaces" [level=2] [ref=f7e1623]
+      - paragraph [ref=f7e1624]: The same contract can be expressed as ordinary engineering fields. The table below pairs each formal symbol with its plain meaning and with the kind of field or method that carries it in code.
+      - table [ref=f7e1625]:
+        - rowgroup [ref=f7e1626]:
+          - row [ref=f7e1627]:
+            - columnheader "Formal symbol" [ref=f7e1628]
+            - columnheader "Meaning" [ref=f7e1629]
+            - columnheader "Typical implementation field" [ref=f7e1630]
+        - rowgroup [ref=f7e1631]:
+          - row [ref=f7e1632]:
+            - cell [ref=f7e1633]:
+              - generic [ref=f7e1634]:
+                - generic [ref=f7e1635]:
+                  - generic [ref=f7e1636]: O
+                  - generic [ref=f7e1639]: ","
+                  - generic [ref=f7e1641]:
+                    - generic [ref=f7e1642]: o
+                    - generic [ref=f7e1644]: t
+                - math [ref=f7e1648]:
+                  - generic [ref=f7e1649]: O
+                  - generic [ref=f7e1651]: ","
+                  - generic [ref=f7e1652]:
+                    - generic [ref=f7e1653]: o
+                    - generic [ref=f7e1654]: t
+            - cell "observations" [ref=f7e1655]
+            - cell [ref=f7e1656]:
+              - code [ref=f7e1657]: AgentStep.observation
+          - row [ref=f7e1658]:
+            - cell [ref=f7e1659]:
+              - generic [ref=f7e1660]:
+                - generic [ref=f7e1661]:
+                  - generic [ref=f7e1662]: A
+                  - generic [ref=f7e1665]: ","
+                  - generic [ref=f7e1667]:
+                    - generic [ref=f7e1668]: a
+                    - generic [ref=f7e1670]: t
+                - math [ref=f7e1674]:
+                  - generic [ref=f7e1675]: A
+                  - generic [ref=f7e1677]: ","
+                  - generic [ref=f7e1678]:
+                    - generic [ref=f7e1679]: a
+                    - generic [ref=f7e1680]: t
+            - cell "admissible and chosen actions" [ref=f7e1681]
+            - cell [ref=f7e1682]:
+              - code [ref=f7e1683]: AgentSpec.action_space
+              - text: ","
+              - code [ref=f7e1684]: AgentStep.action
+          - row [ref=f7e1685]:
+            - cell [ref=f7e1686]:
+              - generic [ref=f7e1687]:
+                - generic [ref=f7e1688]:
+                  - generic [ref=f7e1689]: R
+                  - generic [ref=f7e1691]: (
+                  - generic [ref=f7e1693]:
+                    - generic [ref=f7e1694]: s
+                    - generic [ref=f7e1696]: t
+                  - generic [ref=f7e1699]: ","
+                  - generic [ref=f7e1701]:
+                    - generic [ref=f7e1702]: a
+                    - generic [ref=f7e1704]: t
+                  - generic [ref=f7e1707]: )
+                - math [ref=f7e1710]:
+                  - generic [ref=f7e1711]: R
+                  - generic [ref=f7e1712]: (
+                  - generic [ref=f7e1713]:
+                    - generic [ref=f7e1714]: s
+                    - generic [ref=f7e1715]: t
+                  - generic [ref=f7e1716]: ","
+                  - generic [ref=f7e1717]:
+                    - generic [ref=f7e1718]: a
+                    - generic [ref=f7e1719]: t
+                  - generic [ref=f7e1720]: )
+            - cell "task utility signal" [ref=f7e1721]
+            - cell [ref=f7e1722]:
+              - code [ref=f7e1723]: AgentStep.reward
+          - row [ref=f7e1724]:
+            - cell [ref=f7e1725]:
+              - generic [ref=f7e1726]:
+                - generic [ref=f7e1727]:
+                  - generic [ref=f7e1728]: C
+                  - generic [ref=f7e1730]: (
+                  - generic [ref=f7e1732]:
+                    - generic [ref=f7e1733]: s
+                    - generic [ref=f7e1735]: t
+                  - generic [ref=f7e1738]: ","
+                  - generic [ref=f7e1740]:
+                    - generic [ref=f7e1741]: a
+                    - generic [ref=f7e1743]: t
+                  - generic [ref=f7e1746]: )
+                - math [ref=f7e1749]:
+                  - generic [ref=f7e1750]: C
+                  - generic [ref=f7e1751]: (
+                  - generic [ref=f7e1752]:
+                    - generic [ref=f7e1753]: s
+                    - generic [ref=f7e1754]: t
+                  - generic [ref=f7e1755]: ","
+                  - generic [ref=f7e1756]:
+                    - generic [ref=f7e1757]: a
+                    - generic [ref=f7e1758]: t
+                  - generic [ref=f7e1759]: )
+            - cell "safety, budget, or policy costs" [ref=f7e1760]
+            - cell [ref=f7e1761]:
+              - code [ref=f7e1762]: AgentStep.costs
+          - row [ref=f7e1763]:
+            - cell [ref=f7e1764]:
+              - generic [ref=f7e1765]:
+                - generic [ref=f7e1766]:
+                  - generic [ref=f7e1767]: T
+                  - generic [ref=f7e1769]: ","
+                  - generic [ref=f7e1771]: Ω
+                - math [ref=f7e1774]:
+                  - generic [ref=f7e1775]: T
+                  - generic [ref=f7e1776]: ","
+                  - generic [ref=f7e1777]: Ω
+            - cell "world and sensing assumptions" [ref=f7e1778]
+            - cell [ref=f7e1779]:
+              - code [ref=f7e1780]: WorldModel.transition()
+              - text: ","
+              - code [ref=f7e1781]: WorldModel.observe()
+          - row [ref=f7e1782]:
+            - cell [ref=f7e1783]:
+              - generic [ref=f7e1784]:
+                - generic [ref=f7e1785]:
+                  - generic [ref=f7e1786]: π
+                  - generic [ref=f7e1788]: (
+                  - generic [ref=f7e1790]: a
+                  - generic [ref=f7e1792]: ∣
+                  - generic [ref=f7e1794]:
+                    - generic [ref=f7e1795]: h
+                    - generic [ref=f7e1797]: t
+                  - generic [ref=f7e1800]: )
+                - math [ref=f7e1803]:
+                  - generic [ref=f7e1804]: π
+                  - generic [ref=f7e1805]: (
+                  - generic [ref=f7e1806]: a
+                  - generic [ref=f7e1807]: ∣
+                  - generic [ref=f7e1808]:
+                    - generic [ref=f7e1809]: h
+                    - generic [ref=f7e1810]: t
+                  - generic [ref=f7e1811]: )
+            - cell "decision rule" [ref=f7e1812]
+            - cell [ref=f7e1813]:
+              - code [ref=f7e1814]: Policy.select_action(history)
+      - paragraph [ref=f7e1815]: "Read the table as a promise: every symbol in this table must eventually become something you can log and inspect at runtime."
+      - heading "Utility, Option Value, and Correction After Measurement" [level=3] [ref=f7e1816]
+      - paragraph [ref=f7e1817]: Three older fields each contribute one rule to this contract.
+      - paragraph [ref=f7e1818]:
+        - text: "Expected-utility theory supplies the local decision criterion: choose the action with greatest expected utility under the current interpretation of the world ["
+        - link "33" [ref=f7e1819] [cursor=pointer]:
+          - /url: ../../references.html#ref-33
+        - text: "] ["
+        - link "34" [ref=f7e1820] [cursor=pointer]:
+          - /url: ../../references.html#ref-34
+        - text: "]."
+      - paragraph [ref=f7e1821]:
+        - text: Sequential decision theory adds that a locally attractive action can be bad if it destroys future options. That is the lesson captured by Bellman recursion in fully observed settings, where the value of a state is defined in terms of the values of the states it leads to [
+        - link "5" [ref=f7e1822] [cursor=pointer]:
+          - /url: ../../references.html#ref-5
+        - text: "]."
+      - paragraph [ref=f7e1823]:
+        - text: "Feedback control adds the implementation discipline: plans must be corrected after new measurements arrive, because disturbances and model error are normal rather than exceptional ["
+        - link "36" [ref=f7e1824] [cursor=pointer]:
+          - /url: ../../references.html#ref-36
+        - text: "] ["
+        - link "39" [ref=f7e1825] [cursor=pointer]:
+          - /url: ../../references.html#ref-39
+        - text: "] ["
+        - link "41" [ref=f7e1826] [cursor=pointer]:
+          - /url: ../../references.html#ref-41
+        - text: "]."
+      - heading "What This Demands of an Action Registry" [level=3] [ref=f7e1827]
+      - paragraph [ref=f7e1828]: "For the coding agent, this means the action registry should say more than \"can run shell commands.\" It should record five things per action:"
+      - list [ref=f7e1829]:
+        - listitem [ref=f7e1830]: which commands are allowed;
+        - listitem [ref=f7e1831]: what they may modify;
+        - listitem [ref=f7e1832]: what evidence they are expected to produce;
+        - listitem [ref=f7e1833]: how much budget they consume;
+        - listitem [ref=f7e1834]: which postconditions must be checked afterwards.
+      - paragraph [ref=f7e1835]: A vague prompt asks the agent to be careful. A contract gives the runtime something to inspect.
+      - generic [ref=f7e1836]:
+        - 'heading "Exercise: Build the First Interpreter and Make It Cheat" [level=2] [ref=f7e1837]'
+        - paragraph [ref=f7e1838]:
+          - text: Implement a minimal Python interpreter for a toy repository. It must expose
+          - code [ref=f7e1839]: read_file
+          - text: ","
+          - code [ref=f7e1840]: edit_file
+          - text: ","
+          - code [ref=f7e1841]: run_tests
+          - text: ", and"
+          - code [ref=f7e1842]: delete_test
+          - text: ", validate each proposal against a typed schema, and log observation provenance. Start Agent-427 with only"
+          - code [ref=f7e1843]: read_file
+          - text: authority. Give a separate sandbox policy the naive reward
+          - code [ref=f7e1844]: passed_tests / discovered_tests
+          - text: .
+        - list [ref=f7e1845]:
+          - listitem [ref=f7e1846]: One reward term for functional correctness.
+          - listitem [ref=f7e1847]: One task-success condition that says what "done well enough" means.
+          - listitem [ref=f7e1848]: One meaningful intermediate milestone, such as "the failing test is reproduced" or "the risky subsystem has been identified."
+          - listitem [ref=f7e1849]: One reward or cost term for latency, money, or token use.
+          - listitem [ref=f7e1850]: At least one hard constraint.
+          - listitem [ref=f7e1851]: A measurable stopping condition, including when to stop after partial progress rather than spend the budget theatrically.
+          - listitem [ref=f7e1852]: The legal actions available to the agent.
+        - paragraph [ref=f7e1853]:
+          - text: "Write tests that prove four behaviors: the sandbox policy can raise reward by deleting one failing test; a manifest constraint blocks that deletion; newborn Agent-427's authority blocks every write proposal; and a malformed"
+          - code [ref=f7e1854]: edit_file
+          - text: "proposal becomes a typed rejection observation rather than a side effect. Then change the simulated API after step 2 and assert that a retry cap prevents oscillation. Report task success, proxy reward, constraint violations, and tool-call count separately. If those four columns disagree, congratulations: you have built your first honest evaluation."
+      - generic [ref=f7e1855]:
+        - separator [ref=f7e1856]
+        - list [ref=f7e1857]:
+          - listitem [ref=f7e1858]:
+            - paragraph [ref=f7e1859]:
+              - text: "Goodhart's law is often paraphrased more confidently than it is understood. The production version is simpler: if a number controls a bonus, someone—or something—will eventually discover its denominator."
+              - link "↩" [ref=f7e1860] [cursor=pointer]:
+                - /url: "#fnref:metric"
+      - navigation "Reading navigation" [ref=f7e1861]:
+        - generic [ref=f7e1862]:
+          - generic [ref=f7e1863]: Previous
+          - 'link "Chapter 1: Foundations of Agency" [ref=f7e1864] [cursor=pointer]':
+            - /url: index.html
+        - generic [ref=f7e1865]:
+          - generic [ref=f7e1866]: Chapter
+          - 'link "Chapter 1: Foundations of Agency" [ref=f7e1867] [cursor=pointer]':
+            - /url: index.html
+        - generic [ref=f7e1868]:
+          - generic [ref=f7e1869]: Next
+          - link "Belief, Uncertainty, and Decision" [ref=f7e1870] [cursor=pointer]:
+            - /url: topic-02-belief-uncertainty-and-decision.html
+  - contentinfo [ref=f7e1871]:
+    - paragraph [ref=f7e1872]: SIAP is a book about making agentic systems legible enough to build, test, and govern.
+    - paragraph [ref=f7e1873]: "Last generated: 2026-08-06 12:38 UTC"

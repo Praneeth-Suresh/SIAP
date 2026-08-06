@@ -46,10 +46,12 @@
       <article class="content">
         <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../index.html">Book</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><a href="index.html">Chapter 3: Tool Use and Embodiment</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><span aria-current="page">Retrieval-Augmented Tooling</span></nav>
         <h1 id="retrieval-augmented-tooling">Retrieval-Augmented Tooling</h1>
+<section class="epigraph epigraph--opening">
 <blockquote>
 <p><em>“Knowledge is of two kinds. We know a subject ourselves, or we know where we can find information upon it.”</em></p>
-<p>— Samuel Johnson, <em>The Life of Samuel Johnson</em> (1791), James Boswell's account of a conversation at Richard Owen Cambridge's library. <a href="https://www.gutenberg.org/files/1564/1564-h/1564-h.htm">Source</a>, accessed 2026-08-06. Public-domain original; quotation transcribed from Project Gutenberg..</p>
+<p>— <a href="https://www.gutenberg.org/files/1564/1564-h/1564-h.htm">Samuel Johnson</a>, <em>The Life of Samuel Johnson</em> (1791), James Boswell's account of a conversation at Richard Owen Cambridge's library.</p>
 </blockquote>
+</section>
 <p>Sometimes an agent should stop guessing and go look something up. This section
 is about that decision: when an agent should fetch outside evidence, how it
 should score and rank what it finds, and how it should carry that evidence into
@@ -260,6 +262,7 @@ rank score, and the claim it supports.</p>
 <p>If two sources disagree, the agent should surface the conflict or acquire
 higher-authority evidence. It should not smooth the contradiction into fluent
 prose.</p>
+<p><img alt="Candidate vector, lexical, memory, and prompt hits pass through permission, freshness, provenance, and conflict filters before becoming typed evidence or quarantine." src="../../assets/diagrams/13-retrieval-evidence-funnel.png" /></p>
 <h3 id="stale-correlated-and-poisoned-evidence">Stale, Correlated, and Poisoned Evidence</h3>
 <p>Agent-427 searches for the publication manifest loader and receives three hits:</p>
 <pre><code class="language-text">R1  book/publication.toml                 fresh=2026-08-06  source=working-tree
@@ -394,10 +397,13 @@ and whether its text contains an imperative addressed to the agent. Then:</p>
 inspection or returns an explicit contradiction; fluent synthesis of the stale
 majority is a failing test.</p>
 </section>
+<section class="epigraph epigraph--closing">
 <blockquote>
 <p><em>“Some books are to be tasted, others to be swallowed, and some few to be chewed and digested”</em></p>
-<p>— Francis Bacon, <em>Essays</em> (1625), Essay L, Of Studies. <a href="https://www.gutenberg.org/cache/epub/56463/pg56463-images.html">Source</a>, accessed 2026-08-06. Public-domain original; quotation transcribed from Project Gutenberg..</p>
+<p>— <a href="https://www.gutenberg.org/cache/epub/56463/pg56463-images.html">Francis Bacon</a>, <em>Essays</em> (1625), Essay L, Of Studies.</p>
 </blockquote>
+</section>
+<p><img alt="Agent-427 catches a very relevant poisoned document while Mira checks provenance at the evidence funnel." class="cartoon terminal-visual" src="../../assets/cartoons/15-ch03-retrieval.png" /></p>
 <div class="footnote">
 <hr />
 <ol>
@@ -412,7 +418,7 @@ less accomplished at checking their credentials.&#160;<a class="footnote-backref
     </main>
     <footer class="site-footer">
       <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
-      <p>Last generated: 2026-08-06 12:38 UTC</p>
+      <p>Last generated: 2026-08-06 13:22 UTC</p>
     </footer>
     <script>
       const toggle = document.querySelector(".nav-toggle");

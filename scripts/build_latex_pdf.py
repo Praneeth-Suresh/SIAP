@@ -120,13 +120,6 @@ def prepare_book_markdown(
     enrichment: PublicationEnrichment | None = None,
 ) -> str:
     text = section.read_text(encoding="utf-8")
-    if enrichment is not None:
-        text = enrich_section_markdown(section, text, enrichment)
-    text = adapt_semantic_divs(text, target="latex")
-    text = rewrite_reference_links(text)
-    text = rewrite_local_markdown_links(section, text)
-    text = rewrite_local_image_links(section, text)
-
     if section_kind == "preface":
         text = text.replace("This draft is organized", "This book is organized")
         text = remove_markdown_section(text, 2, "Chapter map")
@@ -151,7 +144,9 @@ def prepare_book_markdown(
             flags=re.MULTILINE,
         )
     elif section_kind == "topic":
-        text = demote_headings(text, levels=1)
+        # Demote after enrichment so the opening epigraph can still locate the
+        # source H1 boundary.
+        pass
     elif section_kind == "references":
         text = re.sub(
             r"^# References$",
@@ -161,6 +156,18 @@ def prepare_book_markdown(
             flags=re.MULTILINE,
         )
         text = autolink_bare_urls(text)
+
+    # Enrich after any section-pruning transform. Otherwise a terminal cartoon
+    # appended after a chapter's final "Topics" block is swallowed when that
+    # web-only block is removed for print.
+    if enrichment is not None:
+        text = enrich_section_markdown(section, text, enrichment)
+    if section_kind == "topic":
+        text = demote_headings(text, levels=1)
+    text = adapt_semantic_divs(text, target="latex")
+    text = rewrite_reference_links(text)
+    text = rewrite_local_markdown_links(section, text)
+    text = rewrite_local_image_links(section, text)
 
     return text
 

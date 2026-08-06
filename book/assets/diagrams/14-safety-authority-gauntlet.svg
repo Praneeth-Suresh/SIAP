@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">Safety authority gauntlet</title>
+  <desc id="desc">A deployment proposal must pass schema, authority, state, reversibility, and idempotency gates before an effect, then receive independent confirmation or timeout; failures reject, rewrite, or escalate.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="10" refX="10" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#172a3a"/></marker>
+    <marker id="red-arrow" markerWidth="12" markerHeight="10" refX="10" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b24c2b"/></marker>
+    <filter id="wobble" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="1" seed="427" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="1.2"/></filter>
+    <style>
+      .paper { fill:#f4f0e6; }
+      text { fill:#172a3a; font-family:"Courier New",monospace; }
+      .title { font-family:Georgia,serif; font-size:34px; font-weight:bold; }
+      .subtitle { font-size:16px; letter-spacing:1px; }
+      .label { font-size:19px; font-weight:bold; }
+      .detail { font-size:14px; }
+      .tiny { font-size:13px; font-weight:bold; paint-order:stroke; stroke:#f4f0e6; stroke-width:5px; stroke-linejoin:round; }
+      .rough { filter:url(#wobble); }
+      rect, circle, ellipse, path, line, polygon { fill:#fbf8ef; stroke:#172a3a; stroke-width:3; }
+      .arrow { fill:none; marker-end:url(#arrow); }
+      .red .arrow, .red path, .red line, .red rect, .red circle { stroke:#b24c2b; }
+      .red .arrow { marker-end:url(#red-arrow); }
+      .red text, text.red { fill:#b24c2b; }
+      .green rect, .green circle { fill:#dbe4d5; }
+      .amber rect, .amber circle { fill:#efe0b8; }
+      .danger rect, .danger circle { fill:#f0c9bb; stroke:#b24c2b; }
+      .ghost rect, .ghost circle { fill:#e3e7e3; stroke-dasharray:9 7; }
+      .scribble { fill:none; stroke:#b24c2b; stroke-width:4; stroke-linecap:round; }
+    </style>
+  </defs>
+  <rect class="paper" width="1200" height="700" stroke="none"/>
+  <text class="title" x="56" y="62">THE SAFETY GAUNTLET</text><text class="subtitle" x="58" y="94">a proposal crosses authority gates before reality notices</text><path class="scribble" d="M56,108 C260,101 410,116 620,107"/><g class="rough amber"><rect x="55" y="250" width="190" height="100" rx="18"/><text class="label" x="150.0" y="292.0" text-anchor="middle">PROPOSAL</text><text class="detail" x="150.0" y="324.0" text-anchor="middle">deploy chapter-3</text></g><g class="rough green"><rect x="305" y="160" width="190" height="82" rx="18"/><text class="label" x="400.0" y="193.0" text-anchor="middle">SCHEMA</text><text class="detail" x="400.0" y="225.0" text-anchor="middle">arguments valid</text></g><g class="rough danger"><rect x="305" y="285" width="190" height="82" rx="18"/><text class="label" x="400.0" y="318.0" text-anchor="middle">AUTHORITY</text><text class="detail" x="400.0" y="350.0" text-anchor="middle">caller may act?</text></g><g class="rough amber"><rect x="305" y="410" width="190" height="82" rx="18"/><text class="label" x="400.0" y="443.0" text-anchor="middle">STATE</text><text class="detail" x="400.0" y="475.0" text-anchor="middle">evidence fresh?</text></g><g class="rough amber"><rect x="570" y="220" width="210" height="100" rx="18"/><text class="label" x="675.0" y="262.0" text-anchor="middle">REVERSIBILITY</text><text class="detail" x="675.0" y="294.0" text-anchor="middle">rollback + lease</text></g><g class="rough green"><rect x="850" y="220" width="210" height="100" rx="18"/><text class="label" x="955.0" y="262.0" text-anchor="middle">KEYED EFFECT</text><text class="detail" x="955.0" y="294.0" text-anchor="middle">execute once</text></g><g class=""><path class="arrow rough" d="M245,300 C275.0,292 275.0,209 305,201"/><text class="tiny" x="275.0" y="240.5" text-anchor="middle">PARSE</text></g><g class=""><path class="arrow rough" d="M245,300 C275.0,292 275.0,334 305,326"/><text class="tiny" x="275.0" y="303.0" text-anchor="middle">CHECK</text></g><g class=""><path class="arrow rough" d="M245,300 C275.0,292 275.0,459 305,451"/><text class="tiny" x="275.0" y="365.5" text-anchor="middle">OBSERVE</text></g><g class=""><path class="arrow rough" d="M495,201 C532.5,193 532.5,278 570,270"/><text class="tiny" x="532.5" y="225.5" text-anchor="middle">PASS</text></g><g class=""><path class="arrow rough" d="M495,326 C532.5,318 532.5,278 570,270"/><text class="tiny" x="532.5" y="288.0" text-anchor="middle">PASS</text></g><g class=""><path class="arrow rough" d="M495,451 C532.5,443 532.5,278 570,270"/><text class="tiny" x="532.5" y="350.5" text-anchor="middle">PASS</text></g><g class=""><path class="arrow rough" d="M780,270 C815.0,262 815.0,278 850,270"/><text class="tiny" x="815.0" y="260.0" text-anchor="middle">BOUND</text></g><g class="rough green"><rect x="890" y="405" width="220" height="92" rx="18"/><text class="label" x="1000.0" y="443.0" text-anchor="middle">INDEPENDENT SENSOR</text><text class="detail" x="1000.0" y="475.0" text-anchor="middle">confirm or timeout</text></g><g class=""><path class="arrow rough" d="M955,320 C975.0,312 975.0,413 995,405"/><text class="tiny" x="975.0" y="352.5" text-anchor="middle">VERIFY</text></g><g class="rough danger"><rect x="365" y="555" width="390" height="70" rx="18"/><text class="label" x="560.0" y="582.0" text-anchor="middle">REJECT / REWRITE / ESCALATE</text><text class="detail" x="560.0" y="614.0" text-anchor="middle">no effect crosses on silence</text></g><g class="red"><path class="arrow rough" d="M400,367 C400,505 500,525 520,555"/><path class="arrow rough" d="M400,492 C430,535 470,545 520,555"/></g><text class="tiny" x="600" y="655" text-anchor="middle">THE FILTER STANDS BETWEEN PROPOSAL AND EFFECT, NOT BETWEEN EFFECT AND APOLOGY.</text>
+</svg>

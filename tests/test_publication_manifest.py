@@ -31,6 +31,16 @@ class PublicationManifestTests(unittest.TestCase):
         self.assertIn("(book/assets/diagrams/01-publication-institution.png)", prepared)
         self.assertNotIn("(../assets/diagrams/", prepared)
 
+    def test_latex_keeps_chapter_terminal_enrichment_after_removing_topic_list(self) -> None:
+        source = ROOT / "book/chapters/01-foundations-of-agency/index.md"
+        enrichment = build_latex_pdf.load_publication_enrichment(ROOT / "book")
+
+        prepared = build_latex_pdf.prepare_book_markdown(source, "chapter", enrichment)
+
+        self.assertIn("03-ch01-foundations.png", prepared)
+        self.assertIn(r"\siapepigraphbegin", prepared)
+        self.assertNotIn("## Topics", prepared)
+
 
 if __name__ == "__main__":
     unittest.main()
