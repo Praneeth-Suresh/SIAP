@@ -3,67 +3,102 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>World Models and State Abstractions</title>
+    <meta name="description" content="Structure and Interpretation of Agentic Patterns, a theory-backed book about agentic AI." />
+    <title>World Models and State Abstractions · SIAP</title>
     <link rel="stylesheet" href="../../assets/style.css" />
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [["\\(", "\\)"]],
+          displayMath: [["\\[", "\\]"], ["$$", "$$"]],
+          processEscapes: true
+        },
+        options: { skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] }
+      };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   </head>
   <body>
     <header class="site-header">
-      <h1><a href="../../index.html">Structure and Interpretation of Agentic Patterns</a></h1>
+      <div class="site-header__inner">
+        <a class="site-mark" href="../../index.html" aria-label="Structure and Interpretation of Agentic Patterns home">SIAP</a>
+        <div>
+          <p class="site-kicker">A book about governed machines</p>
+          <p class="site-title"><a href="../../index.html">Structure and Interpretation<br />of Agentic Patterns</a></p>
+        </div>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="book-navigation">Contents</button>
+      </div>
     </header>
     <main class="layout">
-      <aside class="sidebar">
-        <h2>Contents</h2>
-        <nav><div><a href="../../chapters/01-foundations-of-agency/index.html">chapters/01-foundations-of-agency/index</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-01-goals-environments-actions-notes.html">chapters/01-foundations-of-agency/topic-01-goals-environments-actions-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-01-goals-environments-actions.html">chapters/01-foundations-of-agency/topic-01-goals-environments-actions</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision-notes.html">chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision.html">chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions-notes.html">chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions-notes</a></div><div><a class="active" href="../../chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions.html">chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-04-policies-value-and-control-notes.html">chapters/01-foundations-of-agency/topic-04-policies-value-and-control-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-04-policies-value-and-control.html">chapters/01-foundations-of-agency/topic-04-policies-value-and-control</a></div><div><a href="../../chapters/02-reasoning-architectures/index.html">chapters/02-reasoning-architectures/index</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters-notes.html">chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters.html">chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search-notes.html">chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search.html">chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval-notes.html">chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval.html">chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners-notes.html">chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners.html">chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/index.html">chapters/03-tool-use-and-embodiment/index</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling-notes.html">chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling.html">chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling-notes.html">chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling.html">chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback-notes.html">chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback.html">chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails-notes.html">chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails.html">chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails</a></div><div><a href="../../chapters/04-multi-agent-systems/index.html">chapters/04-multi-agent-systems/index</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication-notes.html">chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication.html">chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design-notes.html">chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design.html">chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics-notes.html">chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics.html">chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration-notes.html">chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration.html">chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration</a></div><div><a href="../../index.html">index</a></div><div><a href="../../references.html">references</a></div></nav>
+      <aside class="sidebar" id="book-navigation">
+        <p class="sidebar__label">Reader’s route</p>
+        <nav aria-label="Book contents"><ol class="book-nav__list"><li class="book-nav__home"><a href="../../index.html">Book home</a></li><li class="book-nav__part"><a href="../../parts/00-system-in-action.html">Part 0: The System in Action</a></li><li class="book-nav__chapter"><a href="index.html">Chapter 1: Foundations of Agency</a><ol class="book-nav__topics"><li><a href="topic-01-goals-environments-actions.html">Goals, Environments, and Actions</a></li><li><a href="topic-02-belief-uncertainty-and-decision.html">Belief, Uncertainty, and Decision</a></li><li><a href="topic-03-world-models-and-state-abstractions.html" aria-current="page">World Models and State Abstractions</a></li><li><a href="topic-04-policies-value-and-control.html">Policies, Value, and Control</a></li></ol></li><li class="book-nav__chapter"><a href="../02-reasoning-architectures/index.html">Chapter 2: Reasoning Architectures</a><ol class="book-nav__topics"><li><a href="../02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters.html">Reasoning Loops as Interpreters</a></li><li><a href="../02-reasoning-architectures/topic-02-deliberation-planning-and-search.html">Deliberation, Planning, and Search</a></li><li><a href="../02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval.html">Memory Systems, Context, and Retrieval</a></li><li><a href="../02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners.html">Evaluating and Debugging Reasoners</a></li></ol></li><li class="book-nav__chapter"><a href="../03-tool-use-and-embodiment/index.html">Chapter 3: Tool Use and Embodiment</a><ol class="book-nav__topics"><li><a href="../03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling.html">Tool Interfaces and Function Calling</a></li><li><a href="../03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling.html">Retrieval-Augmented Tooling</a></li><li><a href="../03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback.html">Embodiment: Sensors, Actuators, and Feedback</a></li><li><a href="../03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails.html">Safety Constraints and Guardrails</a></li></ol></li><li class="book-nav__chapter"><a href="../04-multi-agent-systems/index.html">Chapter 4: Multi-Agent Systems</a><ol class="book-nav__topics"><li><a href="../04-multi-agent-systems/topic-01-coordination-protocols-and-communication.html">Coordination Protocols and Communication</a></li><li><a href="../04-multi-agent-systems/topic-02-negotiation-and-mechanism-design.html">Negotiation and Mechanism Design</a></li><li><a href="../04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics.html">Equilibria, Self-Play, and Learning Dynamics</a></li><li><a href="../04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration.html">Neural Ensembles and Orchestration</a></li></ol></li><li class="book-nav__references"><a href="../../references.html">References</a></li></ol></nav>
       </aside>
       <article class="content">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../index.html">Book</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><a href="index.html">Chapter 1: Foundations of Agency</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><span aria-current="page">World Models and State Abstractions</span></nav>
         <h1 id="world-models-and-state-abstractions">World Models and State Abstractions</h1>
 <p>What should an agent carry in its head from one decision to the next? Two ideas answer that question. A <strong>world model</strong> says how the world tends to change. A <strong>state abstraction</strong> says which parts of the past are worth keeping when choosing the next action. Get these wrong and the agent either forgets what it needed or chokes on what it did not.</p>
-<p>Belief cannot remain an ever-growing transcript. An agent that remembers every token as equally available state has not become wise; it has made planning expensive and brittle.</p>
+<p>Belief cannot remain an ever-growing transcript. Newborn Agent-427 has no durable memory at all; within one run, even its temporary history can outgrow the useful decision state. An agent that treats every token as equally available state has not become wise; it has made planning expensive and brittle.</p>
 <p>The design problem is selective forgetting. Forget too much and the agent loses the variables that make action competent. Retain too much and the policy drowns in irrelevant distinctions. Good abstraction is compression in service of control.</p>
 <h2 id="from-history-to-decision-state">From History to Decision State</h2>
 <h3 id="the-formal-setup-compressing-a-decision-problem">The Formal Setup: Compressing a Decision Problem</h3>
-<p>Let the ground control problem be a <strong>Markov decision process (MDP)</strong>, written as the tuple ((\mathcal S,\mathcal A,T,R,\gamma)) [<a href="../../references.html#ref-4">4</a>] [<a href="../../references.html#ref-5">5</a>]. Read the pieces aloud like this: (\mathcal S) is the set of states, (\mathcal A) is the set of actions, (T) is the transition rule saying which state comes next, (R) is the reward, and (\gamma) (gamma) is the discount that makes distant rewards count less.</p>
-<p>Now let (\phi:\mathcal S\to\mathcal Z) map detailed states to abstract states. Read (\phi) (phi) as "the compression map that sends a detailed state to its coarser label". Exact <strong>homomorphism</strong> requires reward and transition consistency [<a href="../../references.html#ref-37">37</a>]:</p>
-<p>[
+<p>Let the ground control problem be a <strong>Markov decision process (MDP)</strong>, written as the tuple \((\mathcal S,\mathcal A,T,R,\gamma)\) [<a href="../../references.html#ref-4">4</a>] [<a href="../../references.html#ref-5">5</a>]. Read the pieces aloud like this: \(\mathcal S\) is the set of states, \(\mathcal A\) is the set of actions, \(T\) is the transition rule saying which state comes next, \(R\) is the reward, and \(\gamma\) (gamma) is the discount that makes distant rewards count less.</p>
+<p>Now let \(\phi:\mathcal S\to\mathcal Z\) map detailed states to abstract states. Read \(\phi\) (phi) as "the compression map that sends a detailed state to its coarser label". Exact <strong>homomorphism</strong> requires reward and transition consistency [<a href="../../references.html#ref-37">37</a>]:</p>
+<p>\[
 R(s,a)=\bar R(\phi(s),a),\qquad
 \sum_{s':\phi(s')=z'}T(s'\mid s,a)=\bar T(z'\mid \phi(s),a).
-]</p>
-<p>A homomorphism is a structure-preserving map. In ordinary programming terms, (\phi) is a compression function. It is allowed to rename and merge states only when the merged states still behave the same way for decisions.</p>
-<p>The barred symbols (\bar R) and (\bar T) live in the abstract world (\mathcal Z). So (\bar T(z'\mid z,a)) means "the transition probability between abstract states after compression". The sum on the left collects all detailed next states (s') that (\phi) maps into the same abstract state (z').</p>
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> Step 1: two detailed states both give reward 3 under <code>inspect</code>, so reward mismatch is 0. Step 2: their probabilities of reaching abstract state <code>known</code> are 0.80 and 0.78, so transition mismatch is 0.02.</p>
+</blockquote>
+<p>A homomorphism is a structure-preserving map. In ordinary programming terms, \(\phi\) is a compression function. It is allowed to rename and merge states only when the merged states still behave the same way for decisions.</p>
+<p>The barred symbols \(\bar R\) and \(\bar T\) live in the abstract world \(\mathcal Z\). So \(\bar T(z'\mid z,a)\) means "the transition probability between abstract states after compression". The sum on the left collects all detailed next states \(s'\) that \(\phi\) maps into the same abstract state \(z'\).</p>
 <h3 id="a-four-state-coding-example-you-can-check-by-hand">A Four-State Coding Example You Can Check by Hand</h3>
 <p>Here is a four-state coding example. Let the detailed states be:</p>
 <ul>
-<li>(s_1=) "tests red because dependency missing";</li>
-<li>(s_2=) "tests red because dependency missing and cache stale";</li>
-<li>(s_3=) "tests red because behavior regressed";</li>
-<li>(s_4=) "tests green".</li>
+<li>\(s_1=\) "tests red because dependency missing";</li>
+<li>\(s_2=\) "tests red because dependency missing and cache stale";</li>
+<li>\(s_3=\) "tests red because behavior regressed";</li>
+<li>\(s_4=\) "tests green".</li>
 </ul>
-<p>A useful abstraction might map (\phi(s_1)=\phi(s_2)=z_D) for dependency trouble, (\phi(s_3)=z_B) for behavioral bug, and (\phi(s_4)=z_G) for green.</p>
-<p>Now check the two conditions with small numbers. Suppose the action <code>install_dependency</code> gives reward (+3) in both (s_1) and (s_2), and moves to (z_G) with probabilities (0.80) and (0.78). The rewards match exactly, and the transition probabilities differ by only (0.02). Merging (s_1) and (s_2) therefore approximately preserves reward and transition.</p>
-<p>Contrast that with a bad merge. Suppose <code>edit_logic</code> gives (-2) in (s_1) but (+6) in (s_3). Collapsing (s_1) and (s_3) into a single <code>tests_red</code> state fails action preservation. The same abstract state would recommend incompatible repairs, because the reward gap is (8), not (0).</p>
+<p>A useful abstraction might map \(\phi(s_1)=\phi(s_2)=z_D\) for dependency trouble, \(\phi(s_3)=z_B\) for behavioral bug, and \(\phi(s_4)=z_G\) for green.</p>
+<p>Now check the two conditions with small numbers. Suppose the action <code>install_dependency</code> gives reward \(+3\) in both \(s_1\) and \(s_2\), and moves to \(z_G\) with probabilities \(0.80\) and \(0.78\). The rewards match exactly, and the transition probabilities differ by only \(0.02\). Merging \(s_1\) and \(s_2\) therefore approximately preserves reward and transition.</p>
+<p>Contrast that with a bad merge. Suppose <code>edit_logic</code> gives \(-2\) in \(s_1\) but \(+6\) in \(s_3\). Collapsing \(s_1\) and \(s_3\) into a single <code>tests_red</code> state fails action preservation. The same abstract state would recommend incompatible repairs, because the reward gap is \(8\), not \(0\).</p>
 <h3 id="planning-inside-the-compressed-space">Planning Inside the Compressed Space</h3>
 <p>Under those assumptions, planning can occur in the compressed space:</p>
-<p>[
-\bar V^{<em>}(z)=\max_{a\in\mathcal A}\Big[\bar R(z,a)+\gamma\sum_{z'}\bar T(z'\mid z,a)\bar V^{</em>}(z')\Big].
-]</p>
+<p>\[
+\bar V^{*}(z)=\max_{a\in\mathcal A}\Big[\bar R(z,a)+\gamma\sum_{z'}\bar T(z'\mid z,a)\bar V^{*}(z')\Big].
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> Step 1: an action earns 2 and reaches abstract values 6 and 4 with equal probability. Step 2: at \(\gamma=0.5\), its value is \(2+0.5[0.5(6)+0.5(4)]=4.5\).</p>
+</blockquote>
 <p>Read this as: the best long-run value of an abstract state is the best available immediate abstract reward plus the discounted average value of wherever that action lands you. The practical payoff is that the planner never has to look at the full detailed state space.</p>
 <h3 id="what-approximate-abstractions-cost-you">What Approximate Abstractions Cost You</h3>
 <p>The assumptions are strong. Approximate abstractions are more realistic. Their errors should be interpreted as possible value loss rather than as harmless summarization noise. A standard simulation-style bound has the shape</p>
-<p>[
-|V^{<em>}-\bar V^{</em>}!\circ\phi|<em _max="\max">\infty \lesssim \frac{\varepsilon_R}{1-\gamma}+\frac{\gamma R</em>\varepsilon_P,
-]}}{(1-\gamma)^2</p>
-<p>where (\varepsilon_R) and (\varepsilon_P) bound reward and transition mismatch [<a href="../../references.html#ref-37">37</a>] [<a href="../../references.html#ref-39">39</a>]. The message is practical. Every compressed-away detail is acceptable only if it does not materially change the action the agent should take.</p>
-<p>Two pieces of notation deserve a plain reading. The norm (|\cdot|_\infty), called the <strong>supremum norm</strong> or <strong>sup norm</strong>, means "look at the largest absolute error over all states". The symbol (\lesssim) means "bounded up to a conventional constant or omitted technical factor". It is a mathematician's compact way of saying that the right-hand side controls the scale of the left-hand side.</p>
+<p>\[
+\|V^{*}-\bar V^{*}\!\circ\phi\|_\infty \lesssim \frac{\varepsilon_R}{1-\gamma}+\frac{\gamma R_{\max}}{(1-\gamma)^2}\varepsilon_P,
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> Step 1: with \(\gamma=0.5\), \(\varepsilon_R=0.1\), \(R_{\max}=1\), and \(\varepsilon_P=0.02\), the reward term is \(0.1/0.5=0.2\). Step 2: the transition term is \(0.5(1)(0.02)/0.5^2=0.04\), for a bound scale of \(0.24\).</p>
+</blockquote>
+<p>where \(\varepsilon_R\) and \(\varepsilon_P\) bound reward and transition mismatch [<a href="../../references.html#ref-37">37</a>] [<a href="../../references.html#ref-39">39</a>]. The message is practical. Every compressed-away detail is acceptable only if it does not materially change the action the agent should take.</p>
+<p>Two pieces of notation deserve a plain reading. The norm \(\|\cdot\|_\infty\), called the <strong>supremum norm</strong> or <strong>sup norm</strong>, means "look at the largest absolute error over all states". The symbol \(\lesssim\) means "bounded up to a conventional constant or omitted technical factor". It is a mathematician's compact way of saying that the right-hand side controls the scale of the left-hand side.</p>
 <p>The assumptions behind the bound are doing real work:</p>
 <ul>
-<li>rewards must be bounded by (R_{\max}), the largest reward magnitude;</li>
-<li>the discount must satisfy (\gamma&lt;1);</li>
-<li>(\varepsilon_R) and (\varepsilon_P) must genuinely bound the abstraction's reward and transition errors.</li>
+<li>rewards must be bounded by \(R_{\max}\), the largest reward magnitude;</li>
+<li>the discount must satisfy \(\gamma<1\);</li>
+<li>\(\varepsilon_R\) and \(\varepsilon_P\) must genuinely bound the abstraction's reward and transition errors.</li>
 </ul>
-<p>Watch the discount term. With (\gamma=0.9), the factor (1/(1-\gamma)^2) is (100). With (\gamma=0.99) it is (10{,}000). If (\gamma) is close to (1), small transition errors can echo for a long time. That is why a cheerful summary such as <code>repo_status: messy</code> is not enough for high-stakes editing.</p>
+<p>Watch the discount term. With \(\gamma=0.9\), the factor \(1/(1-\gamma)^2\) is \(100\). With \(\gamma=0.99\) it is \(10{,}000\). If \(\gamma\) is close to \(1\), small transition errors can echo for a long time. That is why a cheerful summary such as <code>repo_status: messy</code> is not enough for high-stakes editing.</p>
+<h2 id="the-assumption">The Assumption</h2>
+<p>State abstraction assumes that histories merged into one abstract state support the same consequential choices. Exact homomorphism states the ideal; approximate bounds price the deviation. The theorem-shaped promise is conditional: bounded reward, \(\gamma<1\), and honest mismatch bounds. Violate any of them and the displayed value-loss bound no longer licenses the policy. If reward is unbounded or the measured transition error omits a rare release-freeze regime, the arithmetic can be immaculate and irrelevant.</p>
+<blockquote>
+<p><strong>Skeptical Engineer:</strong> “The context window is enormous now. Why not keep everything and let attention sort it out?”</p>
+<p><strong>Author:</strong> Capacity is not relevance, and attention is not a contract [<a href="../../references.html#ref-76">76</a>]. The policy still needs to know which branch, authority boundary, freshness marker, and unresolved hypothesis controls the next action. A larger attic does not tell the forklift which crate contains the brakes.</p>
+</blockquote>
 <h2 id="logs-are-archives-state-is-policy-fuel">Logs Are Archives; State Is Policy Fuel</h2>
 <h3 id="separating-the-audit-trail-from-the-decision-state">Separating the Audit Trail from the Decision State</h3>
-<p>A useful implementation separates raw memory from decision state. The code below keeps two fields: an append-only <code>event_log</code> for auditing and retrieval, and a small <code>decision_state</code> that the policy actually reads. Ingestion writes to both; acting reads only the compact one.</p>
+<p>A useful implementation separates the raw in-run log from decision state. Agent-427 cannot persist either across runs yet. The code below keeps two in-memory fields: an append-only <code>event_log</code> for auditing during the run, and a small <code>decision_state</code> that the policy actually reads. Ingestion writes to both; acting reads only the compact one.</p>
 <pre><code class="language-python">from dataclasses import dataclass
 
 @dataclass
@@ -95,35 +130,54 @@ def act(mem: AgentMemory):
 <p>It usually does not need every line of conversation. Raw logs remain available for audit and targeted retrieval. But retrieval should be a gated action with explicit cost, as later memory systems will develop in more detail (see <a href="../02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval.html">Memory Systems, Context, and Retrieval</a>).</p>
 <h3 id="the-sufficiency-condition-that-licenses-forgetting">The Sufficiency Condition That Licenses Forgetting</h3>
 <p>The formal requirement is conditional sufficiency:</p>
-<p>[
+<p>\[
 P(s_{t+1},r_t\mid h_t,a_t)=P(s_{t+1},r_t\mid z_t,a_t),\qquad z_t=\psi(h_t).
-]</p>
-<p>Read the left side as "the chance of the next state and this step's reward given the whole history (h_t) and the action (a_t)". Read the right side the same way, but with the compressed state (z_t) in place of the history. The map (\psi) (psi) is the summarizer that turns history into that compact state.</p>
-<p>This says that, for the next decision, the compressed state (z_t) carries the predictive information from history that matters. It does not say the archive is useless. It says the policy should not be forced to plan over the archive unless the current decision needs it.</p>
-<p>Action selection can then be interpreted as expected-utility maximization over (z_t), provided the abstraction preserves the distinctions that affect utility [<a href="../../references.html#ref-34">34</a>]. A quick check for builders: if two histories produce the same (z_t) but you would want different next actions, the abstraction is already broken.</p>
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> Step 1: suppose full history predicts pass/fail as 0.8/0.2. Step 2: if compressed state predicts the same 0.8/0.2, the one-step discrepancy is 0; if it predicts 0.5/0.5, sufficiency has failed visibly.</p>
+</blockquote>
+<p>Read the left side as "the chance of the next state and this step's reward given the whole history \(h_t\) and the action \(a_t\)". Read the right side the same way, but with the compressed state \(z_t\) in place of the history. The map \(\psi\) (psi) is the summarizer that turns history into that compact state.</p>
+<p>This says that, for the next decision, the compressed state \(z_t\) carries the predictive information from history that matters. It does not say the archive is useless. It says the policy should not be forced to plan over the archive unless the current decision needs it.</p>
+<p>Action selection can then be interpreted as expected-utility maximization over \(z_t\), provided the abstraction preserves the distinctions that affect utility [<a href="../../references.html#ref-34">34</a>]. A quick check for builders: if two histories produce the same \(z_t\) but you would want different next actions, the abstraction is already broken.</p>
+<h2 id="the-violation">The Violation</h2>
+<p>Agent-427 inspects two publication workspaces. One targets <code>draft-a</code>; the other targets <code>draft-b</code>. Both have a red citation check. The abstraction <code>{"checks": "red"}</code> maps them to one state and deletes the target identifier. A policy asked to inspect the relevant source now cannot choose the correct path. The compression saved perhaps twenty tokens and erased the variable that determines the action.</p>
+<p>The opposite failure is contamination by correlation. A trace says that clearing a cache preceded a successful check three times. An abstraction stores <code>cache_clear_fixes_checks=True</code> and drops the simultaneous dependency refresh. The summary is compact, predictive on old logs, and causally wrong. When the environment changes, Agent-427 recommends the ritual cache clear with the grave confidence of a machine that has mistaken coincidence for physics.<sup id="fnref:attic"><a class="footnote-ref" href="#fn:attic">1</a></sup></p>
+<p>Because Agent-427 has no durable memory, neither state survives a restart. That limitation is explicit. Chapter 2 will add memory and inherit the harder obligation to preserve provenance and version across time.</p>
+<h2 id="when-it-fails">When It Fails</h2>
+<p>The sufficiency equation is falsifiable. Find two histories that map to the same \(z_t\), hold the proposed action fixed, and compare next-state or reward distributions. In the workspace example, <code>inspect draft-a</code> is useful in one history and wrong in the other. The equality fails, so the summarizer must restore <code>target_workspace</code> or force a fresh inspection before acting.</p>
+<p>Approximation bounds fail more quietly. If tests cover common states but omit the release-freeze tail, measured \(\varepsilon_P\) can look tiny while the actual policy changes exactly when the stakes rise. The repair is stratified evaluation: measure action preservation and value loss across task regimes, especially rare ones, and include an <code>unknown</code> state that makes missing distinctions visible rather than silently defaulting them.</p>
 <h2 id="behavioral-and-causal-fidelity">Behavioral and Causal Fidelity</h2>
 <h3 id="measuring-close-enough-with-bisimulation-distance">Measuring "Close Enough" with Bisimulation Distance</h3>
 <p>Bisimulation metrics sharpen the idea of "close enough" by measuring whether two states behave similarly under action [<a href="../../references.html#ref-38">38</a>]:</p>
-<p>[
+<p>\[
 d(s,s')=\max_{a\in\mathcal A}\Big(|R(s,a)-R(s',a)|+\gamma\,W_d\big(T(\cdot\mid s,a),T(\cdot\mid s',a)\big)\Big),
-]</p>
-<p>with (W_d) the Kantorovich lift induced by (d), which turns a distance between single states into a distance between distributions over states. If (d(s,s')) is small, the states are interchangeable up to a quantified tolerance. If "test failed because dependency missing" and "test failed because behavior regressed" collapse into the same feature <code>tests_red</code>, the abstraction may be compact, but it is not behaviorally faithful.</p>
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> Step 1: let reward difference be 2 and lifted transition distance be 0.4. Step 2: with \(\gamma=0.5\), the action contributes \(2+0.5(0.4)=2.2\) to the distance.</p>
+</blockquote>
+<p>with \(W_d\) the Kantorovich lift induced by \(d\), which turns a distance between single states into a distance between distributions over states. If \(d(s,s')\) is small, the states are interchangeable up to a quantified tolerance. If "test failed because dependency missing" and "test failed because behavior regressed" collapse into the same feature <code>tests_red</code>, the abstraction may be compact, but it is not behaviorally faithful.</p>
 <p>A <strong>bisimulation</strong> asks whether two states can answer the same action questions. Do they give similar immediate rewards? Do they lead to similar distributions over future states? The first term in the formula checks reward. The second term compares transition distributions.</p>
-<p>(W_d), the <strong>Kantorovich lifting</strong>, is a way to lift a distance between individual states into a distance between probability distributions over states. Intuitively, it asks how much "work" is needed to transport probability mass from one next-state distribution to the other, when moving mass between unlike states is expensive.</p>
+<p>\(W_d\), the <strong>Kantorovich lifting</strong>, is a way to lift a distance between individual states into a distance between probability distributions over states. Intuitively, it asks how much "work" is needed to transport probability mass from one next-state distribution to the other, when moving mass between unlike states is expensive.</p>
 <p>The exact transport machinery can wait; the engineering lesson cannot. If two situations lead to different repair actions, their distance should not be treated as zero merely because the same red test banner appears.</p>
 <h3 id="why-acting-agents-need-causal-models-not-just-correlations">Why Acting Agents Need Causal Models, Not Just Correlations</h3>
 <p>Agents also need causal fidelity when they intervene. A causal world model encodes mechanisms rather than only associations [<a href="../../references.html#ref-6">6</a>]:</p>
-<p>[
+<p>\[
 X_i=f_i(\mathrm{Pa}(X_i),U_i),\qquad P(x_1,\dots,x_n)=\prod_i P(x_i\mid \mathrm{pa}_i).
-]</p>
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> Step 1: let a binary parent occur with probability 0.5 and its child with conditional probability 0.8. Step 2: that joint assignment has probability \(0.5\times0.8=0.4\).</p>
+</blockquote>
 <p>Intervention semantics replace observation with action:</p>
-<p>[
+<p>\[
 P(x_1,\dots,x_n\mid \mathrm{do}(X_j=x))=\mathbf{1}[x_j=x]\prod_{i\neq j}P(x_i\mid \mathrm{pa}_i).
-]</p>
-<p>These are <strong>structural causal equations</strong>. Each variable (X_i) is produced by a function (f_i) of its parents (\mathrm{Pa}(X_i)) and background disturbance (U_i). Read (\mathrm{Pa}(X_i)) as "the parents of (X_i)", meaning the variables that directly cause it. The product factorization says the joint probability can be assembled from each variable given its parents.</p>
-<p>The notation (\mathrm{do}(X_j=x)) means an intervention: set (X_j) to (x) by action, rather than merely observing that it happened to equal (x). The indicator (\mathbf{1}[x_j=x]) reads "one when (x_j) equals (x), zero otherwise", which is how the equation records that the intervened variable no longer listens to its parents. In code-agent language, observing that "tests pass after a cache clear" is not the same as knowing that clearing the cache caused the pass. Perhaps the dependency install was the real mechanism.</p>
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> Step 1: intervene so \(X_j=x\), making the indicator 1. Step 2: if the two remaining conditional factors are 0.6 and 0.5, the interventional assignment has probability \(1\times0.6\times0.5=0.3\).</p>
+</blockquote>
+<p>These are <strong>structural causal equations</strong>. Each variable \(X_i\) is produced by a function \(f_i\) of its parents \(\mathrm{Pa}(X_i)\) and background disturbance \(U_i\). Read \(\mathrm{Pa}(X_i)\) as "the parents of \(X_i\)", meaning the variables that directly cause it. The product factorization says the joint probability can be assembled from each variable given its parents.</p>
+<p>The notation \(\mathrm{do}(X_j=x)\) means an intervention: set \(X_j\) to \(x\) by action, rather than merely observing that it happened to equal \(x\). The indicator \(\mathbf{1}[x_j=x]\) reads "one when \(x_j\) equals \(x\), zero otherwise", which is how the equation records that the intervened variable no longer listens to its parents. In code-agent language, observing that "tests pass after a cache clear" is not the same as knowing that clearing the cache caused the pass. Perhaps the dependency install was the real mechanism.</p>
 <p>That distinction matters for agents because they do not merely predict. They edit files, send messages, allocate resources, and call tools. "This change correlated with lower latency" is weaker than "raising worker count lowers queue latency after a delay and raises cost".</p>
-<p>A state abstraction that erases the difference between correlation and intervention will mislead control. Feedback laws such as (u_t=-K\hat x_t) are a reminder of the point. Read that as "the control input at time (t) is minus a gain matrix (K) times the estimated state (\hat x_t)". The estimated state is not a report for its own sake; it is the input to correction [<a href="../../references.html#ref-36">36</a>] [<a href="../../references.html#ref-41">41</a>].</p>
+<p>A state abstraction that erases the difference between correlation and intervention will mislead control. Feedback laws such as \(u_t=-K\hat x_t\) are a reminder of the point. Read that as "the control input at time \(t\) is minus a gain matrix \(K\) times the estimated state \(\hat x_t\)". The estimated state is not a report for its own sake; it is the input to correction [<a href="../../references.html#ref-36">36</a>] [<a href="../../references.html#ref-41">41</a>].</p>
 <h2 id="studying-abstractions">Studying Abstractions</h2>
 <h3 id="good-compression-depends-on-the-task">Good Compression Depends on the Task</h3>
 <p>Evaluate abstractions by downstream behavior. The quality of a compression is task-dependent, because different tasks preserve different distinctions.</p>
@@ -135,17 +189,38 @@ P(x_1,\dots,x_n\mid \mathrm{do}(X_j=x))=\mathbf{1}[x_j=x]\prod_{i\neq j}P(x_i\mi
 <h3 id="five-measurements-worth-taking">Five Measurements Worth Taking</h3>
 <p>These are the quantities to instrument when you are judging a candidate abstraction:</p>
 <ul>
-<li>Value loss: (\Delta_V=|V^{<em>}-\tilde V^{</em>}\circ\phi|_\infty), read as "the largest gap, over all states, between true optimal value and the abstract value pulled back through (\phi)". Estimate it by scoring the abstract policy in the detailed environment.</li>
+<li>Value loss: \(\Delta_V=\|V^{*}-\tilde V^{*}\circ\phi\|_\infty\), read as "the largest gap, over all states, between true optimal value and the abstract value pulled back through \(\phi\)". Estimate it by scoring the abstract policy in the detailed environment.</li>
 <li>Intervention fidelity: predicted and observed effects under controlled actions. Measure it by taking the action deliberately and comparing outcome to prediction.</li>
 <li>Robustness under distribution shift, meaning a change between the situations the abstraction was designed on and the ones it now meets, especially when retrieval budgets are constrained. Measure it by rerunning the same tasks with a tighter retrieval budget and watching how fast value loss grows.</li>
-<li>Action preservation: whether states mapped to the same (z) really support the same action.</li>
+<li>Action preservation: whether states mapped to the same \(z\) really support the same action.</li>
 <li>Token and latency savings: whether the smaller state reduces context size, model time, retrieval work, and tool waiting, without buying those savings by erasing decision-relevant variables.</li>
 </ul>
 <p>The interpreter now has a compact internal language. Topic 1 (Goals, Environments, and Actions) gave it a contract. Topic 2 (Belief, Uncertainty, and Decision) gave it belief. This topic gives it a state representation small enough to act on but faithful enough to trust. The remaining question is how action selection becomes governed control rather than a single eager choice.</p>
+<h2 id="exercise-break-two-summarizers">Exercise: Break Two Summarizers</h2>
+<p>Implement two Python functions over synthetic agent traces. <code>last_n_tokens(history, n)</code> keeps a fixed suffix. <code>decision_state(history)</code> extracts target workspace, check status, evidence freshness, permissions, unresolved hypotheses, and remaining budget. Generate at least 1,000 seeded traces in which the decisive target or permission appears early, while later log noise is longer than the suffix budget.</p>
+<p>For each abstraction, measure token count, action-preservation rate, and realized value under a reference policy that sees full history. Add a second dataset where cache clearing correlates with success but dependency refresh is the true intervention. Your test must demonstrate one state pair with distance zero under the naive abstraction but different optimal actions, then repair the abstraction until the pair separates. No prose-only victory conditions: submit the generator, assertions, and a table of measured failures.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:attic">
+<p>“We have always cleared the cache” is not a causal model. It is an origin myth with a shell command.&#160;<a class="footnote-backref" href="#fnref:attic" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+        <nav class="reading-nav" aria-label="Reading navigation"><div class="reading-nav__previous"><span>Previous</span><a href="topic-02-belief-uncertainty-and-decision.html">Belief, Uncertainty, and Decision</a></div><div class="reading-nav__up"><span>Chapter</span><a href="index.html">Chapter 1: Foundations of Agency</a></div><div class="reading-nav__next"><span>Next</span><a href="topic-04-policies-value-and-control.html">Policies, Value, and Control</a></div></nav>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-07-27 18:55 UTC
+      <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
+      <p>Last generated: 2026-08-06 11:32 UTC</p>
     </footer>
+    <script>
+      const toggle = document.querySelector(".nav-toggle");
+      const navigation = document.querySelector(".sidebar");
+      toggle.addEventListener("click", () => {
+        const open = navigation.classList.toggle("sidebar--open");
+        toggle.setAttribute("aria-expanded", String(open));
+      });
+    </script>
   </body>
 </html>

@@ -3,159 +3,221 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Memory Systems, Context, and Retrieval</title>
+    <meta name="description" content="Structure and Interpretation of Agentic Patterns, a theory-backed book about agentic AI." />
+    <title>Memory Systems, Context, and Retrieval · SIAP</title>
     <link rel="stylesheet" href="../../assets/style.css" />
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [["\\(", "\\)"]],
+          displayMath: [["\\[", "\\]"], ["$$", "$$"]],
+          processEscapes: true
+        },
+        options: { skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] }
+      };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   </head>
   <body>
     <header class="site-header">
-      <h1><a href="../../index.html">Structure and Interpretation of Agentic Patterns</a></h1>
+      <div class="site-header__inner">
+        <a class="site-mark" href="../../index.html" aria-label="Structure and Interpretation of Agentic Patterns home">SIAP</a>
+        <div>
+          <p class="site-kicker">A book about governed machines</p>
+          <p class="site-title"><a href="../../index.html">Structure and Interpretation<br />of Agentic Patterns</a></p>
+        </div>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="book-navigation">Contents</button>
+      </div>
     </header>
     <main class="layout">
-      <aside class="sidebar">
-        <h2>Contents</h2>
-        <nav><div><a href="../../chapters/01-foundations-of-agency/index.html">chapters/01-foundations-of-agency/index</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-01-goals-environments-actions-notes.html">chapters/01-foundations-of-agency/topic-01-goals-environments-actions-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-01-goals-environments-actions.html">chapters/01-foundations-of-agency/topic-01-goals-environments-actions</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision-notes.html">chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision.html">chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions-notes.html">chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions.html">chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-04-policies-value-and-control-notes.html">chapters/01-foundations-of-agency/topic-04-policies-value-and-control-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-04-policies-value-and-control.html">chapters/01-foundations-of-agency/topic-04-policies-value-and-control</a></div><div><a href="../../chapters/02-reasoning-architectures/index.html">chapters/02-reasoning-architectures/index</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters-notes.html">chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters.html">chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search-notes.html">chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search.html">chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval-notes.html">chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval-notes</a></div><div><a class="active" href="../../chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval.html">chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners-notes.html">chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners.html">chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/index.html">chapters/03-tool-use-and-embodiment/index</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling-notes.html">chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling.html">chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling-notes.html">chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling.html">chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback-notes.html">chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback.html">chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails-notes.html">chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails.html">chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails</a></div><div><a href="../../chapters/04-multi-agent-systems/index.html">chapters/04-multi-agent-systems/index</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication-notes.html">chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication.html">chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design-notes.html">chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design.html">chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics-notes.html">chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics.html">chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration-notes.html">chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration.html">chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration</a></div><div><a href="../../index.html">index</a></div><div><a href="../../references.html">references</a></div></nav>
+      <aside class="sidebar" id="book-navigation">
+        <p class="sidebar__label">Reader’s route</p>
+        <nav aria-label="Book contents"><ol class="book-nav__list"><li class="book-nav__home"><a href="../../index.html">Book home</a></li><li class="book-nav__part"><a href="../../parts/00-system-in-action.html">Part 0: The System in Action</a></li><li class="book-nav__chapter"><a href="../01-foundations-of-agency/index.html">Chapter 1: Foundations of Agency</a><ol class="book-nav__topics"><li><a href="../01-foundations-of-agency/topic-01-goals-environments-actions.html">Goals, Environments, and Actions</a></li><li><a href="../01-foundations-of-agency/topic-02-belief-uncertainty-and-decision.html">Belief, Uncertainty, and Decision</a></li><li><a href="../01-foundations-of-agency/topic-03-world-models-and-state-abstractions.html">World Models and State Abstractions</a></li><li><a href="../01-foundations-of-agency/topic-04-policies-value-and-control.html">Policies, Value, and Control</a></li></ol></li><li class="book-nav__chapter"><a href="index.html">Chapter 2: Reasoning Architectures</a><ol class="book-nav__topics"><li><a href="topic-01-reasoning-loops-as-interpreters.html">Reasoning Loops as Interpreters</a></li><li><a href="topic-02-deliberation-planning-and-search.html">Deliberation, Planning, and Search</a></li><li><a href="topic-03-memory-systems-context-and-retrieval.html" aria-current="page">Memory Systems, Context, and Retrieval</a></li><li><a href="topic-04-evaluating-and-debugging-reasoners.html">Evaluating and Debugging Reasoners</a></li></ol></li><li class="book-nav__chapter"><a href="../03-tool-use-and-embodiment/index.html">Chapter 3: Tool Use and Embodiment</a><ol class="book-nav__topics"><li><a href="../03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling.html">Tool Interfaces and Function Calling</a></li><li><a href="../03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling.html">Retrieval-Augmented Tooling</a></li><li><a href="../03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback.html">Embodiment: Sensors, Actuators, and Feedback</a></li><li><a href="../03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails.html">Safety Constraints and Guardrails</a></li></ol></li><li class="book-nav__chapter"><a href="../04-multi-agent-systems/index.html">Chapter 4: Multi-Agent Systems</a><ol class="book-nav__topics"><li><a href="../04-multi-agent-systems/topic-01-coordination-protocols-and-communication.html">Coordination Protocols and Communication</a></li><li><a href="../04-multi-agent-systems/topic-02-negotiation-and-mechanism-design.html">Negotiation and Mechanism Design</a></li><li><a href="../04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics.html">Equilibria, Self-Play, and Learning Dynamics</a></li><li><a href="../04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration.html">Neural Ensembles and Orchestration</a></li></ol></li><li class="book-nav__references"><a href="../../references.html">References</a></li></ol></nav>
       </aside>
       <article class="content">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../index.html">Book</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><a href="index.html">Chapter 2: Reasoning Architectures</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><span aria-current="page">Memory Systems, Context, and Retrieval</span></nav>
         <h1 id="memory-systems-context-and-retrieval">Memory Systems, Context, and Retrieval</h1>
-<p>Keep it, throw it away, or go looking for it: an agent faces those three choices constantly, and they are as much a part of the machine as the model itself. We will treat memory as a set of decisions with costs, not as a storage bin. By the end you should be able to say why a particular fact is in the prompt right now, and what it displaced.</p>
-<p>Deliberation, Planning, and Search extends the interpreter forward into imagined time. Memory extends it backward. It decides which parts of the past should stay available to future steps. The context window is not the agent's memory. It is the small working surface onto which memory is projected, the way a slide is projected onto a wall.</p>
-<h2 id="memory-is-a-policy-not-a-filing-cabinet">Memory Is a Policy, Not a Filing Cabinet</h2>
-<p>A memory system is a control policy. A <em>policy</em> is a rule for choosing what to do next. This particular policy chooses among four things: retain, compress, retrieve, and forget.</p>
-<p>A weak policy treats all past text as equally eligible for attention. Everything that happened is still lying around, so everything competes for the model's limited notice. A stronger policy asks three sharper questions:</p>
-<ul>
-<li>Which stored distinctions can actually change the next action?</li>
-<li>Which evidence must remain auditable, meaning a human can later trace a claim to its source?</li>
-<li>Which stale traces should be kept out of the active state entirely?</li>
-</ul>
-<h2 id="memory-as-controlled-state">Memory as Controlled State</h2>
-<p>Let the memory state be (m_t=(w_t,e_t,s_t)). Read that as "at step (t), memory consists of three stores": working, episodic, and semantic.</p>
-<ul>
-<li>Working memory (w_t) holds the current control state: the plan, the constraints, the last observation.</li>
-<li>Episodic memory (e_t) preserves concrete events and traces: what was run, what was returned.</li>
-<li>Semantic memory (s_t) stores distilled facts, patterns, and policies: what has generally been true.</li>
-</ul>
-<p>A memory controller chooses operations
-[
-u_t \in {\texttt{write},\texttt{compress},\texttt{retrieve},\texttt{evict}}
-]
-which reads "the control action at step (t) is one of write, compress, retrieve, or evict". Eviction is removal from the active context. The controller picks it by
-[
-u_t = \mu_\theta(m_t,h_t),
-]
-read as "the controller (\mu), with parameters (\theta), chooses (u_t) by looking at memory state (m_t) and history (h_t)". Its aim is
-[
-\max_\mu\ \mathbb{E}!\left[\sum_t \gamma^t \big(\text{task_utility}_t - \lambda_1\text{latency}_t - \lambda_2\text{token_load}_t\big)\right].
-]
-Read that as "choose the controller that maximizes expected discounted task usefulness, minus a price for delay and a price for tokens consumed". Here (\mathbb{E}) means average over runs, (\gamma) is a discount factor between 0 and 1 that makes later payoffs count slightly less, and (\lambda_1,\lambda_2) are the prices you set on latency and token load.</p>
-<p>This is expected utility under systems constraints: retrieval is useful only when it improves decisions more than it costs [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>]. A builder sets (\lambda_1) and (\lambda_2) by measurement, not by taste. If one extra retrieval adds 400 milliseconds and 1,200 tokens but lifts task success from 71% to 79%, it earns its keep. If it lifts success from 71% to 71.4%, it does not.</p>
-<h3 id="why-todays-write-is-tomorrows-asset">Why Today's Write Is Tomorrow's Asset</h3>
-<p>The Bellman view makes the tradeoff across time explicit:
-[
-V^\star(m,h)=\max_{u}\left{r(m,h,u)+\gamma\,\mathbb{E}[V^\star(m',h')]\right},
-]
-read as "the best achievable long-run value of being in memory state (m) with history (h) equals the best immediate reward (r) plus the discounted average value of wherever you land next, written (m') and (h')". The reward (r) already includes latency and token penalties [<a href="../../references.html#ref-5">5</a>] [<a href="../../references.html#ref-4">4</a>].</p>
-<p>Two consequences follow. A write may be costly now but valuable later, because it preserves the one line of output the repair will need. An eviction may save context now but create future regret, because the discarded item turns out to be the missing constraint.</p>
-<h2 id="retrieval-is-an-action">Retrieval Is an Action</h2>
-<p>Retrieval is not a lookup that happens off to the side. It is an action the agent takes, with a price and a risk.</p>
-<h3 id="sparse-retrieval-counts-words">Sparse Retrieval Counts Words</h3>
-<p>Sparse retrieval begins with counted words. The query is (q), the candidate document is (d), and a term (t) is one word-like unit from the query. The term frequency (f(t,d)) counts how often term (t) appears in document (d). The document length (|d|) counts the document's tokens or terms, and (\mathrm{avgdl}) is the average document length in the collection.</p>
-<p>(\mathrm{IDF}(t)), inverse document frequency, is large for rare terms and small for common terms. It says that <code>segmentation fault</code> is usually more diagnostic than <code>the</code>. The constants (k_1) and (b) are tunable knobs. (k_1) controls how quickly repeated occurrences stop adding much evidence, while (b) controls how strongly scores are normalized for document length.</p>
-<p>With those pieces named, BM25 scoring is
-[
-\mathrm{BM25}(q,d)=\sum_{t\in q}\mathrm{IDF}(t)\frac{f(t,d)(k_1+1)}{f(t,d)+k_1\left(1-b+b|d|/\mathrm{avgdl}\right)},
-]
-read as "add up, over every term in the query, that term's rarity weight times a saturating count of how often it occurs in this document". Saturation is the point worth feeling: with (k_1=1.2), a term appearing once already earns about half the weight it can ever reach, and the tenth occurrence adds very little.</p>
-<h3 id="dense-retrieval-compares-directions">Dense Retrieval Compares Directions</h3>
-<p>Dense retrieval begins from a different little machine. An embedding is a vector representation of text, such as (e_q) for a query and (e_d) for a document, chosen so that related meanings tend to live near one another in vector space.</p>
-<p>The inner product (\langle e_q,e_d\rangle) multiplies corresponding coordinates and sums the products. When the vectors are normalized, a larger inner product means a smaller angle between them, which often corresponds to greater semantic similarity. Dense retrieval often uses that inner-product similarity:
-[
+<p>By 4:06 AM, Agent-427 has a new problem: it remembers. This sounds like progress until it retrieves <code>service.yaml</code> from <code>main</code> while the user is working on <code>legacy-v2</code>, where the service is configured by <code>service.toml</code>. The retrieved file is relevant, recent, syntactically convincing, and wrong in every way that matters.</p>
+<p>The clean three-store diagram—working, episodic, semantic—remains useful. Production memory, however, behaves less like a filing cabinet than a war room during a minor constitutional crisis. Evidence arrives late. Summaries lose qualifiers. Similarity outranks scope. Old conclusions return wearing new citations. The controller must decide not merely what to store, but what may speak.</p>
+<p><img alt="A warehouse war room where a memory-controller forklift moves provenance-tagged items among working, episodic, and semantic shelves while quarantining contamination" src="../../assets/diagrams/05-memory-war-room.png" /></p>
+<h2 id="the-messy-reality-of-memory">The Messy Reality of Memory</h2>
+<p>The context window is not memory. It is the small working surface onto which memory is projected. Retrieval decides which outside items enter that surface; attention decides how strongly tokens already on the surface interact. Both ration influence, so retrieval can be understood as sparse attention over an external corpus. But it is more than attention: retrieval incurs I/O and latency, crosses permission boundaries, chooses provenance, and can import adversarial text before the transformer's internal attention mechanism begins [<a href="../../references.html#ref-76">76</a>].</p>
+<p>Let memory state be \(m_t=(w_t,e_t,s_t)\): working state \(w_t\), episodic traces \(e_t\), and semantic summaries \(s_t\), a useful engineering analogue of cognitive multi-store theory [<a href="../../references.html#ref-48">48</a>]. These are roles, not immaculate databases. One object may migrate among them, and every migration can lose scope.</p>
+<p>The controller chooses</p>
+<p>\[
+u_t\in\{\texttt{write},\texttt{compress},\texttt{retrieve},\texttt{evict}\}.
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> Step 1: give the controller operation budget 2 and spend 1 on <code>retrieve</code>, leaving \(2-1=1\). Step 2: spend 1 on <code>evict</code>, leaving \(1-1=0\); there is no remaining operation for <code>compress</code>, so the trace must preserve the raw item or halt.</p>
+</blockquote>
+<p>Its policy is</p>
+<p>\[
+u_t=\mu_\theta(m_t,h_t).
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> Step 1: let the policy score <code>retrieve=0.8</code> and <code>evict=0.3</code> before observing branch metadata. Step 2: apply a scope penalty of 0.7 to the cross-branch retrieval, yielding 0.1; eviction now wins.</p>
+</blockquote>
+<p>The long-run objective prices task value, delay, and token load:</p>
+<p>\[
+\max_\mu\ \mathbb{E}\!\left[
+\sum_t\gamma^t\big(
+\operatorname{task\_utility}_t
+-\lambda_1\operatorname{latency}_t
+-\lambda_2\operatorname{token\_load}_t
+\big)\right].
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> Step 1: retrieval raises expected task value by 8, costs 2 latency units and 3 token units, with \(\lambda_1=1\) and \(\lambda_2=0.5\). Step 2: net gain is \(8-2-1.5=4.5\), so retrieve if contamination risk has not been omitted.</p>
+</blockquote>
+<p>Expected utility makes memory an action policy rather than a checkbox [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>]. In practice the objective also needs penalties for stale scope, privacy exposure, and unsupported provenance. What is absent from the reward is often what returns at 4:06 AM carrying a YAML file.</p>
+<h2 id="the-assumption">The Assumption</h2>
+<p>The memory pattern assumes stored items retain enough provenance—source, time, branch or tenant, authority, and confidence—to be compared with the current task. It assumes compression preserves the distinctions future actions need. It assumes retrieval scores evidence, not merely linguistic resemblance.</p>
+<p>The Bellman view makes today's write answer to tomorrow's repair:</p>
+<p>\[
+V^\star(m,h)=\max_u\left\{
+r(m,h,u)+\gamma\,\mathbb{E}[V^\star(m',h')]
+\right\}.
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> Step 1: writing the exact error costs 1 now but creates expected future value 6; with \(\gamma=0.9\), total is \(-1+5.4=4.4\). Step 2: skipping the write yields 0 now and 0 later; preservation wins.</p>
+</blockquote>
+<p>The reward includes retrieval latency and token penalties [<a href="../../references.html#ref-5">5</a>] [<a href="../../references.html#ref-4">4</a>]. A raw observation may be expensive to preserve and invaluable later. An eviction may be cheap now and ruinous after the exact edge case disappears.</p>
+<blockquote>
+<p><strong>Skeptical Engineer:</strong> Isn't a sufficiently long context window the simplest memory system?</p>
+<p><strong>Author:</strong> A warehouse with no inventory policy is not a memory system. It is a fire code violation with embeddings.</p>
+</blockquote>
+<h2 id="retrieval-as-external-sparse-attention">Retrieval as External Sparse Attention</h2>
+<p>Sparse retrieval begins with lexical anchors. BM25 scores a query \(q\) against document \(d\):</p>
+<p>\[
+\mathrm{BM25}(q,d)=\sum_{t\in q}\mathrm{IDF}(t)
+\frac{f(t,d)(k_1+1)}
+{f(t,d)+k_1(1-b+b|d|/\mathrm{avgdl})}.
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> Step 1: ignore length normalization, set \(\mathrm{IDF}=2\), \(f=1\), and \(k_1=1\); the term contributes \(2\times2/(1+1)=2\). Step 2: raise frequency to 3; contribution becomes \(2\times6/4=3\), showing saturation rather than triple reward.</p>
+</blockquote>
+<p>Rare exact strings such as <code>legacy-v2</code> and <code>service.toml</code> become valuable anchors [<a href="../../references.html#ref-46">46</a>]. Dense retrieval instead compares embedding directions:</p>
+<p>\[
 s(q,d)=\langle e_q,e_d\rangle.
-]
-A two-coordinate example makes it concrete. If (e_q=(0.6,0.8)) and (e_d=(0.8,0.6)), the inner product is (0.6\times0.8+0.8\times0.6=0.96); both vectors have length 1, so a score of 0.96 out of a possible 1.00 means the directions nearly agree.</p>
-<h3 id="sparse-and-dense-fail-differently">Sparse and Dense Fail Differently</h3>
-<p>These are complementary indexing geometries with different failure modes, not rival creeds [<a href="../../references.html#ref-46">46</a>] [<a href="../../references.html#ref-15">15</a>] [<a href="../../references.html#ref-47">47</a>]. Sparse methods preserve lexical anchors and citations well. Dense methods can recover paraphrases and semantic neighbors. Hybrid systems, which run both and merge the rankings, earn their complexity when those differences reduce downstream error.</p>
-<p>The power of dense retrieval is paraphrase. The danger is a smooth confidence that can drift away from exact filenames, citation anchors, and error strings.</p>
-<h3 id="retrieved-evidence-enters-the-generators-arithmetic">Retrieved Evidence Enters the Generator's Arithmetic</h3>
-<p>For retrieval-augmented generation, usually abbreviated RAG, evidence quality propagates into output probability:
-[
-p(y\mid x)\approx \sum_{d\in\mathcal{D}<em>k} p</em>\eta(d\mid x)\,p_\theta(y\mid x,d),
-]
-so poor retrieval is injected into generation dynamics rather than appended as a harmless side note [<a href="../../references.html#ref-14">14</a>]. The useful evaluation question is not "did the retriever find similar text?" but "did the retrieved evidence move the action ranking in the right direction?"</p>
-<p>In this equation, (\mathcal{D}<em>k) is the top-(k) evidence set returned by
-the retriever. The subscript (k) means the system keeps only a bounded number
-of documents, because context, latency, and attention are finite. The term
-(p</em>\eta(d\mid x)) is the retriever's probability or normalized score for
-document (d) given query context (x); (\eta) names the retriever's
-parameters. The term (p_\theta(y\mid x,d)) is the generator's probability of
-answer (y) after seeing (x) and document (d); (\theta) names the
-generator's parameters. The approximation sign acknowledges that production
-systems usually approximate the full document sum with a short ranked list.</p>
-<h2 id="compression-and-forgetting">Compression and Forgetting</h2>
-<p>Compression policy is an information-theoretic trade:
-[
-R(D)=\min_{p(\hat x|x):\mathbb{E}[d(X,\hat X)]\le D} I(X;\hat X),
-]
-which says to spend bitrate only on distinctions that matter under an accepted distortion level [<a href="../../references.html#ref-35">35</a>]. In agent memory, the distortion measure should be task-relative. A summary that drops exact command output may be acceptable for narrative progress tracking and unacceptable for debugging a build failure.</p>
-<h3 id="reading-the-rate-distortion-equation">Reading the Rate-Distortion Equation</h3>
-<p>Read (X) as the original trace or memory item and (\hat X) as its compressed
-version. The conditional distribution (p(\hat x\mid x)) describes the
-compressor: given original item (x), it may produce summary (\hat x). The
-distortion (d(X,\hat X)) measures what the summary loses for the task at hand,
-and the constraint (\mathbb{E}[d(X,\hat X)]\le D) says the average loss must
-stay below tolerance (D). The mutual information (I(X;\hat X)) measures how
-much information about the original survives in the summary. Thus (R(D)) is
-the smallest amount of retained information needed to keep distortion at or
-below (D). The equation is permission to forget only after specifying what
-kind of forgetting the task can survive.</p>
-<h3 id="a-build-failure-that-two-summaries-handle-differently">A Build Failure That Two Summaries Handle Differently</h3>
-<p>For example, suppose an agent runs <code>python3 scripts/build_latex_pdf.py</code> and the command fails with one exact line: <code>Undefined control sequence \mathbbm at topic-03 line 87</code>. A progress summary that says "PDF build failed in topic 3" may have low distortion for a project manager asking whether the publication artifact exists. It has ruinous distortion for the debugging policy, because the repair depends on the exact command, the exact TeX complaint, and the exact location. Rate-distortion thinking therefore does not say "summarize aggressively." It says: choose what may be lost only after naming the task that will suffer the loss.</p>
-<h3 id="forgetting-deserves-the-same-care-as-remembering">Forgetting Deserves the Same Care as Remembering</h3>
-<p>Forgetting is equally active. Four kinds of debris can all distort the current state:</p>
-<ul>
-<li>stale retrieved snippets that describe an older version of the world;</li>
-<li>contaminated memories that recorded something false;</li>
-<li>duplicated summaries that make one weak claim look like several;</li>
-<li>obsolete user preferences the user has since changed.</li>
-</ul>
-<p>Cognitive multi-store theory is useful here because it separates short-lived working contents from longer-lived episodic and semantic stores [<a href="../../references.html#ref-48">48</a>]. The engineering analogue is to attach provenance, timestamp, scope, and confidence to stored items. With those four tags present, the controller can decide whether a memory belongs in the present decision.</p>
-<p>The following pseudocode shows one pass of the memory controller. It writes auditable observations, compresses only under context pressure while keeping links back to raw evidence, retrieves only when uncertainty is actually blocking action, and evicts what has gone stale.</p>
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> Step 1: take normalized vectors \(e_q=(0.6,0.8)\) and \(e_d=(0.8,0.6)\). Step 2: compute \(0.6\times0.8+0.8\times0.6=0.96\); semantic directions nearly agree even if branch scope does not.</p>
+</blockquote>
+<p>Dense retrieval finds paraphrases; sparse retrieval preserves filenames and error strings. Hybrid systems earn their complexity when the two failure modes genuinely cancel [<a href="../../references.html#ref-15">15</a>] [<a href="../../references.html#ref-47">47</a>]. Neither score knows that <code>main</code> and <code>legacy-v2</code> are different worlds unless metadata filtering tells it.</p>
+<p>In retrieval-augmented generation, evidence enters the generator's arithmetic:</p>
+<p>\[
+p(y\mid x)\approx
+\sum_{d\in\mathcal{D}_k}p_\eta(d\mid x)\,p_\theta(y\mid x,d).
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> Step 1: retrieve two documents with weights 0.7 and 0.3; they assign answer probability 0.9 and 0.2. Step 2: compute \(0.7\times0.9+0.3\times0.2=0.69\); the wrong document's weight directly lowers the answer probability.</p>
+</blockquote>
+<p>Here \(\mathcal{D}_k\) is the bounded top-\(k\) set, \(p_\eta\) the retriever weight, and \(p_\theta\) the generator probability conditioned on a document [<a href="../../references.html#ref-14">14</a>]. Retrieved text is not a harmless appendix. It changes the action distribution.</p>
+<h2 id="the-violation">The Violation</h2>
+<p>Agent-427's branch failure unfolds line by line:</p>
+<pre><code class="language-text">04:06:02 observe   cwd=/repo, branch=legacy-v2
+04:06:04 retrieve  query=&quot;service timeout config&quot;; top hit main:config/service.yaml
+04:06:05 rerank    semantic=0.94, freshness=0.91; branch field absent
+04:06:07 think     &quot;configuration uses YAML key request_timeout_ms&quot;
+04:06:09 act       inspect_file(&quot;config/service.yaml&quot;) -&gt; file missing on legacy-v2
+04:06:11 retrieve  cached content from main index enters working memory anyway
+04:06:14 reflect   summary=&quot;service timeout is request_timeout_ms in YAML&quot;
+04:06:17 act       propose create config/service.yaml on legacy-v2
+04:06:19 guard     reject write authority; preserve proposed diff
+04:06:22 observe   inspect_file(&quot;config/service.toml&quot;) -&gt; timeout_seconds = 30
+04:06:25 think     current raw observation contradicts retrieved summary
+04:06:28 repair    quarantine YAML item; bind TOML observation to legacy-v2@commit-8af2
+</code></pre>
+<p>The first retrieval was semantically excellent and operationally false. The raw observation survived, which made repair possible. The summary lost the branch qualifier, which made contamination portable. Had Agent-427 possessed write authority, its first edit would have created a YAML file that the legacy service never reads—a beautifully valid configuration for an imaginary program.</p>
+<p>Interference is the phenomenon: one memory changes the interpretation or retrieval of another in a harmful way. Measure it by replaying the same task with and without the suspect item, holding model, budget, and tools fixed. If adding a seemingly relevant memory lowers correct-action probability, similarity has become sabotage.</p>
+<h2 id="consolidation-without-amnesia">Consolidation Without Amnesia</h2>
+<p>Consolidation turns many episodic steps into a smaller semantic memory. The challenge is not producing a fluent summary. The challenge is preserving the edge case that changes later action. Human-feedback-trained summarization can improve preference fit, but feedback itself may reward readability over branch-qualified truth [<a href="../../references.html#ref-75">75</a>].</p>
+<p>Consolidate a 100-step trace in two layers:</p>
+<ol>
+<li>Keep raw evidence immutable and addressable by stable handles.</li>
+<li>Write a summary whose every action-relevant claim links back to those handles and carries scope.</li>
+<li>Test the summary against counterfactual questions: “Would this advice still hold on another branch, tenant, version, or date?”</li>
+<li>If the answer changes, preserve the qualifier as a control field, not a parenthetical flourish.</li>
+</ol>
+<p>The summary “timeouts use <code>request_timeout_ms</code>” is smaller than the trace and catastrophically distorted. “On <code>main</code> at commit <code>c31d</code>, the YAML key is <code>request_timeout_ms</code>; <code>legacy-v2</code> is unverified” is slightly larger and fit for controlled retrieval.</p>
+<h2 id="forgetting-as-a-virtue">Forgetting as a Virtue</h2>
+<p>Compression and forgetting can be formalized with a task-specific rate-distortion bargain:</p>
+<p>\[
+R(D)=\min_{p(\hat{x}\mid x):\mathbb{E}[d(X,\hat{X})]\le D}
+I(X;\hat{X}).
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> Step 1: suppose a 100-token trace compresses to 20 tokens and loses 1 of 10 action-critical facts, giving distortion 0.1. Step 2: if the allowed distortion is \(D=0.05\), reject the summary even though it saves 80 tokens.</p>
+</blockquote>
+<p>\(X\) is the original trace, \(\hat X\) its compressed form, \(d\) task-relative loss, and \(I(X;\hat X)\) retained information [<a href="../../references.html#ref-35">35</a>]. The distortion measure must name the future job. Dropping exact TeX output may be tolerable for a progress note and fatal for debugging.</p>
+<p>Forgetting is mandatory when retention violates consent, crosses tenant boundaries, outlives a purpose, or keeps known poison eligible for retrieval. It is also useful under context pressure. The controller should evict active influence while retaining only the minimum audit artifact policy permits. Privacy deletion and active-context eviction are not synonyms: one destroys or irreversibly anonymizes stored data; the other merely removes it from current attention.</p>
+<h2 id="when-it-fails">When It Fails</h2>
+<p>The ugliest memory failure is self-citing contamination. Here is the complete trace:</p>
+<pre><code class="language-text">M0  raw:R17     legacy-v2 contains service.toml with timeout_seconds=30
+M1  retrieved   main/service.yaml contains request_timeout_ms=30000
+M2  reflection  &quot;service config uses YAML request_timeout_ms&quot;       [supports: M1]
+M3  semantic    &quot;timeout repairs should edit request_timeout_ms&quot;    [supports: M2]
+M4  retrieve    query matches M3 and M2; raw R17 ranks below them
+M5  draft       proposed YAML edit cites semantic memory M3
+M6  reflection  &quot;previous repair guidance confirms YAML&quot;           [supports: M5]
+M7  semantic    &quot;two independent traces confirm YAML&quot;               [supports: M3,M6]
+M8  retrieve    M7 outranks R17 because it repeats query terms twice
+M9  heuristic   retrieval score(YAML) rises from 0.58 to 0.91
+M10 audit       provenance graph reveals M7 -&gt; M6 -&gt; M5 -&gt; M3 -&gt; M2 -&gt; M1
+M11 repair      collapse descendants to one source; scope M1 to main; restore R17
+M12 heuristic   scoped score(YAML on legacy-v2) falls from 0.91 to 0.03
+</code></pre>
+<p>Nothing at M7 is independent. The numbers at M9 and M12 are explicitly <strong>heuristic retrieval scores</strong>, not posterior probabilities: the retriever raises scores for repeated query terms, then the repair applies branch scope and source-collapse penalties. The memory system has laundered one stale item through reflection, draft, and consolidation until repetition impersonates corroboration. A provenance graph repairs the ranking by collapsing derivative memories to their source. Calibrated confidence would require a declared likelihood or scoring model; retrieval volume cannot counterfeit one. Evidence weight must count independent paths, not citation volume.<sup id="fnref:memory-bibliography"><a class="footnote-ref" href="#fn:memory-bibliography">1</a></sup></p>
+<p>Adversarial distractors exploit the same channel [<a href="../../references.html#ref-16">16</a>]. They repeat task language, imitate internal summaries, and ask the controller to treat instruction-shaped evidence as authority. Scope filters, provenance depth, source independence, timestamps, and quarantine are therefore memory semantics, not optional metadata.</p>
 <pre><code class="language-text">function MEMORY_STEP(sigma, uncertainty, phase):
     if new_observation_is_auditable(sigma):
-        write(episodic, raw_observation, provenance)
+        write(episodic, raw_observation, provenance_and_scope)
 
     if context_pressure_high(sigma):
-        compress(trace, preserve_links_to_raw_evidence)
+        summary &lt;- compress(trace, preserve_links_and_control_qualifiers)
+        require counterfactual_summary_tests(summary)
 
     if uncertainty_blocks_action(uncertainty):
-        docs &lt;- retrieve(query_from_state(sigma), filters=scope_and_time)
+        docs &lt;- retrieve(query_from_state(sigma), filters=scope_time_permission)
+        docs &lt;- collapse_provenance_descendants(docs)
         sigma &lt;- add_to_working_memory(rerank(docs))
 
-    evict_items(active_context, stale_or_low_value)
+    evict_items(active_context, stale_poisoned_private_or_low_value)
     return sigma
 </code></pre>
-<p>This sketch turns memory into part of the interpreter rather than an ungoverned transcript cache.</p>
-<h2 id="measuring-memory-policy">Measuring Memory Policy</h2>
-<p>Memory should be evaluated at the decision boundary, meaning the moment where the agent commits to an action. Three examples show what "the right memory" means in practice:</p>
-<ul>
-<li>For a legal research agent, the right case is the one that changes the answer safely.</li>
-<li>For a code agent, the right file is the one that localizes the bug or rules out a tempting false edit.</li>
-<li>For a personal assistant, the right memory is current, permissioned, and relevant to the user's actual intent.</li>
-</ul>
-<h3 id="ablation-under-a-fixed-budget">Ablation Under a Fixed Budget</h3>
-<p>The clean comparison is an ablation under a fixed budget. An <em>ablation</em> removes one component and re-measures. Run the same task distribution three ways: with no memory beyond the prompt, then with working state only, then with retrieval-backed memory. Hold the model, tool permissions, token ceiling, and time limit steady.</p>
-<p>Now the question becomes concrete: did memory improve task success or task-specific partial progress, or did it merely spend tokens remembering its own autobiography? Each arm can win. Working state may help on short tasks by preserving the current plan and constraints. Retrieval-backed memory may help when the relevant evidence lies outside the current window. No memory may win when stale or distracting evidence is more dangerous than forgetfulness.</p>
-<h3 id="metrics-stress-tests-and-one-self-citing-failure">Metrics, Stress Tests, and One Self-Citing Failure</h3>
-<p>Useful measurements include retrieval precision@(k), latency, grounded answer faithfulness, and regret from eviction decisions under fixed token budgets. Precision@(k) is the fraction of the top (k) results that are genuinely relevant; 3 relevant hits out of 5 returned is 0.6. Regret here is the drop in outcome caused by having thrown something away.</p>
-<p>Stress tests should include adversarial distractors and contamination injections, because long context can amplify bad evidence as easily as good evidence [<a href="../../references.html#ref-16">16</a>].</p>
-<p>One nasty composition failure is especially common. Reflection writes an inaccurate summary. Retrieval later ranks that summary highly, because it matches the task language. The agent then repeatedly promotes the false memory back into working state. The system appears consistent because it keeps citing itself. Evaluating and Debugging Reasoners counts this as a contaminated-memory failure when it labels failures by transition.</p>
-<p>The practical target is a memory economy: spend context where it changes decisions, preserve raw evidence where audits require it, and keep yesterday's convenient summary from overruling today's observation.</p>
-<h2 id="exercise">Exercise</h2>
-<p>For one agent workflow, list five things it might remember. Assign each to working, episodic, or semantic memory. Then choose one item that should be compressed, one that should be retrieved only under a specific trigger, and one that should expire.</p>
-<p>Work it in that order. Pick a workflow you know well, such as fixing a failing test or answering support tickets. A good answer names the trigger explicitly, for example "retrieve the deployment runbook only when a command touches production", and gives the expiry a reason, for example "the user's stated deadline expires when the deadline passes". A weak answer marks everything semantic and lets nothing expire.</p>
+<p>Evaluate memory at the decision boundary. Under a fixed model, budget, and task distribution, ablate no memory, working state only, and retrieval-backed memory. Measure task success, task-specific progress, precision@\(k\), grounded faithfulness, latency, contamination rate, and eviction regret. Three relevant hits among five give precision@5 of 0.6; the other two may still be enough to sink the edit.</p>
+<h2 id="exercise-build-and-poison-the-war-room">Exercise: Build and Poison the War Room</h2>
+<p>Implement a memory controller over a synthetic repository with <code>main</code> YAML and <code>legacy-v2</code> TOML configurations.</p>
+<ol>
+<li>Store raw observations, summaries, scopes, timestamps, and provenance edges in separate typed records.</li>
+<li>Implement lexical, dense, and hybrid retrieval. Run at least 500 seeded queries and report precision@5, branch-error rate, latency, and downstream edit accuracy.</li>
+<li>Generate 100-step traces, consolidate them to at most 20% of their original token count, and test whether exact branch, filename, key, and error-string facts survive.</li>
+<li>Reproduce M0–M12. Add derivative summaries until unsupported YAML confidence exceeds 0.85, then implement provenance collapsing and show the confidence falls below 0.10.</li>
+<li>Add forgetting policies for expiry, privacy deletion, contamination quarantine, and context pressure. Write tests proving that deletion removes stored content while eviction only removes active influence.</li>
+</ol>
+<p>Submit code, tests, the contamination provenance graph, and an ablation table. The war room is successful when it remembers less, knows why, and breaks fewer services.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:memory-bibliography">
+<p>A falsehood citing its own summary is not peer review. It is karaoke.&#160;<a class="footnote-backref" href="#fnref:memory-bibliography" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+        <nav class="reading-nav" aria-label="Reading navigation"><div class="reading-nav__previous"><span>Previous</span><a href="topic-02-deliberation-planning-and-search.html">Deliberation, Planning, and Search</a></div><div class="reading-nav__up"><span>Chapter</span><a href="index.html">Chapter 2: Reasoning Architectures</a></div><div class="reading-nav__next"><span>Next</span><a href="topic-04-evaluating-and-debugging-reasoners.html">Evaluating and Debugging Reasoners</a></div></nav>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-07-27 18:55 UTC
+      <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
+      <p>Last generated: 2026-08-06 11:32 UTC</p>
     </footer>
+    <script>
+      const toggle = document.querySelector(".nav-toggle");
+      const navigation = document.querySelector(".sidebar");
+      toggle.addEventListener("click", () => {
+        const open = navigation.classList.toggle("sidebar--open");
+        toggle.setAttribute("aria-expanded", String(open));
+      });
+    </script>
   </body>
 </html>

@@ -3,19 +3,39 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Safety Constraints and Guardrails</title>
+    <meta name="description" content="Structure and Interpretation of Agentic Patterns, a theory-backed book about agentic AI." />
+    <title>Safety Constraints and Guardrails · SIAP</title>
     <link rel="stylesheet" href="../../assets/style.css" />
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [["\\(", "\\)"]],
+          displayMath: [["\\[", "\\]"], ["$$", "$$"]],
+          processEscapes: true
+        },
+        options: { skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] }
+      };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   </head>
   <body>
     <header class="site-header">
-      <h1><a href="../../index.html">Structure and Interpretation of Agentic Patterns</a></h1>
+      <div class="site-header__inner">
+        <a class="site-mark" href="../../index.html" aria-label="Structure and Interpretation of Agentic Patterns home">SIAP</a>
+        <div>
+          <p class="site-kicker">A book about governed machines</p>
+          <p class="site-title"><a href="../../index.html">Structure and Interpretation<br />of Agentic Patterns</a></p>
+        </div>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="book-navigation">Contents</button>
+      </div>
     </header>
     <main class="layout">
-      <aside class="sidebar">
-        <h2>Contents</h2>
-        <nav><div><a href="../../chapters/01-foundations-of-agency/index.html">chapters/01-foundations-of-agency/index</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-01-goals-environments-actions-notes.html">chapters/01-foundations-of-agency/topic-01-goals-environments-actions-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-01-goals-environments-actions.html">chapters/01-foundations-of-agency/topic-01-goals-environments-actions</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision-notes.html">chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision.html">chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions-notes.html">chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions.html">chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-04-policies-value-and-control-notes.html">chapters/01-foundations-of-agency/topic-04-policies-value-and-control-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-04-policies-value-and-control.html">chapters/01-foundations-of-agency/topic-04-policies-value-and-control</a></div><div><a href="../../chapters/02-reasoning-architectures/index.html">chapters/02-reasoning-architectures/index</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters-notes.html">chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters.html">chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search-notes.html">chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search.html">chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval-notes.html">chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval.html">chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners-notes.html">chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners.html">chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/index.html">chapters/03-tool-use-and-embodiment/index</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling-notes.html">chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling.html">chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling-notes.html">chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling.html">chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback-notes.html">chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback.html">chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails-notes.html">chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails-notes</a></div><div><a class="active" href="../../chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails.html">chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails</a></div><div><a href="../../chapters/04-multi-agent-systems/index.html">chapters/04-multi-agent-systems/index</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication-notes.html">chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication.html">chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design-notes.html">chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design.html">chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics-notes.html">chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics.html">chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration-notes.html">chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration.html">chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration</a></div><div><a href="../../index.html">index</a></div><div><a href="../../references.html">references</a></div></nav>
+      <aside class="sidebar" id="book-navigation">
+        <p class="sidebar__label">Reader’s route</p>
+        <nav aria-label="Book contents"><ol class="book-nav__list"><li class="book-nav__home"><a href="../../index.html">Book home</a></li><li class="book-nav__part"><a href="../../parts/00-system-in-action.html">Part 0: The System in Action</a></li><li class="book-nav__chapter"><a href="../01-foundations-of-agency/index.html">Chapter 1: Foundations of Agency</a><ol class="book-nav__topics"><li><a href="../01-foundations-of-agency/topic-01-goals-environments-actions.html">Goals, Environments, and Actions</a></li><li><a href="../01-foundations-of-agency/topic-02-belief-uncertainty-and-decision.html">Belief, Uncertainty, and Decision</a></li><li><a href="../01-foundations-of-agency/topic-03-world-models-and-state-abstractions.html">World Models and State Abstractions</a></li><li><a href="../01-foundations-of-agency/topic-04-policies-value-and-control.html">Policies, Value, and Control</a></li></ol></li><li class="book-nav__chapter"><a href="../02-reasoning-architectures/index.html">Chapter 2: Reasoning Architectures</a><ol class="book-nav__topics"><li><a href="../02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters.html">Reasoning Loops as Interpreters</a></li><li><a href="../02-reasoning-architectures/topic-02-deliberation-planning-and-search.html">Deliberation, Planning, and Search</a></li><li><a href="../02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval.html">Memory Systems, Context, and Retrieval</a></li><li><a href="../02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners.html">Evaluating and Debugging Reasoners</a></li></ol></li><li class="book-nav__chapter"><a href="index.html">Chapter 3: Tool Use and Embodiment</a><ol class="book-nav__topics"><li><a href="topic-01-tool-interfaces-and-function-calling.html">Tool Interfaces and Function Calling</a></li><li><a href="topic-02-retrieval-augmented-tooling.html">Retrieval-Augmented Tooling</a></li><li><a href="topic-03-embodiment-sensors-actuators-and-feedback.html">Embodiment: Sensors, Actuators, and Feedback</a></li><li><a href="topic-04-safety-constraints-and-guardrails.html" aria-current="page">Safety Constraints and Guardrails</a></li></ol></li><li class="book-nav__chapter"><a href="../04-multi-agent-systems/index.html">Chapter 4: Multi-Agent Systems</a><ol class="book-nav__topics"><li><a href="../04-multi-agent-systems/topic-01-coordination-protocols-and-communication.html">Coordination Protocols and Communication</a></li><li><a href="../04-multi-agent-systems/topic-02-negotiation-and-mechanism-design.html">Negotiation and Mechanism Design</a></li><li><a href="../04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics.html">Equilibria, Self-Play, and Learning Dynamics</a></li><li><a href="../04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration.html">Neural Ensembles and Orchestration</a></li></ol></li><li class="book-nav__references"><a href="../../references.html">References</a></li></ol></nav>
       </aside>
       <article class="content">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../index.html">Book</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><a href="index.html">Chapter 3: Tool Use and Embodiment</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><span aria-current="page">Safety Constraints and Guardrails</span></nav>
         <h1 id="safety-constraints-and-guardrails">Safety Constraints and Guardrails</h1>
 <p>Between what an agent wants to do and what the world actually suffers stands a
 layer of machinery. That machinery is what we build here. We will price harm
@@ -29,6 +49,11 @@ changed. A <em>transition</em> here is one step of the agent loop: the move from
 current state to the next state. In a tool-using system, safety lives at the same
 boundary as action. That boundary sits between the model's proposed next step and
 the external effect that would make that step real.</p>
+<p>Agent-427 enters this topic with three new proposal forms—<code>write</code>, <code>test</code>, and
+<code>deploy</code>—and zero new entitlement to make their outcomes true by assertion. A
+proposal still faces evidence, authority, and state guards. This is fortunate,
+because its working belief has just been corrupted by stale telemetry and a
+legacy scale-out summary.</p>
 <p>This makes guardrails more than warning text. A guardrail is a filter on the
 agent's transition system, meaning the set of steps the agent is able to take at
 all. Such a filter has four moves available:</p>
@@ -43,17 +68,23 @@ all. Such a filter has four moves available:</p>
 <p>Start with the ordinary picture of a decision-making agent and then add ledgers
 for harm. Model policy selection as a constrained MDP (Markov decision process,
 the standard model of an agent choosing actions in states over time):
-[
-\max_{\pi}\ J_R(\pi)=\mathbb{E}<em C_j="C_j">\pi!\left[\sum_t\gamma^t r_t\right]
+\[
+\max_{\pi}\ J_R(\pi)=\mathbb{E}_\pi\!\left[\sum_t\gamma^t r_t\right]
 \quad\text{s.t.}\quad
-J</em>}(\pi)=\mathbb{E<em j_t="j,t">\pi!\left[\sum_t\gamma^t c</em>\right]\le d_j.
-]
-Read this first as bookkeeping. (J_R(\pi)) reads "the expected discounted
-reward earned by policy (\pi)", where a policy is the agent's rule for choosing
+J_{C_j}(\pi)=\mathbb{E}_\pi\!\left[\sum_t\gamma^t c_{j,t}\right]\le d_j.
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> First let a two-step policy earn rewards \(8\) and
+\(4\) with \(\gamma=0.5\): return is \(8+0.5(4)=10\). Then let its harm costs
+be \(3\) and \(2\): discounted harm is \(3+0.5(2)=4\), so a budget \(d=3\)
+rejects the otherwise attractive policy.</p>
+</blockquote>
+<p>Read this first as bookkeeping. \(J_R(\pi)\) reads "the expected discounted
+reward earned by policy \(\pi\)", where a policy is the agent's rule for choosing
 actions, and <em>discounted</em> means later rewards count a little less. Each
-(J_{C_j}(\pi)) reads "the expected discounted amount of harm number (j)".
+\(J_{C_j}(\pi)\) reads "the expected discounted amount of harm number \(j\)".
 Those harms are concrete: privacy exposure, money spent, dangerous commands, or
-manual interruptions. The bound (d_j) is the allowed budget for that cost, and
+manual interruptions. The bound \(d_j\) is the allowed budget for that cost, and
 "s.t." reads "subject to".</p>
 <p>The contrast is the whole point. A plain reinforcement-learning agent asks, "How
 much reward can I get?" A constrained agent asks, "How much reward can I get
@@ -69,56 +100,66 @@ each symbol a short reading before we use it again.</p>
 </thead>
 <tbody>
 <tr>
-<td>(\pi)</td>
+<td>\(\pi\)</td>
 <td>The policy: the agent's rule for choosing actions</td>
 </tr>
 <tr>
-<td>(J_R(\pi))</td>
+<td>\(J_R(\pi)\)</td>
 <td>Expected discounted reward under that policy</td>
 </tr>
 <tr>
-<td>(J_{C_j}(\pi))</td>
-<td>Expected discounted amount of harm (j)</td>
+<td>\(J_{C_j}(\pi)\)</td>
+<td>Expected discounted amount of harm \(j\)</td>
 </tr>
 <tr>
-<td>(d_j)</td>
-<td>The budget allowed for harm (j)</td>
+<td>\(d_j\)</td>
+<td>The budget allowed for harm \(j\)</td>
 </tr>
 <tr>
-<td>(\lambda_j)</td>
-<td>The price charged for one unit of harm (j)</td>
+<td>\(\lambda_j\)</td>
+<td>The price charged for one unit of harm \(j\)</td>
 </tr>
 <tr>
-<td>(h(x))</td>
-<td>Safety margin at state (x); nonnegative means safe</td>
+<td>\(h(x)\)</td>
+<td>Safety margin at state \(x\); nonnegative means safe</td>
 </tr>
 </tbody>
 </table>
 <h3 id="turning-constraints-into-prices">Turning Constraints into Prices</h3>
 <p>The Lagrangian form, which folds a constraint into the objective by charging a
 price for breaking it,
-[
+\[
 \mathcal{L}(\pi,\lambda)=J_R(\pi)-\sum_j\lambda_j\big(J_{C_j}(\pi)-d_j\big)
-]
-supports dual optimization and transparent trade-off tuning.</p>
-<p>A Lagrange multiplier (\lambda_j) is a shadow price for violating constraint
-(j). If privacy risk is already close to its bound, a large (\lambda_j) makes
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> First take reward \(10\), harm \(4\), budget \(2\),
+and price \(\lambda=2\). Then the priced objective is
+\(10-2(4-2)=6\); a safer policy worth \(7-2(1-2)=9\) wins.</p>
+</blockquote>
+<p>supports dual optimization and transparent trade-off tuning.</p>
+<p>A Lagrange multiplier \(\lambda_j\) is a shadow price for violating constraint
+\(j\). If privacy risk is already close to its bound, a large \(\lambda_j\) makes
 risky actions look expensive. If the risk ledger is comfortably low, the price
 can be smaller. Dual optimization is the process of adjusting these prices while
 improving the policy; a builder implements it as a slow feedback loop that raises
 a price whenever the measured ledger creeps over budget.</p>
 <p>With two actions the idea is visible. Suppose <code>fast_patch</code> yields reward 10 and
 harm 4, while <code>safe_patch</code> yields reward 7 and harm 1 under a harm budget of 2.
-When (\lambda=0), fast wins, since 10 beats 7 and harm is free. When
-(\lambda=2), their priced values become (10-2(4-2)=6) and (7-2(1-2)=9), so
+When \(\lambda=0\), fast wins, since 10 beats 7 and harm is free. When
+\(\lambda=2\), their priced values become \(10-2(4-2)=6\) and \(7-2(1-2)=9\), so
 the safer action wins because scarce safety budget has become dear. Notice that
 <code>safe_patch</code> is rewarded for coming in under budget.</p>
 <h3 id="prohibition-is-not-the-same-as-price">Prohibition Is Not the Same as Price</h3>
 <p>At the state-action level, constrained Bellman structure appears as
-[
-Q^\pi_\lambda(s,a)=r(s,a)-\sum_j\lambda_j c_j(s,a)+\gamma\,\mathbb{E}<em>{s'}[V^\pi</em>\lambda(s')],
-]
-which reads "the priced value of taking action (a) in state (s) is its reward
+\[
+Q^\pi_\lambda(s,a)=r(s,a)-\sum_j\lambda_j c_j(s,a)+\gamma\,\mathbb{E}_{s'}[V^\pi_\lambda(s')],
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> First price immediate reward \(9\), harm \(2\) at
+\(\lambda=1.5\): the immediate term is \(9-3=6\). Then add future value \(8\)
+discounted by \(0.5\): \(Q=6+4=10\).</p>
+</blockquote>
+<p>which reads "the priced value of taking action \(a\) in state \(s\) is its reward
 minus its priced harms, plus the discounted value of wherever it lands you". This
 makes "unsafe but high reward" mathematically explicit instead of politically
 vague.</p>
@@ -129,32 +170,44 @@ it separates prohibition from price. Hard constraints belong in the action space
 as removals; budgets belong in the objective as costs.</p>
 <h2 id="runtime-safety-filter">Runtime Safety Filter</h2>
 <h3 id="a-fence-written-as-an-inequality">A Fence Written as an Inequality</h3>
-<p>Define safe set (\mathcal{C}={x:h(x)\ge0}). Control barrier functions require
-[
+<p>Define safe set \(\mathcal{C}=\{x:h(x)\ge0\}\). Control barrier functions require
+\[
 \dot h(x,u)+\alpha(h(x))\ge0
-]
-for class-(\mathcal{K}) function (\alpha), giving forward invariance of
-(\mathcal{C}) [<a href="../../references.html#ref-52">52</a>]. A practical filter solves
-[
-u^\star=\arg\min_u |u-u_{\text{nom}}|^2
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> First let the remaining safety margin be \(h=5\)
+and choose \(\alpha(h)=0.5h=2.5\). Then a command with
+\(\dot h=-2\) passes because \(-2+2.5=0.5\ge0\); one with \(\dot h=-4\)
+fails because the sum is \(-1.5\).</p>
+</blockquote>
+<p>for class-\(\mathcal{K}\) function \(\alpha\), giving forward invariance of
+\(\mathcal{C}\) [<a href="../../references.html#ref-52">52</a>]. A practical filter solves
+\[
+u^\star=\arg\min_u \|u-u_{\text{nom}}\|^2
 \quad\text{s.t.}\quad
 \dot h(x,u)+\alpha(h(x))\ge0,
-]
-so nominal autonomy is preserved when safe and corrected when not. Here
-(u_{\text{nom}}) is the control the agent nominally wanted, and (u^\star) is
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> First let the nominal spend be \(10\) while only
+\(5\) units of budget remain. Then compare allowed spends \(4\) and \(1\):
+squared deviations are \((4-10)^2=36\) and \((1-10)^2=81\), so the filter
+selects \(4\), the nearest safe command.</p>
+</blockquote>
+<p>so nominal autonomy is preserved when safe and corrected when not. Here
+\(u_{\text{nom}}\) is the control the agent nominally wanted, and \(u^\star\) is
 the nearest control that still satisfies the safety condition.</p>
-<p>The notation hides a simple fence. The function (h(x)) measures signed distance
+<p>The notation hides a simple fence. The function \(h(x)\) measures signed distance
 from danger: nonnegative means safe, negative means outside the safe set. The dot
-in (\dot h) means derivative, the instantaneous rate at which that safety
-margin is changing under control (u). A class-(\mathcal{K}) function is an
-increasing function with (\alpha(0)=0); it lets the allowed rate depend on how
+in \(\dot h\) means derivative, the instantaneous rate at which that safety
+margin is changing under control \(u\). A class-\(\mathcal{K}\) function is an
+increasing function with \(\alpha(0)=0\); it lets the allowed rate depend on how
 much margin remains. Forward invariance means that once the state starts in the
 safe set, the filtered controller keeps future states there under the model
 assumptions.</p>
 <h3 id="a-one-dimensional-budget-example">A One-Dimensional Budget Example</h3>
-<p>In one dimension, let (x) be dollars already spent and let the budget cap be
-100, so (h(x)=100-x). At (x=95), the margin is (h=5). A proposed action
-that spends 10 would push (h) negative, to (-5). The filter searches for the
+<p>In one dimension, let \(x\) be dollars already spent and let the budget cap be
+100, so \(h(x)=100-x\). At \(x=95\), the margin is \(h=5\). A proposed action
+that spends 10 would push \(h\) negative, to \(-5\). The filter searches for the
 closest acceptable action, perhaps spend 4, ask approval, or wait for more
 budget. The minimization is the formal way of saying "change the command as
 little as possible while preserving the safety condition."</p>
@@ -184,6 +237,45 @@ else:
 </code></pre>
 <p>The important feature is placement. The filter stands between proposal and
 effect, not between effect and apology.</p>
+<h3 id="agent-427-meets-the-filter">Agent-427 Meets the Filter</h3>
+<p>The write proposal changes a bounded Markdown range and passes a diff guard. The
+test proposal runs a deterministic check and passes a read-only tool contract.
+The deploy proposal is different. It arrives while the queue estimate is
+provisional, a previous scale effect remains unresolved, and no independent
+health observation has arrived:</p>
+<pre><code class="language-text">proposal: deploy(revision=&quot;chapter-3&quot;, service=&quot;book-site&quot;)
+belief: queue=72.5, status=&quot;provisional&quot;
+evidence: [telemetry(stale), queue-api(fresh), legacy-summary(unversioned)]
+pending_effects: [scale-workers-204]
+guard results:
+  schema_ok = true
+  authority_ok = false
+  independent_health = false
+  contradictory_evidence = true
+decision: block(reason=&quot;unsupported effect&quot;)
+next: timeout(scale-workers-204), probe(health), escalate_if_unresolved
+</code></pre>
+<p>The block is not punishment for uncertainty. It is the correct transition for
+uncertainty attached to an irreversible effect. Agent-427 may continue the
+reversible write/test path while deployment authority waits for evidence.</p>
+<h2 id="adversarial-sensors-and-actuators">Adversarial Sensors and Actuators</h2>
+<p>A safety filter that trusts the same channel for command and confirmation has
+built a courtroom where the defendant is also the bailiff. A poisoned sensor may
+forge a green health check. A spoofed actuator may return <code>success=true</code> without
+changing the deployment. A replay attacker may resend yesterday's signed success
+after today's failed rollout.</p>
+<p>Defenses bind evidence to action identity, state version, timestamp, and an
+independent observation path. High-impact actions use keyed requests, signed
+receipts, monotonic revision numbers, and postconditions checked through a sensor
+that the actuator does not control. If those checks disagree, the interpreter
+enters <code>effect_unknown</code>, freezes retries, and escalates. It does not average a
+green lie with a red truth until the dashboard looks pleasantly beige.</p>
+<p>Adversarial inputs also target policy text. Tool output is data even when it says
+“disable the guardrail.” External enforcement keeps permissions and invariants
+outside the text channel that an attacker can edit. This is the practical union
+of control barriers, governance, and concrete AI-safety failure analysis
+[<a href="../../references.html#ref-52">52</a>] [<a href="../../references.html#ref-53">53</a>]
+[<a href="../../references.html#ref-77">77</a>].</p>
 <h2 id="layers-of-constraint">Layers of Constraint</h2>
 <p>Safety architectures are layered because no single check sees the whole risk.
 Each layer watches a different moment in the loop:</p>
@@ -241,10 +333,79 @@ awkward operational numbers beside them.</p>
 forbidden actions are blocked, whose risky tradeoffs are explicitly priced, whose
 ambiguous actions escalate, whose waiting states still make useful progress when
 allowed, and whose incidents generate evidence for repair.</p>
+<blockquote>
+<p><strong>Skeptical Engineer:</strong> If the sensor and actuator may both lie, have we not
+simply moved the problem into the safety layer?</p>
+<p><strong>Author:</strong> We have moved authority into several independently testable layers.
+Safety is not omniscience; it is the refusal to let one unverified story become
+an irreversible effect.</p>
+</blockquote>
+<h2 id="the-assumption">The Assumption</h2>
+<p>Constrained optimization assumes rewards and costs represent the outcomes that
+matter. Barrier-style filtering assumes the state estimate and dynamics are good
+enough for the inequality to predict safety. Discrete language-agent guards
+assume every effectful route passes through enforcement and postconditions can
+be checked independently.</p>
+<h2 id="the-violation">The Violation</h2>
+<p>The assumptions fail when reward omits a harm, a sensor is poisoned, an actuator
+spoofs success, a shell escape bypasses the policy engine, or the model treats a
+continuous-control analogy as a certificate for discrete tool behavior. They
+also fail under correlated evidence: three green checks copied from one corrupt
+source are one check, not a quorum.</p>
+<h2 id="when-it-fails">When It Fails</h2>
+<p>Agent-427's deploy proposal offers a darkly attractive bargain: fast completion,
+no waiting cost, and an unverified green response from the deployment adapter.
+A reward-only policy ships. The governed interpreter blocks because effect
+authority is absent, evidence conflicts, and the previous scale action has timed
+out unresolved. If the adapter later proves it changed nothing, the incident is
+an actuator-spoofing failure; if it changed production but lost the response, it
+is an ambiguous-effect failure. Both demand ledger inspection before retry.</p>
+<p>The larger warning is reward misspecification. A deployment agent rewarded only
+for speed can deploy an empty container and celebrate the fastest rollout in
+company history. The metric improved; the service disappeared. Safety ledgers,
+hard postconditions, and independent health checks prevent that joke from
+becoming an incident.<sup id="fnref:empty-container"><a class="footnote-ref" href="#fn:empty-container">1</a></sup></p>
+<h2 id="exercise-implement-the-fail-closed-filter">Exercise: Implement the Fail-Closed Filter</h2>
+<p>Build a Python safety filter around mock <code>write</code>, <code>test</code>, and <code>deploy</code> adapters.
+Represent proposal, permission, evidence, pending effects, cost ledgers, and
+postconditions as typed values. Then write deterministic tests that:</p>
+<ol>
+<li>admit a bounded write and a read-only test;</li>
+<li>block Agent-427's deployment while the scale effect is unresolved;</li>
+<li>inject a forged green sensor, a replayed receipt, and an actuator that reports
+   success without changing state;</li>
+<li>assert that contradictions produce <code>effect_unknown</code>, freeze new-key retries,
+   and preserve every raw observation;</li>
+<li>allow deployment only after an independent sensor confirms the keyed effect;</li>
+<li>run 1,000 seeded trajectories and report reward, violation rate, false blocks,
+   escalation latency, and unsafe effects.</li>
+</ol>
+<p>The implementation fails if prompt text can bypass the filter or if silence,
+timeout, and success share the same state.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:empty-container">
+<p>The container is admirably small, starts instantly, and
+serves no traffic. Every metric is green except the one a customer would
+recognize.&#160;<a class="footnote-backref" href="#fnref:empty-container" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+        <nav class="reading-nav" aria-label="Reading navigation"><div class="reading-nav__previous"><span>Previous</span><a href="topic-03-embodiment-sensors-actuators-and-feedback.html">Embodiment: Sensors, Actuators, and Feedback</a></div><div class="reading-nav__up"><span>Chapter</span><a href="index.html">Chapter 3: Tool Use and Embodiment</a></div><div class="reading-nav__next"><span>Next</span><a href="../04-multi-agent-systems/index.html">Chapter 4: Multi-Agent Systems</a></div></nav>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-07-27 18:55 UTC
+      <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
+      <p>Last generated: 2026-08-06 11:32 UTC</p>
     </footer>
+    <script>
+      const toggle = document.querySelector(".nav-toggle");
+      const navigation = document.querySelector(".sidebar");
+      toggle.addEventListener("click", () => {
+        const open = navigation.classList.toggle("sidebar--open");
+        toggle.setAttribute("aria-expanded", String(open));
+      });
+    </script>
   </body>
 </html>

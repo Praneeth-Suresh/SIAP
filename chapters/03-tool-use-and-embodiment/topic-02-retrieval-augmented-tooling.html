@@ -3,24 +3,47 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Retrieval-Augmented Tooling</title>
+    <meta name="description" content="Structure and Interpretation of Agentic Patterns, a theory-backed book about agentic AI." />
+    <title>Retrieval-Augmented Tooling · SIAP</title>
     <link rel="stylesheet" href="../../assets/style.css" />
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [["\\(", "\\)"]],
+          displayMath: [["\\[", "\\]"], ["$$", "$$"]],
+          processEscapes: true
+        },
+        options: { skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] }
+      };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   </head>
   <body>
     <header class="site-header">
-      <h1><a href="../../index.html">Structure and Interpretation of Agentic Patterns</a></h1>
+      <div class="site-header__inner">
+        <a class="site-mark" href="../../index.html" aria-label="Structure and Interpretation of Agentic Patterns home">SIAP</a>
+        <div>
+          <p class="site-kicker">A book about governed machines</p>
+          <p class="site-title"><a href="../../index.html">Structure and Interpretation<br />of Agentic Patterns</a></p>
+        </div>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="book-navigation">Contents</button>
+      </div>
     </header>
     <main class="layout">
-      <aside class="sidebar">
-        <h2>Contents</h2>
-        <nav><div><a href="../../chapters/01-foundations-of-agency/index.html">chapters/01-foundations-of-agency/index</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-01-goals-environments-actions-notes.html">chapters/01-foundations-of-agency/topic-01-goals-environments-actions-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-01-goals-environments-actions.html">chapters/01-foundations-of-agency/topic-01-goals-environments-actions</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision-notes.html">chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision.html">chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions-notes.html">chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions.html">chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-04-policies-value-and-control-notes.html">chapters/01-foundations-of-agency/topic-04-policies-value-and-control-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-04-policies-value-and-control.html">chapters/01-foundations-of-agency/topic-04-policies-value-and-control</a></div><div><a href="../../chapters/02-reasoning-architectures/index.html">chapters/02-reasoning-architectures/index</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters-notes.html">chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters.html">chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search-notes.html">chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search.html">chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval-notes.html">chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval.html">chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners-notes.html">chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners.html">chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/index.html">chapters/03-tool-use-and-embodiment/index</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling-notes.html">chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling.html">chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling-notes.html">chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling-notes</a></div><div><a class="active" href="../../chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling.html">chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback-notes.html">chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback.html">chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails-notes.html">chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails.html">chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails</a></div><div><a href="../../chapters/04-multi-agent-systems/index.html">chapters/04-multi-agent-systems/index</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication-notes.html">chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication.html">chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design-notes.html">chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design.html">chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics-notes.html">chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics.html">chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration-notes.html">chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration.html">chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration</a></div><div><a href="../../index.html">index</a></div><div><a href="../../references.html">references</a></div></nav>
+      <aside class="sidebar" id="book-navigation">
+        <p class="sidebar__label">Reader’s route</p>
+        <nav aria-label="Book contents"><ol class="book-nav__list"><li class="book-nav__home"><a href="../../index.html">Book home</a></li><li class="book-nav__part"><a href="../../parts/00-system-in-action.html">Part 0: The System in Action</a></li><li class="book-nav__chapter"><a href="../01-foundations-of-agency/index.html">Chapter 1: Foundations of Agency</a><ol class="book-nav__topics"><li><a href="../01-foundations-of-agency/topic-01-goals-environments-actions.html">Goals, Environments, and Actions</a></li><li><a href="../01-foundations-of-agency/topic-02-belief-uncertainty-and-decision.html">Belief, Uncertainty, and Decision</a></li><li><a href="../01-foundations-of-agency/topic-03-world-models-and-state-abstractions.html">World Models and State Abstractions</a></li><li><a href="../01-foundations-of-agency/topic-04-policies-value-and-control.html">Policies, Value, and Control</a></li></ol></li><li class="book-nav__chapter"><a href="../02-reasoning-architectures/index.html">Chapter 2: Reasoning Architectures</a><ol class="book-nav__topics"><li><a href="../02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters.html">Reasoning Loops as Interpreters</a></li><li><a href="../02-reasoning-architectures/topic-02-deliberation-planning-and-search.html">Deliberation, Planning, and Search</a></li><li><a href="../02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval.html">Memory Systems, Context, and Retrieval</a></li><li><a href="../02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners.html">Evaluating and Debugging Reasoners</a></li></ol></li><li class="book-nav__chapter"><a href="index.html">Chapter 3: Tool Use and Embodiment</a><ol class="book-nav__topics"><li><a href="topic-01-tool-interfaces-and-function-calling.html">Tool Interfaces and Function Calling</a></li><li><a href="topic-02-retrieval-augmented-tooling.html" aria-current="page">Retrieval-Augmented Tooling</a></li><li><a href="topic-03-embodiment-sensors-actuators-and-feedback.html">Embodiment: Sensors, Actuators, and Feedback</a></li><li><a href="topic-04-safety-constraints-and-guardrails.html">Safety Constraints and Guardrails</a></li></ol></li><li class="book-nav__chapter"><a href="../04-multi-agent-systems/index.html">Chapter 4: Multi-Agent Systems</a><ol class="book-nav__topics"><li><a href="../04-multi-agent-systems/topic-01-coordination-protocols-and-communication.html">Coordination Protocols and Communication</a></li><li><a href="../04-multi-agent-systems/topic-02-negotiation-and-mechanism-design.html">Negotiation and Mechanism Design</a></li><li><a href="../04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics.html">Equilibria, Self-Play, and Learning Dynamics</a></li><li><a href="../04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration.html">Neural Ensembles and Orchestration</a></li></ol></li><li class="book-nav__references"><a href="../../references.html">References</a></li></ol></nav>
       </aside>
       <article class="content">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../index.html">Book</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><a href="index.html">Chapter 3: Tool Use and Embodiment</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><span aria-current="page">Retrieval-Augmented Tooling</span></nav>
         <h1 id="retrieval-augmented-tooling">Retrieval-Augmented Tooling</h1>
 <p>Sometimes an agent should stop guessing and go look something up. This section
 is about that decision: when an agent should fetch outside evidence, how it
 should score and rank what it finds, and how it should carry that evidence into
 its next step. Retrieval here is an action with a price, not a ritual.</p>
+<p>Agent-427 has just learned that a legal tool call may still contain an imaginary
+import. Its next lesson is worse: a retrieved document may be real, relevant,
+and wrong for <em>this</em> version of the world.</p>
 <h2 id="retrieval-as-an-observation-the-agent-buys">Retrieval as an Observation the Agent Buys</h2>
 <p>Retrieval-augmented tooling is the interpreter's way of asking the world for
 evidence before it commits to an answer or an action. Retrieval-augmented
@@ -57,57 +80,67 @@ down as probability makes the two stages separately inspectable.</p>
 </thead>
 <tbody>
 <tr>
-<td>(\mathcal{D})</td>
+<td>\(\mathcal{D}\)</td>
 <td>the set of candidate documents the retriever can return</td>
 </tr>
 <tr>
-<td>(e_q), (e_d)</td>
+<td>\(e_q\), \(e_d\)</td>
 <td>vector embeddings of the query and of a document</td>
 </tr>
 <tr>
-<td>(H)</td>
+<td>\(H\)</td>
 <td>entropy, a measure of how spread out the agent's uncertainty is</td>
 </tr>
 <tr>
-<td>(\tau)</td>
+<td>\(\tau\)</td>
 <td>a threshold on entropy chosen by the designer</td>
 </tr>
 <tr>
-<td>(\mathrm{VoI}(q))</td>
-<td>expected value of information for the query (q)</td>
+<td>\(\mathrm{VoI}(q)\)</td>
+<td>expected value of information for the query \(q\)</td>
 </tr>
 </tbody>
 </table>
-<p>For query context (x), retrieved document (d), and answer (y):
-[
+<p>For query context \(x\), retrieved document \(d\), and answer \(y\):
+\[
 p(y\mid x) = \sum_{d \in \mathcal{D}} p(y\mid x,d)\,p(d\mid x).
-]
-Operationally, (p(d\mid x)) is retrieval and ranking; (p(y\mid x,d)) is
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> First give a current manual weight \(0.8\) and a
+stale cache weight \(0.2\). Then combine answer probabilities \(0.9\) and
+\(0.1\): \(0.8(0.9)+0.2(0.1)=0.74\).</p>
+</blockquote>
+<p>Operationally, \(p(d\mid x)\) is retrieval and ranking; \(p(y\mid x,d)\) is
 grounded generation conditioned on the acquired evidence [<a href="../../references.html#ref-14">14</a>].</p>
 <h3 id="reading-the-sum-over-documents">Reading the Sum over Documents</h3>
-<p>The vertical bar in (p(y\mid x,d)) means "given." Read the equation this way:
-the agent imagines each possible document (d), asks how likely answer (y)
+<p>The vertical bar in \(p(y\mid x,d)\) means "given." Read the equation this way:
+the agent imagines each possible document \(d\), asks how likely answer \(y\)
 would be if that document were the evidence, and weights that answer by how
-likely the retriever was to select (d) for the query (x).</p>
+likely the retriever was to select \(d\) for the query \(x\).</p>
 <p>Suppose two candidate documents. The retriever gives
 the first a selection chance of 0.8 and the second 0.2. Given the first, the
 answer "the limit is 30 days" has probability 0.9; given the second, only 0.1.
-Then (p(y\mid x) = 0.8 \times 0.9 + 0.2 \times 0.1 = 0.74). Notice that the
+Then \(p(y\mid x) = 0.8 \times 0.9 + 0.2 \times 0.1 = 0.74\). Notice that the
 retriever's ranking, not the generator's fluency, did most of the work.</p>
 <p>The sum is not saying the agent literally reads every document in the universe.
 It is a clean idealization of a ranked evidence process.</p>
 <h3 id="dense-and-lexical-retrieval-scores">Dense and Lexical Retrieval Scores</h3>
 <p>Typical retrieval scores include dense similarity
-[
+\[
 s_{\text{dense}}(q,d)=\langle e_q,e_d\rangle
-]
-and lexical ranking such as BM25 [<a href="../../references.html#ref-15">15</a>] [<a href="../../references.html#ref-46">46</a>].
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> First multiply coordinates for query \((1,0,2)\)
+and document \((1,1,1)\): \((1,0,2)\). Then add them:
+\(1+0+2=3\), the dense score.</p>
+</blockquote>
+<p>and lexical ranking such as BM25 [<a href="../../references.html#ref-15">15</a>] [<a href="../../references.html#ref-46">46</a>].
 BM25 is a long-standing formula that scores a document by which query words it
 contains and how rare those words are.</p>
-<p>An embedding (e_q) or (e_d) is a vector representation of a query or
+<p>An embedding \(e_q\) or \(e_d\) is a vector representation of a query or
 document. The angle brackets denote an inner product: multiply corresponding
-coordinates and add them. For example, (\langle (1,0,2),(1,1,1)\rangle
-= 1 + 0 + 2 = 3).</p>
+coordinates and add them. For example, \(\langle (1,0,2),(1,1,1)\rangle
+= 1 + 0 + 2 = 3\).</p>
 <p>Similar vectors point in similar semantic directions. So a query about
 "permission checks before deletion" may retrieve a passage about "authorization
 gates for destructive actions" even without exact word overlap.</p>
@@ -118,29 +151,53 @@ gates for destructive actions" even without exact word overlap.</p>
 </ul>
 <p>Hybrid systems are common because the two failures differ. An embedding may miss
 a precise identifier such as <code>PolicyV3_2024</code>. A lexical ranker may miss a paraphrase.</p>
+<h3 id="retrieval-as-sparse-external-attention">Retrieval as Sparse External Attention</h3>
+<p>Transformer attention lets a model weight tokens already inside its active
+sequence. Retrieval performs a related selection over material outside that
+sequence: it chooses a small evidence set, places those items into context, and
+lets ordinary attention operate over the result [<a href="../../references.html#ref-76">76</a>].
+In that limited sense, retrieval is sparse external attention.</p>
+<p>The analogy stops where engineering begins. A neural attention weight does not
+carry filesystem permissions, branch name, source owner, timestamp, or a promise
+that two passages were generated independently. Retrieval does. It is more than
+attention when it acquires new observations, crosses authority boundaries, or
+leaves an auditable provenance trail. A vector match is a hint about relevance;
+it is not a passport stamped “true.”<sup id="fnref:attention-passport"><a class="footnote-ref" href="#fn:attention-passport">1</a></sup></p>
 <h3 id="deciding-when-to-retrieve">Deciding When to Retrieve</h3>
 <p>The control question is when to retrieve. One uncertainty-triggered policy is
-[
-\texttt{retrieve}_t = \mathbf{1}{H[p(\cdot\mid h_t)] &gt; \tau},
-]
-but the economically sharper rule is expected value of information:
-[
-\mathrm{VoI}(q)=\mathbb{E}!\left[\max_a\mathbb{E}[U(a,S)\mid q]\right]-\max_a\mathbb{E}[U(a,S)].
-]
-Retrieve when (\mathrm{VoI}(q)) exceeds retrieval cost.</p>
-<p>Here (H) is entropy, a measure of spread-out uncertainty. If the agent assigns
+\[
+\texttt{retrieve}_t = \mathbf{1}\{H[p(\cdot\mid h_t)] > \tau\},
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> First set entropy to \(1.4\) bits and the threshold
+to \(1.0\); \(1.4>1.0\), so the indicator returns \(1\). Then let a clarifying
+observation reduce entropy to \(0.6\); \(0.6>1.0\) is false, so it returns
+\(0\).</p>
+</blockquote>
+<p>but the economically sharper rule is expected value of information:
+\[
+\mathrm{VoI}(q)=\mathbb{E}\!\left[\max_a\mathbb{E}[U(a,S)\mid q]\right]-\max_a\mathbb{E}[U(a,S)].
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> First suppose the best action is worth \(6\) before
+retrieval and \(9\) on average afterward, giving \(9-6=3\) units of
+information value. Then subtract a retrieval cost of \(1.2\): the net gain is
+\(1.8\), so retrieve.</p>
+</blockquote>
+<p>Retrieve when \(\mathrm{VoI}(q)\) exceeds retrieval cost.</p>
+<p>Here \(H\) is entropy, a measure of spread-out uncertainty. If the agent assigns
 nearly all probability to one answer, entropy is low. If many answers remain
-plausible, entropy is high. (\tau) is a threshold chosen by the designer.</p>
-<p>The bold (\mathbf{1}{\cdot}) is an indicator: it equals 1 when the condition
-inside holds and 0 otherwise. So the rule reads "retrieve at step (t) exactly
-when uncertainty about the next answer exceeds (\tau)." In practice, this
+plausible, entropy is high. \(\tau\) is a threshold chosen by the designer.</p>
+<p>The bold \(\mathbf{1}\{\cdot\}\) is an indicator: it equals 1 when the condition
+inside holds and 0 otherwise. So the rule reads "retrieve at step \(t\) exactly
+when uncertainty about the next answer exceeds \(\tau\)." In practice, this
 simple rule says: when the model is too uncertain, buy evidence unless the
 evidence is too expensive or forbidden.</p>
 <h3 id="value-of-information-as-the-sharper-rule">Value of Information as the Sharper Rule</h3>
 <p>The value-of-information expression, VoI for short, gives a sober interpretation
 of search. Read it as the difference between two quantities: the best expected
-usefulness (U) the agent could reach after seeing the answer to (q), minus
-the best expected usefulness it can reach right now, averaging over the unknown state (S).</p>
+usefulness \(U\) the agent could reach after seeing the answer to \(q\), minus
+the best expected usefulness it can reach right now, averaging over the unknown state \(S\).</p>
 <p>The question is not "could more context be useful?" Almost always, yes. The
 question is whether the expected change in the downstream decision is worth the
 delay, token budget, privacy exposure, and distraction risk of importing more
@@ -150,7 +207,7 @@ seconds and would change the action in one case out of twenty, it pays only when
 that case is expensive to get wrong.</p>
 <h2 id="evidence-as-an-action">Evidence as an Action</h2>
 <p>Let the retrieval decision be an action
-(a_t\in{\texttt{retrieve},\texttt{skip}}). Read that as: at step (t) the
+\(a_t\in\{\texttt{retrieve},\texttt{skip}\}\). Read that as: at step \(t\) the
 agent picks either "retrieve" or "skip." A budget-aware control law prices
 its latency and token cost while preserving the long-horizon effect on the
 task [<a href="../../references.html#ref-5">5</a>] [<a href="../../references.html#ref-4">4</a>]. This is
@@ -190,6 +247,28 @@ rank score, and the claim it supports.</p>
 <p>If two sources disagree, the agent should surface the conflict or acquire
 higher-authority evidence. It should not smooth the contradiction into fluent
 prose.</p>
+<h3 id="stale-correlated-and-poisoned-evidence">Stale, Correlated, and Poisoned Evidence</h3>
+<p>Agent-427 searches for the publication manifest loader and receives three hits:</p>
+<pre><code class="language-text">R1  book/publication.toml                 fresh=2026-08-06  source=working-tree
+    claim: use load_publication_manifest
+R2  cache/site-builder-migration.md        fresh=2026-07-10  source=mirror-A
+    claim: use load_manifest
+R3  memory/quick-fix.md                    fresh=unknown     source=mirror-A
+    claim: use load_manifest; skip validation for speed
+</code></pre>
+<p>Counting votes yields two for the nonexistent import. Counting provenance yields
+one stale upstream source copied twice, opposed by the current working tree.
+Worse, <code>R3</code> contains an instruction aimed at the agent rather than evidence
+about the code. The retriever must mark <code>R2</code> and <code>R3</code> as correlated, quarantine
+the imperative text in <code>R3</code>, and prefer direct inspection of the exported symbol.
+Long context can amplify contamination when matching text repeatedly cites
+itself, so provenance and raw-source links must survive retrieval and memory
+compression [<a href="../../references.html#ref-16">16</a>].</p>
+<p>Poisoning need not look sinister. An old runbook copied into three indexes is a
+poisoning event when its repetition tricks the ranker into treating one stale
+claim as independent consensus. Robust retrieval clusters by origin, discounts
+age, separates quoted instructions from executable instructions, and asks an
+independent sensor when high-authority sources contradict.</p>
 <p>For a beginner builder, this is where retrieval becomes tool design instead of
 text stuffing. A source may be:</p>
 <ul>
@@ -216,7 +295,7 @@ move. Topic 4 (Safety Constraints and Guardrails) takes up what to do when the
 next move is dangerous.</p>
 <h3 id="measuring-retrieval-quality">Measuring Retrieval Quality</h3>
 <p>This also explains why retrieval quality cannot be judged by answer style
-alone. Measure Recall@(k), nDCG, citation faithfulness, contradiction rate,
+alone. Measure Recall@\(k\), nDCG, citation faithfulness, contradiction rate,
 freshness error, tool-call efficiency, and end-task utility under fixed
 retrieval budgets.</p>
 <p>Then compare three policies: always-retrieve, never-retrieve, and an
@@ -231,8 +310,8 @@ policy fails differently:</p>
 </ul>
 <p>If retrieval cannot buy measurable uncertainty reduction per unit latency, it is
 ritual rather than reasoning.</p>
-<p>Recall@(k) asks whether the needed evidence appears somewhere in the top
-(k) retrieved items. Set (k = 5), and if the needed passage lands at rank 4,
+<p>Recall@\(k\) asks whether the needed evidence appears somewhere in the top
+\(k\) retrieved items. Set \(k = 5\), and if the needed passage lands at rank 4,
 Recall@5 counts it as found. nDCG, normalized discounted cumulative gain, also
 cares about order: useful evidence near rank 1 counts more than the same
 evidence buried near rank 20.</p>
@@ -257,10 +336,70 @@ suppress retrieval that the current task plainly needs.</p>
 <p>Retrieval is therefore most valuable for tasks with four properties together:
 high uncertainty, fresh external facts, inspectable evidence, and enough
 consequence that the delay is cheaper than the mistake.</p>
+<blockquote>
+<p><strong>Skeptical Engineer:</strong> If retrieval is attention with a search engine attached,
+why not retrieve ten times as much and let the model sort it out?</p>
+<p><strong>Author:</strong> Because attention allocates influence; it does not manufacture
+provenance, independence, or truth. Ten poisoned copies are still one poisoned
+claim wearing a marching band.</p>
+</blockquote>
+<h2 id="the-assumption">The Assumption</h2>
+<p>Retrieval-augmented generation assumes the candidate corpus contains useful
+evidence, the ranking score correlates with decision relevance, metadata exposes
+freshness and provenance, and the generator can distinguish evidence from
+instructions embedded inside evidence.</p>
+<h2 id="the-violation">The Violation</h2>
+<p>The assumption breaks under null results, stale branch snapshots, correlated
+mirrors, permission-filtered corpora, and adversarial passages written to hijack
+the next action. It also breaks when the uncertainty trigger is miscalibrated:
+the agent confidently skips the lookup that would have corrected it.</p>
+<h2 id="when-it-fails">When It Fails</h2>
+<p>Agent-427 once retrieves <code>R2</code> and <code>R3</code>, sees apparent agreement, and prepares the
+wrong import. The failure is not that dense retrieval found similar text; it is
+that the policy promoted similarity into authority. The repaired interpreter
+deduplicates by provenance, labels freshness, neutralizes instructions in
+retrieved data, and sends unresolved contradictions to an independent source.
+These are concrete defenses against reward hacking and unsafe side effects, not
+requests that the model “please be discerning” [<a href="../../references.html#ref-77">77</a>].</p>
+<h2 id="exercise-poison-the-index-then-defend-it">Exercise: Poison the Index, Then Defend It</h2>
+<p>Implement a small hybrid retriever over at least fifty local documents. Each
+result must carry <code>source_id</code>, <code>timestamp</code>, <code>branch</code>, <code>content_hash</code>, permission,
+and whether its text contains an imperative addressed to the agent. Then:</p>
+<ol>
+<li>insert one correct current document, two stale copies of one wrong document,
+   and one poisoned note that says to bypass validation;</li>
+<li>run lexical-only, dense-only, and hybrid ranking;</li>
+<li>add provenance clustering, freshness decay, and instruction quarantine;</li>
+<li>assert that no two copies with one <code>source_id</code> count as independent votes;</li>
+<li>report Recall@5, contradiction rate, stale-hit rate, poisoned-hit rate,
+   latency, and downstream import choice before and after the defense.</li>
+</ol>
+<p>The exercise succeeds only if the defended policy selects direct source
+inspection or returns an explicit contradiction; fluent synthesis of the stale
+majority is a failing test.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:attention-passport">
+<p>Similarity is excellent at introducing strangers. It is
+less accomplished at checking their credentials.&#160;<a class="footnote-backref" href="#fnref:attention-passport" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+        <nav class="reading-nav" aria-label="Reading navigation"><div class="reading-nav__previous"><span>Previous</span><a href="topic-01-tool-interfaces-and-function-calling.html">Tool Interfaces and Function Calling</a></div><div class="reading-nav__up"><span>Chapter</span><a href="index.html">Chapter 3: Tool Use and Embodiment</a></div><div class="reading-nav__next"><span>Next</span><a href="topic-03-embodiment-sensors-actuators-and-feedback.html">Embodiment: Sensors, Actuators, and Feedback</a></div></nav>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-07-27 18:55 UTC
+      <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
+      <p>Last generated: 2026-08-06 11:32 UTC</p>
     </footer>
+    <script>
+      const toggle = document.querySelector(".nav-toggle");
+      const navigation = document.querySelector(".sidebar");
+      toggle.addEventListener("click", () => {
+        const open = navigation.classList.toggle("sidebar--open");
+        toggle.setAttribute("aria-expanded", String(open));
+      });
+    </script>
   </body>
 </html>

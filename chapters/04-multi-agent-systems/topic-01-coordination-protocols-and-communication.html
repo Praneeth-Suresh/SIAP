@@ -3,19 +3,39 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Coordination Protocols and Communication</title>
+    <meta name="description" content="Structure and Interpretation of Agentic Patterns, a theory-backed book about agentic AI." />
+    <title>Coordination Protocols and Communication · SIAP</title>
     <link rel="stylesheet" href="../../assets/style.css" />
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [["\\(", "\\)"]],
+          displayMath: [["\\[", "\\]"], ["$$", "$$"]],
+          processEscapes: true
+        },
+        options: { skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] }
+      };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   </head>
   <body>
     <header class="site-header">
-      <h1><a href="../../index.html">Structure and Interpretation of Agentic Patterns</a></h1>
+      <div class="site-header__inner">
+        <a class="site-mark" href="../../index.html" aria-label="Structure and Interpretation of Agentic Patterns home">SIAP</a>
+        <div>
+          <p class="site-kicker">A book about governed machines</p>
+          <p class="site-title"><a href="../../index.html">Structure and Interpretation<br />of Agentic Patterns</a></p>
+        </div>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="book-navigation">Contents</button>
+      </div>
     </header>
     <main class="layout">
-      <aside class="sidebar">
-        <h2>Contents</h2>
-        <nav><div><a href="../../chapters/01-foundations-of-agency/index.html">chapters/01-foundations-of-agency/index</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-01-goals-environments-actions-notes.html">chapters/01-foundations-of-agency/topic-01-goals-environments-actions-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-01-goals-environments-actions.html">chapters/01-foundations-of-agency/topic-01-goals-environments-actions</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision-notes.html">chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision.html">chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions-notes.html">chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions.html">chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-04-policies-value-and-control-notes.html">chapters/01-foundations-of-agency/topic-04-policies-value-and-control-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-04-policies-value-and-control.html">chapters/01-foundations-of-agency/topic-04-policies-value-and-control</a></div><div><a href="../../chapters/02-reasoning-architectures/index.html">chapters/02-reasoning-architectures/index</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters-notes.html">chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters.html">chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search-notes.html">chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search.html">chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval-notes.html">chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval.html">chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners-notes.html">chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners.html">chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/index.html">chapters/03-tool-use-and-embodiment/index</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling-notes.html">chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling.html">chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling-notes.html">chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling.html">chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback-notes.html">chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback.html">chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails-notes.html">chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails.html">chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails</a></div><div><a href="../../chapters/04-multi-agent-systems/index.html">chapters/04-multi-agent-systems/index</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication-notes.html">chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication-notes</a></div><div><a class="active" href="../../chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication.html">chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design-notes.html">chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design.html">chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics-notes.html">chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics.html">chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration-notes.html">chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration.html">chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration</a></div><div><a href="../../index.html">index</a></div><div><a href="../../references.html">references</a></div></nav>
+      <aside class="sidebar" id="book-navigation">
+        <p class="sidebar__label">Reader’s route</p>
+        <nav aria-label="Book contents"><ol class="book-nav__list"><li class="book-nav__home"><a href="../../index.html">Book home</a></li><li class="book-nav__part"><a href="../../parts/00-system-in-action.html">Part 0: The System in Action</a></li><li class="book-nav__chapter"><a href="../01-foundations-of-agency/index.html">Chapter 1: Foundations of Agency</a><ol class="book-nav__topics"><li><a href="../01-foundations-of-agency/topic-01-goals-environments-actions.html">Goals, Environments, and Actions</a></li><li><a href="../01-foundations-of-agency/topic-02-belief-uncertainty-and-decision.html">Belief, Uncertainty, and Decision</a></li><li><a href="../01-foundations-of-agency/topic-03-world-models-and-state-abstractions.html">World Models and State Abstractions</a></li><li><a href="../01-foundations-of-agency/topic-04-policies-value-and-control.html">Policies, Value, and Control</a></li></ol></li><li class="book-nav__chapter"><a href="../02-reasoning-architectures/index.html">Chapter 2: Reasoning Architectures</a><ol class="book-nav__topics"><li><a href="../02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters.html">Reasoning Loops as Interpreters</a></li><li><a href="../02-reasoning-architectures/topic-02-deliberation-planning-and-search.html">Deliberation, Planning, and Search</a></li><li><a href="../02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval.html">Memory Systems, Context, and Retrieval</a></li><li><a href="../02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners.html">Evaluating and Debugging Reasoners</a></li></ol></li><li class="book-nav__chapter"><a href="../03-tool-use-and-embodiment/index.html">Chapter 3: Tool Use and Embodiment</a><ol class="book-nav__topics"><li><a href="../03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling.html">Tool Interfaces and Function Calling</a></li><li><a href="../03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling.html">Retrieval-Augmented Tooling</a></li><li><a href="../03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback.html">Embodiment: Sensors, Actuators, and Feedback</a></li><li><a href="../03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails.html">Safety Constraints and Guardrails</a></li></ol></li><li class="book-nav__chapter"><a href="index.html">Chapter 4: Multi-Agent Systems</a><ol class="book-nav__topics"><li><a href="topic-01-coordination-protocols-and-communication.html" aria-current="page">Coordination Protocols and Communication</a></li><li><a href="topic-02-negotiation-and-mechanism-design.html">Negotiation and Mechanism Design</a></li><li><a href="topic-03-equilibria-self-play-and-learning-dynamics.html">Equilibria, Self-Play, and Learning Dynamics</a></li><li><a href="topic-04-neural-ensembles-and-orchestration.html">Neural Ensembles and Orchestration</a></li></ol></li><li class="book-nav__references"><a href="../../references.html">References</a></li></ol></nav>
       </aside>
       <article class="content">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../index.html">Book</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><a href="index.html">Chapter 4: Multi-Agent Systems</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><span aria-current="page">Coordination Protocols and Communication</span></nav>
         <h1 id="coordination-protocols-and-communication">Coordination Protocols and Communication</h1>
 <p>Several agents working the same job at the same time is not one agent doing more of it. Each one sees only a slice of the situation. Each one can send messages that change what the others believe and do. The rules governing those messages are called a protocol, and designing, reading, and testing one is the work ahead.</p>
 <p>When many interpreters share an environment, communication is not an ornament added to intelligence. It is one of the control surfaces of the system. Each agent sees only part of the state, updates its own local machine, and emits messages that may change the machines around it. A protocol is the rule that makes those local steps compose.</p>
@@ -33,18 +53,30 @@
 <h2 id="protocols-as-distributed-transition-systems">Protocols as Distributed Transition Systems</h2>
 <h3 id="local-state-messages-and-the-missing-global-view">Local State, Messages, and the Missing Global View</h3>
 <p>A protocol is best written as a transition rule: given what an agent holds and what just arrived, what does it hold next and what does it say next?</p>
-<p>Let agents (i\in{1,\dots,n}) have local state (x_i^t), incoming messages (m_{<em>\to i}^t), and outgoing messages (m_{i\to </em>}^{t+1}). Read (x_i^t) as "the private state of agent i at step t". Read (m_{<em>\to i}^t) as "everything sent to agent i, from anyone, at step t"; the star means "any sender". A protocol (\Pi) defines the legal local transition
-[
-(x_i^{t+1}, m_{i\to </em>}^{t+1}) = \Pi_i!\left(x_i^t,{m_{*\to i}^t}\right).
-]
-Read this as: agent i's rule takes its current private state and its inbox, and returns its next private state together with the messages it sends.</p>
+<p>Let agents \(i\in\{1,\dots,n\}\) have local state \(x_i^t\), incoming messages \(m_{*\to i}^t\), and outgoing messages \(m_{i\to *}^{t+1}\). Read \(x_i^t\) as "the private state of agent i at step t". Read \(m_{*\to i}^t\) as "everything sent to agent i, from anyone, at step t"; the star means "any sender". A protocol \(\Pi\) defines the legal local transition
+\[
+(x_i^{t+1}, m_{i\to *}^{t+1}) = \Pi_i\!\left(x_i^t,\{m_{*\to i}^t\}\right).
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> First give C-9 local state version \(17\) and two
+incoming messages; the protocol consumes \(1+2=3\) inputs. Then let it emit
+one next state and two signed messages: the visible result has \(1+2=3\)
+outputs whose recipients can compare them later.</p>
+</blockquote>
+<p>Read this as: agent i's rule takes its current private state and its inbox, and returns its next private state together with the messages it sends.</p>
 <p>The global state is not stored in any one agent. It is induced by the product of local states, channels, clocks, and shared artifacts. That is why multi-agent debugging so often feels unlike single-agent debugging. The failure may not live inside one interpreter. It may live in the order in which interpreters heard each other. In practice this means your logs must record message arrival order, not only message content.</p>
 <h3 id="beliefs-differ-even-when-the-document-does-not">Beliefs Differ Even When the Document Does Not</h3>
-<p>Local state also includes belief, which is an agent's estimate of what is true given what it has seen. Agent (i) receives observation (o_i^t), maintains a belief (b_i^t(s)), and chooses both domain actions and communication actions:
-[
-b_i^{t+1}=\operatorname{Update}<em _to="*\to" i="i">i(b_i^t,o_i^{t+1},m</em>).
-]
-Read (b_i^t(s)) as "how likely agent i thinks the world is in state s at step t". The update line says the new belief comes from the old belief, the newest observation, and the newest messages.}^{t+1</p>
+<p>Local state also includes belief, which is an agent's estimate of what is true given what it has seen. Agent \(i\) receives observation \(o_i^t\), maintains a belief \(b_i^t(s)\), and chooses both domain actions and communication actions:
+\[
+b_i^{t+1}=\operatorname{Update}_i(b_i^t,o_i^{t+1},m_{*\to i}^{t+1}).
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> First let Agent-427 assign probability \(0.6\) to a
+citation being sound. Then a signed <code>unsure</code> report with likelihood ratio
+\(1:3\) changes unnormalized odds from \(0.6:0.4\) to \(0.6:1.2\), or a
+posterior of \(0.6/1.8\approx0.33\).</p>
+</blockquote>
+<p>Read \(b_i^t(s)\) as "how likely agent i thinks the world is in state s at step t". The update line says the new belief comes from the old belief, the newest observation, and the newest messages.</p>
 <p>The shared artifact is not the same thing as shared belief. Three small examples make the gap concrete:</p>
 <ul>
 <li>A fact checker may know that a citation is weak before that weakness appears in the draft.</li>
@@ -55,20 +87,27 @@ Read (b_i^t(s)) as "how likely agent i thinks the world is in state s at step t"
 <h3 id="words-for-timing-and-failure">Words for Timing and Failure</h3>
 <p>A few vocabulary words keep the difficulty honest. An asynchronous system is one in which messages can be delayed for an unknown amount of time. There is no dependable global clock that says, "if nothing arrived by now, nothing was sent." A crash fault is a plain failure-stop: an agent may halt and send no more messages. A Byzantine fault is more devious: an agent may lie, send inconsistent messages, corrupt state, or behave in any arbitrary way. The Byzantine courtier is not merely sleepy; he may be composing different letters to different generals.</p>
 <h3 id="safety-liveness-and-agreement">Safety, Liveness, and Agreement</h3>
-<p>Correctness criteria name the properties we want from this composed machine. Safety says that forbidden configurations are unreachable. Liveness says that required progress eventually occurs. Agreement, when the task requires it, says that the relevant local states converge:
-[
-x_i^T=x_j^T\quad\forall i,j.
-]
-Read this as "at the final step T, every pair of agents i and j holds the same state"; the upside-down A means "for all". A builder checks safety with invariant assertions on state, liveness with timeouts on progress, and agreement by diffing the agents' final records.</p>
+<p>Correctness criteria name the properties we want from this composed machine. Safety says that forbidden configurations are unreachable. Liveness says that required progress eventually occurs. Agreement, when the task requires it, says that agents converge on the decision their private states imply—not that their private states become identical. Let \(q_i\) project agent \(i\)'s local state onto the decision the protocol cares about:
+\[
+d_i^T=q_i(x_i^T),\qquad d_i^T=d_j^T\quad\forall i,j.
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> First let D-12's private state be revision \(18\)
+with <code>ready=True</code>, while C-9's state is evidence bundle \(604\) with
+<code>verified=True</code>; their projections are \(q_D(x_D)=1\) and \(q_C(x_C)=1\).
+Then compare the decisions: \(1-1=0\), so they agree even though
+\(18\ne604\); if C-9 projected \(0\), the decision gap would be \(1\).</p>
+</blockquote>
+<p>Read this as "at the final step T, every pair of agents i and j reaches the same protocol decision." The upside-down A means "for all." D-12 may retain prose state while C-9 retains evidence state; forcing those records to equality would destroy the specialization the protocol was built to use. A builder checks safety with invariant assertions on state, liveness with timeouts on progress, and agreement by comparing projected decisions.</p>
 <h3 id="a-two-agent-trace-where-slow-and-dead-look-alike">A Two-Agent Trace Where Slow and Dead Look Alike</h3>
-<p>Before naming the famous impossibility theorem, consider a two-agent trace. Agent (A) proposes value (1); agent (B) proposes value (0); each waits for the other's message before deciding. The following trace lists, step by step, what each agent sends and what each agent still does not know.</p>
+<p>Before naming the famous impossibility theorem, consider a two-agent trace. Agent \(A\) proposes value \(1\); agent \(B\) proposes value \(0\); each waits for the other's message before deciding. The following trace lists, step by step, what each agent sends and what each agent still does not know.</p>
 <pre><code class="language-text">t=0    A sends propose(1) to B
 t=1    B sends propose(0) to A
 t=2    A receives nothing yet; the channel may be slow, or B may have crashed
 t=3    B receives propose(1); B cannot tell whether A will receive propose(0)
 t=4    A still receives nothing; deciding now risks disagreement, waiting risks no liveness
 </code></pre>
-<p>The trouble is epistemic, not theatrical: it is about knowledge, not drama. From (A)'s local view at (t=4), "B is slow" and "B has crashed" can look identical. If (A) must always decide eventually and must never disagree with (B), the protocol has to distinguish states that the local observations do not distinguish. That is the squeeze.</p>
+<p>The trouble is epistemic, not theatrical: it is about knowledge, not drama. From \(A\)'s local view at \(t=4\), "B is slow" and "B has crashed" can look identical. If \(A\) must always decide eventually and must never disagree with \(B\), the protocol has to distinguish states that the local observations do not distinguish. That is the squeeze.</p>
 <h3 id="what-flp-and-byzantine-agreement-actually-forbid">What FLP and Byzantine Agreement Actually Forbid</h3>
 <p>Consensus theory makes these words sharp. Byzantine agreement studies what can be guaranteed when some participants may lie or fail arbitrarily [<a href="../../references.html#ref-54">54</a>]. The FLP result, named for its authors Fischer, Lynch, and Paterson, shows that deterministic consensus cannot be guaranteed in a fully asynchronous system with even one crash fault [<a href="../../references.html#ref-55">55</a>].</p>
 <p>FLP does not say consensus is universally impossible. It says that a particular bundle of assumptions cannot all be kept at once. Practical systems regain progress by relaxing something:</p>
@@ -81,18 +120,64 @@ t=4    A still receives nothing; deciding now risks disagreement, waiting risks 
 <li>or weaken the decision requirement.</li>
 </ul>
 <p>These are not remote distributed-systems curiosities. They are warnings against designing agent collectives whose correctness silently assumes perfect timing, perfect honesty, and perfectly delivered messages.</p>
+<h3 id="the-byzantine-traffic-light">The Byzantine Traffic Light</h3>
+<p>The abstract courtier now acquires a name. C-9 examines claim <code>claim-779</code> and
+sends two signed reports about the same evidence digest:</p>
+<pre><code class="language-text">t=11:01:02  C-9 -&gt; Router R-3
+             report(claim=claim-779, verdict=&quot;verified&quot;,
+                    evidence=mirror-4, digest=7af2, msg=c9-184)
+
+t=11:01:04  C-9 -&gt; Agent-427
+             report(claim=claim-779, verdict=&quot;unsure&quot;,
+                    evidence=mirror-4, digest=7af2, msg=c9-185)
+
+t=11:01:06  R-3 -&gt; Agent-427
+             commit_request(claim=claim-779, basis=c9-184)
+
+t=11:01:07  Agent-427 -&gt; R-3
+             contradiction(c9-184, c9-185, same_claim=true,
+                           same_evidence_digest=true)
+
+t=11:01:08  protocol
+             freeze(claim-779); require(independent_verification)
+</code></pre>
+<p>C-9 tells Router R-3 <strong><code>verified</code></strong> and Agent-427 <strong><code>unsure</code></strong>. This is not
+ordinary disagreement: one sender has issued incompatible verdicts to different
+recipients. The protocol preserves both signed messages, compares claim and
+evidence identifiers, marks the sender Byzantine for this transition, and moves
+the artifact from green to red. It does not let the router's earlier green light
+erase Agent-427's amber report.<sup id="fnref:byzantine-wardrobe"><a class="footnote-ref" href="#fn:byzantine-wardrobe">1</a></sup></p>
+<p><img alt="A traffic-light protocol freezes a claim when C-9 sends verified to Router R-3 and unsure to Agent-427." src="../../assets/diagrams/09-byzantine-traffic-light.png" /></p>
+<p>Contradictory evidence has its own type. If two honest agents interpret
+different sources, the system records <code>disagreement</code> and seeks a higher-authority
+source. If one sender signs incompatible claims over the same digest, it records
+<code>equivocation</code>, revokes that message's authority, and audits the sender. In
+neither case may an aggregator smooth the contradiction into “mostly verified.”
+Byzantine agreement gives the hard edge of this rule; role-based institutions
+give it an executable home [<a href="../../references.html#ref-54">54</a>]
+[<a href="../../references.html#ref-17">17</a>] [<a href="../../references.html#ref-18">18</a>].</p>
 <h3 id="paying-for-messages-expected-utility-and-the-bellman-view">Paying for Messages: Expected Utility and the Bellman View</h3>
 <p>Communication also has a price. A utility-aware protocol objective can be written
-[
-\max_{\Pi}\ \mathbb{E}[U(\tau)]-\lambda\sum_t |m_t|,
-]
-which reads "choose the protocol that maximizes the expected value of the whole run, minus a price (\lambda) times the total size of all messages sent". Here (\tau) is the trajectory, the full record of what happened.</p>
+\[
+\max_{\Pi}\ \mathbb{E}[U(\tau)]-\lambda\sum_t \|m_t\|,
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> First let expected trajectory utility be \(10\),
+total message size \(4\), and \(\lambda=0.5\). Then communication-adjusted
+utility is \(10-0.5(4)=8\); doubling chatter to \(8\) lowers it to \(6\).</p>
+</blockquote>
+<p>which reads "choose the protocol that maximizes the expected value of the whole run, minus a price \(\lambda\) times the total size of all messages sent". Here \(\tau\) is the trajectory, the full record of what happened.</p>
 <p>Over long horizons, the protocol designer can view "ask another agent" as an action inside a Bellman recursion:
-[
-V^\star(s)=\max_a\left{R(s,a)-\lambda C_{\text{comm}}(a)+\gamma\sum_{s'}P(s'|s,a)V^\star(s')\right}.
-]
-Read (V^\star(s)) as "the best long-run value obtainable from state s". Inside the braces: immediate reward, minus the communication cost of the action, plus the discounted value of wherever you land next, where (\gamma) shrinks future value relative to present value.</p>
-<p>A tiny worked number helps. Suppose asking a reviewer raises the chance of a correct chapter from 0.70 to 0.90, and a correct chapter is worth 10. The expected gain is (0.20 \times 10 = 2). If the message costs 0.5 in latency and tokens, the net is 1.5, so ask. If the same message only moved the chance from 0.88 to 0.90, the gain is 0.2 and the net is negative, so do not ask.</p>
+\[
+V^\star(s)=\max_a\left\{R(s,a)-\lambda C_{\text{comm}}(a)+\gamma\sum_{s'}P(s'|s,a)V^\star(s')\right\}.
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> First score a message with reward \(4\), cost \(1\),
+and \(\lambda=0.5\): immediate net is \(3.5\). Then add one successor worth
+\(6\) at \(\gamma=0.5\): total value is \(3.5+3=6.5\).</p>
+</blockquote>
+<p>Read \(V^\star(s)\) as "the best long-run value obtainable from state s". Inside the braces: immediate reward, minus the communication cost of the action, plus the discounted value of wherever you land next, where \(\gamma\) shrinks future value relative to present value.</p>
+<p>A tiny worked number helps. Suppose asking a reviewer raises the chance of a correct chapter from 0.70 to 0.90, and a correct chapter is worth 10. The expected gain is \(0.20 \times 10 = 2\). If the message costs 0.5 in latency and tokens, the net is 1.5, so ask. If the same message only moved the chance from 0.88 to 0.90, the gain is 0.2 and the net is negative, so do not ask.</p>
 <p>Expected utility gives the one-step decision rule, while dynamic programming makes the future cost of coordination explicit [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>] [<a href="../../references.html#ref-5">5</a>]. More messages are justified only when they improve the expected trace enough to pay for their latency, token cost, and confusion risk.</p>
 <h3 id="dec-pomdps-the-honest-formal-home">Dec-POMDPs: The Honest Formal Home</h3>
 <p>In the fully general case, this is a decentralized partially observable Markov decision process, abbreviated Dec-POMDP. "Partially observable" means each agent sees only clues about the state, not the state itself. Three properties define it: each agent has local observations and local actions, rewards depend on the joint trajectory, and no agent can condition on the complete state.</p>
@@ -100,10 +185,15 @@ Read (V^\star(s)) as "the best long-run value obtainable from state s". Inside t
 <h2 id="speech-acts-and-commitments">Speech Acts and Commitments</h2>
 <h3 id="a-small-grammar-of-typed-messages">A Small Grammar of Typed Messages</h3>
 <p>Coordination theory studies dependencies among tasks, resources, and actors; communication is useful when it manages one of those dependencies [<a href="../../references.html#ref-56">56</a>]. In agent systems, the most useful messages are therefore not free-form paragraphs but typed acts, meaning messages with a declared kind. A small grammar might include
-[
-{\texttt{observe},\texttt{propose},\texttt{critique},\texttt{vote},\texttt{decide},\texttt{commit},\texttt{handoff}}.
-]
-This set is read as the seven allowed message kinds: report something seen, offer something, object to something, register a preference, settle the matter, take on an obligation, and pass work to someone else.</p>
+\[
+\{\texttt{observe},\texttt{propose},\texttt{critique},\texttt{vote},\texttt{decide},\texttt{commit},\texttt{handoff}\}.
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> First count the seven legal message kinds. Then let
+C-9 send <code>whisper</code>; it belongs to \(0\) of those \(7\) kinds, so the parser
+rejects it before the message can change shared state.</p>
+</blockquote>
+<p>This set is read as the seven allowed message kinds: report something seen, offer something, object to something, register a preference, settle the matter, take on an obligation, and pass work to someone else.</p>
 <p>The grammar is not bureaucratic decoration. It tells each receiving interpreter how the message may update state:</p>
 <ul>
 <li>A proposal creates an option.</li>
@@ -123,18 +213,23 @@ This set is read as the seven allowed message kinds: report something seen, offe
 <h3 id="commitments-logging-ratio-and-deadlock">Commitments, Logging Ratio, and Deadlock</h3>
 <p>Commitments deserve special treatment because they are where speech touches the environment. A commitment should record four things: who owns the next action, what condition completes it, what deadline applies, and what recovery rule fires on failure.</p>
 <p>Message observability should be measured:
-[
+\[
 \rho_{\text{log}}=\frac{\text{logged messages}}{\text{sent messages}}.
-]
-Read (\rho_{\text{log}}) as "the fraction of sent messages that were written down". If 90 of 100 messages are logged, (\rho_{\text{log}}=0.9), and one message in ten is invisible to any later review. If an auditor cannot reconstruct why the collective converged, deadlocked, or stampeded, the protocol has hidden part of its semantics.</p>
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> First log \(90\) of \(100\) sent messages, giving
+\(\rho_{\text{log}}=90/100=0.9\). Then discover two unlogged recipient-specific
+reports: completeness falls to \(90/102\approx0.882\).</p>
+</blockquote>
+<p>Read \(\rho_{\text{log}}\) as "the fraction of sent messages that were written down". If 90 of 100 messages are logged, \(\rho_{\text{log}}=0.9\), and one message in ten is invisible to any later review. If an auditor cannot reconstruct why the collective converged, deadlocked, or stampeded, the protocol has hidden part of its semantics.</p>
 <p>A deadlock is a state where every agent is waiting for some other event before it can move. The drafter waits for review, the reviewer waits for a revised patch, and the integrator waits for both, while no transition remains enabled.</p>
 <h2 id="a-shared-publication-environment">A Shared Publication Environment</h2>
 <h3 id="three-roles-three-local-environments">Three Roles, Three Local Environments</h3>
 <p>Consider three agents editing a publication chapter: a drafter, a fact checker, and an integrator. If all three simply write into the same file, the shared environment becomes a race condition, where the result depends on who happens to write last. A minimal protocol is better:</p>
 <ol>
-<li>The drafter may emit (\texttt{propose(section, patch, rationale)}).</li>
-<li>The fact checker may emit (\texttt{critique(claim, source, severity)}) or (\texttt{approve(claim)}).</li>
-<li>The integrator may emit (\texttt{commit(patch)}) only after all severe critiques are resolved or a timeout rule is invoked.</li>
+<li>The drafter may emit \(\texttt{propose(section, patch, rationale)}\).</li>
+<li>The fact checker may emit \(\texttt{critique(claim, source, severity)}\) or \(\texttt{approve(claim)}\).</li>
+<li>The integrator may emit \(\texttt{commit(patch)}\) only after all severe critiques are resolved or a timeout rule is invoked.</li>
 </ol>
 <p>Each role is an interpreter over a different local environment:</p>
 <ul>
@@ -186,10 +281,77 @@ integrator.commit(P1)
 <li>and degradation under corrupted or adversarial messages.</li>
 </ul>
 <p>Run that last test deliberately, by injecting a lying agent, rather than waiting for one to appear. A coordination scheme that works only because every participant is reasonable is not yet a protocol. It is a cooperative anecdote. Topic 3 (Equilibria, Self-Play, and Learning Dynamics) studies what happens when the participants adapt to each other over many such runs.</p>
+<blockquote>
+<p><strong>Skeptical Engineer:</strong> If signatures prove C-9 sent both messages, why do we
+need all this protocol machinery? Just fire C-9.</p>
+<p><strong>Author:</strong> Signatures prove authorship, not which downstream commits already
+depended on the lie. The protocol freezes authority, reconstructs impact, and
+keeps the institution safe while personnel policy catches up.</p>
+</blockquote>
+<h2 id="the-assumption">The Assumption</h2>
+<p>Typed coordination assumes messages carry stable claim, sender, recipient,
+evidence, and version identifiers; recipient-visible logs can later be compared;
+and the quorum rule does not count correlated reports as independent support.
+Agreement guarantees further assume an explicit timing and fault model.</p>
+<h2 id="the-violation">The Violation</h2>
+<p>The assumptions fail when side-channel messages escape the audit log, message
+order is lost, recipients cannot compare signed envelopes, silence is treated as
+approval, or one Byzantine sender occupies enough roles to manufacture its own
+quorum. In a fully asynchronous system, even honest delay can remain
+indistinguishable from failure [<a href="../../references.html#ref-55">55</a>].</p>
+<h2 id="when-it-fails">When It Fails</h2>
+<p>Without contradiction handling, R-3 commits on <code>verified</code> while Agent-427 waits
+on <code>unsure</code>; the shared artifact advances while local beliefs diverge. A later
+audit sees two internally coherent traces and no reason they disagree. The
+repaired protocol logs recipient-specific messages, exchanges compact digests at
+commit time, freezes on equivocation, and requires an independent verifier before
+publication authority returns.</p>
+<h2 id="exercise-inject-a-byzantine-fact-checker">Exercise: Inject a Byzantine Fact Checker</h2>
+<p>Implement a deterministic protocol simulator with R-3, C-9, Agent-427, typed
+messages, per-recipient queues, signatures, and a traffic-light claim state.
+Then:</p>
+<ol>
+<li>replay the exact <code>verified</code>/<code>unsure</code> trace above;</li>
+<li>assert that both signed envelopes remain in the audit log;</li>
+<li>distinguish honest disagreement over different evidence from equivocation
+   over the same digest;</li>
+<li>inject delay, loss, duplication, and reorderings under a fixed seed;</li>
+<li>prove by exhaustive enumeration up to six events that no <code>commit</code> transition
+   fires after detected equivocation without independent verification; and</li>
+<li>report safety violations, liveness time, message complexity, and false freezes.</li>
+</ol>
+<h3 id="further-reading-and-open-questions">Further Reading and Open Questions</h3>
+<p>Read Lamport, Shostak, and Pease for Byzantine agreement [<a href="../../references.html#ref-54">54</a>],
+Fischer, Lynch, and Paterson for the asynchronous impossibility boundary
+[<a href="../../references.html#ref-55">55</a>], and the Dec-POMDP treatment for collective
+decision-making under local observations [<a href="../../references.html#ref-22">22</a>]. The
+open engineering question is how much recipient-specific communication can
+remain private while still making equivocation detectable at institutional
+scale.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:byzantine-wardrobe">
+<p>The Byzantine courtier has upgraded from two letters to
+two JSON objects. Civilization advances; equivocation remains backward
+compatible.&#160;<a class="footnote-backref" href="#fnref:byzantine-wardrobe" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+        <nav class="reading-nav" aria-label="Reading navigation"><div class="reading-nav__previous"><span>Previous</span><a href="index.html">Chapter 4: Multi-Agent Systems</a></div><div class="reading-nav__up"><span>Chapter</span><a href="index.html">Chapter 4: Multi-Agent Systems</a></div><div class="reading-nav__next"><span>Next</span><a href="topic-02-negotiation-and-mechanism-design.html">Negotiation and Mechanism Design</a></div></nav>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-07-27 18:55 UTC
+      <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
+      <p>Last generated: 2026-08-06 11:32 UTC</p>
     </footer>
+    <script>
+      const toggle = document.querySelector(".nav-toggle");
+      const navigation = document.querySelector(".sidebar");
+      toggle.addEventListener("click", () => {
+        const open = navigation.classList.toggle("sidebar--open");
+        toggle.setAttribute("aria-expanded", String(open));
+      });
+    </script>
   </body>
 </html>
