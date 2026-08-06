@@ -328,12 +328,15 @@ the policy. Irreversible actions must publish the evidence by which success or
 rollback will later be judged. Topic 4 (Safety Constraints and Guardrails)
 returns to what happens when a proposal must be blocked outright.
 
+::: {.reader-question}
 > **Skeptical Engineer:** Does this not merely push the hallucination problem
 > from natural language into JSON?
 >
 > **Author:** It pushes the *authority* problem into a validator. The model may
 > still hallucinate; the important upgrade is that hallucination no longer
 > inherits write permission.
+
+:::
 
 ## The Assumption
 
@@ -411,7 +414,8 @@ interface is publishable engineering when its failures are
 explained by the contract itself. Then language can touch the world without
 pretending the world is just more language.
 
-## Exercise: Build the Boundary
+::: {.exercise}
+## Exercise: Build the Boundary {.unnumbered}
 
 Implement a Python `ToolContract` and a pure `validate_and_select` function.
 Give it two actions: `read_file` and `edit_file`. The edit schema must require
@@ -427,6 +431,8 @@ set, and return a structured refusal without touching disk. Then:
 
 Your implementation passes only if all malformed proposals become observations
 and no malformed proposal reaches the adapter.
+
+:::
 
 [^tool-refusal]: HAL 9000 had the courtesy to announce that it could not do
     that. Production validators should be at least as explicit, though ideally

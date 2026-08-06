@@ -53,9 +53,12 @@ The connection between the two views is interpretive. Expected utility scores ca
 
 Bellman optimality assumes the state is Markov, the reward and transition law are stationary enough for recursion, and the maximized actions are admissible. Under those assumptions, one-step reward plus continuation value composes. If an API changes halfway through planning, a hidden permission variable matters, or the reward proxy prizes the wrong outcome, the theorem has not become false; the deployed system has stopped being its theorem's subject. The practical consequence is immediate: invalidate stale values, restore missing state, or constrain the action before trusting the ranking.
 
+::: {.reader-question}
 > **Skeptical Engineer:** “Fine, but learning only pushes the complexity into the reward model. Who trains the judge?”
 >
 > **Author:** Correct again. Feedback supplies observations about preferences, not divine utility. We represent uncertainty over the judge, audit its data, and refuse to confuse approval with truth.
+
+:::
 
 ## The Vocabulary of Learned Policies
 
@@ -274,8 +277,11 @@ That loop is the chapter's foundation. Goals define what matters. Belief manages
 
 From here, later chapters can study reasoning architectures, tools, memory, and multi-agent systems as refinements of this basic interpreter rather than as disconnected tricks.
 
-## Exercise: Train, Shift, and Catch the Cheat
+::: {.exercise}
+## Exercise: Train, Shift, and Catch the Cheat {.unnumbered}
 
 Build a seeded two-step routing environment in Python. Generate expert demonstrations for two task families, train a behavioral-cloning policy, and evaluate it on recovery states absent from the demonstrations. Report per-step accuracy and full-trajectory success separately. Then implement the two-hypothesis preference update above and verify that feedback changes reward-parameter belief without changing a separate repository-fact belief.
 
 Next create a static log from behavior policy \(\mu\), evaluate a candidate \(\pi\) with importance weighting, and include one unsupported action. Your evaluator must refuse or conservatively bound that estimate rather than divide by zero. Finally add a test-deletion action to a sandbox reward, demonstrate that the naive learner exploits it, and repair the environment with manifest preservation plus a held-out behavioral test. Run at least 1,000 seeded episodes and publish return, true task success, constraint violations, calibration, and destructive-action proposals in separate columns.
+
+:::

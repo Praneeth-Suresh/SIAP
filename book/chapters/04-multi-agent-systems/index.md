@@ -14,9 +14,12 @@ When one agent is uncertain, it can inspect evidence. When several agents share 
 
 One interpreter is a program. Many interpreters form a small institution, whether or not anyone remembered to design one. They hold different beliefs, queue behind shared resources, inherit different incentives, and may alter the evidence while somebody else is reading it. Adding agents therefore adds neither wisdom nor independence by default. It adds state, latency, authority, and politics.[^c4-committee]
 
+::: {.reader-question}
 **Skeptical Engineer:** "Isn't this just distributed systems with more adjectives?"
 
 **Author:** Distributed systems give us failure, timing, and agreement. Game theory gives us strategic response. Control gives us feedback. Learning gives us adaptation. Agent societies are what happens when all four attend the same incident review and discover they were using the word *state* differently.
+
+:::
 
 ## Four Institutional Edits
 

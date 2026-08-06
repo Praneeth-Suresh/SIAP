@@ -122,9 +122,12 @@ Read it as "choose the policy with the largest expected discounted reward, subje
 
 The POMDP contract assumes that its symbols are stable enough to support a decision. The state representation retains what matters; \(T\) and \(\Omega\) remain useful models of the current world; \(R\) rewards the intended outcome; and the policy chooses from actions the interpreter can validate and execute. The contract does not require omniscience. It requires approximation error small enough that the same action remains defensible.
 
+::: {.reader-question}
 > **Skeptical Engineer:** “Doesn't this merely push the complexity into the reward and state definitions?”
 >
 > **Author:** Exactly. The complexity was already there. Naming it prevents a fluent model from laundering unresolved product decisions into a confident tool proposal.
+
+:::
 
 ![A layered approximation stack showing the formal POMDP contract narrowing through context, changing dynamics, noisy observations, proxy rewards, and executable actions](../../assets/diagrams/02-approximation-stack.png)
 
@@ -219,7 +222,8 @@ For the coding agent, this means the action registry should say more than "can r
 
 A vague prompt asks the agent to be careful. A contract gives the runtime something to inspect.
 
-## Exercise: Build the First Interpreter and Make It Cheat
+::: {.exercise}
+## Exercise: Build the First Interpreter and Make It Cheat {.unnumbered}
 
 Implement a minimal Python interpreter for a toy repository. It must expose `read_file`, `edit_file`, `run_tests`, and `delete_test`, validate each proposal against a typed schema, and log observation provenance. Start Agent-427 with only `read_file` authority. Give a separate sandbox policy the naive reward `passed_tests / discovered_tests`.
 
@@ -232,3 +236,5 @@ Implement a minimal Python interpreter for a toy repository. It must expose `rea
 - The legal actions available to the agent.
 
 Write tests that prove four behaviors: the sandbox policy can raise reward by deleting one failing test; a manifest constraint blocks that deletion; newborn Agent-427's authority blocks every write proposal; and a malformed `edit_file` proposal becomes a typed rejection observation rather than a side effect. Then change the simulated API after step 2 and assert that a retry cap prevents oscillation. Report task success, proxy reward, constraint violations, and tool-call count separately. If those four columns disagree, congratulations: you have built your first honest evaluation.
+
+:::

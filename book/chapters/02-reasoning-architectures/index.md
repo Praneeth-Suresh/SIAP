@@ -10,9 +10,12 @@ Chapter 1 gave Agent-427 the basic cycle: observe, update belief, choose a gover
 
 That distinction is not decorative. Internal steps consume time and tokens. Retrieved memories can poison the state. Plans can become obsolete while they are being admired. A reflection can cite another reflection until fiction develops an impressive bibliography. Reasoning architecture is therefore the control of internal transitions, not an invitation to produce more monologue.
 
+::: {.reader-question}
 > **Skeptical Engineer:** Isn't this just a prompt with extra bureaucracy?
 >
 > **Author:** Only if the guards are prose. When a schema rejects an invented import, a budget stops a search, provenance excludes the wrong branch, and a replay identifies the transition that caused harm, the bureaucracy has become a machine. Civilization has been built on less.
+
+:::
 
 ## Agent-427 Enters the War Room
 

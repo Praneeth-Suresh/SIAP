@@ -26,7 +26,8 @@ At that crossing, structural choices acquire observable costs. Five of them recu
 
 A small example makes the cost real. If one file read takes 200 milliseconds, and the agent reads twelve files before editing, it has spent 2.4 seconds on looking.
 
-## The Questions This Chapter Asks
+::: {.reader-question}
+## The Questions This Chapter Asks {.unnumbered}
 
 The running example carries forward Agent-427, now working on this book's own
 publication pipeline, which is the same workflow Chapter 4 will treat as a small
@@ -37,6 +38,8 @@ sharper questions replace it:
 2. What evidence must it fetch first?
 3. How does it learn whether the world actually changed?
 
+:::
+
 ## Reading This Chapter as Engineering
 
 Read this chapter as the engineering chapter of the book's formal story. Three plain readings carry most of the weight.
@@ -45,11 +48,14 @@ A schema, meaning a declared shape for arguments and results, is a grammar for e
 
 The mathematics in the four topics that follow gives names to these ordinary design choices.
 
+::: {.reader-question}
 > **Skeptical Engineer:** So Part 2 is where the elegant interpreter meets a
 > timeout and discovers that the universe has no `undo` method?
 >
 > **Author:** Precisely. Foundations become useful when they survive contact with
 > a world that does not share the agent's prompt.
+
+:::
 
 ## Topics
 

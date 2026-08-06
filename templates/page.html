@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Structure and Interpretation of Agentic Patterns, a theory-backed book about agentic AI." />
     <title>{title} · SIAP</title>
+    <script>
+      (() => {{
+        try {{
+          const saved = localStorage.getItem("siap-theme");
+          document.documentElement.dataset.theme = saved || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        }} catch {{ document.documentElement.dataset.theme = "light"; }}
+      }})();
+    </script>
     <link rel="stylesheet" href="{css_path}" />
     <script>
       window.MathJax = {{
@@ -26,6 +34,7 @@
           <p class="site-kicker">A book about governed machines</p>
           <p class="site-title"><a href="{home_path}">Structure and Interpretation<br />of Agentic Patterns</a></p>
         </div>
+        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Use dark mode"><span aria-hidden="true">◐</span><span>Theme</span></button>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="book-navigation">Contents</button>
       </div>
     </header>
@@ -47,9 +56,22 @@
     <script>
       const toggle = document.querySelector(".nav-toggle");
       const navigation = document.querySelector(".sidebar");
+      const themeToggle = document.querySelector(".theme-toggle");
+      const root = document.documentElement;
+      const applyTheme = (theme) => {{
+        root.dataset.theme = theme;
+        themeToggle.setAttribute("aria-pressed", String(theme === "dark"));
+        themeToggle.setAttribute("aria-label", theme === "dark" ? "Use light mode" : "Use dark mode");
+      }};
+      applyTheme(root.dataset.theme);
       toggle.addEventListener("click", () => {{
         const open = navigation.classList.toggle("sidebar--open");
         toggle.setAttribute("aria-expanded", String(open));
+      }});
+      themeToggle.addEventListener("click", () => {{
+        const theme = root.dataset.theme === "dark" ? "light" : "dark";
+        applyTheme(theme);
+        try {{ localStorage.setItem("siap-theme", theme); }} catch {{ /* Preference remains available for this visit. */ }}
       }});
     </script>
   </body>

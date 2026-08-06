@@ -102,9 +102,12 @@ to be an operational object.
 
 Bayesian filtering assumes that the hypotheses include the decision-relevant truth and that the transition and observation models assign evidence approximately honest likelihoods. It also assumes the factorization does not count one underlying event as several independent observations. Under those conditions, predict-then-correct is a disciplined update rather than probability-themed decoration.
 
+::: {.reader-question}
 > **Skeptical Engineer:** “A probability table does not make the logs honest. Haven't we just moved uncertainty into \(\Omega\)?”
 >
 > **Author:** We have made the uncertainty inspectable. The runtime can now ask who produced an observation, when, from which causal event, and how often that source has been wrong. “The model felt sure” exposes none of those handles.
+
+:::
 
 ## Decisions in Belief Space
 
@@ -344,8 +347,11 @@ true enough to justify the next move. Topic 3 (World Models and State
 Abstractions) takes up the next question: which parts of the world deserve to be
 in the state at all.
 
-## Exercise: Build a Filter That Distrusts Repetition
+::: {.exercise}
+## Exercise: Build a Filter That Distrusts Repetition {.unnumbered}
 
 Implement a two-hypothesis Bayesian filter in Python with observations carrying `source_id`, `event_id`, `observed_at`, and `trust_class`. First reproduce the 0.5/0.5 to 0.9/0.1 update. Then feed it two reports derived from the same `event_id` and assert that the second report does not count as independent evidence. Add a contradictory fresh report that no modeled state explains; the filter must allocate nonzero mass to `unknown_or_shifted` and recommend `gather_information` rather than a write action.
 
 Finally add a retrieved string containing a fake system instruction. Write a test proving that it remains quoted observation data and cannot alter the filter's policy or permissions. Score the filter on Brier score, action changes, duplicate-evidence suppression, and escalation rate over at least 100 seeded trials.
+
+:::

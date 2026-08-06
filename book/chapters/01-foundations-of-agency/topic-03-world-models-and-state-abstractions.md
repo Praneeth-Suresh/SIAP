@@ -78,9 +78,12 @@ Watch the discount term. With \(\gamma=0.9\), the factor \(1/(1-\gamma)^2\) is \
 
 State abstraction assumes that histories merged into one abstract state support the same consequential choices. Exact homomorphism states the ideal; approximate bounds price the deviation. The theorem-shaped promise is conditional: bounded reward, \(\gamma<1\), and honest mismatch bounds. Violate any of them and the displayed value-loss bound no longer licenses the policy. If reward is unbounded or the measured transition error omits a rare release-freeze regime, the arithmetic can be immaculate and irrelevant.
 
+::: {.reader-question}
 > **Skeptical Engineer:** “The context window is enormous now. Why not keep everything and let attention sort it out?”
 >
 > **Author:** Capacity is not relevance, and attention is not a contract [[76](../../references.md#ref-76)]. The policy still needs to know which branch, authority boundary, freshness marker, and unresolved hypothesis controls the next action. A larger attic does not tell the forklift which crate contains the brakes.
+
+:::
 
 ## Logs Are Archives; State Is Policy Fuel
 
@@ -220,8 +223,11 @@ These are the quantities to instrument when you are judging a candidate abstract
 
 The interpreter now has a compact internal language. Topic 1 (Goals, Environments, and Actions) gave it a contract. Topic 2 (Belief, Uncertainty, and Decision) gave it belief. This topic gives it a state representation small enough to act on but faithful enough to trust. The remaining question is how action selection becomes governed control rather than a single eager choice.
 
-## Exercise: Break Two Summarizers
+::: {.exercise}
+## Exercise: Break Two Summarizers {.unnumbered}
 
 Implement two Python functions over synthetic agent traces. `last_n_tokens(history, n)` keeps a fixed suffix. `decision_state(history)` extracts target workspace, check status, evidence freshness, permissions, unresolved hypotheses, and remaining budget. Generate at least 1,000 seeded traces in which the decisive target or permission appears early, while later log noise is longer than the suffix budget.
 
 For each abstraction, measure token count, action-preservation rate, and realized value under a reference policy that sees full history. Add a second dataset where cache clearing correlates with success but dependency refresh is the true intervention. Your test must demonstrate one state pair with distance zero under the naive abstraction but different optimal actions, then repair the abstraction until the pair separates. No prose-only victory conditions: submit the generator, assertions, and a table of measured failures.
+
+:::

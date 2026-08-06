@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Structure and Interpretation of Agentic Patterns, a theory-backed book about agentic AI." />
     <title>Chapter 2: Reasoning Architectures · SIAP</title>
+    <script>
+      (() => {
+        try {
+          const saved = localStorage.getItem("siap-theme");
+          document.documentElement.dataset.theme = saved || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        } catch { document.documentElement.dataset.theme = "light"; }
+      })();
+    </script>
     <link rel="stylesheet" href="../../assets/style.css" />
     <script>
       window.MathJax = {
@@ -26,6 +34,7 @@
           <p class="site-kicker">A book about governed machines</p>
           <p class="site-title"><a href="../../index.html">Structure and Interpretation<br />of Agentic Patterns</a></p>
         </div>
+        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Use dark mode"><span aria-hidden="true">◐</span><span>Theme</span></button>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="book-navigation">Contents</button>
       </div>
     </header>
@@ -42,10 +51,12 @@
 <h2 id="reasoning-is-an-interpreter-not-a-mood">Reasoning Is an Interpreter, Not a Mood</h2>
 <p>Chapter 1 gave Agent-427 the basic cycle: observe, update belief, choose a governed action, execute, and learn from the result. Chapter 2 installs a smaller interpreter inside that cycle. The inner machine can think, plan, retrieve, and criticize before the outer machine touches a filesystem, an API, or somebody's regrettably production-shaped database.</p>
 <p>That distinction is not decorative. Internal steps consume time and tokens. Retrieved memories can poison the state. Plans can become obsolete while they are being admired. A reflection can cite another reflection until fiction develops an impressive bibliography. Reasoning architecture is therefore the control of internal transitions, not an invitation to produce more monologue.</p>
+<section class="reader-question">
 <blockquote>
 <p><strong>Skeptical Engineer:</strong> Isn't this just a prompt with extra bureaucracy?</p>
 <p><strong>Author:</strong> Only if the guards are prose. When a schema rejects an invented import, a budget stops a search, provenance excludes the wrong branch, and a replay identifies the transition that caused harm, the bureaucracy has become a machine. Civilization has been built on less.</p>
 </blockquote>
+</section>
 <h2 id="agent-427-enters-the-war-room">Agent-427 Enters the War Room</h2>
 <p>Across this chapter, the same failure grows more instructive. Agent-427 will:</p>
 <ul>
@@ -56,6 +67,10 @@
 </ul>
 <p>The chapter's diagrams are maps, not ornaments. The interpreter loop shows feedback returning to governed state. The memory war room shows provenance, interference, consolidation, and eviction. The Verdict shows why a correct final answer cannot pardon an unsafe trajectory.</p>
 <p>These mechanisms are options, not a royal procession. A one-line rename rarely deserves Monte Carlo tree search. A production migration usually deserves more than vibes and a hopeful <code>git push</code>.<sup id="fnref:chapter2-ceremony"><a class="footnote-ref" href="#fn:chapter2-ceremony">1</a></sup> The recurring question is whether a pattern improves success, partial progress, efficiency, safety, or governability enough to pay its own rent.</p>
+<blockquote>
+<p><em>“Begin at the beginning, and go on till you come to the end: then stop.”</em></p>
+<p>— Lewis Carroll, <em>Alice's Adventures in Wonderland</em> (1865), Chapter XII, Alice's Evidence. <a href="https://www.gutenberg.org/cache/epub/11/pg11-images.html">Source</a>, accessed 2026-08-06. Public-domain original; quotation transcribed from Project Gutenberg..</p>
+</blockquote>
 <h2 id="topics">Topics</h2>
 <ol>
 <li><a href="topic-01-reasoning-loops-as-interpreters.html">Reasoning Loops as Interpreters</a></li>
@@ -76,14 +91,27 @@
     </main>
     <footer class="site-footer">
       <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
-      <p>Last generated: 2026-08-06 11:32 UTC</p>
+      <p>Last generated: 2026-08-06 12:38 UTC</p>
     </footer>
     <script>
       const toggle = document.querySelector(".nav-toggle");
       const navigation = document.querySelector(".sidebar");
+      const themeToggle = document.querySelector(".theme-toggle");
+      const root = document.documentElement;
+      const applyTheme = (theme) => {
+        root.dataset.theme = theme;
+        themeToggle.setAttribute("aria-pressed", String(theme === "dark"));
+        themeToggle.setAttribute("aria-label", theme === "dark" ? "Use light mode" : "Use dark mode");
+      };
+      applyTheme(root.dataset.theme);
       toggle.addEventListener("click", () => {
         const open = navigation.classList.toggle("sidebar--open");
         toggle.setAttribute("aria-expanded", String(open));
+      });
+      themeToggle.addEventListener("click", () => {
+        const theme = root.dataset.theme === "dark" ? "light" : "dark";
+        applyTheme(theme);
+        try { localStorage.setItem("siap-theme", theme); } catch { /* Preference remains available for this visit. */ }
       });
     </script>
   </body>

@@ -264,6 +264,7 @@ The formal evaluation should therefore measure six things:
 
 A negotiation protocol without incentive analysis is merely an argument with extra JSON. A useful mechanism arranges the shared environment so that local pursuit of advantage produces information the collective can actually use.
 
+::: {.reader-question}
 > **Skeptical Engineer:** Is reputation decay not just punishment for agents that
 > happen to receive fewer tasks?
 >
@@ -271,6 +272,8 @@ A negotiation protocol without incentive analysis is merely an argument with ext
 > specialist may have little recent evidence and still be excellent; the router
 > should express that as uncertainty and buy verification before lending broad
 > authority.
+
+:::
 
 ## The Assumption
 
@@ -297,7 +300,8 @@ been hidden. The repair binds request, acceptance, evidence, and verification;
 decays unsupported reputation; samples an independent audit; and charges linked
 correction cost to the coalition rather than to the integrator who discovered it.
 
-## Exercise: Implement Delegation Under Strategic Reports
+::: {.exercise}
+## Exercise: Implement Delegation Under Strategic Reports {.unnumbered}
 
 Build a deterministic contract-net simulator [[62](../../references.md#ref-62)]
 with D-12, C-9, Agent-427, leases, the four-message handshake, and reputation
@@ -314,7 +318,10 @@ deadline misses, coalition gain, audit cost, and false penalties. Then vary
 \(\lambda\) and identify where trust decays too slowly to resist gaming or too
 quickly to preserve useful specialization.
 
-### Further Reading and Open Questions
+:::
+
+::: {.reader-question}
+### Further Reading and Open Questions {.unnumbered}
 
 The Vickrey, Clarke, and Groves papers supply the classical externality machinery
 [[57](../../references.md#ref-57)] [[58](../../references.md#ref-58)]
@@ -323,6 +330,8 @@ manipulation limits [[60](../../references.md#ref-60)]
 [[61](../../references.md#ref-61)]. The open question for agent societies is how
 to make verification independent when models, retrieval indexes, and training
 data remain correlated beneath nominally separate roles.
+
+:::
 
 [^trust-bank]: Trust has an interest rate because someone else carries the risk
     while evidence is outstanding. Banks discovered this before routers, though

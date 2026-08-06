@@ -341,12 +341,15 @@ Retrieval is therefore most valuable for tasks with four properties together:
 high uncertainty, fresh external facts, inspectable evidence, and enough
 consequence that the delay is cheaper than the mistake.
 
+::: {.reader-question}
 > **Skeptical Engineer:** If retrieval is attention with a search engine attached,
 > why not retrieve ten times as much and let the model sort it out?
 >
 > **Author:** Because attention allocates influence; it does not manufacture
 > provenance, independence, or truth. Ten poisoned copies are still one poisoned
 > claim wearing a marching band.
+
+:::
 
 ## The Assumption
 
@@ -372,7 +375,8 @@ retrieved data, and sends unresolved contradictions to an independent source.
 These are concrete defenses against reward hacking and unsafe side effects, not
 requests that the model “please be discerning” [[77](../../references.md#ref-77)].
 
-## Exercise: Poison the Index, Then Defend It
+::: {.exercise}
+## Exercise: Poison the Index, Then Defend It {.unnumbered}
 
 Implement a small hybrid retriever over at least fifty local documents. Each
 result must carry `source_id`, `timestamp`, `branch`, `content_hash`, permission,
@@ -389,6 +393,8 @@ and whether its text contains an imperative addressed to the agent. Then:
 The exercise succeeds only if the defended policy selects direct source
 inspection or returns an explicit contradiction; fluent synthesis of the stale
 majority is a failing test.
+
+:::
 
 [^attention-passport]: Similarity is excellent at introducing strangers. It is
     less accomplished at checking their credentials.

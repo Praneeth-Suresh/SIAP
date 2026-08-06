@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import replace
 from pathlib import Path
 import sys
+import tempfile
 import unittest
 
 
@@ -93,6 +94,30 @@ class SiteManifestTests(unittest.TestCase):
         self.assertIn('class="reading-nav"', page)
         self.assertIn(r"\mathcal{M}", page)
         self.assertNotIn("SIAPMATH", page)
+
+    def test_generated_publication_has_no_broken_internal_links(self) -> None:
+        original_site_dir = build_site.SITE_DIR
+        try:
+            with tempfile.TemporaryDirectory() as directory:
+                build_site.SITE_DIR = Path(directory) / "site"
+                build_site.main()
+                self.assertEqual(build_site.find_broken_site_links(build_site.SITE_DIR), [])
+                self.assertFalse(list(build_site.SITE_DIR.rglob("*-notes.html")))
+        finally:
+            build_site.SITE_DIR = original_site_dir
+
+    def test_link_validator_reports_a_missing_fragment(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            site_dir = Path(directory)
+            (site_dir / "index.html").write_text('<a href="chapter.html#absent">Chapter</a>', encoding="utf-8")
+            (site_dir / "chapter.html").write_text('<h1 id="present">Chapter</h1>', encoding="utf-8")
+
+            self.assertEqual(build_site.find_broken_site_links(site_dir), ["index.html: missing anchor chapter.html#absent"])
+
+    def test_reference_anchor_syntax_survives_html_rendering(self) -> None:
+        html = build_site.render_markdown('[]{#ref-42}A reference entry.')
+
+        self.assertIn('<span id="ref-42"></span>', html)
 
 
 if __name__ == "__main__":

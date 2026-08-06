@@ -390,6 +390,7 @@ Evaluate embodied agents by measuring six things:
 An agent that ignores feedback geometry may still produce confident commands, but
 it is not yet safely embodied.
 
+::: {.reader-question}
 > **Skeptical Engineer:** A Kalman filter assumes civilized noise. What happens
 > when the sensor is lying because it knows how the controller reacts?
 >
@@ -397,6 +398,8 @@ it is not yet safely embodied.
 > test provenance, compare independent channels, widen uncertainty, and let the
 > policy probe or stop. Strategic noise requires security judgment on top of
 > estimation.
+
+:::
 
 ## The Assumption
 
@@ -423,7 +426,8 @@ actuator ledger shows a pending command, and independent health evidence is
 missing. The filter does not prove the queue healthy; it prevents uncertainty
 from acquiring another actuator. Topic 4 gives that block its formal machinery.
 
-## Exercise: Build a Hostile Queue Controller
+::: {.exercise}
+## Exercise: Build a Hostile Queue Controller {.unnumbered}
 
 Implement a discrete simulator with queue arrivals, delayed scale commands,
 sensor timestamps, and an actuator ledger. Add a scalar Kalman estimator and the
@@ -439,6 +443,8 @@ Assert that timeouts never become negative confirmation, contradictory readings
 remain in the trace, and no second scale command fires while the first effect is
 unresolved. Report estimation error, timeout count, unsafe-action count,
 settling time, and queue overflow rate with and without quarantine.
+
+:::
 
 [^strategic-thermostat]: A thermostat that lies to avoid work would be a terrible
     appliance and an excellent introduction to mechanism design.

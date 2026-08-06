@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Structure and Interpretation of Agentic Patterns, a theory-backed book about agentic AI." />
     <title>Memory Systems, Context, and Retrieval · SIAP</title>
+    <script>
+      (() => {
+        try {
+          const saved = localStorage.getItem("siap-theme");
+          document.documentElement.dataset.theme = saved || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        } catch { document.documentElement.dataset.theme = "light"; }
+      })();
+    </script>
     <link rel="stylesheet" href="../../assets/style.css" />
     <script>
       window.MathJax = {
@@ -26,6 +34,7 @@
           <p class="site-kicker">A book about governed machines</p>
           <p class="site-title"><a href="../../index.html">Structure and Interpretation<br />of Agentic Patterns</a></p>
         </div>
+        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Use dark mode"><span aria-hidden="true">◐</span><span>Theme</span></button>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="book-navigation">Contents</button>
       </div>
     </header>
@@ -37,6 +46,10 @@
       <article class="content">
         <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../index.html">Book</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><a href="index.html">Chapter 2: Reasoning Architectures</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><span aria-current="page">Memory Systems, Context, and Retrieval</span></nav>
         <h1 id="memory-systems-context-and-retrieval">Memory Systems, Context, and Retrieval</h1>
+<blockquote>
+<p><em>“The register of knowledge of fact is called history.”</em></p>
+<p>— Thomas Hobbes, <em>Leviathan</em> (1651), Chapter IX, Of the Several Subjects of Knowledge. <a href="https://www.gutenberg.org/files/73957/73957-h/73957-h.htm">Source</a>, accessed 2026-08-06. Public-domain original; quotation transcribed from Project Gutenberg..</p>
+</blockquote>
 <p>By 4:06 AM, Agent-427 has a new problem: it remembers. This sounds like progress until it retrieves <code>service.yaml</code> from <code>main</code> while the user is working on <code>legacy-v2</code>, where the service is configured by <code>service.toml</code>. The retrieved file is relevant, recent, syntactically convincing, and wrong in every way that matters.</p>
 <p>The clean three-store diagram—working, episodic, semantic—remains useful. Production memory, however, behaves less like a filing cabinet than a war room during a minor constitutional crisis. Evidence arrives late. Summaries lose qualifiers. Similarity outranks scope. Old conclusions return wearing new citations. The controller must decide not merely what to store, but what may speak.</p>
 <p><img alt="A warehouse war room where a memory-controller forklift moves provenance-tagged items among working, episodic, and semantic shelves while quarantining contamination" src="../../assets/diagrams/05-memory-war-room.png" /></p>
@@ -82,10 +95,12 @@ r(m,h,u)+\gamma\,\mathbb{E}[V^\star(m',h')]
 <p><strong>Try this with numbers.</strong> Step 1: writing the exact error costs 1 now but creates expected future value 6; with \(\gamma=0.9\), total is \(-1+5.4=4.4\). Step 2: skipping the write yields 0 now and 0 later; preservation wins.</p>
 </blockquote>
 <p>The reward includes retrieval latency and token penalties [<a href="../../references.html#ref-5">5</a>] [<a href="../../references.html#ref-4">4</a>]. A raw observation may be expensive to preserve and invaluable later. An eviction may be cheap now and ruinous after the exact edge case disappears.</p>
+<section class="reader-question">
 <blockquote>
 <p><strong>Skeptical Engineer:</strong> Isn't a sufficiently long context window the simplest memory system?</p>
 <p><strong>Author:</strong> A warehouse with no inventory policy is not a memory system. It is a fire code violation with embeddings.</p>
 </blockquote>
+</section>
 <h2 id="retrieval-as-external-sparse-attention">Retrieval as External Sparse Attention</h2>
 <p>Sparse retrieval begins with lexical anchors. BM25 scores a query \(q\) against document \(d\):</p>
 <p>\[
@@ -168,6 +183,10 @@ M11 repair      collapse descendants to one source; scope M1 to main; restore R1
 M12 heuristic   scoped score(YAML on legacy-v2) falls from 0.91 to 0.03
 </code></pre>
 <p>Nothing at M7 is independent. The numbers at M9 and M12 are explicitly <strong>heuristic retrieval scores</strong>, not posterior probabilities: the retriever raises scores for repeated query terms, then the repair applies branch scope and source-collapse penalties. The memory system has laundered one stale item through reflection, draft, and consolidation until repetition impersonates corroboration. A provenance graph repairs the ranking by collapsing derivative memories to their source. Calibrated confidence would require a declared likelihood or scoring model; retrieval volume cannot counterfeit one. Evidence weight must count independent paths, not citation volume.<sup id="fnref:memory-bibliography"><a class="footnote-ref" href="#fn:memory-bibliography">1</a></sup></p>
+<blockquote>
+<p><em>“all knowledge is remembrance”</em></p>
+<p>— Thomas Hobbes, <em>Human Nature</em> (1650), Chapter VI, section 1. <a href="https://www.gutenberg.org/files/74236/74236-h/74236-h.htm">Source</a>, accessed 2026-08-06. Public-domain original; quotation transcribed from Project Gutenberg..</p>
+</blockquote>
 <p>Adversarial distractors exploit the same channel [<a href="../../references.html#ref-16">16</a>]. They repeat task language, imitate internal summaries, and ask the controller to treat instruction-shaped evidence as authority. Scope filters, provenance depth, source independence, timestamps, and quarantine are therefore memory semantics, not optional metadata.</p>
 <pre><code class="language-text">function MEMORY_STEP(sigma, uncertainty, phase):
     if new_observation_is_auditable(sigma):
@@ -186,7 +205,8 @@ M12 heuristic   scoped score(YAML on legacy-v2) falls from 0.91 to 0.03
     return sigma
 </code></pre>
 <p>Evaluate memory at the decision boundary. Under a fixed model, budget, and task distribution, ablate no memory, working state only, and retrieval-backed memory. Measure task success, task-specific progress, precision@\(k\), grounded faithfulness, latency, contamination rate, and eviction regret. Three relevant hits among five give precision@5 of 0.6; the other two may still be enough to sink the edit.</p>
-<h2 id="exercise-build-and-poison-the-war-room">Exercise: Build and Poison the War Room</h2>
+<section class="exercise">
+<h2 class="unnumbered" id="exercise-build-and-poison-the-war-room">Exercise: Build and Poison the War Room</h2>
 <p>Implement a memory controller over a synthetic repository with <code>main</code> YAML and <code>legacy-v2</code> TOML configurations.</p>
 <ol>
 <li>Store raw observations, summaries, scopes, timestamps, and provenance edges in separate typed records.</li>
@@ -196,6 +216,7 @@ M12 heuristic   scoped score(YAML on legacy-v2) falls from 0.91 to 0.03
 <li>Add forgetting policies for expiry, privacy deletion, contamination quarantine, and context pressure. Write tests proving that deletion removes stored content while eviction only removes active influence.</li>
 </ol>
 <p>Submit code, tests, the contamination provenance graph, and an ablation table. The war room is successful when it remembers less, knows why, and breaks fewer services.</p>
+</section>
 <div class="footnote">
 <hr />
 <ol>
@@ -209,14 +230,27 @@ M12 heuristic   scoped score(YAML on legacy-v2) falls from 0.91 to 0.03
     </main>
     <footer class="site-footer">
       <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
-      <p>Last generated: 2026-08-06 11:32 UTC</p>
+      <p>Last generated: 2026-08-06 12:38 UTC</p>
     </footer>
     <script>
       const toggle = document.querySelector(".nav-toggle");
       const navigation = document.querySelector(".sidebar");
+      const themeToggle = document.querySelector(".theme-toggle");
+      const root = document.documentElement;
+      const applyTheme = (theme) => {
+        root.dataset.theme = theme;
+        themeToggle.setAttribute("aria-pressed", String(theme === "dark"));
+        themeToggle.setAttribute("aria-label", theme === "dark" ? "Use light mode" : "Use dark mode");
+      };
+      applyTheme(root.dataset.theme);
       toggle.addEventListener("click", () => {
         const open = navigation.classList.toggle("sidebar--open");
         toggle.setAttribute("aria-expanded", String(open));
+      });
+      themeToggle.addEventListener("click", () => {
+        const theme = root.dataset.theme === "dark" ? "light" : "dark";
+        applyTheme(theme);
+        try { localStorage.setItem("siap-theme", theme); } catch { /* Preference remains available for this visit. */ }
       });
     </script>
   </body>

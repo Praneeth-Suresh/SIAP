@@ -6,6 +6,12 @@ import re
 import shutil
 import subprocess
 
+from publication_enrichment import (
+    PublicationEnrichment,
+    adapt_semantic_divs,
+    enrich_section_markdown,
+    load_publication_enrichment,
+)
 from publication_manifest import load_publication_manifest
 
 
@@ -17,7 +23,7 @@ TITLE = "Structure and Interpretation of Agentic Patterns"
 AUTHOR = "Prane"
 PANDOC_MARKDOWN = (
     "markdown+tex_math_dollars+tex_math_single_backslash+"
-    "fenced_code_blocks+pipe_tables+header_attributes+bracketed_spans"
+    "fenced_code_blocks+fenced_divs+raw_tex+pipe_tables+header_attributes+bracketed_spans"
 )
 
 
@@ -108,8 +114,16 @@ def remove_markdown_section(markdown_text: str, level: int, title: str) -> str:
     return pattern.sub("", markdown_text).strip() + "\n"
 
 
-def prepare_book_markdown(section: Path, section_kind: str) -> str:
-    text = rewrite_reference_links(section.read_text(encoding="utf-8"))
+def prepare_book_markdown(
+    section: Path,
+    section_kind: str,
+    enrichment: PublicationEnrichment | None = None,
+) -> str:
+    text = section.read_text(encoding="utf-8")
+    if enrichment is not None:
+        text = enrich_section_markdown(section, text, enrichment)
+    text = adapt_semantic_divs(text, target="latex")
+    text = rewrite_reference_links(text)
     text = rewrite_local_markdown_links(section, text)
     text = rewrite_local_image_links(section, text)
 
@@ -176,6 +190,7 @@ def run_pandoc(pandoc_bin: str, args: list[str]) -> None:
 
 def main() -> None:
     sections = gather_book_sections()
+    enrichment = load_publication_enrichment(BOOK_DIR)
     for section, _section_kind in sections:
         if not section.exists():
             raise SystemExit(f"Missing source section: {section}")
@@ -187,7 +202,7 @@ def main() -> None:
 
     merged_chunks = []
     for section, section_kind in sections:
-        merged_chunks.append(prepare_book_markdown(section, section_kind))
+        merged_chunks.append(prepare_book_markdown(section, section_kind, enrichment))
 
     merged_markdown = "\n\n".join(merged_chunks)
     merged_md_path = DIST_DIR / "book-latex.md"

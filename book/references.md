@@ -79,3 +79,24 @@
 77. []{#ref-77}Amodei, D., et al. (2016). Concrete problems in AI safety. https://arxiv.org/abs/1606.06565
 78. []{#ref-78}Christiano, P. F., et al. (2017). Deep reinforcement learning from human preferences. *NeurIPS 2017*. https://arxiv.org/abs/1706.03741
 79. []{#ref-79}Sudhir, A. P., Kaunismaa, J., & Panickssery, A. (2025). A benchmark for scalable oversight protocols. https://arxiv.org/abs/2504.03731
+80. []{#ref-80}Doyle, A. C. (1892). *The Adventures of Sherlock Holmes*. Project Gutenberg. https://dev.gutenberg.org/cache/epub/48320/pg48320-images.html
+81. []{#ref-81}Aristotle. (c. 340 BCE). *Nicomachean Ethics*. Project Gutenberg. https://www.gutenberg.org/cache/epub/8438/pg8438.html
+82. []{#ref-82}Bacon, F. (1605). *The Advancement of Learning*. Project Gutenberg. https://www.gutenberg.org/files/5500/5500-h/5500-h.htm
+83. []{#ref-83}Hume, D. (1748). *An Enquiry Concerning Human Understanding*. Project Gutenberg. https://www.gutenberg.org/files/9662/9662-h/9662-h.htm
+84. []{#ref-84}Whewell, W. (1858). *History of Scientific Ideas* (3rd ed., Vol. 1). Project Gutenberg. https://www.gutenberg.org/files/69093/69093-h/69093-h.htm
+85. []{#ref-85}James, W. (1890). *The Principles of Psychology* (Vol. 1). Project Gutenberg. https://www.gutenberg.org/files/57628/57628-h/57628-h.htm
+86. []{#ref-86}Bacon, F. (1620). *Novum Organum*. Project Gutenberg. https://www.gutenberg.org/files/45988/45988-h/45988-h.htm
+87. []{#ref-87}Carroll, L. (1865). *Alice's Adventures in Wonderland*. Project Gutenberg. https://www.gutenberg.org/cache/epub/11/pg11-images.html
+88. []{#ref-88}Lovelace, A. A. (1843). Notes by the translator. In L. F. Menabrea, Sketch of the Analytical Engine invented by Charles Babbage. *Scientific Memoirs*, 3, 666-731. https://hsm.ox.ac.uk/imagining-ai
+89. []{#ref-89}Clausewitz, C. von. (1832). *On War*. Project Gutenberg. https://www.gutenberg.org/files/1946/1946-h/1946-h.htm
+90. []{#ref-90}Hobbes, T. (1651). *Leviathan*. Project Gutenberg. https://www.gutenberg.org/files/73957/73957-h/73957-h.htm
+91. []{#ref-91}Hobbes, T. (1650). *Human Nature*. Project Gutenberg. https://www.gutenberg.org/files/74236/74236-h/74236-h.htm
+92. []{#ref-92}Carlyle, T. (1836). *Sartor Resartus*. Project Gutenberg. https://www.gutenberg.org/files/20585/20585-h/20585-h.htm
+93. []{#ref-93}Boswell, J. (1791). *The Life of Samuel Johnson*. Project Gutenberg. https://www.gutenberg.org/files/1564/1564-h/1564-h.htm
+94. []{#ref-94}Bacon, F. (1625). *Essays*. Project Gutenberg. https://www.gutenberg.org/cache/epub/56463/pg56463-images.html
+95. []{#ref-95}Burke, E. (1771, February 7). *Speech Relative to the Middlesex Election*. Quotation reproduced in the official report of the Parliament of the United Kingdom. https://hansard.parliament.uk/lords/1975-04-16/debates/7cf9e3ff-6d2b-4065-b7ba-825490390fce/MultinationalCorporations
+96. []{#ref-96}Mill, J. S. (1859). *On Liberty*. Project Gutenberg. https://www.gutenberg.org/files/34901/34901-h/34901-h.htm
+97. []{#ref-97}Aristotle. (c. 350 BCE). *Politics*. Project Gutenberg. https://www.gutenberg.org/files/6762/6762-h/6762-h.htm
+98. []{#ref-98}Smith, A. (1776). *An Inquiry into the Nature and Causes of the Wealth of Nations*. Project Gutenberg. https://www.gutenberg.org/files/38194/38194-h/38194-h.htm
+99. []{#ref-99}Hume, D. (1739). *A Treatise of Human Nature*. Project Gutenberg. https://www.gutenberg.org/files/4705/4705-h/4705-h.htm
+100. []{#ref-100}Newton, I. (1675, February 5). Letter to Robert Hooke. Institutional transcription hosted by York University. https://www.yorku.ca/menary/courses/phys1000/newton_quotes.pdf

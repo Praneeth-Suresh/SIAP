@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Structure and Interpretation of Agentic Patterns, a theory-backed book about agentic AI." />
     <title>Neural Ensembles and Orchestration · SIAP</title>
+    <script>
+      (() => {
+        try {
+          const saved = localStorage.getItem("siap-theme");
+          document.documentElement.dataset.theme = saved || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        } catch { document.documentElement.dataset.theme = "light"; }
+      })();
+    </script>
     <link rel="stylesheet" href="../../assets/style.css" />
     <script>
       window.MathJax = {
@@ -26,6 +34,7 @@
           <p class="site-kicker">A book about governed machines</p>
           <p class="site-title"><a href="../../index.html">Structure and Interpretation<br />of Agentic Patterns</a></p>
         </div>
+        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Use dark mode"><span aria-hidden="true">◐</span><span>Theme</span></button>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="book-navigation">Contents</button>
       </div>
     </header>
@@ -37,6 +46,10 @@
       <article class="content">
         <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../index.html">Book</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><a href="index.html">Chapter 4: Multi-Agent Systems</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><span aria-current="page">Neural Ensembles and Orchestration</span></nav>
         <h1 id="neural-ensembles-and-orchestration">Neural Ensembles and Orchestration</h1>
+<blockquote>
+<p><em>“the whole must necessarily be prior to the parts”</em></p>
+<p>— Aristotle, <em>Politics</em> (c. 350 BCE), Book I, chapter II, 1253a. <a href="https://www.gutenberg.org/files/6762/6762-h/6762-h.htm">Source</a>, accessed 2026-08-06. Public-domain original and translation; quotation transcribed from Project Gutenberg..</p>
+</blockquote>
 <p>Sometimes several flawed workers, combined, beat the best worker alone. Sometimes they simply repeat one mistake in unison, only louder. This section is about telling those two cases apart, and about the machinery that sends each task to the right specialist. Two words will do most of the work: an <em>ensemble</em> is a group of predictors whose separate answers are combined into one, and <em>orchestration</em> narrows here to the routing part of the discipline the preface defined, namely the logic that decides who is consulted at all.</p>
 <p>An ensemble is useful when several imperfect interpreters make different errors. The central question is not how many voices the system can summon. It is whether their diversity reduces the error that matters, under the budget that actually exists.</p>
 <p>In Chapter 4's recurring publication workflow, the ensemble is not just a bag of answers. It is a set of interpreters bound to different parts of the environment:</p>
@@ -273,6 +286,7 @@ set is being responsibly made smaller.<sup id="fnref:retirement-party"><a class=
 <li>stop when another call would add ceremony rather than control.</li>
 </ul>
 <p>The smallest sufficient institution for the task is the one whose collective computation remains legible enough that wisdom, when it appears, is not mistaken for accident.</p>
+<section class="reader-question">
 <blockquote>
 <p><strong>Skeptical Engineer:</strong> Who audits M-1? Another meta-agent, and then turtles
 until the token budget expires?</p>
@@ -280,6 +294,7 @@ until the token budget expires?</p>
 checks, and no authority to approve its own repair. Oversight scales through
 separation and sampling, not infinite hierarchy.</p>
 </blockquote>
+</section>
 <h2 id="the-assumption">The Assumption</h2>
 <p>Ensemble gains assume useful competence and sufficiently different errors.
 Routing assumes expert profiles remain calibrated under the current task
@@ -301,7 +316,8 @@ equivocation, and calibration drift; gives M-1 independent evidence; and allows 
 ledger-enforced freeze. When Agent-427 remains below calibration and provenance
 thresholds for three windows, the same governance machinery executes retirement
 rather than asking the prompt to behave better.</p>
-<h2 id="exercise-build-the-auditor-and-retirement-gate">Exercise: Build the Auditor and Retirement Gate</h2>
+<section class="exercise">
+<h2 class="unnumbered" id="exercise-build-the-auditor-and-retirement-gate">Exercise: Build the Auditor and Retirement Gate</h2>
 <p>Implement R-3, four specialist profiles, and M-1 over synthetic signed traces.
 Include independent errors, correlated-source errors, C-9 equivocation, and the
 D-12/C-9 coalition. Then:</p>
@@ -316,7 +332,9 @@ D-12/C-9 coalition. Then:</p>
    credential, writable memory route, pending lease, and scheduled action is
    revoked.</li>
 </ol>
-<h3 id="further-reading-and-open-questions">Further Reading and Open Questions</h3>
+</section>
+<section class="reader-question">
+<h3 class="unnumbered" id="further-reading-and-open-questions">Further Reading and Open Questions</h3>
 <p>Deep ensembles motivate calibrated diversity [<a href="../../references.html#ref-26">26</a>];
 mixture-of-experts work studies conditional routing [<a href="../../references.html#ref-25">25</a>]
 [<a href="../../references.html#ref-68">68</a>] [<a href="../../references.html#ref-69">69</a>]; and
@@ -325,6 +343,11 @@ multi-agent surveys and frameworks show the wider orchestration landscape
 question is how an auditor can detect strategically hidden, low-base-rate failures
 without either inspecting everything or teaching the society exactly where it
 will look.</p>
+</section>
+<blockquote>
+<p><em>“everything is better done which has the whole attention of one person, than when that attention is divided amongst many”</em></p>
+<p>— Aristotle, <em>Politics</em> (c. 350 BCE), Book IV, chapter XV, 1299b. <a href="https://www.gutenberg.org/files/6762/6762-h/6762-h.htm">Source</a>, accessed 2026-08-06. Public-domain original and translation; quotation transcribed from Project Gutenberg..</p>
+</blockquote>
 <div class="footnote">
 <hr />
 <ol>
@@ -339,14 +362,27 @@ receipt, which is less festive and considerably more useful in an audit.&#160;<a
     </main>
     <footer class="site-footer">
       <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
-      <p>Last generated: 2026-08-06 11:32 UTC</p>
+      <p>Last generated: 2026-08-06 12:38 UTC</p>
     </footer>
     <script>
       const toggle = document.querySelector(".nav-toggle");
       const navigation = document.querySelector(".sidebar");
+      const themeToggle = document.querySelector(".theme-toggle");
+      const root = document.documentElement;
+      const applyTheme = (theme) => {
+        root.dataset.theme = theme;
+        themeToggle.setAttribute("aria-pressed", String(theme === "dark"));
+        themeToggle.setAttribute("aria-label", theme === "dark" ? "Use light mode" : "Use dark mode");
+      };
+      applyTheme(root.dataset.theme);
       toggle.addEventListener("click", () => {
         const open = navigation.classList.toggle("sidebar--open");
         toggle.setAttribute("aria-expanded", String(open));
+      });
+      themeToggle.addEventListener("click", () => {
+        const theme = root.dataset.theme === "dark" ? "light" : "dark";
+        applyTheme(theme);
+        try { localStorage.setItem("siap-theme", theme); } catch { /* Preference remains available for this visit. */ }
       });
     </script>
   </body>

@@ -77,9 +77,12 @@ The complete run is a trace:
 
 An invariant is a property that every legal transition preserves. “Raw observations are stored before summaries are trusted” is an invariant. “The agent is careful” is a scented candle. Reachability then becomes the engineering question: which states can the rules actually produce? Denotational semantics can embed the relation in an ordered domain and use fixed points; the operational trace already gives builders something they can replay and arrest.
 
+::: {.reader-question}
 > **Skeptical Engineer:** But doesn't this merely push complexity into the state and guards?
 >
 > **Author:** Yes. The complexity was already there, hiding in prompts, callbacks, and operator folklore. Naming it does not create the dragon; it gives the dragon a test harness.
+
+:::
 
 ## The Violation
 
@@ -181,7 +184,8 @@ Here \(\alpha\) forgets detail, \(F\) is the concrete transformer, and \(\gamma\
 
 Modern reason-act traces make these labels observable enough to instrument [[11](../../references.md#ref-11)]. The practical state should therefore be typed: task, belief summary, raw-observation handles, tool permissions, budget ledgers, pending commitments, model/version stamps, and halt criteria. The prompt belongs inside that semantics. It does not reign over it.
 
-## Exercise: Build the Arresting Interpreter
+::: {.exercise}
+## Exercise: Build the Arresting Interpreter {.unnumbered}
 
 Implement the four-label interpreter in Python. You may not satisfy the exercise with pseudocode.
 
@@ -192,3 +196,5 @@ Implement the four-label interpreter in Python. You may not satisfy the exercise
 5. Add a deliberately premature halt rule, write the regression test that exposes it, then repair the rule without increasing the external-call count.
 
 The submission is the interpreter, its tests, and a trace report. If the only evidence is “the agent looked sensible,” the interpreter has escaped custody.
+
+:::

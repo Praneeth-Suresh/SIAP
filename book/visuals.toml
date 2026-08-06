@@ -1,0 +1,19 @@
+schema_version = 1
+strict = false
+
+# Unordered records are normalized by the composite key (source, id). Records
+# are populated in a later manuscript slice; strict mode will then require one
+# terminal cartoon per published source.
+#
+# [[visuals]]
+# id = "stable-visual-id"
+# source = "chapters/00-example/topic.md"
+# kind = "cartoon" # cartoon | diagram
+# path = "assets/cartoons/example.png"
+# placement = "terminal" # opening | inline | terminal
+# alt = "A useful description of the visual."
+# width = 1200
+# height = 700
+# content_bbox = [60, 50, 1140, 650]
+# min_padding = 40
+visuals = []

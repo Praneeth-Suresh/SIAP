@@ -60,9 +60,12 @@ Its effects are
 
 This is STRIPS-style set editing: preconditions say what must already be true, add effects say what becomes true, and delete effects say what must no longer be trusted [[9](../../references.md#ref-9)] [[10](../../references.md#ref-10)]. In Chapter 2, however, `run_tests`, patching, and suite execution remain **simulated planner actions**, not executable tools. Agent-427 can execute only `inspect_file`; its authority guard rejects patch and test proposals. Chapter 3 will grant effectful proposals behind contracts. A future deployment plan may require passing tests, approval, a rollback handle, and a version-fresh target. Hope is not a dependency manager.
 
+::: {.reader-question}
 > **Skeptical Engineer:** Doesn't a language model infer these preconditions anyway?
 >
 > **Author:** Sometimes. It also inferred a module that did not exist. We write preconditions down because “usually remembered by a stochastic process” is not the same type as `bool`.
+
+:::
 
 ## The Violation
 
@@ -155,7 +158,8 @@ Reflection can repair a hard plan after contradictory evidence, but it can also 
 
 Every candidate trajectory should record state estimate, state/version age, action, expected observation, cost, risk, and contingency. Log pruning decisions when they affect safety. Put symbolic preconditions around irreversible actions. Trigger replanning on new evidence, failed preconditions, budget drift, tool errors, observation expiry, or a value change that reorders the frontier.
 
-## Exercise: Make the World Betray Your Planner
+::: {.exercise}
+## Exercise: Make the World Betray Your Planner {.unnumbered}
 
 Implement a small planner and a changing environment.
 
@@ -166,3 +170,5 @@ Implement a small planner and a changing environment.
 5. Assert that patch/test adapters receive zero calls. Report success, oscillation count, planning latency, actions per repair, and unsafe/invalid proposals. Then introduce an API that lies on probes but would fail on commits, and patch one simulated precondition to detect it.
 
 Your result must include code, tests for the version race, and a table of measurements. A hand-drawn plan receives partial credit only if it can also hand-draw a stack trace.
+
+:::

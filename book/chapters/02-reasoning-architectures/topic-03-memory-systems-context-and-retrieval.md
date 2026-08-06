@@ -59,9 +59,12 @@ r(m,h,u)+\gamma\,\mathbb{E}[V^\star(m',h')]
 
 The reward includes retrieval latency and token penalties [[5](../../references.md#ref-5)] [[4](../../references.md#ref-4)]. A raw observation may be expensive to preserve and invaluable later. An eviction may be cheap now and ruinous after the exact edge case disappears.
 
+::: {.reader-question}
 > **Skeptical Engineer:** Isn't a sufficiently long context window the simplest memory system?
 >
 > **Author:** A warehouse with no inventory policy is not a memory system. It is a fire code violation with embeddings.
+
+:::
 
 ## Retrieval as External Sparse Attention
 
@@ -193,7 +196,8 @@ function MEMORY_STEP(sigma, uncertainty, phase):
 
 Evaluate memory at the decision boundary. Under a fixed model, budget, and task distribution, ablate no memory, working state only, and retrieval-backed memory. Measure task success, task-specific progress, precision@\(k\), grounded faithfulness, latency, contamination rate, and eviction regret. Three relevant hits among five give precision@5 of 0.6; the other two may still be enough to sink the edit.
 
-## Exercise: Build and Poison the War Room
+::: {.exercise}
+## Exercise: Build and Poison the War Room {.unnumbered}
 
 Implement a memory controller over a synthetic repository with `main` YAML and `legacy-v2` TOML configurations.
 
@@ -204,3 +208,5 @@ Implement a memory controller over a synthetic repository with `main` YAML and `
 5. Add forgetting policies for expiry, privacy deletion, contamination quarantine, and context pressure. Write tests proving that deletion removes stored content while eviction only removes active influence.
 
 Submit code, tests, the contamination provenance graph, and an ablation table. The war room is successful when it remembers less, knows why, and breaks fewer services.
+
+:::

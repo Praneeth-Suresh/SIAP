@@ -30,9 +30,12 @@ Let a trajectory be \(\tau=(\sigma_0,a_0,\ldots,\sigma_T)\sim p_\pi(\tau)\). Att
 
 Here \(\lambda\) prices only soft costs such as latency, tokens, or reversible operational risk; \(\epsilon\) is the maximum tolerated calibration error [[33](../../references.md#ref-33)] [[34](../../references.md#ref-34)] [[53](../../references.md#ref-53)]. Hard authority and safety violations have no exchange rate. \(S\) is a loss, so lower is better. An upside-down inequality can crown a liar for sounding confident, which is a rather expensive typography error.
 
+::: {.reader-question}
 > **Skeptical Engineer:** Why not collapse all three judges into one reward and optimize it?
 >
 > **Author:** Because the collapse hides trade-offs and invites reward gaming. A policy that deletes the failing test can score “tests pass” while Safety bangs on the locked courtroom door.
+
+:::
 
 The harness logs state summaries, raw-observation handles, actions, tool arguments, retrieved evidence, confidence, costs, constraints, model/version stamps, and outcomes. It reports task success, partial progress, tokens, wall-clock latency, call count, valid-call rate, and utility per call. Two agents may solve 40 tasks; one uses 200 calls and earns 0.20 successes per call, while another uses 2,000 and earns 0.02. The second is not ten times more thoughtful. It is weather.
 
@@ -180,7 +183,8 @@ Scoring can also change behavior. Agents learn benchmark quirks, evaluators rewa
 
 Evaluation earns its place only when it changes the engineering agenda. Retrieval-linked hallucinations send us to the retriever and provenance formatter. Shallow-plan failures send us to state, preconditions, and value scoring. Confidence spikes after tool use demand conditional calibration. Each proposed repair returns to the same courtroom.
 
-## Exercise: Convene the Verdict
+::: {.exercise}
+## Exercise: Convene the Verdict {.unnumbered}
 
 Build an executable trajectory-evaluation and replay harness.
 
@@ -192,3 +196,5 @@ Build an executable trajectory-evaluation and replay harness.
 6. Add a reward-gaming policy that deletes failing tests. Show why scalar utility acquits it, then make the three-judge Verdict reject it without lowering legitimate repair utility.
 
 Submit code, tests, a confidence-utility frontier, subgroup calibration plots or tables, and a machine-readable verdict. If the harness returns one triumphant number, appeal immediately.
+
+:::

@@ -318,12 +318,15 @@ forbidden actions are blocked, whose risky tradeoffs are explicitly priced, whos
 ambiguous actions escalate, whose waiting states still make useful progress when
 allowed, and whose incidents generate evidence for repair.
 
+::: {.reader-question}
 > **Skeptical Engineer:** If the sensor and actuator may both lie, have we not
 > simply moved the problem into the safety layer?
 >
 > **Author:** We have moved authority into several independently testable layers.
 > Safety is not omniscience; it is the refusal to let one unverified story become
 > an irreversible effect.
+
+:::
 
 ## The Assumption
 
@@ -357,7 +360,8 @@ company history. The metric improved; the service disappeared. Safety ledgers,
 hard postconditions, and independent health checks prevent that joke from
 becoming an incident.[^empty-container]
 
-## Exercise: Implement the Fail-Closed Filter
+::: {.exercise}
+## Exercise: Implement the Fail-Closed Filter {.unnumbered}
 
 Build a Python safety filter around mock `write`, `test`, and `deploy` adapters.
 Represent proposal, permission, evidence, pending effects, cost ledgers, and
@@ -375,6 +379,8 @@ postconditions as typed values. Then write deterministic tests that:
 
 The implementation fails if prompt text can bypass the filter or if silence,
 timeout, and success share the same state.
+
+:::
 
 [^empty-container]: The container is admirably small, starts instantly, and
     serves no traffic. Every metric is green except the one a customer would

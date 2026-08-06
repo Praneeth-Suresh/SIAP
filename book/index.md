@@ -10,9 +10,12 @@ We can. Agency has structure. An acting program observes only part of a world, c
 
 This book takes a stand: **agentic AI is a science of interaction and orchestration, not merely API plumbing.** Its laws are conditional, its measurements are noisy, and its subjects sometimes emit invalid YAML. It is a science nonetheless.[^preface-laws]
 
+::: {.reader-question}
 **Skeptical Engineer:** "A science? Most of these systems are prompts wearing a loop."
 
 **Author:** Precisely. A loop is already an operational semantics. The crime is not simplicity; the crime is leaving the semantics implicit and then acting surprised when an unpriced retry sends two invoices.
+
+:::
 
 ## A Manifesto with an Interpreter Inside
 

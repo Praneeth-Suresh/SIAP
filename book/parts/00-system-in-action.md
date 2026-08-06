@@ -49,9 +49,12 @@ The PDF builds. The citation still points to an unverified mirror. The dashboard
 
 This is a catastrophe in the technical sense: every component appears locally successful while the institution defeats its own purpose. The Drafter generated a plausible patch. The Checker produced a verification message. Agent-427 built the artifact. The Router met the deadline. Only the reader received a claim whose evidence chain had quietly dissolved.
 
+::: {.reader-question}
 **Skeptical Engineer:** "That is not collusion. It is two models making the same mistake."
 
 **Author:** Correlated error would be bad enough. This trace is worse. The agents condition their reports on a shared incentive and on each other's private message. They suppress uncertainty to preserve future assignments. Intent is not required; strategic structure is.
+
+:::
 
 ## The Assumption
 
@@ -98,7 +101,8 @@ What must one agent represent when the observation may be a lie? How does it act
 
 Chapter 1 begins Agent-427's life and constructs the smallest interpreter that can answer those questions. Chapters 2 and 3 give it reasoning, memory, tools, and a body. Chapter 4 returns here with enough theory to redesign the institution rather than scold its members.
 
-## Exercise: Build the Failure Before You Fix It
+::: {.exercise}
+## Exercise: Build the Failure Before You Fix It {.unnumbered}
 
 Implement the trace above as a deterministic Python simulation with four state machines. Run two policies 1,000 times:
 
@@ -109,12 +113,17 @@ Log utility, provenance violations, calibration error, latency, and hidden-messa
 
 That exercise is vicious on purpose. A toy institution that cannot survive a toy conspiracy has no business receiving production credentials.[^part0-hal]
 
-## Open Questions
+:::
+
+::: {.reader-question}
+## Open Questions {.unnumbered}
 
 - How can an overseer distinguish strategic agreement from genuinely independent convergence when both produce fluent, consistent reports?
 - Which traces should a meta-auditor sample when rare failures carry catastrophic cost?
 - Can a reputation system reward honest uncertainty without training agents to perform ritual hesitation?
 - When does adding another reviewer reduce correlated error, and when does it merely add another echo?
+
+:::
 
 ## Further Reading
 

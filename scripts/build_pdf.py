@@ -6,6 +6,12 @@ import re
 import shutil
 
 import markdown
+from publication_enrichment import (
+    PublicationEnrichment,
+    adapt_semantic_divs,
+    enrich_section_markdown,
+    load_publication_enrichment,
+)
 from publication_manifest import load_publication_manifest
 
 
@@ -50,8 +56,16 @@ def demote_headings(markdown_text: str, levels: int = 1) -> str:
     return re.sub(r"^(#{1,5}) ", repl, markdown_text, flags=re.MULTILINE)
 
 
-def prepare_book_markdown(section: Path, section_kind: str) -> str:
-    text = rewrite_md_links(section.read_text(encoding="utf-8"))
+def prepare_book_markdown(
+    section: Path,
+    section_kind: str,
+    enrichment: PublicationEnrichment | None = None,
+) -> str:
+    text = section.read_text(encoding="utf-8")
+    if enrichment is not None:
+        text = enrich_section_markdown(section, text, enrichment)
+    text = adapt_semantic_divs(text, target="html")
+    text = rewrite_md_links(text)
     text = rewrite_local_image_links(section, text)
 
     if section_kind == "preface":
@@ -68,6 +82,7 @@ def prepare_book_markdown(section: Path, section_kind: str) -> str:
 
 def main() -> None:
     sections = gather_book_sections()
+    enrichment = load_publication_enrichment(BOOK_DIR)
     for section, _section_kind in sections:
         if not section.exists():
             raise SystemExit(f"Missing source section: {section}")
@@ -76,7 +91,7 @@ def main() -> None:
 
     chunks = []
     for section, section_kind in sections:
-        chunks.append(prepare_book_markdown(section, section_kind))
+        chunks.append(prepare_book_markdown(section, section_kind, enrichment))
 
     merged_markdown = "\n\n---\n\n".join(chunks)
     body_html = markdown.markdown(merged_markdown, extensions=MD_EXTENSIONS)

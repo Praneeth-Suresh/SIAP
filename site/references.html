@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Structure and Interpretation of Agentic Patterns, a theory-backed book about agentic AI." />
     <title>References · SIAP</title>
+    <script>
+      (() => {
+        try {
+          const saved = localStorage.getItem("siap-theme");
+          document.documentElement.dataset.theme = saved || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        } catch { document.documentElement.dataset.theme = "light"; }
+      })();
+    </script>
     <link rel="stylesheet" href="assets/style.css" />
     <script>
       window.MathJax = {
@@ -26,6 +34,7 @@
           <p class="site-kicker">A book about governed machines</p>
           <p class="site-title"><a href="index.html">Structure and Interpretation<br />of Agentic Patterns</a></p>
         </div>
+        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Use dark mode"><span aria-hidden="true">◐</span><span>Theme</span></button>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="book-navigation">Contents</button>
       </div>
     </header>
@@ -38,99 +47,137 @@
         <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="index.html">Book</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><span aria-current="page">References</span></nav>
         <h1 id="references">References</h1>
 <ol>
-<li>[]{#ref-1}Abelson, H., Sussman, G. J., &amp; Sussman, J. (1996). <em>Structure and Interpretation of Computer Programs</em> (2nd ed.). MIT Press. https://mitpress.mit.edu/9780262510875/</li>
-<li>[]{#ref-2}Russell, S., &amp; Norvig, P. (2021). <em>Artificial Intelligence: A Modern Approach</em> (4th ed.). Pearson. https://aima.cs.berkeley.edu/</li>
-<li>[]{#ref-3}Sutton, R. S., &amp; Barto, A. G. (2018). <em>Reinforcement Learning: An Introduction</em> (2nd ed.). MIT Press. http://incompleteideas.net/book/the-book-2nd.html</li>
-<li>[]{#ref-4}Puterman, M. L. (1994). <em>Markov Decision Processes</em>. Wiley. https://onlinelibrary.wiley.com/doi/book/10.1002/9780470316887</li>
-<li>[]{#ref-5}Bellman, R. (1957). <em>Dynamic Programming</em>. Princeton University Press. https://press.princeton.edu/books/hardcover/9780691651873/dynamic-programming</li>
-<li>[]{#ref-6}Pearl, J. (2009). <em>Causality</em> (2nd ed.). Cambridge University Press. https://www.cambridge.org/core/books/causality/94D5B8E8B2A5E0D970AA4A8DE3A2F5DD</li>
-<li>[]{#ref-7}Kaelbling, L. P., Littman, M. L., &amp; Cassandra, A. R. (1998). Planning and acting in partially observable stochastic domains. <em>AI</em>, 101(1-2), 99-134. https://www.sciencedirect.com/science/article/pii/S000437029800023X</li>
-<li>[]{#ref-8}Hart, P. E., Nilsson, N. J., &amp; Raphael, B. (1968). A formal basis for A<em> search. </em>IEEE TSSC*, 4(2), 100-107. https://ieeexplore.ieee.org/document/4082128</li>
-<li>[]{#ref-9}Fikes, R. E., &amp; Nilsson, N. J. (1971). STRIPS. <em>AI</em>, 2(3-4), 189-208. https://www.sciencedirect.com/science/article/pii/0004370271900105</li>
-<li>[]{#ref-10}Ghallab, M., Nau, D., &amp; Traverso, P. (2004). <em>Automated Planning</em>. Elsevier. https://shop.elsevier.com/books/automated-planning/ghallab/978-1-55860-856-6</li>
-<li>[]{#ref-11}Yao, S., et al. (2022). ReAct: Synergizing reasoning and acting in language models. https://arxiv.org/abs/2210.03629</li>
-<li>[]{#ref-12}Schick, T., et al. (2023). Toolformer: Language models can teach themselves to use tools. https://arxiv.org/abs/2302.04761</li>
-<li>[]{#ref-13}OpenAI. Function calling guide. https://platform.openai.com/docs/guides/function-calling</li>
-<li>[]{#ref-14}Lewis, P., et al. (2020). Retrieval-augmented generation for knowledge-intensive NLP tasks. <em>NeurIPS 2020</em>. https://arxiv.org/abs/2005.11401</li>
-<li>[]{#ref-15}Karpukhin, V., et al. (2020). Dense passage retrieval. <em>EMNLP 2020</em>. https://arxiv.org/abs/2004.04906</li>
-<li>[]{#ref-16}Packer, C., et al. (2023). MemGPT: Towards LLMs as operating systems. https://arxiv.org/abs/2310.08560</li>
-<li>[]{#ref-17}Wooldridge, M. (2009). <em>An Introduction to MultiAgent Systems</em> (2nd ed.). Wiley. https://www.wiley.com/en-us/An+Introduction+to+MultiAgent+Systems%2C+2nd+Edition-p-9780470519462</li>
-<li>[]{#ref-18}Shoham, Y., &amp; Leyton-Brown, K. (2009). <em>Multiagent Systems</em>. Cambridge University Press. https://www.cs.ubc.ca/~kevinlb/MAS/</li>
-<li>[]{#ref-19}Nash, J. (1950). Equilibrium points in n-person games. <em>PNAS</em>, 36(1), 48-49. https://www.pnas.org/doi/10.1073/pnas.36.1.48</li>
-<li>[]{#ref-20}Littman, M. L. (1994). Markov games as a framework for multi-agent RL. <em>ICML 1994</em>. https://www.cs.rutgers.edu/~mlittman/papers/ml94-final.pdf</li>
-<li>[]{#ref-21}Silver, D., et al. (2016). Mastering the game of Go with deep neural networks and tree search. <em>Nature</em>, 529, 484-489. https://www.nature.com/articles/nature16961</li>
-<li>[]{#ref-22}Oliehoek, F. A., &amp; Amato, C. (2016). <em>A Concise Introduction to Dec-POMDPs</em>. Springer. https://link.springer.com/book/10.1007/978-3-319-28929-8</li>
-<li>[]{#ref-23}Cambria, E., et al. (2025). Survey of LLM-based multi-agent systems. https://arxiv.org/abs/2402.01680</li>
-<li>[]{#ref-24}Wu, Q., et al. (2023). AutoGen: Enabling next-gen LLM applications via multi-agent conversation. https://arxiv.org/abs/2308.08155</li>
-<li>[]{#ref-25}Shazeer, N., et al. (2017). Outrageously large neural networks: The sparsely-gated mixture-of-experts layer. https://arxiv.org/abs/1701.06538</li>
-<li>[]{#ref-26}Lakshminarayanan, B., Pritzel, A., &amp; Blundell, C. (2017). Simple and scalable predictive uncertainty estimation using deep ensembles. <em>NeurIPS 2017</em>. https://arxiv.org/abs/1612.01474</li>
-<li>[]{#ref-27}Minsky, M. (1988). <em>The Society of Mind</em>. Simon &amp; Schuster. https://www.amazon.com/Society-Mind-Marvin-Minsky/dp/0671657135</li>
-<li>[]{#ref-28}Kahneman, D. (2011). <em>Thinking, Fast and Slow</em>. Farrar, Straus and Giroux. https://us.macmillan.com/books/9780374533557/thinkingfastandslow</li>
-<li>[]{#ref-29}Anthropic. (2022). Constitutional AI. https://arxiv.org/abs/2212.08073</li>
-<li>[]{#ref-30}OpenAI. (2023). GPT-4 Technical Report. https://arxiv.org/abs/2303.08774</li>
-<li>[]{#ref-31}WeasyPrint documentation. https://doc.courtbouillon.org/weasyprint/stable/</li>
-<li>[]{#ref-32}GitHub Pages documentation. https://docs.github.com/pages</li>
-<li>[]{#ref-33}Von Neumann, J., &amp; Morgenstern, O. (1944). <em>Theory of Games and Economic Behavior</em>. Princeton University Press. https://press.princeton.edu/books/hardcover/9780691130613/theory-of-games-and-economic-behavior</li>
-<li>[]{#ref-34}Savage, L. J. (1954). <em>The Foundations of Statistics</em>. Wiley. https://archive.org/details/foundationsofsta00sava</li>
-<li>[]{#ref-35}Shannon, C. E. (1948). A mathematical theory of communication. <em>Bell System Technical Journal</em>, 27, 379-423, 623-656. https://people.math.harvard.edu/~ctm/home/text/others/shannon/entropy/entropy.pdf</li>
-<li>[]{#ref-36}Kalman, R. E. (1960). A new approach to linear filtering and prediction problems. <em>Journal of Basic Engineering</em>, 82(1), 35-45. https://asmedigitalcollection.asme.org/fluidsengineering/article/82/1/35/397706/A-New-Approach-to-Linear-Filtering-and</li>
-<li>[]{#ref-37}Li, L., Walsh, T. J., &amp; Littman, M. L. (2006). Towards a unified theory of state abstraction for MDPs. <em>ISAIM 2006</em>. https://www.cs.rutgers.edu/~mlittman/papers/abstraction-06.pdf</li>
-<li>[]{#ref-38}Ferns, N., Panangaden, P., &amp; Precup, D. (2004). Metrics for finite Markov decision processes. <em>UAI 2004</em>. https://www.cs.mcgill.ca/~dprecup/publications/uai04.pdf</li>
-<li>[]{#ref-39}Bertsekas, D. P. (2017). <em>Dynamic Programming and Optimal Control</em> (4th ed.). Athena Scientific. https://www.mit.edu/~dimitrib/dpbook.html</li>
-<li>[]{#ref-40}Sutton, R. S., McAllester, D., Singh, S., &amp; Mansour, Y. (1999). Policy gradient methods for reinforcement learning with function approximation. <em>NeurIPS 1999</em>. https://papers.nips.cc/paper/1713-policy-gradient-methods-for-reinforcement-learning-with-function-approximation.pdf</li>
-<li>[]{#ref-41}Rawlings, J. B., Mayne, D. Q., &amp; Diehl, M. M. (2017). <em>Model Predictive Control: Theory, Computation, and Design</em> (2nd ed.). Nob Hill. https://sites.engineering.ucsb.edu/~jbraw/mpc/</li>
-<li>[]{#ref-42}Plotkin, G. D. (1981). A structural approach to operational semantics. Aarhus University technical report DAIMI FN-19. https://www.cs.tufts.edu/comp/150FP/archive/gordon-plotkin/sos.pdf</li>
-<li>[]{#ref-43}Cousot, P., &amp; Cousot, R. (1977). Abstract interpretation: A unified lattice model for static analysis. <em>POPL 1977</em>. https://dl.acm.org/doi/10.1145/512950.512973</li>
-<li>[]{#ref-44}Dean, T., &amp; Boddy, M. (1988). An analysis of time-dependent planning. <em>AAAI 1988</em>. https://cdn.aaai.org/AAAI/1988/AAAI88-003.pdf</li>
-<li>[]{#ref-45}Kocsis, L., &amp; Szepesvári, C. (2006). Bandit based Monte-Carlo planning. <em>ECML 2006</em>. https://link.springer.com/chapter/10.1007/11871842_29</li>
-<li>[]{#ref-46}Robertson, S., &amp; Zaragoza, H. (2009). The probabilistic relevance framework: BM25 and beyond. <em>Foundations and Trends in IR</em>, 3(4), 333-389. https://www.nowpublishers.com/article/Details/INR-019</li>
-<li>[]{#ref-47}Malkov, Y. A., &amp; Yashunin, D. A. (2018). Efficient and robust approximate nearest neighbor search using hierarchical navigable small world graphs. <em>IEEE TPAMI</em>, 42(4), 824-836. https://arxiv.org/abs/1603.09320</li>
-<li>[]{#ref-48}Atkinson, R. C., &amp; Shiffrin, R. M. (1968). Human memory: A proposed system and its control processes. In <em>The Psychology of Learning and Motivation</em> (Vol. 2). https://www.sciencedirect.com/science/article/pii/S0079742108604223</li>
-<li>[]{#ref-49}Gneiting, T., &amp; Raftery, A. E. (2007). Strictly proper scoring rules, prediction, and estimation. <em>JASA</em>, 102(477), 359-378. https://sites.stat.washington.edu/raftery/Research/PDF/Gneiting2007jasa.pdf</li>
-<li>[]{#ref-50}Koh, P. W., &amp; Liang, P. (2017). Understanding black-box predictions via influence functions. <em>ICML 2017</em>. https://arxiv.org/abs/1703.04730</li>
-<li>[]{#ref-51}Altman, E. (1999). <em>Constrained Markov Decision Processes</em>. Chapman and Hall/CRC. https://www.routledge.com/Constrained-Markov-Decision-Processes/Altman/p/book/9781584883593</li>
-<li>[]{#ref-52}Ames, A. D., Xu, X., Grizzle, J. W., &amp; Tabuada, P. (2017). Control barrier function based quadratic programs for safety critical systems. <em>IEEE TAC</em>, 62(8), 3861-3876. https://doi.org/10.1109/TAC.2016.2638961</li>
-<li>[]{#ref-53}NIST. (2023). <em>Artificial Intelligence Risk Management Framework (AI RMF 1.0)</em>. https://www.nist.gov/itl/ai-risk-management-framework</li>
-<li>[]{#ref-54}Lamport, L., Shostak, R., &amp; Pease, M. (1982). The Byzantine generals problem. <em>ACM TOPLAS</em>, 4(3), 382-401. https://dl.acm.org/doi/10.1145/357172.357176</li>
-<li>[]{#ref-55}Fischer, M. J., Lynch, N. A., &amp; Paterson, M. S. (1985). Impossibility of distributed consensus with one faulty process. <em>JACM</em>, 32(2), 374-382. https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf</li>
-<li>[]{#ref-56}Malone, T. W., &amp; Crowston, K. (1994). The interdisciplinary study of coordination. <em>ACM Computing Surveys</em>, 26(1), 87-119. https://ccs.mit.edu/papers/CCSWP157/CCSWP157.html</li>
-<li>[]{#ref-57}Vickrey, W. (1961). Counterspeculation, auctions, and competitive sealed tenders. <em>Journal of Finance</em>, 16(1), 8-37. https://onlinelibrary.wiley.com/doi/10.1111/j.1540-6261.1961.tb02789.x</li>
-<li>[]{#ref-58}Clarke, E. H. (1971). Multipart pricing of public goods. <em>Public Choice</em>, 11, 17-33. https://link.springer.com/article/10.1007/BF01726210</li>
-<li>[]{#ref-59}Groves, T. (1973). Incentives in teams. <em>Econometrica</em>, 41(4), 617-631. https://www.jstor.org/stable/1914085</li>
-<li>[]{#ref-60}Gibbard, A. (1973). Manipulation of voting schemes: A general result. <em>Econometrica</em>, 41(4), 587-601. https://www.jstor.org/stable/1914083</li>
-<li>[]{#ref-61}Satterthwaite, M. A. (1975). Strategy-proofness and Arrow's conditions. <em>Journal of Economic Theory</em>, 10(2), 187-217. https://www.sciencedirect.com/science/article/pii/0022053175900502</li>
-<li>[]{#ref-62}Smith, R. G. (1980). The contract net protocol. <em>IEEE Transactions on Computers</em>, C-29(12), 1104-1113. https://ieeexplore.ieee.org/document/1675516</li>
-<li>[]{#ref-63}Brown, G. W. (1951). Iterative solution of games by fictitious play. In <em>Activity Analysis of Production and Allocation</em>. https://cowles.yale.edu/sites/default/files/files/pub/mon/m13-all.pdf</li>
-<li>[]{#ref-64}Weibull, J. W. (1997). <em>Evolutionary Game Theory</em>. MIT Press. https://mitpress.mit.edu/9780262731218/evolutionary-game-theory/</li>
-<li>[]{#ref-65}Hart, S., &amp; Mas-Colell, A. (2000). A simple adaptive procedure leading to correlated equilibrium. <em>Econometrica</em>, 68(5), 1127-1150. https://www.ma.huji.ac.il/hart/abs/adapt.html</li>
-<li>[]{#ref-66}Krogh, A., &amp; Vedelsby, J. (1995). Neural network ensembles, cross validation, and active learning. <em>NeurIPS 1994</em>. https://papers.nips.cc/paper/1001-neural-network-ensembles-cross-validation-and-active-learning.pdf</li>
-<li>[]{#ref-67}Dietterich, T. G. (2000). Ensemble methods in machine learning. <em>MCS 2000</em>. https://link.springer.com/chapter/10.1007/3-540-45014-9_1</li>
-<li>[]{#ref-68}Jacobs, R. A., Jordan, M. I., Nowlan, S. J., &amp; Hinton, G. E. (1991). Adaptive mixtures of local experts. <em>Neural Computation</em>, 3(1), 79-87. https://www.cs.toronto.edu/~hinton/absps/jjnh91.pdf</li>
-<li>[]{#ref-69}Fedus, W., Zoph, B., &amp; Shazeer, N. (2022). Switch Transformers: Scaling to trillion parameter models with simple and efficient sparsity. <em>JMLR</em>, 23(120), 1-39. https://www.jmlr.org/papers/v23/21-0998.html</li>
-<li>[]{#ref-70}Ross, S., Gordon, G. J., &amp; Bagnell, J. A. (2011). A reduction of imitation learning and structured prediction to no-regret online learning. <em>AISTATS 2011</em>, 627-635. https://proceedings.mlr.press/v15/ross11a.html</li>
-<li>[]{#ref-71}Ouyang, L., et al. (2022). Training language models to follow instructions with human feedback. https://arxiv.org/abs/2203.02155</li>
-<li>[]{#ref-72}Levine, S., Kumar, A., Tucker, G., &amp; Fu, J. (2020). Offline reinforcement learning: Tutorial, review, and perspectives on open problems. https://arxiv.org/abs/2005.01643</li>
-<li>[]{#ref-73}Kumar, A., Zhou, A., Tucker, G., &amp; Levine, S. (2020). Conservative Q-learning for offline reinforcement learning. <em>NeurIPS 2020</em>. https://proceedings.neurips.cc/paper/2020/hash/0d2b2061826a5df3221116a5085a6052-Abstract.html</li>
-<li>[]{#ref-74}Finn, C., Abbeel, P., &amp; Levine, S. (2017). Model-agnostic meta-learning for fast adaptation of deep networks. <em>ICML 2017</em>, 1126-1135. https://proceedings.mlr.press/v70/finn17a.html</li>
-<li>[]{#ref-75}Stiennon, N., et al. (2020). Learning to summarize from human feedback. https://arxiv.org/abs/2009.01325</li>
-<li>[]{#ref-76}Vaswani, A., et al. (2017). Attention is all you need. <em>NeurIPS 2017</em>. https://arxiv.org/abs/1706.03762</li>
-<li>[]{#ref-77}Amodei, D., et al. (2016). Concrete problems in AI safety. https://arxiv.org/abs/1606.06565</li>
-<li>[]{#ref-78}Christiano, P. F., et al. (2017). Deep reinforcement learning from human preferences. <em>NeurIPS 2017</em>. https://arxiv.org/abs/1706.03741</li>
-<li>[]{#ref-79}Sudhir, A. P., Kaunismaa, J., &amp; Panickssery, A. (2025). A benchmark for scalable oversight protocols. https://arxiv.org/abs/2504.03731</li>
+<li><span id="ref-1"></span>Abelson, H., Sussman, G. J., &amp; Sussman, J. (1996). <em>Structure and Interpretation of Computer Programs</em> (2nd ed.). MIT Press. https://mitpress.mit.edu/9780262510875/</li>
+<li><span id="ref-2"></span>Russell, S., &amp; Norvig, P. (2021). <em>Artificial Intelligence: A Modern Approach</em> (4th ed.). Pearson. https://aima.cs.berkeley.edu/</li>
+<li><span id="ref-3"></span>Sutton, R. S., &amp; Barto, A. G. (2018). <em>Reinforcement Learning: An Introduction</em> (2nd ed.). MIT Press. http://incompleteideas.net/book/the-book-2nd.html</li>
+<li><span id="ref-4"></span>Puterman, M. L. (1994). <em>Markov Decision Processes</em>. Wiley. https://onlinelibrary.wiley.com/doi/book/10.1002/9780470316887</li>
+<li><span id="ref-5"></span>Bellman, R. (1957). <em>Dynamic Programming</em>. Princeton University Press. https://press.princeton.edu/books/hardcover/9780691651873/dynamic-programming</li>
+<li><span id="ref-6"></span>Pearl, J. (2009). <em>Causality</em> (2nd ed.). Cambridge University Press. https://www.cambridge.org/core/books/causality/94D5B8E8B2A5E0D970AA4A8DE3A2F5DD</li>
+<li><span id="ref-7"></span>Kaelbling, L. P., Littman, M. L., &amp; Cassandra, A. R. (1998). Planning and acting in partially observable stochastic domains. <em>AI</em>, 101(1-2), 99-134. https://www.sciencedirect.com/science/article/pii/S000437029800023X</li>
+<li><span id="ref-8"></span>Hart, P. E., Nilsson, N. J., &amp; Raphael, B. (1968). A formal basis for A<em> search. </em>IEEE TSSC*, 4(2), 100-107. https://ieeexplore.ieee.org/document/4082128</li>
+<li><span id="ref-9"></span>Fikes, R. E., &amp; Nilsson, N. J. (1971). STRIPS. <em>AI</em>, 2(3-4), 189-208. https://www.sciencedirect.com/science/article/pii/0004370271900105</li>
+<li><span id="ref-10"></span>Ghallab, M., Nau, D., &amp; Traverso, P. (2004). <em>Automated Planning</em>. Elsevier. https://shop.elsevier.com/books/automated-planning/ghallab/978-1-55860-856-6</li>
+<li><span id="ref-11"></span>Yao, S., et al. (2022). ReAct: Synergizing reasoning and acting in language models. https://arxiv.org/abs/2210.03629</li>
+<li><span id="ref-12"></span>Schick, T., et al. (2023). Toolformer: Language models can teach themselves to use tools. https://arxiv.org/abs/2302.04761</li>
+<li><span id="ref-13"></span>OpenAI. Function calling guide. https://platform.openai.com/docs/guides/function-calling</li>
+<li><span id="ref-14"></span>Lewis, P., et al. (2020). Retrieval-augmented generation for knowledge-intensive NLP tasks. <em>NeurIPS 2020</em>. https://arxiv.org/abs/2005.11401</li>
+<li><span id="ref-15"></span>Karpukhin, V., et al. (2020). Dense passage retrieval. <em>EMNLP 2020</em>. https://arxiv.org/abs/2004.04906</li>
+<li><span id="ref-16"></span>Packer, C., et al. (2023). MemGPT: Towards LLMs as operating systems. https://arxiv.org/abs/2310.08560</li>
+<li><span id="ref-17"></span>Wooldridge, M. (2009). <em>An Introduction to MultiAgent Systems</em> (2nd ed.). Wiley. https://www.wiley.com/en-us/An+Introduction+to+MultiAgent+Systems%2C+2nd+Edition-p-9780470519462</li>
+<li><span id="ref-18"></span>Shoham, Y., &amp; Leyton-Brown, K. (2009). <em>Multiagent Systems</em>. Cambridge University Press. https://www.cs.ubc.ca/~kevinlb/MAS/</li>
+<li><span id="ref-19"></span>Nash, J. (1950). Equilibrium points in n-person games. <em>PNAS</em>, 36(1), 48-49. https://www.pnas.org/doi/10.1073/pnas.36.1.48</li>
+<li><span id="ref-20"></span>Littman, M. L. (1994). Markov games as a framework for multi-agent RL. <em>ICML 1994</em>. https://www.cs.rutgers.edu/~mlittman/papers/ml94-final.pdf</li>
+<li><span id="ref-21"></span>Silver, D., et al. (2016). Mastering the game of Go with deep neural networks and tree search. <em>Nature</em>, 529, 484-489. https://www.nature.com/articles/nature16961</li>
+<li><span id="ref-22"></span>Oliehoek, F. A., &amp; Amato, C. (2016). <em>A Concise Introduction to Dec-POMDPs</em>. Springer. https://link.springer.com/book/10.1007/978-3-319-28929-8</li>
+<li><span id="ref-23"></span>Cambria, E., et al. (2025). Survey of LLM-based multi-agent systems. https://arxiv.org/abs/2402.01680</li>
+<li><span id="ref-24"></span>Wu, Q., et al. (2023). AutoGen: Enabling next-gen LLM applications via multi-agent conversation. https://arxiv.org/abs/2308.08155</li>
+<li><span id="ref-25"></span>Shazeer, N., et al. (2017). Outrageously large neural networks: The sparsely-gated mixture-of-experts layer. https://arxiv.org/abs/1701.06538</li>
+<li><span id="ref-26"></span>Lakshminarayanan, B., Pritzel, A., &amp; Blundell, C. (2017). Simple and scalable predictive uncertainty estimation using deep ensembles. <em>NeurIPS 2017</em>. https://arxiv.org/abs/1612.01474</li>
+<li><span id="ref-27"></span>Minsky, M. (1988). <em>The Society of Mind</em>. Simon &amp; Schuster. https://www.amazon.com/Society-Mind-Marvin-Minsky/dp/0671657135</li>
+<li><span id="ref-28"></span>Kahneman, D. (2011). <em>Thinking, Fast and Slow</em>. Farrar, Straus and Giroux. https://us.macmillan.com/books/9780374533557/thinkingfastandslow</li>
+<li><span id="ref-29"></span>Anthropic. (2022). Constitutional AI. https://arxiv.org/abs/2212.08073</li>
+<li><span id="ref-30"></span>OpenAI. (2023). GPT-4 Technical Report. https://arxiv.org/abs/2303.08774</li>
+<li><span id="ref-31"></span>WeasyPrint documentation. https://doc.courtbouillon.org/weasyprint/stable/</li>
+<li><span id="ref-32"></span>GitHub Pages documentation. https://docs.github.com/pages</li>
+<li><span id="ref-33"></span>Von Neumann, J., &amp; Morgenstern, O. (1944). <em>Theory of Games and Economic Behavior</em>. Princeton University Press. https://press.princeton.edu/books/hardcover/9780691130613/theory-of-games-and-economic-behavior</li>
+<li><span id="ref-34"></span>Savage, L. J. (1954). <em>The Foundations of Statistics</em>. Wiley. https://archive.org/details/foundationsofsta00sava</li>
+<li><span id="ref-35"></span>Shannon, C. E. (1948). A mathematical theory of communication. <em>Bell System Technical Journal</em>, 27, 379-423, 623-656. https://people.math.harvard.edu/~ctm/home/text/others/shannon/entropy/entropy.pdf</li>
+<li><span id="ref-36"></span>Kalman, R. E. (1960). A new approach to linear filtering and prediction problems. <em>Journal of Basic Engineering</em>, 82(1), 35-45. https://asmedigitalcollection.asme.org/fluidsengineering/article/82/1/35/397706/A-New-Approach-to-Linear-Filtering-and</li>
+<li><span id="ref-37"></span>Li, L., Walsh, T. J., &amp; Littman, M. L. (2006). Towards a unified theory of state abstraction for MDPs. <em>ISAIM 2006</em>. https://www.cs.rutgers.edu/~mlittman/papers/abstraction-06.pdf</li>
+<li><span id="ref-38"></span>Ferns, N., Panangaden, P., &amp; Precup, D. (2004). Metrics for finite Markov decision processes. <em>UAI 2004</em>. https://www.cs.mcgill.ca/~dprecup/publications/uai04.pdf</li>
+<li><span id="ref-39"></span>Bertsekas, D. P. (2017). <em>Dynamic Programming and Optimal Control</em> (4th ed.). Athena Scientific. https://www.mit.edu/~dimitrib/dpbook.html</li>
+<li><span id="ref-40"></span>Sutton, R. S., McAllester, D., Singh, S., &amp; Mansour, Y. (1999). Policy gradient methods for reinforcement learning with function approximation. <em>NeurIPS 1999</em>. https://papers.nips.cc/paper/1713-policy-gradient-methods-for-reinforcement-learning-with-function-approximation.pdf</li>
+<li><span id="ref-41"></span>Rawlings, J. B., Mayne, D. Q., &amp; Diehl, M. M. (2017). <em>Model Predictive Control: Theory, Computation, and Design</em> (2nd ed.). Nob Hill. https://sites.engineering.ucsb.edu/~jbraw/mpc/</li>
+<li><span id="ref-42"></span>Plotkin, G. D. (1981). A structural approach to operational semantics. Aarhus University technical report DAIMI FN-19. https://www.cs.tufts.edu/comp/150FP/archive/gordon-plotkin/sos.pdf</li>
+<li><span id="ref-43"></span>Cousot, P., &amp; Cousot, R. (1977). Abstract interpretation: A unified lattice model for static analysis. <em>POPL 1977</em>. https://dl.acm.org/doi/10.1145/512950.512973</li>
+<li><span id="ref-44"></span>Dean, T., &amp; Boddy, M. (1988). An analysis of time-dependent planning. <em>AAAI 1988</em>. https://cdn.aaai.org/AAAI/1988/AAAI88-003.pdf</li>
+<li><span id="ref-45"></span>Kocsis, L., &amp; Szepesvári, C. (2006). Bandit based Monte-Carlo planning. <em>ECML 2006</em>. https://link.springer.com/chapter/10.1007/11871842_29</li>
+<li><span id="ref-46"></span>Robertson, S., &amp; Zaragoza, H. (2009). The probabilistic relevance framework: BM25 and beyond. <em>Foundations and Trends in IR</em>, 3(4), 333-389. https://www.nowpublishers.com/article/Details/INR-019</li>
+<li><span id="ref-47"></span>Malkov, Y. A., &amp; Yashunin, D. A. (2018). Efficient and robust approximate nearest neighbor search using hierarchical navigable small world graphs. <em>IEEE TPAMI</em>, 42(4), 824-836. https://arxiv.org/abs/1603.09320</li>
+<li><span id="ref-48"></span>Atkinson, R. C., &amp; Shiffrin, R. M. (1968). Human memory: A proposed system and its control processes. In <em>The Psychology of Learning and Motivation</em> (Vol. 2). https://www.sciencedirect.com/science/article/pii/S0079742108604223</li>
+<li><span id="ref-49"></span>Gneiting, T., &amp; Raftery, A. E. (2007). Strictly proper scoring rules, prediction, and estimation. <em>JASA</em>, 102(477), 359-378. https://sites.stat.washington.edu/raftery/Research/PDF/Gneiting2007jasa.pdf</li>
+<li><span id="ref-50"></span>Koh, P. W., &amp; Liang, P. (2017). Understanding black-box predictions via influence functions. <em>ICML 2017</em>. https://arxiv.org/abs/1703.04730</li>
+<li><span id="ref-51"></span>Altman, E. (1999). <em>Constrained Markov Decision Processes</em>. Chapman and Hall/CRC. https://www.routledge.com/Constrained-Markov-Decision-Processes/Altman/p/book/9781584883593</li>
+<li><span id="ref-52"></span>Ames, A. D., Xu, X., Grizzle, J. W., &amp; Tabuada, P. (2017). Control barrier function based quadratic programs for safety critical systems. <em>IEEE TAC</em>, 62(8), 3861-3876. https://doi.org/10.1109/TAC.2016.2638961</li>
+<li><span id="ref-53"></span>NIST. (2023). <em>Artificial Intelligence Risk Management Framework (AI RMF 1.0)</em>. https://www.nist.gov/itl/ai-risk-management-framework</li>
+<li><span id="ref-54"></span>Lamport, L., Shostak, R., &amp; Pease, M. (1982). The Byzantine generals problem. <em>ACM TOPLAS</em>, 4(3), 382-401. https://dl.acm.org/doi/10.1145/357172.357176</li>
+<li><span id="ref-55"></span>Fischer, M. J., Lynch, N. A., &amp; Paterson, M. S. (1985). Impossibility of distributed consensus with one faulty process. <em>JACM</em>, 32(2), 374-382. https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf</li>
+<li><span id="ref-56"></span>Malone, T. W., &amp; Crowston, K. (1994). The interdisciplinary study of coordination. <em>ACM Computing Surveys</em>, 26(1), 87-119. https://ccs.mit.edu/papers/CCSWP157/CCSWP157.html</li>
+<li><span id="ref-57"></span>Vickrey, W. (1961). Counterspeculation, auctions, and competitive sealed tenders. <em>Journal of Finance</em>, 16(1), 8-37. https://onlinelibrary.wiley.com/doi/10.1111/j.1540-6261.1961.tb02789.x</li>
+<li><span id="ref-58"></span>Clarke, E. H. (1971). Multipart pricing of public goods. <em>Public Choice</em>, 11, 17-33. https://link.springer.com/article/10.1007/BF01726210</li>
+<li><span id="ref-59"></span>Groves, T. (1973). Incentives in teams. <em>Econometrica</em>, 41(4), 617-631. https://www.jstor.org/stable/1914085</li>
+<li><span id="ref-60"></span>Gibbard, A. (1973). Manipulation of voting schemes: A general result. <em>Econometrica</em>, 41(4), 587-601. https://www.jstor.org/stable/1914083</li>
+<li><span id="ref-61"></span>Satterthwaite, M. A. (1975). Strategy-proofness and Arrow's conditions. <em>Journal of Economic Theory</em>, 10(2), 187-217. https://www.sciencedirect.com/science/article/pii/0022053175900502</li>
+<li><span id="ref-62"></span>Smith, R. G. (1980). The contract net protocol. <em>IEEE Transactions on Computers</em>, C-29(12), 1104-1113. https://ieeexplore.ieee.org/document/1675516</li>
+<li><span id="ref-63"></span>Brown, G. W. (1951). Iterative solution of games by fictitious play. In <em>Activity Analysis of Production and Allocation</em>. https://cowles.yale.edu/sites/default/files/files/pub/mon/m13-all.pdf</li>
+<li><span id="ref-64"></span>Weibull, J. W. (1997). <em>Evolutionary Game Theory</em>. MIT Press. https://mitpress.mit.edu/9780262731218/evolutionary-game-theory/</li>
+<li><span id="ref-65"></span>Hart, S., &amp; Mas-Colell, A. (2000). A simple adaptive procedure leading to correlated equilibrium. <em>Econometrica</em>, 68(5), 1127-1150. https://www.ma.huji.ac.il/hart/abs/adapt.html</li>
+<li><span id="ref-66"></span>Krogh, A., &amp; Vedelsby, J. (1995). Neural network ensembles, cross validation, and active learning. <em>NeurIPS 1994</em>. https://papers.nips.cc/paper/1001-neural-network-ensembles-cross-validation-and-active-learning.pdf</li>
+<li><span id="ref-67"></span>Dietterich, T. G. (2000). Ensemble methods in machine learning. <em>MCS 2000</em>. https://link.springer.com/chapter/10.1007/3-540-45014-9_1</li>
+<li><span id="ref-68"></span>Jacobs, R. A., Jordan, M. I., Nowlan, S. J., &amp; Hinton, G. E. (1991). Adaptive mixtures of local experts. <em>Neural Computation</em>, 3(1), 79-87. https://www.cs.toronto.edu/~hinton/absps/jjnh91.pdf</li>
+<li><span id="ref-69"></span>Fedus, W., Zoph, B., &amp; Shazeer, N. (2022). Switch Transformers: Scaling to trillion parameter models with simple and efficient sparsity. <em>JMLR</em>, 23(120), 1-39. https://www.jmlr.org/papers/v23/21-0998.html</li>
+<li><span id="ref-70"></span>Ross, S., Gordon, G. J., &amp; Bagnell, J. A. (2011). A reduction of imitation learning and structured prediction to no-regret online learning. <em>AISTATS 2011</em>, 627-635. https://proceedings.mlr.press/v15/ross11a.html</li>
+<li><span id="ref-71"></span>Ouyang, L., et al. (2022). Training language models to follow instructions with human feedback. https://arxiv.org/abs/2203.02155</li>
+<li><span id="ref-72"></span>Levine, S., Kumar, A., Tucker, G., &amp; Fu, J. (2020). Offline reinforcement learning: Tutorial, review, and perspectives on open problems. https://arxiv.org/abs/2005.01643</li>
+<li><span id="ref-73"></span>Kumar, A., Zhou, A., Tucker, G., &amp; Levine, S. (2020). Conservative Q-learning for offline reinforcement learning. <em>NeurIPS 2020</em>. https://proceedings.neurips.cc/paper/2020/hash/0d2b2061826a5df3221116a5085a6052-Abstract.html</li>
+<li><span id="ref-74"></span>Finn, C., Abbeel, P., &amp; Levine, S. (2017). Model-agnostic meta-learning for fast adaptation of deep networks. <em>ICML 2017</em>, 1126-1135. https://proceedings.mlr.press/v70/finn17a.html</li>
+<li><span id="ref-75"></span>Stiennon, N., et al. (2020). Learning to summarize from human feedback. https://arxiv.org/abs/2009.01325</li>
+<li><span id="ref-76"></span>Vaswani, A., et al. (2017). Attention is all you need. <em>NeurIPS 2017</em>. https://arxiv.org/abs/1706.03762</li>
+<li><span id="ref-77"></span>Amodei, D., et al. (2016). Concrete problems in AI safety. https://arxiv.org/abs/1606.06565</li>
+<li><span id="ref-78"></span>Christiano, P. F., et al. (2017). Deep reinforcement learning from human preferences. <em>NeurIPS 2017</em>. https://arxiv.org/abs/1706.03741</li>
+<li><span id="ref-79"></span>Sudhir, A. P., Kaunismaa, J., &amp; Panickssery, A. (2025). A benchmark for scalable oversight protocols. https://arxiv.org/abs/2504.03731</li>
+<li><span id="ref-80"></span>Doyle, A. C. (1892). <em>The Adventures of Sherlock Holmes</em>. Project Gutenberg. https://dev.gutenberg.org/cache/epub/48320/pg48320-images.html</li>
+<li><span id="ref-81"></span>Aristotle. (c. 340 BCE). <em>Nicomachean Ethics</em>. Project Gutenberg. https://www.gutenberg.org/cache/epub/8438/pg8438.html</li>
+<li><span id="ref-82"></span>Bacon, F. (1605). <em>The Advancement of Learning</em>. Project Gutenberg. https://www.gutenberg.org/files/5500/5500-h/5500-h.htm</li>
+<li><span id="ref-83"></span>Hume, D. (1748). <em>An Enquiry Concerning Human Understanding</em>. Project Gutenberg. https://www.gutenberg.org/files/9662/9662-h/9662-h.htm</li>
+<li><span id="ref-84"></span>Whewell, W. (1858). <em>History of Scientific Ideas</em> (3rd ed., Vol. 1). Project Gutenberg. https://www.gutenberg.org/files/69093/69093-h/69093-h.htm</li>
+<li><span id="ref-85"></span>James, W. (1890). <em>The Principles of Psychology</em> (Vol. 1). Project Gutenberg. https://www.gutenberg.org/files/57628/57628-h/57628-h.htm</li>
+<li><span id="ref-86"></span>Bacon, F. (1620). <em>Novum Organum</em>. Project Gutenberg. https://www.gutenberg.org/files/45988/45988-h/45988-h.htm</li>
+<li><span id="ref-87"></span>Carroll, L. (1865). <em>Alice's Adventures in Wonderland</em>. Project Gutenberg. https://www.gutenberg.org/cache/epub/11/pg11-images.html</li>
+<li><span id="ref-88"></span>Lovelace, A. A. (1843). Notes by the translator. In L. F. Menabrea, Sketch of the Analytical Engine invented by Charles Babbage. <em>Scientific Memoirs</em>, 3, 666-731. https://hsm.ox.ac.uk/imagining-ai</li>
+<li><span id="ref-89"></span>Clausewitz, C. von. (1832). <em>On War</em>. Project Gutenberg. https://www.gutenberg.org/files/1946/1946-h/1946-h.htm</li>
+<li><span id="ref-90"></span>Hobbes, T. (1651). <em>Leviathan</em>. Project Gutenberg. https://www.gutenberg.org/files/73957/73957-h/73957-h.htm</li>
+<li><span id="ref-91"></span>Hobbes, T. (1650). <em>Human Nature</em>. Project Gutenberg. https://www.gutenberg.org/files/74236/74236-h/74236-h.htm</li>
+<li><span id="ref-92"></span>Carlyle, T. (1836). <em>Sartor Resartus</em>. Project Gutenberg. https://www.gutenberg.org/files/20585/20585-h/20585-h.htm</li>
+<li><span id="ref-93"></span>Boswell, J. (1791). <em>The Life of Samuel Johnson</em>. Project Gutenberg. https://www.gutenberg.org/files/1564/1564-h/1564-h.htm</li>
+<li><span id="ref-94"></span>Bacon, F. (1625). <em>Essays</em>. Project Gutenberg. https://www.gutenberg.org/cache/epub/56463/pg56463-images.html</li>
+<li><span id="ref-95"></span>Burke, E. (1771, February 7). <em>Speech Relative to the Middlesex Election</em>. Quotation reproduced in the official report of the Parliament of the United Kingdom. https://hansard.parliament.uk/lords/1975-04-16/debates/7cf9e3ff-6d2b-4065-b7ba-825490390fce/MultinationalCorporations</li>
+<li><span id="ref-96"></span>Mill, J. S. (1859). <em>On Liberty</em>. Project Gutenberg. https://www.gutenberg.org/files/34901/34901-h/34901-h.htm</li>
+<li><span id="ref-97"></span>Aristotle. (c. 350 BCE). <em>Politics</em>. Project Gutenberg. https://www.gutenberg.org/files/6762/6762-h/6762-h.htm</li>
+<li><span id="ref-98"></span>Smith, A. (1776). <em>An Inquiry into the Nature and Causes of the Wealth of Nations</em>. Project Gutenberg. https://www.gutenberg.org/files/38194/38194-h/38194-h.htm</li>
+<li><span id="ref-99"></span>Hume, D. (1739). <em>A Treatise of Human Nature</em>. Project Gutenberg. https://www.gutenberg.org/files/4705/4705-h/4705-h.htm</li>
+<li><span id="ref-100"></span>Newton, I. (1675, February 5). Letter to Robert Hooke. Institutional transcription hosted by York University. https://www.yorku.ca/menary/courses/phys1000/newton_quotes.pdf</li>
 </ol>
+<blockquote>
+<p><em>“If I have seen further it is by standing on ye sholders of Giants.”</em></p>
+<p>— Isaac Newton, <em>Letter to Robert Hooke</em> (1675), Letter of 5 February 1675 (Old Style). <a href="https://www.yorku.ca/menary/courses/phys1000/newton_quotes.pdf">Source</a>, accessed 2026-08-06. Public-domain original; quotation verified against an institutional transcription hosted by York University..</p>
+</blockquote>
         <nav class="reading-nav" aria-label="Reading navigation"><div class="reading-nav__previous"><span>Previous</span><a href="chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration.html">Neural Ensembles and Orchestration</a></div><div class="reading-nav__up"></div><div class="reading-nav__next"></div></nav>
       </article>
     </main>
     <footer class="site-footer">
       <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
-      <p>Last generated: 2026-08-06 11:32 UTC</p>
+      <p>Last generated: 2026-08-06 12:38 UTC</p>
     </footer>
     <script>
       const toggle = document.querySelector(".nav-toggle");
       const navigation = document.querySelector(".sidebar");
+      const themeToggle = document.querySelector(".theme-toggle");
+      const root = document.documentElement;
+      const applyTheme = (theme) => {
+        root.dataset.theme = theme;
+        themeToggle.setAttribute("aria-pressed", String(theme === "dark"));
+        themeToggle.setAttribute("aria-label", theme === "dark" ? "Use light mode" : "Use dark mode");
+      };
+      applyTheme(root.dataset.theme);
       toggle.addEventListener("click", () => {
         const open = navigation.classList.toggle("sidebar--open");
         toggle.setAttribute("aria-expanded", String(open));
+      });
+      themeToggle.addEventListener("click", () => {
+        const theme = root.dataset.theme === "dark" ? "light" : "dark";
+        applyTheme(theme);
+        try { localStorage.setItem("siap-theme", theme); } catch { /* Preference remains available for this visit. */ }
       });
     </script>
   </body>

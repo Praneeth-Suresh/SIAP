@@ -306,12 +306,15 @@ The practical tests follow from the semantics. Measure each of these on real run
 
 Run that last test deliberately, by injecting a lying agent, rather than waiting for one to appear. A coordination scheme that works only because every participant is reasonable is not yet a protocol. It is a cooperative anecdote. Topic 3 (Equilibria, Self-Play, and Learning Dynamics) studies what happens when the participants adapt to each other over many such runs.
 
+::: {.reader-question}
 > **Skeptical Engineer:** If signatures prove C-9 sent both messages, why do we
 > need all this protocol machinery? Just fire C-9.
 >
 > **Author:** Signatures prove authorship, not which downstream commits already
 > depended on the lie. The protocol freezes authority, reconstructs impact, and
 > keeps the institution safe while personnel policy catches up.
+
+:::
 
 ## The Assumption
 
@@ -337,7 +340,8 @@ repaired protocol logs recipient-specific messages, exchanges compact digests at
 commit time, freezes on equivocation, and requires an independent verifier before
 publication authority returns.
 
-## Exercise: Inject a Byzantine Fact Checker
+::: {.exercise}
+## Exercise: Inject a Byzantine Fact Checker {.unnumbered}
 
 Implement a deterministic protocol simulator with R-3, C-9, Agent-427, typed
 messages, per-recipient queues, signatures, and a traffic-light claim state.
@@ -352,7 +356,10 @@ Then:
    fires after detected equivocation without independent verification; and
 6. report safety violations, liveness time, message complexity, and false freezes.
 
-### Further Reading and Open Questions
+:::
+
+::: {.reader-question}
+### Further Reading and Open Questions {.unnumbered}
 
 Read Lamport, Shostak, and Pease for Byzantine agreement [[54](../../references.md#ref-54)],
 Fischer, Lynch, and Paterson for the asynchronous impossibility boundary
@@ -361,6 +368,8 @@ decision-making under local observations [[22](../../references.md#ref-22)]. The
 open engineering question is how much recipient-specific communication can
 remain private while still making equivocation detectable at institutional
 scale.
+
+:::
 
 [^byzantine-wardrobe]: The Byzantine courtier has upgraded from two letters to
     two JSON objects. Civilization advances; equivocation remains backward

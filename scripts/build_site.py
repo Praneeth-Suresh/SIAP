@@ -3,12 +3,20 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 from html import escape
+from html.parser import HTMLParser
 from pathlib import Path
 import posixpath
 import re
 import shutil
+from urllib.parse import unquote, urlsplit
 
 import markdown
+from publication_enrichment import (
+    PublicationEnrichment,
+    adapt_semantic_divs,
+    enrich_section_markdown,
+    load_publication_enrichment,
+)
 from publication_manifest import PublicationSection, load_publication_manifest
 
 
@@ -18,6 +26,23 @@ SITE_DIR = ROOT / "site"
 TEMPLATE_PATH = ROOT / "templates" / "page.html"
 MD_EXTENSIONS = ["extra", "tables", "fenced_code", "toc"]
 MATH_PATTERN = re.compile(r"\\\[(.*?)\\\]|\\\((.*?)\\\)|\$\$(.*?)\$\$", re.DOTALL)
+REFERENCE_ANCHOR_PATTERN = re.compile(r"\[\]\{#(ref-[A-Za-z0-9_-]+)\}")
+
+
+class PageLinks(HTMLParser):
+    """Collect generated page anchors and same-site links without a browser."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.ids: set[str] = set()
+        self.links: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        values = dict(attrs)
+        if values.get("id"):
+            self.ids.add(values["id"])
+        if tag == "a" and values.get("href"):
+            self.links.append(values["href"])
 
 
 def discover_publication_sections() -> tuple[PublicationSection, ...]:
@@ -49,6 +74,8 @@ def rewrite_md_links(markdown_text: str) -> str:
 
 def render_markdown(markdown_text: str) -> str:
     """Render Markdown without letting its escape rules dismantle TeX syntax."""
+    markdown_text = adapt_semantic_divs(markdown_text, target="html")
+    markdown_text = REFERENCE_ANCHOR_PATTERN.sub(r'<span id="\1"></span>', markdown_text)
     expressions: dict[str, str] = {}
 
     def protect(match: re.Match[str]) -> str:
@@ -61,6 +88,32 @@ def render_markdown(markdown_text: str) -> str:
     for token, expression in expressions.items():
         html_body = html_body.replace(token, expression)
     return html_body
+
+
+def find_broken_site_links(site_dir: Path) -> list[str]:
+    """Return missing generated-page endpoints and fragment anchors."""
+    pages = {path.relative_to(site_dir).as_posix(): path for path in site_dir.rglob("*.html")}
+    parsed_pages: dict[str, PageLinks] = {}
+    for relative, path in pages.items():
+        parser = PageLinks()
+        parser.feed(path.read_text(encoding="utf-8"))
+        parsed_pages[relative] = parser
+
+    failures: list[str] = []
+    for current, parser in parsed_pages.items():
+        for href in parser.links:
+            target = urlsplit(href)
+            if target.scheme or target.netloc or href.startswith("//"):
+                continue
+            target_path = unquote(target.path)
+            relative_target = posixpath.normpath(posixpath.join(posixpath.dirname(current), target_path)) if target_path else current
+            if relative_target.startswith("../") or relative_target == ".." or relative_target not in pages:
+                failures.append(f"{current}: missing endpoint {href}")
+                continue
+            fragment = unquote(target.fragment)
+            if fragment and fragment not in parsed_pages[relative_target].ids:
+                failures.append(f"{current}: missing anchor {href}")
+    return failures
 
 
 def html_path(markdown_path: Path) -> Path:
@@ -161,9 +214,16 @@ def render_reading_nav(sections: tuple[PublicationSection, ...], current: Public
     return "".join(parts)
 
 
-def write_html_page(section: PublicationSection, all_sections: tuple[PublicationSection, ...], template: str) -> None:
+def write_html_page(
+    section: PublicationSection,
+    all_sections: tuple[PublicationSection, ...],
+    template: str,
+    enrichment: PublicationEnrichment | None = None,
+) -> None:
     markdown_path = section.path
     raw_md = markdown_path.read_text(encoding="utf-8")
+    if enrichment is not None:
+        raw_md = enrich_section_markdown(markdown_path, raw_md, enrichment)
     processed_md = rewrite_md_links(raw_md)
     title = extract_title(processed_md, markdown_path.stem)
     html_body = render_markdown(processed_md)
@@ -189,6 +249,7 @@ def main() -> None:
         raise SystemExit("Missing book/ directory")
 
     sections = discover_publication_sections()
+    enrichment = load_publication_enrichment(BOOK_DIR)
     template = TEMPLATE_PATH.read_text(encoding="utf-8")
 
     if SITE_DIR.exists():
@@ -196,13 +257,16 @@ def main() -> None:
     SITE_DIR.mkdir(parents=True, exist_ok=True)
 
     for section in sections:
-        write_html_page(section, sections, template)
+        write_html_page(section, sections, template, enrichment)
 
     assets_source = BOOK_DIR / "assets"
     if assets_source.exists():
         shutil.copytree(assets_source, SITE_DIR / "assets", dirs_exist_ok=True)
 
     (SITE_DIR / ".nojekyll").write_text("", encoding="utf-8")
+    failures = find_broken_site_links(SITE_DIR)
+    if failures:
+        raise SystemExit("Generated site has broken links:\n" + "\n".join(failures))
     print(f"Built {len(sections)} reader-facing pages in {SITE_DIR}")
 
 

@@ -262,12 +262,15 @@ The institution is still an interpreter, but its registers are distributed acros
 
 The smallest sufficient institution for the task is the one whose collective computation remains legible enough that wisdom, when it appears, is not mistaken for accident.
 
+::: {.reader-question}
 > **Skeptical Engineer:** Who audits M-1? Another meta-agent, and then turtles
 > until the token budget expires?
 >
 > **Author:** M-1 has a narrow interface, immutable audit output, random external
 > checks, and no authority to approve its own repair. Oversight scales through
 > separation and sampling, not infinite hierarchy.
+
+:::
 
 ## The Assumption
 
@@ -296,7 +299,8 @@ ledger-enforced freeze. When Agent-427 remains below calibration and provenance
 thresholds for three windows, the same governance machinery executes retirement
 rather than asking the prompt to behave better.
 
-## Exercise: Build the Auditor and Retirement Gate
+::: {.exercise}
+## Exercise: Build the Auditor and Retirement Gate {.unnumbered}
 
 Implement R-3, four specialist profiles, and M-1 over synthetic signed traces.
 Include independent errors, correlated-source errors, C-9 equivocation, and the
@@ -312,7 +316,10 @@ D-12/C-9 coalition. Then:
    credential, writable memory route, pending lease, and scheduled action is
    revoked.
 
-### Further Reading and Open Questions
+:::
+
+::: {.reader-question}
+### Further Reading and Open Questions {.unnumbered}
 
 Deep ensembles motivate calibrated diversity [[26](../../references.md#ref-26)];
 mixture-of-experts work studies conditional routing [[25](../../references.md#ref-25)]
@@ -322,6 +329,8 @@ multi-agent surveys and frameworks show the wider orchestration landscape
 question is how an auditor can detect strategically hidden, low-base-rate failures
 without either inspecting everything or teaching the society exactly where it
 will look.
+
+:::
 
 [^retirement-party]: There is no cake. There is, however, a credential-revocation
     receipt, which is less festive and considerably more useful in an audit.

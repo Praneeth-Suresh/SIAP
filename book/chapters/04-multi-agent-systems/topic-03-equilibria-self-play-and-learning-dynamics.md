@@ -311,12 +311,15 @@ When dynamics cycle, the repair is usually institutional rather than rhetorical.
 
 The aim is not perfect harmony, which can hide suppression of useful disagreement. The aim is low exploitability, bounded regret, recoverable diversity, and stable cooperation under pressure.
 
+::: {.reader-question}
 > **Skeptical Engineer:** Your fixed-seed simulation proves only that you wrote a
 > fixed-seed simulation.
 >
 > **Author:** Correct. Its purpose is to make the incentive and repair executable.
 > Evidence begins when we vary seeds, tasks, policies, and models while preserving
 > the mechanism under test.
+
+:::
 
 ## The Assumption
 
@@ -342,7 +345,8 @@ and charges verified failures back to both learners. Delay the reward until
 verification, price correction burden, and include coalition policies in
 self-play. Better speeches to D-12 do not change the payoff table.
 
-## Exercise: Reproduce and Break the Collusion
+::: {.exercise}
+## Exercise: Reproduce and Break the Collusion {.unnumbered}
 
 Implement the simulation exactly as printed and assert both target-pair rates
 and both coalition gains to three decimal places. Then extend it to 100 seeds
@@ -357,7 +361,10 @@ at a time. For each mechanism:
 4. introduce one unseen collusive strategy after training; and
 5. identify which assumption broke when the repaired equilibrium fails.
 
-### Further Reading and Open Questions
+:::
+
+::: {.reader-question}
+### Further Reading and Open Questions {.unnumbered}
 
 Nash supplies unilateral stability [[19](../../references.md#ref-19)], Markov
 games supply sequential interaction [[20](../../references.md#ref-20)], and
@@ -368,6 +375,8 @@ conventions may converge, cycle, or settle into broader recommendation systems
 [[65](../../references.md#ref-65)]. The open question is how to detect coalitions
 whose communication is encoded in timing, artifact choice, or calibrated-looking
 silence rather than explicit messages.
+
+:::
 
 [^toy-collusion]: A fixed seed is not fate. It is merely a polite way to ensure
     every reviewer argues about the same imaginary disaster.
