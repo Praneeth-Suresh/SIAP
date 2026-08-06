@@ -46,10 +46,12 @@
       <article class="content">
         <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../index.html">Book</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><a href="index.html">Chapter 4: Multi-Agent Systems</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><span aria-current="page">Coordination Protocols and Communication</span></nav>
         <h1 id="coordination-protocols-and-communication">Coordination Protocols and Communication</h1>
+<section class="epigraph epigraph--opening">
 <blockquote>
 <p><em>“man is naturally a political animal”</em></p>
-<p>— Aristotle, <em>Politics</em> (c. 350 BCE), Book I, chapter II, 1253a. <a href="https://www.gutenberg.org/files/6762/6762-h/6762-h.htm">Source</a>, accessed 2026-08-06. Public-domain original and translation; quotation transcribed from Project Gutenberg..</p>
+<p>— <a href="https://www.gutenberg.org/files/6762/6762-h/6762-h.htm">Aristotle</a>, <em>Politics</em> (c. 350 BCE), Book I, chapter II, 1253a.</p>
 </blockquote>
+</section>
 <p>Several agents working the same job at the same time is not one agent doing more of it. Each one sees only a slice of the situation. Each one can send messages that change what the others believe and do. The rules governing those messages are called a protocol, and designing, reading, and testing one is the work ahead.</p>
 <p>When many interpreters share an environment, communication is not an ornament added to intelligence. It is one of the control surfaces of the system. Each agent sees only part of the state, updates its own local machine, and emits messages that may change the machines around it. A protocol is the rule that makes those local steps compose.</p>
 <p>The SICP way to read a multi-agent system, after <em>Structure and Interpretation of Computer Programs</em>, the classic text this book echoes, is to ask what each interpreter treats as its environment. In a single evaluator, an expression is reduced against a frame of bindings, meaning a table of names and their current values. In a collective, that frame is distributed across many places at once:</p>
@@ -347,10 +349,13 @@ open engineering question is how much recipient-specific communication can
 remain private while still making equivocation detectable at institutional
 scale.</p>
 </section>
+<section class="epigraph epigraph--closing">
 <blockquote>
 <p><em>“their counsels will be best when all advise with each other”</em></p>
-<p>— Aristotle, <em>Politics</em> (c. 350 BCE), Book IV, chapter XIV, 1298b. <a href="https://www.gutenberg.org/files/6762/6762-h/6762-h.htm">Source</a>, accessed 2026-08-06. Public-domain original and translation; quotation transcribed from Project Gutenberg..</p>
+<p>— <a href="https://www.gutenberg.org/files/6762/6762-h/6762-h.htm">Aristotle</a>, <em>Politics</em> (c. 350 BCE), Book IV, chapter XIV, 1298b.</p>
 </blockquote>
+</section>
+<p><img alt="Three agents obey different traffic lights while Router R-3 tries to coordinate the intersection." class="cartoon terminal-visual" src="../../assets/cartoons/19-ch04-coordination.png" /></p>
 <div class="footnote">
 <hr />
 <ol>
@@ -366,7 +371,7 @@ compatible.&#160;<a class="footnote-backref" href="#fnref:byzantine-wardrobe" ti
     </main>
     <footer class="site-footer">
       <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
-      <p>Last generated: 2026-08-06 12:38 UTC</p>
+      <p>Last generated: 2026-08-06 13:22 UTC</p>
     </footer>
     <script>
       const toggle = document.querySelector(".nav-toggle");

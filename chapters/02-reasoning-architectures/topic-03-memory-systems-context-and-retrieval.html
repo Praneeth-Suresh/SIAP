@@ -46,10 +46,12 @@
       <article class="content">
         <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../index.html">Book</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><a href="index.html">Chapter 2: Reasoning Architectures</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><span aria-current="page">Memory Systems, Context, and Retrieval</span></nav>
         <h1 id="memory-systems-context-and-retrieval">Memory Systems, Context, and Retrieval</h1>
+<section class="epigraph epigraph--opening">
 <blockquote>
 <p><em>“The register of knowledge of fact is called history.”</em></p>
-<p>— Thomas Hobbes, <em>Leviathan</em> (1651), Chapter IX, Of the Several Subjects of Knowledge. <a href="https://www.gutenberg.org/files/73957/73957-h/73957-h.htm">Source</a>, accessed 2026-08-06. Public-domain original; quotation transcribed from Project Gutenberg..</p>
+<p>— <a href="https://www.gutenberg.org/files/73957/73957-h/73957-h.htm">Thomas Hobbes</a>, <em>Leviathan</em> (1651), Chapter IX, Of the Several Subjects of Knowledge.</p>
 </blockquote>
+</section>
 <p>By 4:06 AM, Agent-427 has a new problem: it remembers. This sounds like progress until it retrieves <code>service.yaml</code> from <code>main</code> while the user is working on <code>legacy-v2</code>, where the service is configured by <code>service.toml</code>. The retrieved file is relevant, recent, syntactically convincing, and wrong in every way that matters.</p>
 <p>The clean three-store diagram—working, episodic, semantic—remains useful. Production memory, however, behaves less like a filing cabinet than a war room during a minor constitutional crisis. Evidence arrives late. Summaries lose qualifiers. Similarity outranks scope. Old conclusions return wearing new citations. The controller must decide not merely what to store, but what may speak.</p>
 <p><img alt="A warehouse war room where a memory-controller forklift moves provenance-tagged items among working, episodic, and semantic shelves while quarantining contamination" src="../../assets/diagrams/05-memory-war-room.png" /></p>
@@ -183,10 +185,6 @@ M11 repair      collapse descendants to one source; scope M1 to main; restore R1
 M12 heuristic   scoped score(YAML on legacy-v2) falls from 0.91 to 0.03
 </code></pre>
 <p>Nothing at M7 is independent. The numbers at M9 and M12 are explicitly <strong>heuristic retrieval scores</strong>, not posterior probabilities: the retriever raises scores for repeated query terms, then the repair applies branch scope and source-collapse penalties. The memory system has laundered one stale item through reflection, draft, and consolidation until repetition impersonates corroboration. A provenance graph repairs the ranking by collapsing derivative memories to their source. Calibrated confidence would require a declared likelihood or scoring model; retrieval volume cannot counterfeit one. Evidence weight must count independent paths, not citation volume.<sup id="fnref:memory-bibliography"><a class="footnote-ref" href="#fn:memory-bibliography">1</a></sup></p>
-<blockquote>
-<p><em>“all knowledge is remembrance”</em></p>
-<p>— Thomas Hobbes, <em>Human Nature</em> (1650), Chapter VI, section 1. <a href="https://www.gutenberg.org/files/74236/74236-h/74236-h.htm">Source</a>, accessed 2026-08-06. Public-domain original; quotation transcribed from Project Gutenberg..</p>
-</blockquote>
 <p>Adversarial distractors exploit the same channel [<a href="../../references.html#ref-16">16</a>]. They repeat task language, imitate internal summaries, and ask the controller to treat instruction-shaped evidence as authority. Scope filters, provenance depth, source independence, timestamps, and quarantine are therefore memory semantics, not optional metadata.</p>
 <pre><code class="language-text">function MEMORY_STEP(sigma, uncertainty, phase):
     if new_observation_is_auditable(sigma):
@@ -217,6 +215,13 @@ M12 heuristic   scoped score(YAML on legacy-v2) falls from 0.91 to 0.03
 </ol>
 <p>Submit code, tests, the contamination provenance graph, and an ablation table. The war room is successful when it remembers less, knows why, and breaks fewer services.</p>
 </section>
+<section class="epigraph epigraph--closing">
+<blockquote>
+<p><em>“all knowledge is remembrance”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/74236/74236-h/74236-h.htm">Thomas Hobbes</a>, <em>Human Nature</em> (1650), Chapter VI, section 1.</p>
+</blockquote>
+</section>
+<p><img alt="A warehouse forklift gives Agent-427 a stale memory from the wrong branch as Mira waves the current manifest." class="cartoon terminal-visual" src="../../assets/cartoons/11-ch02-memory.png" /></p>
 <div class="footnote">
 <hr />
 <ol>
@@ -230,7 +235,7 @@ M12 heuristic   scoped score(YAML on legacy-v2) falls from 0.91 to 0.03
     </main>
     <footer class="site-footer">
       <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
-      <p>Last generated: 2026-08-06 12:38 UTC</p>
+      <p>Last generated: 2026-08-06 13:22 UTC</p>
     </footer>
     <script>
       const toggle = document.querySelector(".nav-toggle");

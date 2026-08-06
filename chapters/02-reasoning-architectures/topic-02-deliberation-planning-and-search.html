@@ -46,10 +46,12 @@
       <article class="content">
         <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../index.html">Book</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><a href="index.html">Chapter 2: Reasoning Architectures</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><span aria-current="page">Deliberation, Planning, and Search</span></nav>
         <h1 id="deliberation-planning-and-search">Deliberation, Planning, and Search</h1>
+<section class="epigraph epigraph--opening">
 <blockquote>
 <p><em>“Everything is very simple in War, but the simplest thing is difficult.”</em></p>
-<p>— Carl von Clausewitz, <em>On War</em> (1832), Book I, chapter VII, Friction in War. <a href="https://www.gutenberg.org/files/1946/1946-h/1946-h.htm">Source</a>, accessed 2026-08-06. Public-domain original and translation; quotation transcribed from Project Gutenberg..</p>
+<p>— <a href="https://www.gutenberg.org/files/1946/1946-h/1946-h.htm">Carl von Clausewitz</a>, <em>On War</em> (1832), Book I, chapter VII, Friction in War.</p>
 </blockquote>
+</section>
 <p>At 3:47:25 AM, Agent-427 has survived its first illegal import. It now possesses a safer tool, <code>inspect_file</code>, and a choice: inspect the authentication code immediately, or spend scarce seconds imagining what it might find. A proposal says “open this file.” A plan says “open this file, expect this evidence, and do this if the evidence laughs at us.”</p>
 <p>Deliberation is the wager that simulated futures will save more than they cost. Search operationalizes the wager. Planning gives the selected future preconditions, expected observations, costs, risks, and contingencies. The difficulty is that reality continues running while the planner enjoys its miniature theatre.</p>
 <h2 id="plans-as-paths-not-prophecies">Plans as Paths, Not Prophecies</h2>
@@ -143,7 +145,9 @@ Q(s,a)+c\sqrt{\frac{\ln N(s)}{N(s,a)}}
 <p><strong>Try this with numbers.</strong> Step 1: let \(Q=4\), \(c=1\), parent visits \(N(s)=100\), and action visits \(N(s,a)=4\); the bonus is about \(\sqrt{4.605/4}=1.07\). Step 2: the selection score is about 5.07; after 40 action visits the bonus falls to about 0.34.</p>
 </blockquote>
 <p>Rollouts trade exploitation of promising branches against exploration of neglected ones [<a href="../../references.html#ref-45">45</a>]. Under change, timestamps matter: a thousand rollouts through yesterday's model are a beautifully estimated obsolete policy.</p>
-<p>Anytime planning returns its best available candidate when interrupted [<a href="../../references.html#ref-44">44</a>]. Receding-horizon control goes farther: optimize several steps, execute one, observe, and solve again:</p>
+<p>Anytime planning returns its best available candidate when interrupted [<a href="../../references.html#ref-44">44</a>].</p>
+<p><img alt="A search tree grows scored frontier nodes until a budget line interrupts it, returning the best surviving plan for one action before observation and replanning." src="../../assets/diagrams/12-budgeted-search-frontier.png" /></p>
+<p>Receding-horizon control goes farther: optimize several steps, execute one, observe, and solve again:</p>
 <p>\[
 \mathbf{u}_{t:t+H-1}^{\star}
 =\arg\min_{\mathbf{u}_{t:t+H-1}}
@@ -170,10 +174,6 @@ Q(s,a)+c\sqrt{\frac{\ln N(s)}{N(s,a)}}
 <h2 id="when-it-fails">When It Fails</h2>
 <p>Planning fails when decomposition hides coupling, heuristics reward easily measured progress, or stale models produce precise nonsense. An adversarial API can exploit this by returning a cheap successful probe while reserving failure for the irreversible call. The planner learns “endpoint healthy” from the probe and spends its authority on a state the probe never represented.</p>
 <p>Reflection can repair a hard plan after contradictory evidence, but it can also tax a trivial task into insolvency. Planning earns its keep when horizon, branching, prerequisites, uncertainty, or irreversibility create genuine geometry. A one-line formatting fix does not need an opera.<sup id="fnref:planner-opera"><a class="footnote-ref" href="#fn:planner-opera">1</a></sup></p>
-<blockquote>
-<p><em>“These difficulties accumulate and produce a friction which no man can imagine exactly who has not seen War”</em></p>
-<p>— Carl von Clausewitz, <em>On War</em> (1832), Book I, chapter VII, Friction in War. <a href="https://www.gutenberg.org/files/1946/1946-h/1946-h.htm">Source</a>, accessed 2026-08-06. Public-domain original and translation; quotation transcribed from Project Gutenberg..</p>
-</blockquote>
 <p>Every candidate trajectory should record state estimate, state/version age, action, expected observation, cost, risk, and contingency. Log pruning decisions when they affect safety. Put symbolic preconditions around irreversible actions. Trigger replanning on new evidence, failed preconditions, budget drift, tool errors, observation expiry, or a value change that reorders the frontier.</p>
 <section class="exercise">
 <h2 class="unnumbered" id="exercise-make-the-world-betray-your-planner">Exercise: Make the World Betray Your Planner</h2>
@@ -187,6 +187,13 @@ Q(s,a)+c\sqrt{\frac{\ln N(s)}{N(s,a)}}
 </ol>
 <p>Your result must include code, tests for the version race, and a table of measurements. A hand-drawn plan receives partial credit only if it can also hand-draw a stack trace.</p>
 </section>
+<section class="epigraph epigraph--closing">
+<blockquote>
+<p><em>“These difficulties accumulate and produce a friction which no man can imagine exactly who has not seen War”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/1946/1946-h/1946-h.htm">Carl von Clausewitz</a>, <em>On War</em> (1832), Book I, chapter VII, Friction in War.</p>
+</blockquote>
+</section>
+<p><img alt="Agent-427 studies an enormous plan tree while the deadline clock chooses a modest surviving branch." class="cartoon terminal-visual" src="../../assets/cartoons/10-ch02-planning.png" /></p>
 <div class="footnote">
 <hr />
 <ol>
@@ -200,7 +207,7 @@ Q(s,a)+c\sqrt{\frac{\ln N(s)}{N(s,a)}}
     </main>
     <footer class="site-footer">
       <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
-      <p>Last generated: 2026-08-06 12:38 UTC</p>
+      <p>Last generated: 2026-08-06 13:22 UTC</p>
     </footer>
     <script>
       const toggle = document.querySelector(".nav-toggle");

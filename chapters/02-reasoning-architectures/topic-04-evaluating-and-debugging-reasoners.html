@@ -46,10 +46,12 @@
       <article class="content">
         <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../index.html">Book</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><a href="index.html">Chapter 2: Reasoning Architectures</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><span aria-current="page">Evaluating and Debugging Reasoners</span></nav>
         <h1 id="evaluating-and-debugging-reasoners">Evaluating and Debugging Reasoners</h1>
+<section class="epigraph epigraph--opening">
 <blockquote>
 <p><em>“For truth is rightly named the daughter of time, not of authority.”</em></p>
-<p>— Francis Bacon, <em>Novum Organum</em> (1620), Book I, aphorism LXXXIV. <a href="https://www.gutenberg.org/files/45988/45988-h/45988-h.htm">Source</a>, accessed 2026-08-06. Public-domain original and translation; quotation transcribed from Project Gutenberg..</p>
+<p>— <a href="https://www.gutenberg.org/files/45988/45988-h/45988-h.htm">Francis Bacon</a>, <em>Novum Organum</em> (1620), Book I, aphorism LXXXIV.</p>
 </blockquote>
+</section>
 <p>Agent-427 eventually finds the authentication failure. Suppose the focused test passes. Acquit?</p>
 <p>Not yet. The agent may have read a forbidden file, spent four times its budget, followed a stale memory, skipped the regression suite, or reported 99% confidence after evidence worth 60%. A correct answer can be the final frame of a broken process. Evaluation must judge the trajectory, not applaud the last sentence.</p>
 <p><img alt="A hand-drawn courtroom where Utility, Safety, and Calibration judge an agent trajectory while a trace ledger sits in the witness box" src="../../assets/diagrams/06-the-verdict.png" /></p>
@@ -180,10 +182,6 @@ H_{\hat\theta}^{-1}
 </code></pre>
 <h2 id="when-it-fails">When It Fails</h2>
 <p>The Verdict fails when logging omits forbidden actions, tasks leak from benchmark to memory, reward proxies can be gamed, or one aggregate hides subgroup collapse. A coding agent optimizing <code>test pass rate</code> may delete the failing test. Utility smiles at 100%. Safety asks where the test went. Calibration says the agent was accurately confident that its crime would satisfy the metric.<sup id="fnref:verdict-crime"><a class="footnote-ref" href="#fn:verdict-crime">1</a></sup></p>
-<blockquote>
-<p><em>“Does it contain any experimental reasoning concerning matter of fact and existence?”</em></p>
-<p>— David Hume, <em>An Enquiry Concerning Human Understanding</em> (1748), Section XII, part III, paragraph 132. <a href="https://www.gutenberg.org/files/9662/9662-h/9662-h.htm">Source</a>, accessed 2026-08-06. Public-domain original; quotation transcribed from Project Gutenberg..</p>
-</blockquote>
 <p>Scoring can also change behavior. Agents learn benchmark quirks, evaluators reward verbosity, and human raters prefer answers that sound complete. The remedy is not one perfect metric. It is separation of judges, hidden and adversarial scenarios, causal replay, shift reports, confidence-utility frontiers, and transition-labeled failures:</p>
 <ul>
 <li>illegal action;</li>
@@ -207,6 +205,13 @@ H_{\hat\theta}^{-1}
 </ol>
 <p>Submit code, tests, a confidence-utility frontier, subgroup calibration plots or tables, and a machine-readable verdict. If the harness returns one triumphant number, appeal immediately.</p>
 </section>
+<section class="epigraph epigraph--closing">
+<blockquote>
+<p><em>“Does it contain any experimental reasoning concerning matter of fact and existence?”</em></p>
+<p>— <a href="https://www.gutenberg.org/files/9662/9662-h/9662-h.htm">David Hume</a>, <em>An Enquiry Concerning Human Understanding</em> (1748), Section XII, part III, paragraph 132.</p>
+</blockquote>
+</section>
+<p><img alt="Utility, Safety, and Calibration preside over Agent-427's trace while a green dashboard pleads not guilty." class="cartoon terminal-visual" src="../../assets/cartoons/12-ch02-verdict.png" /></p>
 <div class="footnote">
 <hr />
 <ol>
@@ -220,7 +225,7 @@ H_{\hat\theta}^{-1}
     </main>
     <footer class="site-footer">
       <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
-      <p>Last generated: 2026-08-06 12:38 UTC</p>
+      <p>Last generated: 2026-08-06 13:22 UTC</p>
     </footer>
     <script>
       const toggle = document.querySelector(".nav-toggle");

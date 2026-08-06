@@ -46,10 +46,12 @@
       <article class="content">
         <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../index.html">Book</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><a href="index.html">Chapter 3: Tool Use and Embodiment</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><span aria-current="page">Safety Constraints and Guardrails</span></nav>
         <h1 id="safety-constraints-and-guardrails">Safety Constraints and Guardrails</h1>
+<section class="epigraph epigraph--opening">
 <blockquote>
 <p><em>“The greater the power, the more dangerous the abuse.”</em></p>
-<p>— Edmund Burke, <em>Speech Relative to the Middlesex Election</em> (1771), Speech of 7 February 1771. <a href="https://hansard.parliament.uk/lords/1975-04-16/debates/7cf9e3ff-6d2b-4065-b7ba-825490390fce/MultinationalCorporations">Source</a>, accessed 2026-08-06. Public-domain original; wording and attribution verified in the official UK Parliament record..</p>
+<p>— <a href="https://hansard.parliament.uk/lords/1975-04-16/debates/7cf9e3ff-6d2b-4065-b7ba-825490390fce/MultinationalCorporations">Edmund Burke</a>, <em>Speech Relative to the Middlesex Election</em> (1771), Speech of 7 February 1771.</p>
 </blockquote>
+</section>
 <p>Between what an agent wants to do and what the world actually suffers stands a
 layer of machinery. That machinery is what we build here. We will price harm
 with numbers, fence the state with an inequality, and decide who is allowed to
@@ -250,6 +252,7 @@ else:
 </code></pre>
 <p>The important feature is placement. The filter stands between proposal and
 effect, not between effect and apology.</p>
+<p><img alt="A deployment proposal passes schema, authority, state, reversibility, and keyed-effect gates before execution, then requires independent confirmation or timeout; failures reject, rewrite, or escalate." src="../../assets/diagrams/14-safety-authority-gauntlet.png" /></p>
 <h3 id="agent-427-meets-the-filter">Agent-427 Meets the Filter</h3>
 <p>The write proposal changes a bounded Markdown range and passes a diff guard. The
 test proposal runs a deterministic check and passes a read-only tool contract.
@@ -399,10 +402,13 @@ postconditions as typed values. Then write deterministic tests that:</p>
 <p>The implementation fails if prompt text can bypass the filter or if silence,
 timeout, and success share the same state.</p>
 </section>
+<section class="epigraph epigraph--closing">
 <blockquote>
 <p><em>“Over himself, over his own body and mind, the individual is sovereign.”</em></p>
-<p>— John Stuart Mill, <em>On Liberty</em> (1859), Chapter I, Introductory. <a href="https://www.gutenberg.org/files/34901/34901-h/34901-h.htm">Source</a>, accessed 2026-08-06. Public-domain original; quotation transcribed from Project Gutenberg..</p>
+<p>— <a href="https://www.gutenberg.org/files/34901/34901-h/34901-h.htm">John Stuart Mill</a>, <em>On Liberty</em> (1859), Chapter I, Introductory.</p>
 </blockquote>
+</section>
+<p><img alt="A proposal asks to cross several safety gates while Agent-427 notices that the apology gate comes too late." class="cartoon terminal-visual" src="../../assets/cartoons/17-ch03-safety.png" /></p>
 <div class="footnote">
 <hr />
 <ol>
@@ -418,7 +424,7 @@ recognize.&#160;<a class="footnote-backref" href="#fnref:empty-container" title=
     </main>
     <footer class="site-footer">
       <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
-      <p>Last generated: 2026-08-06 12:38 UTC</p>
+      <p>Last generated: 2026-08-06 13:22 UTC</p>
     </footer>
     <script>
       const toggle = document.querySelector(".nav-toggle");
