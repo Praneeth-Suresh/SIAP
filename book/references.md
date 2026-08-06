@@ -69,3 +69,13 @@
 67. []{#ref-67}Dietterich, T. G. (2000). Ensemble methods in machine learning. *MCS 2000*. https://link.springer.com/chapter/10.1007/3-540-45014-9_1
 68. []{#ref-68}Jacobs, R. A., Jordan, M. I., Nowlan, S. J., & Hinton, G. E. (1991). Adaptive mixtures of local experts. *Neural Computation*, 3(1), 79-87. https://www.cs.toronto.edu/~hinton/absps/jjnh91.pdf
 69. []{#ref-69}Fedus, W., Zoph, B., & Shazeer, N. (2022). Switch Transformers: Scaling to trillion parameter models with simple and efficient sparsity. *JMLR*, 23(120), 1-39. https://www.jmlr.org/papers/v23/21-0998.html
+70. []{#ref-70}Ross, S., Gordon, G. J., & Bagnell, J. A. (2011). A reduction of imitation learning and structured prediction to no-regret online learning. *AISTATS 2011*, 627-635. https://proceedings.mlr.press/v15/ross11a.html
+71. []{#ref-71}Ouyang, L., et al. (2022). Training language models to follow instructions with human feedback. https://arxiv.org/abs/2203.02155
+72. []{#ref-72}Levine, S., Kumar, A., Tucker, G., & Fu, J. (2020). Offline reinforcement learning: Tutorial, review, and perspectives on open problems. https://arxiv.org/abs/2005.01643
+73. []{#ref-73}Kumar, A., Zhou, A., Tucker, G., & Levine, S. (2020). Conservative Q-learning for offline reinforcement learning. *NeurIPS 2020*. https://proceedings.neurips.cc/paper/2020/hash/0d2b2061826a5df3221116a5085a6052-Abstract.html
+74. []{#ref-74}Finn, C., Abbeel, P., & Levine, S. (2017). Model-agnostic meta-learning for fast adaptation of deep networks. *ICML 2017*, 1126-1135. https://proceedings.mlr.press/v70/finn17a.html
+75. []{#ref-75}Stiennon, N., et al. (2020). Learning to summarize from human feedback. https://arxiv.org/abs/2009.01325
+76. []{#ref-76}Vaswani, A., et al. (2017). Attention is all you need. *NeurIPS 2017*. https://arxiv.org/abs/1706.03762
+77. []{#ref-77}Amodei, D., et al. (2016). Concrete problems in AI safety. https://arxiv.org/abs/1606.06565
+78. []{#ref-78}Christiano, P. F., et al. (2017). Deep reinforcement learning from human preferences. *NeurIPS 2017*. https://arxiv.org/abs/1706.03741
+79. []{#ref-79}Sudhir, A. P., Kaunismaa, J., & Panickssery, A. (2025). A benchmark for scalable oversight protocols. https://arxiv.org/abs/2504.03731

@@ -1,41 +1,33 @@
 # Chapter 2: Reasoning Architectures
 
-Picture an agent asked to fix a failing test. Before editing a file, it reads the error, recalls what the module does, and sketches two candidate causes. All of that happens inside the agent, and this chapter is about those inner steps.
+At 3:47 AM on a Thursday, Agent-427 watches the CI pipeline turn red. The message says `signature verification failed: invalid timestamp`. The timestamp is valid. The message is a lie produced by an expired cache entry, the authentication maintainer left three months ago, and the runbook links to documentation that now returns `404 Not Found`. This is an unkind hour in which to discover that fluent text is not reasoning.
 
-## Reasoning as an Interpreter, Not a Mood
+Welcome to Part 2's descent into the machinery. Part 0 showed an institution in motion. Part 1 asked how a single agent survives it. Now we open the casing and ask what must happen between observation and consequence: which thoughts are legal, which futures deserve simulation, which memories may enter the room, and which evidence earns a verdict.
 
-This chapter treats reasoning systems as interpreters. An *interpreter* is a program that repeatedly reads a state and takes one legal step. Here the loop runs over thought, memory, action, and critique.
+## Reasoning Is an Interpreter, Not a Mood
 
-Chapter 1 gave us the basic agent machine, in five moves:
+Chapter 1 gave Agent-427 the basic cycle: observe, update belief, choose a governed action, execute, and learn from the result. Chapter 2 installs a smaller interpreter inside that cycle. The inner machine can think, plan, retrieve, and criticize before the outer machine touches a filesystem, an API, or somebody's regrettably production-shaped database.
 
-1. Observe the world.
-2. Update belief, meaning the agent's current best account of hidden facts.
-3. Choose a governed action, meaning one allowed by its constraints.
-4. Execute it.
-5. Learn from the result.
+That distinction is not decorative. Internal steps consume time and tokens. Retrieved memories can poison the state. Plans can become obsolete while they are being admired. A reflection can cite another reflection until fiction develops an impressive bibliography. Reasoning architecture is therefore the control of internal transitions, not an invitation to produce more monologue.
 
-Chapter 2 adds a new layer inside that machine: a reasoning interpreter that can spend controlled internal steps before touching the outside world. Internal steps cost time and tokens, so budget them.
+> **Skeptical Engineer:** Isn't this just a prompt with extra bureaucracy?
+>
+> **Author:** Only if the guards are prose. When a schema rejects an invented import, a budget stops a search, provenance excludes the wrong branch, and a replay identifies the transition that caused harm, the bureaucracy has become a machine. Civilization has been built on less.
 
-That layer changes the question. Instead of asking only "what should the agent do next?", we now ask "what legal thinking, planning, remembering, and self-checking steps may the agent run before it acts?"
+## Agent-427 Enters the War Room
 
-## The Running Example, and the Four Things It Learns to Do
+Across this chapter, the same failure grows more instructive. Agent-427 will:
 
-The running example is the same practical creature in a more elaborate costume: a coding or research agent trying to complete a task without inventing evidence, exceeding budget, or confusing a wish with a dependency. Wanting a library to export a function does not make the export exist.
+- interpret reasoning as labeled state transitions with executable invariants;
+- search over futures while the world changes under the search;
+- manage memory as a war room in which evidence competes for scarce attention;
+- submit every trajectory to **The Verdict**, where Utility, Safety, and Calibration judge separately.
 
-Across this chapter, that agent will do four things:
+The chapter's diagrams are maps, not ornaments. The interpreter loop shows feedback returning to governed state. The memory war room shows provenance, interference, consolidation, and eviction. The Verdict shows why a correct final answer cannot pardon an unsafe trajectory.
 
-- Reason as a transition system, meaning states plus rules for legal moves between them.
-- Plan by searching through possible interpreter states.
-- Retrieve memory as an action with cost and risk, not as a free lookup.
-- Debug itself by inspecting whole traces rather than final answers alone.
+These mechanisms are options, not a royal procession. A one-line rename rarely deserves Monte Carlo tree search. A production migration usually deserves more than vibes and a hopeful `git push`.[^chapter2-ceremony] The recurring question is whether a pattern improves success, partial progress, efficiency, safety, or governability enough to pay its own rent.
 
-## These Parts Are Options, Not a Mandatory Parade
-
-Planning, memory, retrieval, and reflection should not be read as a royal procession of stages that every agent must always march through. They are alternative modifications to the same machine.
-
-Consider three tasks. One may need a deeper search horizon, meaning it looks further ahead. Another may need a stricter memory policy. A third may need reflection after a failed tool call, and no reflection at all before a trivial answer.
-
-The useful question is not "did we add all the fashionable organs?" but which change to state, control flow, feedback, memory, authority, or stopping condition improves *this* task enough to justify its cost. Sometimes none do.
+[^chapter2-ceremony]: If your agent convenes a five-agent constitutional assembly to rename `x` to `count`, the architecture has achieved self-parody.
 
 ## Topics
 

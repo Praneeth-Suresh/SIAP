@@ -3,24 +3,54 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
+    <meta name="description" content="Structure and Interpretation of Agentic Patterns, a theory-backed book about agentic AI." />
+    <title>{title} · SIAP</title>
     <link rel="stylesheet" href="{css_path}" />
+    <script>
+      window.MathJax = {{
+        tex: {{
+          inlineMath: [["\\(", "\\)"]],
+          displayMath: [["\\[", "\\]"], ["$$", "$$"]],
+          processEscapes: true
+        }},
+        options: {{ skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] }}
+      }};
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   </head>
   <body>
     <header class="site-header">
-      <h1><a href="{home_path}">Structure and Interpretation of Agentic Patterns</a></h1>
+      <div class="site-header__inner">
+        <a class="site-mark" href="{home_path}" aria-label="Structure and Interpretation of Agentic Patterns home">SIAP</a>
+        <div>
+          <p class="site-kicker">A book about governed machines</p>
+          <p class="site-title"><a href="{home_path}">Structure and Interpretation<br />of Agentic Patterns</a></p>
+        </div>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="book-navigation">Contents</button>
+      </div>
     </header>
     <main class="layout">
-      <aside class="sidebar">
-        <h2>Contents</h2>
-        <nav>{nav}</nav>
+      <aside class="sidebar" id="book-navigation">
+        <p class="sidebar__label">Reader’s route</p>
+        <nav aria-label="Book contents">{nav}</nav>
       </aside>
       <article class="content">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">{breadcrumbs}</nav>
         {content}
+        {reading_nav}
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: {updated}
+      <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
+      <p>Last generated: {updated}</p>
     </footer>
+    <script>
+      const toggle = document.querySelector(".nav-toggle");
+      const navigation = document.querySelector(".sidebar");
+      toggle.addEventListener("click", () => {{
+        const open = navigation.classList.toggle("sidebar--open");
+        toggle.setAttribute("aria-expanded", String(open));
+      }});
+    </script>
   </body>
 </html>

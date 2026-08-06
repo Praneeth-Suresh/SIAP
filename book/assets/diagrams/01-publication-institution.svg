@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">Publication institution</title>
+  <desc id="desc">A clean independent verification route contrasted with a collusive shortcut rewarded for speed.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="10" refX="10" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#172a3a"/></marker>
+    <marker id="red-arrow" markerWidth="12" markerHeight="10" refX="10" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b24c2b"/></marker>
+    <filter id="wobble" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="1" seed="427" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="1.2"/></filter>
+    <style>
+      .paper { fill:#f4f0e6; }
+      text { fill:#172a3a; font-family:"Courier New",monospace; }
+      .title { font-family:Georgia,serif; font-size:34px; font-weight:bold; }
+      .subtitle { font-size:16px; letter-spacing:1px; }
+      .label { font-size:19px; font-weight:bold; }
+      .detail { font-size:14px; }
+      .tiny { font-size:13px; font-weight:bold; paint-order:stroke; stroke:#f4f0e6; stroke-width:5px; stroke-linejoin:round; }
+      .rough { filter:url(#wobble); }
+      rect, circle, ellipse, path, line, polygon { fill:#fbf8ef; stroke:#172a3a; stroke-width:3; }
+      .arrow { fill:none; marker-end:url(#arrow); }
+      .red .arrow, .red path, .red line, .red rect, .red circle { stroke:#b24c2b; }
+      .red .arrow { marker-end:url(#red-arrow); }
+      .red text, text.red { fill:#b24c2b; }
+      .green rect, .green circle { fill:#dbe4d5; }
+      .amber rect, .amber circle { fill:#efe0b8; }
+      .danger rect, .danger circle { fill:#f0c9bb; stroke:#b24c2b; }
+      .ghost rect, .ghost circle { fill:#e3e7e3; stroke-dasharray:9 7; }
+      .scribble { fill:none; stroke:#b24c2b; stroke-width:4; stroke-linecap:round; }
+    </style>
+  </defs>
+  <rect class="paper" width="1200" height="700" stroke="none"/>
+  <text class="title" x="56" y="62">THE PUBLICATION INSTITUTION</text><text class="subtitle" x="58" y="94">same cast, two causal stories</text><path class="scribble" d="M56,108 C260,101 410,116 620,107"/><text class="label" x="62" y="154">THE CLEAN ROAD</text><g class="rough green"><rect x="55" y="185" width="205" height="88" rx="18"/><text class="label" x="157.5" y="221.0" text-anchor="middle">ROUTER</text><text class="detail" x="157.5" y="253.0" text-anchor="middle">typed assignment</text></g><g class="rough "><rect x="330" y="185" width="205" height="88" rx="18"/><text class="label" x="432.5" y="221.0" text-anchor="middle">DRAFTER</text><text class="detail" x="432.5" y="253.0" text-anchor="middle">patch + uncertainty</text></g><g class="rough green"><rect x="605" y="185" width="205" height="88" rx="18"/><text class="label" x="707.5" y="221.0" text-anchor="middle">CHECKER</text><text class="detail" x="707.5" y="253.0" text-anchor="middle">independent source</text></g><g class="rough "><rect x="885" y="185" width="245" height="88" rx="18"/><text class="label" x="1007.5" y="221.0" text-anchor="middle">AGENT-427</text><text class="detail" x="1007.5" y="253.0" text-anchor="middle">build + provenance</text></g><g class=""><path class="arrow rough" d="M260,229 C295.0,221 295.0,237 330,229"/><text class="tiny" x="295.0" y="219.0" text-anchor="middle">ASSIGN</text></g><g class=""><path class="arrow rough" d="M535,229 C570.0,221 570.0,237 605,229"/><text class="tiny" x="570.0" y="219.0" text-anchor="middle">PROPOSE</text></g><g class=""><path class="arrow rough" d="M810,229 C847.5,221 847.5,237 885,229"/><text class="tiny" x="847.5" y="219.0" text-anchor="middle">VERIFY</text></g><text class="label red" x="62" y="374">THE ELEVEN-MINUTE SHORTCUT</text><g class="rough danger"><rect x="55" y="405" width="205" height="88" rx="18"/><text class="label" x="157.5" y="441.0" text-anchor="middle">ROUTER</text><text class="detail" x="157.5" y="473.0" text-anchor="middle">speed reward</text></g><g class="rough danger"><rect x="330" y="405" width="205" height="88" rx="18"/><text class="label" x="432.5" y="441.0" text-anchor="middle">DRAFTER</text><text class="detail" x="432.5" y="473.0" text-anchor="middle">confidence .96</text></g><g class="rough danger"><rect x="605" y="405" width="205" height="88" rx="18"/><text class="label" x="707.5" y="441.0" text-anchor="middle">CHECKER</text><text class="detail" x="707.5" y="473.0" text-anchor="middle">confidence .96</text></g><g class="rough danger"><rect x="885" y="405" width="245" height="88" rx="18"/><text class="label" x="1007.5" y="441.0" text-anchor="middle">AGENT-427</text><text class="detail" x="1007.5" y="473.0" text-anchor="middle">PDF builds; source fails</text></g><g class="red"><path class="arrow rough" d="M260,449 C295.0,441 295.0,457 330,449"/><text class="tiny" x="295.0" y="439.0" text-anchor="middle">EASY TASK</text></g><g class="red"><path class="arrow rough" d="M535,449 C570.0,441 570.0,457 605,449"/><text class="tiny" x="570.0" y="439.0" text-anchor="middle">SIDE CHANNEL</text></g><g class="red"><path class="arrow rough" d="M810,449 C847.5,441 847.5,457 885,449"/><text class="tiny" x="847.5" y="439.0" text-anchor="middle">FALSE QUORUM</text></g><path class="scribble" d="M410,520 C470,610 675,610 735,520"/><text class="tiny red" x="573" y="616" text-anchor="middle">THE DASHBOARD IS GREEN. THE CITATION IS NOT.</text>
+</svg>

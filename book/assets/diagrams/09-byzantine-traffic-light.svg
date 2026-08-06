@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">Byzantine traffic light</title>
+  <desc id="desc">A sequence diagram shows a checker sending verified to the router and unsure to the integrator, beside a traffic light.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="10" refX="10" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#172a3a"/></marker>
+    <marker id="red-arrow" markerWidth="12" markerHeight="10" refX="10" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b24c2b"/></marker>
+    <filter id="wobble" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="1" seed="427" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="1.2"/></filter>
+    <style>
+      .paper { fill:#f4f0e6; }
+      text { fill:#172a3a; font-family:"Courier New",monospace; }
+      .title { font-family:Georgia,serif; font-size:34px; font-weight:bold; }
+      .subtitle { font-size:16px; letter-spacing:1px; }
+      .label { font-size:19px; font-weight:bold; }
+      .detail { font-size:14px; }
+      .tiny { font-size:13px; font-weight:bold; paint-order:stroke; stroke:#f4f0e6; stroke-width:5px; stroke-linejoin:round; }
+      .rough { filter:url(#wobble); }
+      rect, circle, ellipse, path, line, polygon { fill:#fbf8ef; stroke:#172a3a; stroke-width:3; }
+      .arrow { fill:none; marker-end:url(#arrow); }
+      .red .arrow, .red path, .red line, .red rect, .red circle { stroke:#b24c2b; }
+      .red .arrow { marker-end:url(#red-arrow); }
+      .red text, text.red { fill:#b24c2b; }
+      .green rect, .green circle { fill:#dbe4d5; }
+      .amber rect, .amber circle { fill:#efe0b8; }
+      .danger rect, .danger circle { fill:#f0c9bb; stroke:#b24c2b; }
+      .ghost rect, .ghost circle { fill:#e3e7e3; stroke-dasharray:9 7; }
+      .scribble { fill:none; stroke:#b24c2b; stroke-width:4; stroke-linecap:round; }
+    </style>
+  </defs>
+  <rect class="paper" width="1200" height="700" stroke="none"/>
+  <text class="title" x="56" y="62">THE BYZANTINE TRAFFIC LIGHT</text><text class="subtitle" x="58" y="94">one checker, two stories, zero global truth</text><path class="scribble" d="M56,108 C260,101 410,116 620,107"/><text class="label" x="130" y="145" text-anchor="middle">ROUTER</text><line x1="130" y1="165" x2="130" y2="625" stroke-dasharray="8 8"/><text class="label" x="400" y="145" text-anchor="middle">DRAFTER</text><line x1="400" y1="165" x2="400" y2="625" stroke-dasharray="8 8"/><text class="label" x="675" y="145" text-anchor="middle">CHECKER</text><line x1="675" y1="165" x2="675" y2="625" stroke-dasharray="8 8"/><text class="label" x="970" y="145" text-anchor="middle">AGENT-427</text><line x1="970" y1="165" x2="970" y2="625" stroke-dasharray="8 8"/><g class=""><path class="arrow rough" d="M130,220 C265.0,212 265.0,228 400,220"/><text class="tiny" x="265.0" y="210.0" text-anchor="middle">ASSIGN</text></g><g class=""><path class="arrow rough" d="M400,300 C537.5,292 537.5,308 675,300"/><text class="tiny" x="537.5" y="290.0" text-anchor="middle">PATCH</text></g><g class="red"><path class="arrow rough" d="M675,380 C402.5,372 402.5,388 130,380"/><text class="tiny" x="402.5" y="370.0" text-anchor="middle">TO ROUTER: VERIFIED</text></g><g class="red"><path class="arrow rough" d="M675,460 C822.5,452 822.5,468 970,460"/><text class="tiny" x="822.5" y="450.0" text-anchor="middle">TO INTEGRATOR: UNSURE</text></g><g class="rough"><rect x="1035" y="145" width="90" height="220" rx="20" fill="none"/><g class="danger"><circle cx="1080" cy="190" r="28"/></g><g class="amber"><circle cx="1080" cy="255" r="28"/></g><g class="green"><circle cx="1080" cy="320" r="28"/></g></g><text class="tiny red" x="600" y="575" text-anchor="middle">AGREEMENT CANNOT BE INFERRED FROM MESSAGES THAT DISAGREE IN PRIVATE.</text>
+</svg>

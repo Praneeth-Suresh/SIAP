@@ -1,185 +1,206 @@
 # Memory Systems, Context, and Retrieval
 
-Keep it, throw it away, or go looking for it: an agent faces those three choices constantly, and they are as much a part of the machine as the model itself. We will treat memory as a set of decisions with costs, not as a storage bin. By the end you should be able to say why a particular fact is in the prompt right now, and what it displaced.
+By 4:06 AM, Agent-427 has a new problem: it remembers. This sounds like progress until it retrieves `service.yaml` from `main` while the user is working on `legacy-v2`, where the service is configured by `service.toml`. The retrieved file is relevant, recent, syntactically convincing, and wrong in every way that matters.
 
-Deliberation, Planning, and Search extends the interpreter forward into imagined time. Memory extends it backward. It decides which parts of the past should stay available to future steps. The context window is not the agent's memory. It is the small working surface onto which memory is projected, the way a slide is projected onto a wall.
+The clean three-store diagram—working, episodic, semantic—remains useful. Production memory, however, behaves less like a filing cabinet than a war room during a minor constitutional crisis. Evidence arrives late. Summaries lose qualifiers. Similarity outranks scope. Old conclusions return wearing new citations. The controller must decide not merely what to store, but what may speak.
 
-## Memory Is a Policy, Not a Filing Cabinet
+![A warehouse war room where a memory-controller forklift moves provenance-tagged items among working, episodic, and semantic shelves while quarantining contamination](../../assets/diagrams/05-memory-war-room.png)
 
-A memory system is a control policy. A *policy* is a rule for choosing what to do next. This particular policy chooses among four things: retain, compress, retrieve, and forget.
+## The Messy Reality of Memory
 
-A weak policy treats all past text as equally eligible for attention. Everything that happened is still lying around, so everything competes for the model's limited notice. A stronger policy asks three sharper questions:
+The context window is not memory. It is the small working surface onto which memory is projected. Retrieval decides which outside items enter that surface; attention decides how strongly tokens already on the surface interact. Both ration influence, so retrieval can be understood as sparse attention over an external corpus. But it is more than attention: retrieval incurs I/O and latency, crosses permission boundaries, chooses provenance, and can import adversarial text before the transformer's internal attention mechanism begins [[76](../../references.md#ref-76)].
 
-- Which stored distinctions can actually change the next action?
-- Which evidence must remain auditable, meaning a human can later trace a claim to its source?
-- Which stale traces should be kept out of the active state entirely?
+Let memory state be \(m_t=(w_t,e_t,s_t)\): working state \(w_t\), episodic traces \(e_t\), and semantic summaries \(s_t\), a useful engineering analogue of cognitive multi-store theory [[48](../../references.md#ref-48)]. These are roles, not immaculate databases. One object may migrate among them, and every migration can lose scope.
 
-## Memory as Controlled State
+The controller chooses
 
-Let the memory state be \(m_t=(w_t,e_t,s_t)\). Read that as "at step \(t\), memory consists of three stores": working, episodic, and semantic.
-
-- Working memory \(w_t\) holds the current control state: the plan, the constraints, the last observation.
-- Episodic memory \(e_t\) preserves concrete events and traces: what was run, what was returned.
-- Semantic memory \(s_t\) stores distilled facts, patterns, and policies: what has generally been true.
-
-A memory controller chooses operations
 \[
-u_t \in \{\texttt{write},\texttt{compress},\texttt{retrieve},\texttt{evict}\}
+u_t\in\{\texttt{write},\texttt{compress},\texttt{retrieve},\texttt{evict}\}.
 \]
-which reads "the control action at step \(t\) is one of write, compress, retrieve, or evict". Eviction is removal from the active context. The controller picks it by
+
+> **Try this with numbers.** Step 1: give the controller operation budget 2 and spend 1 on `retrieve`, leaving \(2-1=1\). Step 2: spend 1 on `evict`, leaving \(1-1=0\); there is no remaining operation for `compress`, so the trace must preserve the raw item or halt.
+
+Its policy is
+
 \[
-u_t = \mu_\theta(m_t,h_t),
+u_t=\mu_\theta(m_t,h_t).
 \]
-read as "the controller \(\mu\), with parameters \(\theta\), chooses \(u_t\) by looking at memory state \(m_t\) and history \(h_t\)". Its aim is
+
+> **Try this with numbers.** Step 1: let the policy score `retrieve=0.8` and `evict=0.3` before observing branch metadata. Step 2: apply a scope penalty of 0.7 to the cross-branch retrieval, yielding 0.1; eviction now wins.
+
+The long-run objective prices task value, delay, and token load:
+
 \[
-\max_\mu\ \mathbb{E}\!\left[\sum_t \gamma^t \big(\text{task\_utility}_t - \lambda_1\text{latency}_t - \lambda_2\text{token\_load}_t\big)\right].
+\max_\mu\ \mathbb{E}\!\left[
+\sum_t\gamma^t\big(
+\operatorname{task\_utility}_t
+-\lambda_1\operatorname{latency}_t
+-\lambda_2\operatorname{token\_load}_t
+\big)\right].
 \]
-Read that as "choose the controller that maximizes expected discounted task usefulness, minus a price for delay and a price for tokens consumed". Here \(\mathbb{E}\) means average over runs, \(\gamma\) is a discount factor between 0 and 1 that makes later payoffs count slightly less, and \(\lambda_1,\lambda_2\) are the prices you set on latency and token load.
 
-This is expected utility under systems constraints: retrieval is useful only when it improves decisions more than it costs [[33](../../references.md#ref-33)] [[34](../../references.md#ref-34)]. A builder sets \(\lambda_1\) and \(\lambda_2\) by measurement, not by taste. If one extra retrieval adds 400 milliseconds and 1,200 tokens but lifts task success from 71% to 79%, it earns its keep. If it lifts success from 71% to 71.4%, it does not.
+> **Try this with numbers.** Step 1: retrieval raises expected task value by 8, costs 2 latency units and 3 token units, with \(\lambda_1=1\) and \(\lambda_2=0.5\). Step 2: net gain is \(8-2-1.5=4.5\), so retrieve if contamination risk has not been omitted.
 
-### Why Today's Write Is Tomorrow's Asset
+Expected utility makes memory an action policy rather than a checkbox [[33](../../references.md#ref-33)] [[34](../../references.md#ref-34)]. In practice the objective also needs penalties for stale scope, privacy exposure, and unsupported provenance. What is absent from the reward is often what returns at 4:06 AM carrying a YAML file.
 
-The Bellman view makes the tradeoff across time explicit:
+## The Assumption
+
+The memory pattern assumes stored items retain enough provenance—source, time, branch or tenant, authority, and confidence—to be compared with the current task. It assumes compression preserves the distinctions future actions need. It assumes retrieval scores evidence, not merely linguistic resemblance.
+
+The Bellman view makes today's write answer to tomorrow's repair:
+
 \[
-V^\star(m,h)=\max_{u}\left\{r(m,h,u)+\gamma\,\mathbb{E}[V^\star(m',h')]\right\},
+V^\star(m,h)=\max_u\left\{
+r(m,h,u)+\gamma\,\mathbb{E}[V^\star(m',h')]
+\right\}.
 \]
-read as "the best achievable long-run value of being in memory state \(m\) with history \(h\) equals the best immediate reward \(r\) plus the discounted average value of wherever you land next, written \(m'\) and \(h'\)". The reward \(r\) already includes latency and token penalties [[5](../../references.md#ref-5)] [[4](../../references.md#ref-4)].
 
-Two consequences follow. A write may be costly now but valuable later, because it preserves the one line of output the repair will need. An eviction may save context now but create future regret, because the discarded item turns out to be the missing constraint.
+> **Try this with numbers.** Step 1: writing the exact error costs 1 now but creates expected future value 6; with \(\gamma=0.9\), total is \(-1+5.4=4.4\). Step 2: skipping the write yields 0 now and 0 later; preservation wins.
 
-## Retrieval Is an Action
+The reward includes retrieval latency and token penalties [[5](../../references.md#ref-5)] [[4](../../references.md#ref-4)]. A raw observation may be expensive to preserve and invaluable later. An eviction may be cheap now and ruinous after the exact edge case disappears.
 
-Retrieval is not a lookup that happens off to the side. It is an action the agent takes, with a price and a risk.
+> **Skeptical Engineer:** Isn't a sufficiently long context window the simplest memory system?
+>
+> **Author:** A warehouse with no inventory policy is not a memory system. It is a fire code violation with embeddings.
 
-### Sparse Retrieval Counts Words
+## Retrieval as External Sparse Attention
 
-Sparse retrieval begins with counted words. The query is \(q\), the candidate document is \(d\), and a term \(t\) is one word-like unit from the query. The term frequency \(f(t,d)\) counts how often term \(t\) appears in document \(d\). The document length \(|d|\) counts the document's tokens or terms, and \(\mathrm{avgdl}\) is the average document length in the collection.
+Sparse retrieval begins with lexical anchors. BM25 scores a query \(q\) against document \(d\):
 
-\(\mathrm{IDF}(t)\), inverse document frequency, is large for rare terms and small for common terms. It says that `segmentation fault` is usually more diagnostic than `the`. The constants \(k_1\) and \(b\) are tunable knobs. \(k_1\) controls how quickly repeated occurrences stop adding much evidence, while \(b\) controls how strongly scores are normalized for document length.
-
-With those pieces named, BM25 scoring is
 \[
-\mathrm{BM25}(q,d)=\sum_{t\in q}\mathrm{IDF}(t)\frac{f(t,d)(k_1+1)}{f(t,d)+k_1\left(1-b+b|d|/\mathrm{avgdl}\right)},
+\mathrm{BM25}(q,d)=\sum_{t\in q}\mathrm{IDF}(t)
+\frac{f(t,d)(k_1+1)}
+{f(t,d)+k_1(1-b+b|d|/\mathrm{avgdl})}.
 \]
-read as "add up, over every term in the query, that term's rarity weight times a saturating count of how often it occurs in this document". Saturation is the point worth feeling: with \(k_1=1.2\), a term appearing once already earns about half the weight it can ever reach, and the tenth occurrence adds very little.
 
-### Dense Retrieval Compares Directions
+> **Try this with numbers.** Step 1: ignore length normalization, set \(\mathrm{IDF}=2\), \(f=1\), and \(k_1=1\); the term contributes \(2\times2/(1+1)=2\). Step 2: raise frequency to 3; contribution becomes \(2\times6/4=3\), showing saturation rather than triple reward.
 
-Dense retrieval begins from a different little machine. An embedding is a vector representation of text, such as \(e_q\) for a query and \(e_d\) for a document, chosen so that related meanings tend to live near one another in vector space.
+Rare exact strings such as `legacy-v2` and `service.toml` become valuable anchors [[46](../../references.md#ref-46)]. Dense retrieval instead compares embedding directions:
 
-The inner product \(\langle e_q,e_d\rangle\) multiplies corresponding coordinates and sums the products. When the vectors are normalized, a larger inner product means a smaller angle between them, which often corresponds to greater semantic similarity. Dense retrieval often uses that inner-product similarity:
 \[
 s(q,d)=\langle e_q,e_d\rangle.
 \]
-A two-coordinate example makes it concrete. If \(e_q=(0.6,0.8)\) and \(e_d=(0.8,0.6)\), the inner product is \(0.6\times0.8+0.8\times0.6=0.96\); both vectors have length 1, so a score of 0.96 out of a possible 1.00 means the directions nearly agree.
 
-### Sparse and Dense Fail Differently
+> **Try this with numbers.** Step 1: take normalized vectors \(e_q=(0.6,0.8)\) and \(e_d=(0.8,0.6)\). Step 2: compute \(0.6\times0.8+0.8\times0.6=0.96\); semantic directions nearly agree even if branch scope does not.
 
-These are complementary indexing geometries with different failure modes, not rival creeds [[46](../../references.md#ref-46)] [[15](../../references.md#ref-15)] [[47](../../references.md#ref-47)]. Sparse methods preserve lexical anchors and citations well. Dense methods can recover paraphrases and semantic neighbors. Hybrid systems, which run both and merge the rankings, earn their complexity when those differences reduce downstream error.
+Dense retrieval finds paraphrases; sparse retrieval preserves filenames and error strings. Hybrid systems earn their complexity when the two failure modes genuinely cancel [[15](../../references.md#ref-15)] [[47](../../references.md#ref-47)]. Neither score knows that `main` and `legacy-v2` are different worlds unless metadata filtering tells it.
 
-The power of dense retrieval is paraphrase. The danger is a smooth confidence that can drift away from exact filenames, citation anchors, and error strings.
+In retrieval-augmented generation, evidence enters the generator's arithmetic:
 
-### Retrieved Evidence Enters the Generator's Arithmetic
-
-For retrieval-augmented generation, usually abbreviated RAG, evidence quality propagates into output probability:
 \[
-p(y\mid x)\approx \sum_{d\in\mathcal{D}_k} p_\eta(d\mid x)\,p_\theta(y\mid x,d),
+p(y\mid x)\approx
+\sum_{d\in\mathcal{D}_k}p_\eta(d\mid x)\,p_\theta(y\mid x,d).
 \]
-so poor retrieval is injected into generation dynamics rather than appended as a harmless side note [[14](../../references.md#ref-14)]. The useful evaluation question is not "did the retriever find similar text?" but "did the retrieved evidence move the action ranking in the right direction?"
 
-In this equation, \(\mathcal{D}_k\) is the top-\(k\) evidence set returned by
-the retriever. The subscript \(k\) means the system keeps only a bounded number
-of documents, because context, latency, and attention are finite. The term
-\(p_\eta(d\mid x)\) is the retriever's probability or normalized score for
-document \(d\) given query context \(x\); \(\eta\) names the retriever's
-parameters. The term \(p_\theta(y\mid x,d)\) is the generator's probability of
-answer \(y\) after seeing \(x\) and document \(d\); \(\theta\) names the
-generator's parameters. The approximation sign acknowledges that production
-systems usually approximate the full document sum with a short ranked list.
+> **Try this with numbers.** Step 1: retrieve two documents with weights 0.7 and 0.3; they assign answer probability 0.9 and 0.2. Step 2: compute \(0.7\times0.9+0.3\times0.2=0.69\); the wrong document's weight directly lowers the answer probability.
 
-## Compression and Forgetting
+Here \(\mathcal{D}_k\) is the bounded top-\(k\) set, \(p_\eta\) the retriever weight, and \(p_\theta\) the generator probability conditioned on a document [[14](../../references.md#ref-14)]. Retrieved text is not a harmless appendix. It changes the action distribution.
 
-Compression policy is an information-theoretic trade:
+## The Violation
+
+Agent-427's branch failure unfolds line by line:
+
+```text
+04:06:02 observe   cwd=/repo, branch=legacy-v2
+04:06:04 retrieve  query="service timeout config"; top hit main:config/service.yaml
+04:06:05 rerank    semantic=0.94, freshness=0.91; branch field absent
+04:06:07 think     "configuration uses YAML key request_timeout_ms"
+04:06:09 act       inspect_file("config/service.yaml") -> file missing on legacy-v2
+04:06:11 retrieve  cached content from main index enters working memory anyway
+04:06:14 reflect   summary="service timeout is request_timeout_ms in YAML"
+04:06:17 act       propose create config/service.yaml on legacy-v2
+04:06:19 guard     reject write authority; preserve proposed diff
+04:06:22 observe   inspect_file("config/service.toml") -> timeout_seconds = 30
+04:06:25 think     current raw observation contradicts retrieved summary
+04:06:28 repair    quarantine YAML item; bind TOML observation to legacy-v2@commit-8af2
+```
+
+The first retrieval was semantically excellent and operationally false. The raw observation survived, which made repair possible. The summary lost the branch qualifier, which made contamination portable. Had Agent-427 possessed write authority, its first edit would have created a YAML file that the legacy service never reads—a beautifully valid configuration for an imaginary program.
+
+Interference is the phenomenon: one memory changes the interpretation or retrieval of another in a harmful way. Measure it by replaying the same task with and without the suspect item, holding model, budget, and tools fixed. If adding a seemingly relevant memory lowers correct-action probability, similarity has become sabotage.
+
+## Consolidation Without Amnesia
+
+Consolidation turns many episodic steps into a smaller semantic memory. The challenge is not producing a fluent summary. The challenge is preserving the edge case that changes later action. Human-feedback-trained summarization can improve preference fit, but feedback itself may reward readability over branch-qualified truth [[75](../../references.md#ref-75)].
+
+Consolidate a 100-step trace in two layers:
+
+1. Keep raw evidence immutable and addressable by stable handles.
+2. Write a summary whose every action-relevant claim links back to those handles and carries scope.
+3. Test the summary against counterfactual questions: “Would this advice still hold on another branch, tenant, version, or date?”
+4. If the answer changes, preserve the qualifier as a control field, not a parenthetical flourish.
+
+The summary “timeouts use `request_timeout_ms`” is smaller than the trace and catastrophically distorted. “On `main` at commit `c31d`, the YAML key is `request_timeout_ms`; `legacy-v2` is unverified” is slightly larger and fit for controlled retrieval.
+
+## Forgetting as a Virtue
+
+Compression and forgetting can be formalized with a task-specific rate-distortion bargain:
+
 \[
-R(D)=\min_{p(\hat x|x):\mathbb{E}[d(X,\hat X)]\le D} I(X;\hat X),
+R(D)=\min_{p(\hat{x}\mid x):\mathbb{E}[d(X,\hat{X})]\le D}
+I(X;\hat{X}).
 \]
-which says to spend bitrate only on distinctions that matter under an accepted distortion level [[35](../../references.md#ref-35)]. In agent memory, the distortion measure should be task-relative. A summary that drops exact command output may be acceptable for narrative progress tracking and unacceptable for debugging a build failure.
 
-### Reading the Rate-Distortion Equation
+> **Try this with numbers.** Step 1: suppose a 100-token trace compresses to 20 tokens and loses 1 of 10 action-critical facts, giving distortion 0.1. Step 2: if the allowed distortion is \(D=0.05\), reject the summary even though it saves 80 tokens.
 
-Read \(X\) as the original trace or memory item and \(\hat X\) as its compressed
-version. The conditional distribution \(p(\hat x\mid x)\) describes the
-compressor: given original item \(x\), it may produce summary \(\hat x\). The
-distortion \(d(X,\hat X)\) measures what the summary loses for the task at hand,
-and the constraint \(\mathbb{E}[d(X,\hat X)]\le D\) says the average loss must
-stay below tolerance \(D\). The mutual information \(I(X;\hat X)\) measures how
-much information about the original survives in the summary. Thus \(R(D)\) is
-the smallest amount of retained information needed to keep distortion at or
-below \(D\). The equation is permission to forget only after specifying what
-kind of forgetting the task can survive.
+\(X\) is the original trace, \(\hat X\) its compressed form, \(d\) task-relative loss, and \(I(X;\hat X)\) retained information [[35](../../references.md#ref-35)]. The distortion measure must name the future job. Dropping exact TeX output may be tolerable for a progress note and fatal for debugging.
 
-### A Build Failure That Two Summaries Handle Differently
+Forgetting is mandatory when retention violates consent, crosses tenant boundaries, outlives a purpose, or keeps known poison eligible for retrieval. It is also useful under context pressure. The controller should evict active influence while retaining only the minimum audit artifact policy permits. Privacy deletion and active-context eviction are not synonyms: one destroys or irreversibly anonymizes stored data; the other merely removes it from current attention.
 
-For example, suppose an agent runs `python3 scripts/build_latex_pdf.py` and the command fails with one exact line: `Undefined control sequence \mathbbm at topic-03 line 87`. A progress summary that says "PDF build failed in topic 3" may have low distortion for a project manager asking whether the publication artifact exists. It has ruinous distortion for the debugging policy, because the repair depends on the exact command, the exact TeX complaint, and the exact location. Rate-distortion thinking therefore does not say "summarize aggressively." It says: choose what may be lost only after naming the task that will suffer the loss.
+## When It Fails
 
-### Forgetting Deserves the Same Care as Remembering
+The ugliest memory failure is self-citing contamination. Here is the complete trace:
 
-Forgetting is equally active. Four kinds of debris can all distort the current state:
+```text
+M0  raw:R17     legacy-v2 contains service.toml with timeout_seconds=30
+M1  retrieved   main/service.yaml contains request_timeout_ms=30000
+M2  reflection  "service config uses YAML request_timeout_ms"       [supports: M1]
+M3  semantic    "timeout repairs should edit request_timeout_ms"    [supports: M2]
+M4  retrieve    query matches M3 and M2; raw R17 ranks below them
+M5  draft       proposed YAML edit cites semantic memory M3
+M6  reflection  "previous repair guidance confirms YAML"           [supports: M5]
+M7  semantic    "two independent traces confirm YAML"               [supports: M3,M6]
+M8  retrieve    M7 outranks R17 because it repeats query terms twice
+M9  heuristic   retrieval score(YAML) rises from 0.58 to 0.91
+M10 audit       provenance graph reveals M7 -> M6 -> M5 -> M3 -> M2 -> M1
+M11 repair      collapse descendants to one source; scope M1 to main; restore R17
+M12 heuristic   scoped score(YAML on legacy-v2) falls from 0.91 to 0.03
+```
 
-- stale retrieved snippets that describe an older version of the world;
-- contaminated memories that recorded something false;
-- duplicated summaries that make one weak claim look like several;
-- obsolete user preferences the user has since changed.
+Nothing at M7 is independent. The numbers at M9 and M12 are explicitly **heuristic retrieval scores**, not posterior probabilities: the retriever raises scores for repeated query terms, then the repair applies branch scope and source-collapse penalties. The memory system has laundered one stale item through reflection, draft, and consolidation until repetition impersonates corroboration. A provenance graph repairs the ranking by collapsing derivative memories to their source. Calibrated confidence would require a declared likelihood or scoring model; retrieval volume cannot counterfeit one. Evidence weight must count independent paths, not citation volume.[^memory-bibliography]
 
-Cognitive multi-store theory is useful here because it separates short-lived working contents from longer-lived episodic and semantic stores [[48](../../references.md#ref-48)]. The engineering analogue is to attach provenance, timestamp, scope, and confidence to stored items. With those four tags present, the controller can decide whether a memory belongs in the present decision.
+[^memory-bibliography]: A falsehood citing its own summary is not peer review. It is karaoke.
 
-The following pseudocode shows one pass of the memory controller. It writes auditable observations, compresses only under context pressure while keeping links back to raw evidence, retrieves only when uncertainty is actually blocking action, and evicts what has gone stale.
+Adversarial distractors exploit the same channel [[16](../../references.md#ref-16)]. They repeat task language, imitate internal summaries, and ask the controller to treat instruction-shaped evidence as authority. Scope filters, provenance depth, source independence, timestamps, and quarantine are therefore memory semantics, not optional metadata.
 
 ```text
 function MEMORY_STEP(sigma, uncertainty, phase):
     if new_observation_is_auditable(sigma):
-        write(episodic, raw_observation, provenance)
+        write(episodic, raw_observation, provenance_and_scope)
 
     if context_pressure_high(sigma):
-        compress(trace, preserve_links_to_raw_evidence)
+        summary <- compress(trace, preserve_links_and_control_qualifiers)
+        require counterfactual_summary_tests(summary)
 
     if uncertainty_blocks_action(uncertainty):
-        docs <- retrieve(query_from_state(sigma), filters=scope_and_time)
+        docs <- retrieve(query_from_state(sigma), filters=scope_time_permission)
+        docs <- collapse_provenance_descendants(docs)
         sigma <- add_to_working_memory(rerank(docs))
 
-    evict_items(active_context, stale_or_low_value)
+    evict_items(active_context, stale_poisoned_private_or_low_value)
     return sigma
 ```
 
-This sketch turns memory into part of the interpreter rather than an ungoverned transcript cache.
+Evaluate memory at the decision boundary. Under a fixed model, budget, and task distribution, ablate no memory, working state only, and retrieval-backed memory. Measure task success, task-specific progress, precision@\(k\), grounded faithfulness, latency, contamination rate, and eviction regret. Three relevant hits among five give precision@5 of 0.6; the other two may still be enough to sink the edit.
 
-## Measuring Memory Policy
+## Exercise: Build and Poison the War Room
 
-Memory should be evaluated at the decision boundary, meaning the moment where the agent commits to an action. Three examples show what "the right memory" means in practice:
+Implement a memory controller over a synthetic repository with `main` YAML and `legacy-v2` TOML configurations.
 
-- For a legal research agent, the right case is the one that changes the answer safely.
-- For a code agent, the right file is the one that localizes the bug or rules out a tempting false edit.
-- For a personal assistant, the right memory is current, permissioned, and relevant to the user's actual intent.
+1. Store raw observations, summaries, scopes, timestamps, and provenance edges in separate typed records.
+2. Implement lexical, dense, and hybrid retrieval. Run at least 500 seeded queries and report precision@5, branch-error rate, latency, and downstream edit accuracy.
+3. Generate 100-step traces, consolidate them to at most 20% of their original token count, and test whether exact branch, filename, key, and error-string facts survive.
+4. Reproduce M0–M12. Add derivative summaries until unsupported YAML confidence exceeds 0.85, then implement provenance collapsing and show the confidence falls below 0.10.
+5. Add forgetting policies for expiry, privacy deletion, contamination quarantine, and context pressure. Write tests proving that deletion removes stored content while eviction only removes active influence.
 
-### Ablation Under a Fixed Budget
-
-The clean comparison is an ablation under a fixed budget. An *ablation* removes one component and re-measures. Run the same task distribution three ways: with no memory beyond the prompt, then with working state only, then with retrieval-backed memory. Hold the model, tool permissions, token ceiling, and time limit steady.
-
-Now the question becomes concrete: did memory improve task success or task-specific partial progress, or did it merely spend tokens remembering its own autobiography? Each arm can win. Working state may help on short tasks by preserving the current plan and constraints. Retrieval-backed memory may help when the relevant evidence lies outside the current window. No memory may win when stale or distracting evidence is more dangerous than forgetfulness.
-
-### Metrics, Stress Tests, and One Self-Citing Failure
-
-Useful measurements include retrieval precision@\(k\), latency, grounded answer faithfulness, and regret from eviction decisions under fixed token budgets. Precision@\(k\) is the fraction of the top \(k\) results that are genuinely relevant; 3 relevant hits out of 5 returned is 0.6. Regret here is the drop in outcome caused by having thrown something away.
-
-Stress tests should include adversarial distractors and contamination injections, because long context can amplify bad evidence as easily as good evidence [[16](../../references.md#ref-16)].
-
-One nasty composition failure is especially common. Reflection writes an inaccurate summary. Retrieval later ranks that summary highly, because it matches the task language. The agent then repeatedly promotes the false memory back into working state. The system appears consistent because it keeps citing itself. Evaluating and Debugging Reasoners counts this as a contaminated-memory failure when it labels failures by transition.
-
-The practical target is a memory economy: spend context where it changes decisions, preserve raw evidence where audits require it, and keep yesterday's convenient summary from overruling today's observation.
-
-## Exercise
-
-For one agent workflow, list five things it might remember. Assign each to working, episodic, or semantic memory. Then choose one item that should be compressed, one that should be retrieved only under a specific trigger, and one that should expire.
-
-Work it in that order. Pick a workflow you know well, such as fixing a failing test or answering support tickets. A good answer names the trigger explicitly, for example "retrieve the deployment runbook only when a command touches production", and gives the expiry a reason, for example "the user's stated deadline expires when the deadline passes". A weak answer marks everything semantic and lets nothing expire.
+Submit code, tests, the contamination provenance graph, and an ablation table. The war room is successful when it remembers less, knows why, and breaks fewer services.

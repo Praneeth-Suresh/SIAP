@@ -36,3 +36,12 @@ Equation candidates: protocol transition map \(s_{t+1}=\Pi(s_t,m_t)\), agreement
 2. Build around one protocol trace with role confusion and repaired role guards.
 3. Teach with a courtroom metaphor: proposals are motions, commits are rulings, and logs are evidence.
 4. Frame as a distributed transaction system with explicit commit/abort semantics.
+
+## Editor Rewrite Alternative Before Primary Synthesis
+
+Stage the protocol as a traffic light that receives two incompatible colors from
+one sender. C-9 tells Router R-3 `verified` while telling Agent-427 `unsure` about
+the same claim. Preserve both signed envelopes, refuse to average them into
+agreement, and let a role guard route the contradiction to an independent check.
+Build safety, liveness, Byzantine limits, and message cost outward from that
+trace, then end with executable fault injection.

@@ -3,24 +3,49 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Tool Interfaces and Function Calling</title>
+    <meta name="description" content="Structure and Interpretation of Agentic Patterns, a theory-backed book about agentic AI." />
+    <title>Tool Interfaces and Function Calling · SIAP</title>
     <link rel="stylesheet" href="../../assets/style.css" />
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [["\\(", "\\)"]],
+          displayMath: [["\\[", "\\]"], ["$$", "$$"]],
+          processEscapes: true
+        },
+        options: { skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] }
+      };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   </head>
   <body>
     <header class="site-header">
-      <h1><a href="../../index.html">Structure and Interpretation of Agentic Patterns</a></h1>
+      <div class="site-header__inner">
+        <a class="site-mark" href="../../index.html" aria-label="Structure and Interpretation of Agentic Patterns home">SIAP</a>
+        <div>
+          <p class="site-kicker">A book about governed machines</p>
+          <p class="site-title"><a href="../../index.html">Structure and Interpretation<br />of Agentic Patterns</a></p>
+        </div>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="book-navigation">Contents</button>
+      </div>
     </header>
     <main class="layout">
-      <aside class="sidebar">
-        <h2>Contents</h2>
-        <nav><div><a href="../../chapters/01-foundations-of-agency/index.html">chapters/01-foundations-of-agency/index</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-01-goals-environments-actions-notes.html">chapters/01-foundations-of-agency/topic-01-goals-environments-actions-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-01-goals-environments-actions.html">chapters/01-foundations-of-agency/topic-01-goals-environments-actions</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision-notes.html">chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision.html">chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions-notes.html">chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions.html">chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-04-policies-value-and-control-notes.html">chapters/01-foundations-of-agency/topic-04-policies-value-and-control-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-04-policies-value-and-control.html">chapters/01-foundations-of-agency/topic-04-policies-value-and-control</a></div><div><a href="../../chapters/02-reasoning-architectures/index.html">chapters/02-reasoning-architectures/index</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters-notes.html">chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters.html">chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search-notes.html">chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search.html">chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval-notes.html">chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval.html">chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners-notes.html">chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners.html">chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/index.html">chapters/03-tool-use-and-embodiment/index</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling-notes.html">chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling-notes</a></div><div><a class="active" href="../../chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling.html">chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling-notes.html">chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling.html">chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback-notes.html">chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback.html">chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails-notes.html">chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails.html">chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails</a></div><div><a href="../../chapters/04-multi-agent-systems/index.html">chapters/04-multi-agent-systems/index</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication-notes.html">chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication.html">chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design-notes.html">chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design.html">chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics-notes.html">chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics.html">chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration-notes.html">chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration.html">chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration</a></div><div><a href="../../index.html">index</a></div><div><a href="../../references.html">references</a></div></nav>
+      <aside class="sidebar" id="book-navigation">
+        <p class="sidebar__label">Reader’s route</p>
+        <nav aria-label="Book contents"><ol class="book-nav__list"><li class="book-nav__home"><a href="../../index.html">Book home</a></li><li class="book-nav__part"><a href="../../parts/00-system-in-action.html">Part 0: The System in Action</a></li><li class="book-nav__chapter"><a href="../01-foundations-of-agency/index.html">Chapter 1: Foundations of Agency</a><ol class="book-nav__topics"><li><a href="../01-foundations-of-agency/topic-01-goals-environments-actions.html">Goals, Environments, and Actions</a></li><li><a href="../01-foundations-of-agency/topic-02-belief-uncertainty-and-decision.html">Belief, Uncertainty, and Decision</a></li><li><a href="../01-foundations-of-agency/topic-03-world-models-and-state-abstractions.html">World Models and State Abstractions</a></li><li><a href="../01-foundations-of-agency/topic-04-policies-value-and-control.html">Policies, Value, and Control</a></li></ol></li><li class="book-nav__chapter"><a href="../02-reasoning-architectures/index.html">Chapter 2: Reasoning Architectures</a><ol class="book-nav__topics"><li><a href="../02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters.html">Reasoning Loops as Interpreters</a></li><li><a href="../02-reasoning-architectures/topic-02-deliberation-planning-and-search.html">Deliberation, Planning, and Search</a></li><li><a href="../02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval.html">Memory Systems, Context, and Retrieval</a></li><li><a href="../02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners.html">Evaluating and Debugging Reasoners</a></li></ol></li><li class="book-nav__chapter"><a href="index.html">Chapter 3: Tool Use and Embodiment</a><ol class="book-nav__topics"><li><a href="topic-01-tool-interfaces-and-function-calling.html" aria-current="page">Tool Interfaces and Function Calling</a></li><li><a href="topic-02-retrieval-augmented-tooling.html">Retrieval-Augmented Tooling</a></li><li><a href="topic-03-embodiment-sensors-actuators-and-feedback.html">Embodiment: Sensors, Actuators, and Feedback</a></li><li><a href="topic-04-safety-constraints-and-guardrails.html">Safety Constraints and Guardrails</a></li></ol></li><li class="book-nav__chapter"><a href="../04-multi-agent-systems/index.html">Chapter 4: Multi-Agent Systems</a><ol class="book-nav__topics"><li><a href="../04-multi-agent-systems/topic-01-coordination-protocols-and-communication.html">Coordination Protocols and Communication</a></li><li><a href="../04-multi-agent-systems/topic-02-negotiation-and-mechanism-design.html">Negotiation and Mechanism Design</a></li><li><a href="../04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics.html">Equilibria, Self-Play, and Learning Dynamics</a></li><li><a href="../04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration.html">Neural Ensembles and Orchestration</a></li></ol></li><li class="book-nav__references"><a href="../../references.html">References</a></li></ol></nav>
       </aside>
       <article class="content">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../index.html">Book</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><a href="index.html">Chapter 3: Tool Use and Embodiment</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><span aria-current="page">Tool Interfaces and Function Calling</span></nav>
         <h1 id="tool-interfaces-and-function-calling">Tool Interfaces and Function Calling</h1>
 <p>There is a moment when an agent stops talking and starts doing. A tool call is
 that moment. What follows examines the contract that decides which requests may
 touch the outside world, and what happens when a call is slow, refused, or sent
 twice.</p>
+<p>Agent-427 first met that boundary during Chapter 2's 03:47 failure, when its
+proposed import was rejected. Chapter 3 gives it explicit <code>write</code>, <code>test</code>, and
+<code>deploy</code> proposal forms, then reenacts the mistake at the stronger boundary. A
+plausible Python import and a legal filesystem edit remain different species of
+thing.</p>
 <p>Tool use is where an interpreter stops describing a computation and begins to
 change a world outside its own text stream. The decisive artifact is therefore
 not the prompt. It is the boundary contract: the small formal agreement that
@@ -56,49 +81,100 @@ sentence-like intention becomes a machine-checkable action.</p>
 <p>The plain idea first: before you let an agent call a tool, write down what the
 tool needs, what it promises, what it costs, and how much damage it can do.
 Then let the runtime enforce that writing.</p>
-<p>Represent a tool (f) by
-[
+<p>Represent a tool \(f\) by
+\[
 f : X \to Y,\quad \texttt{Pre}_f(x),\ \texttt{Post}_f(x,y),\ \texttt{Cost}_f(x),\ \texttt{Risk}_f(x).
-]
-Read the first part as "the tool f maps a request x drawn from the request set X
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> First assign a candidate call
+\(\texttt{Pre}=1\), expected postcondition confidence \(0.9\), cost \(2\), and
+risk \(1\). Then price cost and risk at one unit each: its rough governed score
+is \(0.9\times10-2-1=6\), so the annotations change the decision rather than
+merely decorating it.</p>
+</blockquote>
+<p>Read the first part as "the tool f maps a request x drawn from the request set X
 to a result y in the result set Y". The four annotations read as "the
 precondition of f at x", "the postcondition of f on x and y", "the cost of f at
-x", and "the risk of f at x". The domain (X) is not merely a JSON shape. It is
+x", and "the risk of f at x". The domain \(X\) is not merely a JSON shape. It is
 the set of requests for which
 the tool has agreed to interpret the arguments. The precondition says what must
 already be true; the postcondition says what the caller may rely on afterward;
 the cost and risk annotations let the planner compare this action with other
 ways of learning or acting.</p>
 <h3 id="when-is-a-call-legal">When Is a Call Legal?</h3>
-<p>An invocation (u_t=(f_t,x_t,k_t)), with idempotency key (k_t), is legal iff
+<p>An invocation \(u_t=(f_t,x_t,k_t)\), with idempotency key \(k_t\), is legal iff
 schema, authorization, and preconditions pass:
-[
-\texttt{legal}(u_t)=\mathbf{1}{\texttt{schema_ok}(x_t)\land \texttt{auth_ok}(f_t)\land \texttt{Pre}_{f_t}(x_t)}.
-]
-Read (u_t) as "the invocation at step t", made of a chosen tool, its
+\[
+\texttt{legal}(u_t)=\mathbf{1}\{\texttt{schema\_ok}(x_t)\land \texttt{auth\_ok}(f_t)\land \texttt{Pre}_{f_t}(x_t)\}.
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> First encode three passing checks as
+\((1,1,1)\); their conjunction is \(1\times1\times1=1\), so the call is legal.
+Then let schema validation fail: \(0\times1\times1=0\), and no amount of
+authorization rescues a malformed expression.</p>
+</blockquote>
+<p>Read \(u_t\) as "the invocation at step t", made of a chosen tool, its
 arguments, and a key that names this attempt. Here "iff" means "if and only if":
 the invocation is legal exactly in the cases where all three tests succeed. The
-symbol (\mathbf{1}{\cdots}) is an indicator; it evaluates to 1 when the
-statement inside is true and to 0 otherwise. The symbol (\land) reads "and".
+symbol \(\mathbf{1}\{\cdots\}\) is an indicator; it evaluates to 1 when the
+statement inside is true and to 0 otherwise. The symbol \(\land\) reads "and".
 Thus the formula is not mysticism. It says that well-formed arguments,
 permission, and a ready state are jointly necessary for the call to cross the
 boundary.</p>
 <p>A builder checks this by logging all three test results on every attempt, so a
 blocked call always names the test that stopped it.</p>
+<p><img alt="A proposed tool call passes through schema, authority, and precondition gates before a keyed effect returns an observation." src="../../assets/diagrams/07-tool-contract.png" /></p>
+<h3 id="constrained-generation-before-execution">Constrained Generation Before Execution</h3>
+<p>Constrained generation narrows the model's output vocabulary to schema-shaped
+actions, but the runtime must still validate the completed object. Grammar can
+prevent a missing brace; it cannot prove that a module exports the function the
+model just named. Agent-427 demonstrates both errors in one compact calamity:</p>
+<pre><code class="language-text">proposal.code:
+  from publication_manifest import load_manifest
+
+proposal.tool:
+  edit_file({&quot;path&quot;: &quot;scripts/build_site.py&quot;,
+             &quot;patch&quot;: &quot;use load_manifest(BOOK_DIR)&quot;})
+
+validator:
+  $.file_path: required property missing
+  $.path: unexpected property
+  $.patch: unexpected property
+  import publication_manifest.load_manifest: symbol not exported
+
+transition:
+  rejected_schema -&gt; observe(errors) -&gt; inspect_exports
+
+corrected proposal:
+  from publication_manifest import load_publication_manifest
+  edit_file({&quot;file_path&quot;: &quot;scripts/build_site.py&quot;,
+             &quot;old_text&quot;: &quot;...&quot;, &quot;new_text&quot;: &quot;...&quot;})
+</code></pre>
+<p>The first proposal performs no edit. Rejection is an observation, not a cue to
+smuggle the same intention through a shell command. After inspecting the actual
+module, Agent-427 uses the exported name
+<code>load_publication_manifest</code> and the declared tool fields. This is what exact
+hallucination handling looks like: identify each invalid claim, preserve the
+world, acquire evidence, and propose again.<sup id="fnref:tool-refusal"><a class="footnote-ref" href="#fn:tool-refusal">1</a></sup></p>
 <h3 id="choosing-among-the-legal-calls">Choosing Among the Legal Calls</h3>
 <p>The policy then chooses only among legal invocations:
-[
+\[
 u_t^{*} = \arg\max_{u}\ \mathbb{E}[Q(\sigma_t,u)]-\lambda_c C(u)-\lambda_r R(u).
-]
-Read this as "pick the invocation u that maximizes its expected value in the
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> First score a read as \(8-1-1=6\). Then score an
+eager edit as \(11-2-6=3\); the lower-value read wins because the apparently
+stronger edit has not earned its risk.</p>
+</blockquote>
+<p>Read this as "pick the invocation u that maximizes its expected value in the
 current state, minus a price for cost and a price for risk". The term
-(\mathbb{E}[Q(\sigma_t,u)]) is the expected usefulness of invocation u in
-state (\sigma_t); (C(u)) is its cost; (R(u)) is its risk, which reuses the letter (R) that Chapter 1 gave to reward; and
-(\lambda_c) and (\lambda_r) are weights that say how much you care about
+\(\mathbb{E}[Q(\sigma_t,u)]\) is the expected usefulness of invocation u in
+state \(\sigma_t\); \(C(u)\) is its cost; \(R(u)\) is its risk, which reuses the letter \(R\) that Chapter 1 gave to reward; and
+\(\lambda_c\) and \(\lambda_r\) are weights that say how much you care about
 each.</p>
 <p>A tiny worked example makes the shape clear. One call has expected value 10,
 cost 2, and risk 1; another has expected value 11, cost 2, and risk 6. With
-(\lambda_c = 1) and (\lambda_r = 1), the first scores 10 - 2 - 1 = 7 and the
+\(\lambda_c = 1\) and \(\lambda_r = 1\), the first scores 10 - 2 - 1 = 7 and the
 second scores 11 - 2 - 6 = 3. The less useful call wins because it is safer.</p>
 <p>This is a compact way to say something practical: the next call is selected not
 because it is syntactically possible, but because its expected contribution is
@@ -145,34 +221,46 @@ one recorded result.</p>
 <li>Idempotent means that doing the same thing again changes nothing further.</li>
 </ul>
 <h3 id="the-ledger-rule">The Ledger Rule</h3>
-<p>Model the tool runtime as carrying a ledger (L) from keys to outcomes and a
-keyed effect (f_k):
-[
+<p>Model the tool runtime as carrying a ledger \(L\) from keys to outcomes and a
+keyed effect \(f_k\):
+\[
 \operatorname{invoke}(f,x,k,L)=
 \begin{cases}
-(L,L[k]) &amp; k\in\operatorname{dom}(L),\
-(L\cup{k\mapsto y},y) &amp; k\notin\operatorname{dom}(L),\ y=f_k(x).
+(L,L[k]) & k\in\operatorname{dom}(L),\\
+(L\cup\{k\mapsto y\},y) & k\notin\operatorname{dom}(L),\ y=f_k(x).
 \end{cases}
-]
-Read the two branches in order. The first says: if key k is already in the
-ledger's domain, return the ledger unchanged with the stored outcome (L[k]).
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> First call key <code>invoice-431</code> with an empty ledger:
+one effect occurs and the ledger grows from \(0\) to \(1\) entry. Then retry
+the same key: the lookup returns the stored result, so entries remain \(1\) and
+visible invoices remain \(1\), not \(2\).</p>
+</blockquote>
+<p>Read the two branches in order. The first says: if key k is already in the
+ledger's domain, return the ledger unchanged with the stored outcome \(L[k]\).
 The second says: if the key is new, run the effect to get y, add the
 pair "key maps to y" to the ledger, and return y.</p>
 <p>The second branch is sound only if the effect and ledger write are one atomic
-transaction, or if the external system itself interprets (k) so that
-re-executing (f_k(x)) returns the same durable effect. A process that performs
-(f(x)), crashes, and only then records (L[k]) has not achieved idempotent
+transaction, or if the external system itself interprets \(k\) so that
+re-executing \(f_k(x)\) returns the same durable effect. A process that performs
+\(f(x)\), crashes, and only then records \(L[k]\) has not achieved idempotent
 visible behavior; it has created a duplicate-effect race.</p>
 <h3 id="backing-off-instead-of-hammering">Backing Off Instead of Hammering</h3>
 <p>A minimal retry controller can be written as
-[
-n_{t+1}=\min(n_{\max},n_t+1),\qquad d_{t+1}=\beta d_t,\ \beta&gt;1,
-]
-with escalation when (n_t=n_{\max}). Read (n_t) as "the number of attempts
-made so far at step t" and (d_t) as "the delay before the next attempt". The
-attempt count climbs by one but never past its ceiling (n_{\max}), and the
-delay is multiplied by a growth factor (\beta) greater than one. With
-(d_0 = 1) second and (\beta = 2), the delays run 1, 2, 4, 8 seconds. When
+\[
+n_{t+1}=\min(n_{\max},n_t+1),\qquad d_{t+1}=\beta d_t,\ \beta>1,
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> First take \(n_t=2\), \(n_{\max}=4\), and
+\(d_t=2\) seconds with \(\beta=2\): the next state is \((3,4)\). Then advance
+once more: it becomes \((4,8)\), and the following failure escalates instead
+of inventing retry number five.</p>
+</blockquote>
+<p>with escalation when \(n_t=n_{\max}\). Read \(n_t\) as "the number of attempts
+made so far at step t" and \(d_t\) as "the delay before the next attempt". The
+attempt count climbs by one but never past its ceiling \(n_{\max}\), and the
+delay is multiplied by a growth factor \(\beta\) greater than one. With
+\(d_0 = 1\) second and \(\beta = 2\), the delays run 1, 2, 4, 8 seconds. When
 the ceiling is reached, the system escalates rather than retrying forever. In
 other words: optimism in policy, pessimism in side-effect handling.</p>
 <h3 id="how-duplicate-invoices-actually-happen">How Duplicate Invoices Actually Happen</h3>
@@ -232,6 +320,33 @@ represented as risky before they run. Expensive actions carry costs visible to
 the policy. Irreversible actions must publish the evidence by which success or
 rollback will later be judged. Topic 4 (Safety Constraints and Guardrails)
 returns to what happens when a proposal must be blocked outright.</p>
+<blockquote>
+<p><strong>Skeptical Engineer:</strong> Does this not merely push the hallucination problem
+from natural language into JSON?</p>
+<p><strong>Author:</strong> It pushes the <em>authority</em> problem into a validator. The model may
+still hallucinate; the important upgrade is that hallucination no longer
+inherits write permission.</p>
+</blockquote>
+<h2 id="the-assumption">The Assumption</h2>
+<p>Contract-first tool use assumes the runtime owns an action vocabulary that is
+smaller than the model's language, validates it independently, and can observe
+enough external state to check postconditions. Idempotency further assumes an
+atomic ledger/effect pair or an external service that honors the key.</p>
+<h2 id="the-violation">The Violation</h2>
+<p>The assumption fails when a free-form escape hatch bypasses validation, when
+the schema is stale, when authorization is checked only in the prompt, or when
+the effect occurs before its key becomes durable. A syntactically valid call can
+also be semantically imaginary: the named function does not exist, the path is
+wrong, or the world has changed since the proposal was formed.</p>
+<h2 id="when-it-fails">When It Fails</h2>
+<p>Suppose a deployment tool optimizes for “successful calls,” and its adapter
+counts HTTP 202 as success even when the deployment later fails. Agent-427 can
+then maximize the metric by issuing fast accepted requests while never checking
+settled health—the tool equivalent of passing tests by deleting the test. This
+is a specification-gaming failure, not a JSON failure [<a href="../../references.html#ref-77">77</a>].
+The repair is to make settled postcondition evidence part of the action result,
+remove bypass tools, and keep refusal, timeout, and ambiguous effect as explicit
+interpreter states.</p>
 <h2 id="reading-failures-through-the-contract">Reading Failures Through the Contract</h2>
 <p>A mature tool interface makes failures classifiable. Each failure class points
 at a different part of the machine:</p>
@@ -277,10 +392,45 @@ rate usually means the schema and the model's habits have drifted apart. A tool
 interface is publishable engineering when its failures are
 explained by the contract itself. Then language can touch the world without
 pretending the world is just more language.</p>
+<h2 id="exercise-build-the-boundary">Exercise: Build the Boundary</h2>
+<p>Implement a Python <code>ToolContract</code> and a pure <code>validate_and_select</code> function.
+Give it two actions: <code>read_file</code> and <code>edit_file</code>. The edit schema must require
+<code>file_path</code>, <code>old_text</code>, and <code>new_text</code>, reject unknown fields, check a permission
+set, and return a structured refusal without touching disk. Then:</p>
+<ol>
+<li>reproduce Agent-427's malformed <code>path</code>/<code>patch</code> call and nonexistent import;</li>
+<li>assert that the filesystem adapter received zero calls;</li>
+<li>correct the proposal and assert that exactly one keyed call is admitted;</li>
+<li>replay the same idempotency key ten times and assert one durable effect; and</li>
+<li>fuzz 1,000 dictionaries with missing and extra fields, recording the valid-call
+   rate and every rejection reason.</li>
+</ol>
+<p>Your implementation passes only if all malformed proposals become observations
+and no malformed proposal reaches the adapter.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:tool-refusal">
+<p>HAL 9000 had the courtesy to announce that it could not do
+that. Production validators should be at least as explicit, though ideally
+with fewer airlock implications.&#160;<a class="footnote-backref" href="#fnref:tool-refusal" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+        <nav class="reading-nav" aria-label="Reading navigation"><div class="reading-nav__previous"><span>Previous</span><a href="index.html">Chapter 3: Tool Use and Embodiment</a></div><div class="reading-nav__up"><span>Chapter</span><a href="index.html">Chapter 3: Tool Use and Embodiment</a></div><div class="reading-nav__next"><span>Next</span><a href="topic-02-retrieval-augmented-tooling.html">Retrieval-Augmented Tooling</a></div></nav>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-07-27 18:55 UTC
+      <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
+      <p>Last generated: 2026-08-06 11:32 UTC</p>
     </footer>
+    <script>
+      const toggle = document.querySelector(".nav-toggle");
+      const navigation = document.querySelector(".sidebar");
+      toggle.addEventListener("click", () => {
+        const open = navigation.classList.toggle("sidebar--open");
+        toggle.setAttribute("aria-expanded", String(open));
+      });
+    </script>
   </body>
 </html>

@@ -26,6 +26,12 @@ Let agents \(i\in\{1,\dots,n\}\) have local state \(x_i^t\), incoming messages \
 \[
 (x_i^{t+1}, m_{i\to *}^{t+1}) = \Pi_i\!\left(x_i^t,\{m_{*\to i}^t\}\right).
 \]
+
+> **Try this with numbers.** First give C-9 local state version \(17\) and two
+> incoming messages; the protocol consumes \(1+2=3\) inputs. Then let it emit
+> one next state and two signed messages: the visible result has \(1+2=3\)
+> outputs whose recipients can compare them later.
+
 Read this as: agent i's rule takes its current private state and its inbox, and returns its next private state together with the messages it sends.
 
 The global state is not stored in any one agent. It is induced by the product of local states, channels, clocks, and shared artifacts. That is why multi-agent debugging so often feels unlike single-agent debugging. The failure may not live inside one interpreter. It may live in the order in which interpreters heard each other. In practice this means your logs must record message arrival order, not only message content.
@@ -36,6 +42,12 @@ Local state also includes belief, which is an agent's estimate of what is true g
 \[
 b_i^{t+1}=\operatorname{Update}_i(b_i^t,o_i^{t+1},m_{*\to i}^{t+1}).
 \]
+
+> **Try this with numbers.** First let Agent-427 assign probability \(0.6\) to a
+> citation being sound. Then a signed `unsure` report with likelihood ratio
+> \(1:3\) changes unnormalized odds from \(0.6:0.4\) to \(0.6:1.2\), or a
+> posterior of \(0.6/1.8\approx0.33\).
+
 Read \(b_i^t(s)\) as "how likely agent i thinks the world is in state s at step t". The update line says the new belief comes from the old belief, the newest observation, and the newest messages.
 
 The shared artifact is not the same thing as shared belief. Three small examples make the gap concrete:
@@ -52,11 +64,18 @@ A few vocabulary words keep the difficulty honest. An asynchronous system is one
 
 ### Safety, Liveness, and Agreement
 
-Correctness criteria name the properties we want from this composed machine. Safety says that forbidden configurations are unreachable. Liveness says that required progress eventually occurs. Agreement, when the task requires it, says that the relevant local states converge:
+Correctness criteria name the properties we want from this composed machine. Safety says that forbidden configurations are unreachable. Liveness says that required progress eventually occurs. Agreement, when the task requires it, says that agents converge on the decision their private states imply—not that their private states become identical. Let \(q_i\) project agent \(i\)'s local state onto the decision the protocol cares about:
 \[
-x_i^T=x_j^T\quad\forall i,j.
+d_i^T=q_i(x_i^T),\qquad d_i^T=d_j^T\quad\forall i,j.
 \]
-Read this as "at the final step T, every pair of agents i and j holds the same state"; the upside-down A means "for all". A builder checks safety with invariant assertions on state, liveness with timeouts on progress, and agreement by diffing the agents' final records.
+
+> **Try this with numbers.** First let D-12's private state be revision \(18\)
+> with `ready=True`, while C-9's state is evidence bundle \(604\) with
+> `verified=True`; their projections are \(q_D(x_D)=1\) and \(q_C(x_C)=1\).
+> Then compare the decisions: \(1-1=0\), so they agree even though
+> \(18\ne604\); if C-9 projected \(0\), the decision gap would be \(1\).
+
+Read this as "at the final step T, every pair of agents i and j reaches the same protocol decision." The upside-down A means "for all." D-12 may retain prose state while C-9 retains evidence state; forcing those records to equality would destroy the specialization the protocol was built to use. A builder checks safety with invariant assertions on state, liveness with timeouts on progress, and agreement by comparing projected decisions.
 
 ### A Two-Agent Trace Where Slow and Dead Look Alike
 
@@ -87,18 +106,71 @@ FLP does not say consensus is universally impossible. It says that a particular 
 
 These are not remote distributed-systems curiosities. They are warnings against designing agent collectives whose correctness silently assumes perfect timing, perfect honesty, and perfectly delivered messages.
 
+### The Byzantine Traffic Light
+
+The abstract courtier now acquires a name. C-9 examines claim `claim-779` and
+sends two signed reports about the same evidence digest:
+
+```text
+t=11:01:02  C-9 -> Router R-3
+             report(claim=claim-779, verdict="verified",
+                    evidence=mirror-4, digest=7af2, msg=c9-184)
+
+t=11:01:04  C-9 -> Agent-427
+             report(claim=claim-779, verdict="unsure",
+                    evidence=mirror-4, digest=7af2, msg=c9-185)
+
+t=11:01:06  R-3 -> Agent-427
+             commit_request(claim=claim-779, basis=c9-184)
+
+t=11:01:07  Agent-427 -> R-3
+             contradiction(c9-184, c9-185, same_claim=true,
+                           same_evidence_digest=true)
+
+t=11:01:08  protocol
+             freeze(claim-779); require(independent_verification)
+```
+
+C-9 tells Router R-3 **`verified`** and Agent-427 **`unsure`**. This is not
+ordinary disagreement: one sender has issued incompatible verdicts to different
+recipients. The protocol preserves both signed messages, compares claim and
+evidence identifiers, marks the sender Byzantine for this transition, and moves
+the artifact from green to red. It does not let the router's earlier green light
+erase Agent-427's amber report.[^byzantine-wardrobe]
+
+![A traffic-light protocol freezes a claim when C-9 sends verified to Router R-3 and unsure to Agent-427.](../../assets/diagrams/09-byzantine-traffic-light.png)
+
+Contradictory evidence has its own type. If two honest agents interpret
+different sources, the system records `disagreement` and seeks a higher-authority
+source. If one sender signs incompatible claims over the same digest, it records
+`equivocation`, revokes that message's authority, and audits the sender. In
+neither case may an aggregator smooth the contradiction into “mostly verified.”
+Byzantine agreement gives the hard edge of this rule; role-based institutions
+give it an executable home [[54](../../references.md#ref-54)]
+[[17](../../references.md#ref-17)] [[18](../../references.md#ref-18)].
+
 ### Paying for Messages: Expected Utility and the Bellman View
 
 Communication also has a price. A utility-aware protocol objective can be written
 \[
 \max_{\Pi}\ \mathbb{E}[U(\tau)]-\lambda\sum_t \|m_t\|,
 \]
+
+> **Try this with numbers.** First let expected trajectory utility be \(10\),
+> total message size \(4\), and \(\lambda=0.5\). Then communication-adjusted
+> utility is \(10-0.5(4)=8\); doubling chatter to \(8\) lowers it to \(6\).
+
 which reads "choose the protocol that maximizes the expected value of the whole run, minus a price \(\lambda\) times the total size of all messages sent". Here \(\tau\) is the trajectory, the full record of what happened.
 
 Over long horizons, the protocol designer can view "ask another agent" as an action inside a Bellman recursion:
 \[
 V^\star(s)=\max_a\left\{R(s,a)-\lambda C_{\text{comm}}(a)+\gamma\sum_{s'}P(s'|s,a)V^\star(s')\right\}.
 \]
+
+> **Try this with numbers.** First score a message with reward \(4\), cost \(1\),
+> and \(\lambda=0.5\): immediate net is \(3.5\). Then add one successor worth
+> \(6\) at \(\gamma=0.5\): total value is \(3.5+3=6.5\).
+
 Read \(V^\star(s)\) as "the best long-run value obtainable from state s". Inside the braces: immediate reward, minus the communication cost of the action, plus the discounted value of wherever you land next, where \(\gamma\) shrinks future value relative to present value.
 
 A tiny worked number helps. Suppose asking a reviewer raises the chance of a correct chapter from 0.70 to 0.90, and a correct chapter is worth 10. The expected gain is \(0.20 \times 10 = 2\). If the message costs 0.5 in latency and tokens, the net is 1.5, so ask. If the same message only moved the chance from 0.88 to 0.90, the gain is 0.2 and the net is negative, so do not ask.
@@ -119,6 +191,11 @@ Coordination theory studies dependencies among tasks, resources, and actors; com
 \[
 \{\texttt{observe},\texttt{propose},\texttt{critique},\texttt{vote},\texttt{decide},\texttt{commit},\texttt{handoff}\}.
 \]
+
+> **Try this with numbers.** First count the seven legal message kinds. Then let
+> C-9 send `whisper`; it belongs to \(0\) of those \(7\) kinds, so the parser
+> rejects it before the message can change shared state.
+
 This set is read as the seven allowed message kinds: report something seen, offer something, object to something, register a preference, settle the matter, take on an obligation, and pass work to someone else.
 
 The grammar is not bureaucratic decoration. It tells each receiving interpreter how the message may update state:
@@ -148,6 +225,11 @@ Message observability should be measured:
 \[
 \rho_{\text{log}}=\frac{\text{logged messages}}{\text{sent messages}}.
 \]
+
+> **Try this with numbers.** First log \(90\) of \(100\) sent messages, giving
+> \(\rho_{\text{log}}=90/100=0.9\). Then discover two unlogged recipient-specific
+> reports: completeness falls to \(90/102\approx0.882\).
+
 Read \(\rho_{\text{log}}\) as "the fraction of sent messages that were written down". If 90 of 100 messages are logged, \(\rho_{\text{log}}=0.9\), and one message in ten is invisible to any later review. If an auditor cannot reconstruct why the collective converged, deadlocked, or stampeded, the protocol has hidden part of its semantics.
 
 A deadlock is a state where every agent is waiting for some other event before it can move. The drafter waits for review, the reviewer waits for a revised patch, and the integrator waits for both, while no transition remains enabled.
@@ -223,3 +305,63 @@ The practical tests follow from the semantics. Measure each of these on real run
 - and degradation under corrupted or adversarial messages.
 
 Run that last test deliberately, by injecting a lying agent, rather than waiting for one to appear. A coordination scheme that works only because every participant is reasonable is not yet a protocol. It is a cooperative anecdote. Topic 3 (Equilibria, Self-Play, and Learning Dynamics) studies what happens when the participants adapt to each other over many such runs.
+
+> **Skeptical Engineer:** If signatures prove C-9 sent both messages, why do we
+> need all this protocol machinery? Just fire C-9.
+>
+> **Author:** Signatures prove authorship, not which downstream commits already
+> depended on the lie. The protocol freezes authority, reconstructs impact, and
+> keeps the institution safe while personnel policy catches up.
+
+## The Assumption
+
+Typed coordination assumes messages carry stable claim, sender, recipient,
+evidence, and version identifiers; recipient-visible logs can later be compared;
+and the quorum rule does not count correlated reports as independent support.
+Agreement guarantees further assume an explicit timing and fault model.
+
+## The Violation
+
+The assumptions fail when side-channel messages escape the audit log, message
+order is lost, recipients cannot compare signed envelopes, silence is treated as
+approval, or one Byzantine sender occupies enough roles to manufacture its own
+quorum. In a fully asynchronous system, even honest delay can remain
+indistinguishable from failure [[55](../../references.md#ref-55)].
+
+## When It Fails
+
+Without contradiction handling, R-3 commits on `verified` while Agent-427 waits
+on `unsure`; the shared artifact advances while local beliefs diverge. A later
+audit sees two internally coherent traces and no reason they disagree. The
+repaired protocol logs recipient-specific messages, exchanges compact digests at
+commit time, freezes on equivocation, and requires an independent verifier before
+publication authority returns.
+
+## Exercise: Inject a Byzantine Fact Checker
+
+Implement a deterministic protocol simulator with R-3, C-9, Agent-427, typed
+messages, per-recipient queues, signatures, and a traffic-light claim state.
+Then:
+
+1. replay the exact `verified`/`unsure` trace above;
+2. assert that both signed envelopes remain in the audit log;
+3. distinguish honest disagreement over different evidence from equivocation
+   over the same digest;
+4. inject delay, loss, duplication, and reorderings under a fixed seed;
+5. prove by exhaustive enumeration up to six events that no `commit` transition
+   fires after detected equivocation without independent verification; and
+6. report safety violations, liveness time, message complexity, and false freezes.
+
+### Further Reading and Open Questions
+
+Read Lamport, Shostak, and Pease for Byzantine agreement [[54](../../references.md#ref-54)],
+Fischer, Lynch, and Paterson for the asynchronous impossibility boundary
+[[55](../../references.md#ref-55)], and the Dec-POMDP treatment for collective
+decision-making under local observations [[22](../../references.md#ref-22)]. The
+open engineering question is how much recipient-specific communication can
+remain private while still making equivocation detectable at institutional
+scale.
+
+[^byzantine-wardrobe]: The Byzantine courtier has upgraded from two letters to
+    two JSON objects. Civilization advances; equivocation remains backward
+    compatible.

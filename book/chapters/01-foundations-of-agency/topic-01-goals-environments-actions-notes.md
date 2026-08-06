@@ -36,3 +36,9 @@ Canonical equation set to anchor this narrative: expected utility as \(a^\*=\arg
 2. Start with a historical arc (Bernoulli to Bellman to Kalman) and then reinterpret each milestone through modern LLM-agent orchestration.
 3. Use a contrast structure: first show a “clever but fragile” prompt-only system, then progressively formalize it into a robust agent using the three-theory braid.
 4. Frame the topic as a courtroom argument where each theory serves as a different kind of evidence for what constitutes rational action.
+
+## Editor-Rewrite Alternative: Birth Inside the Approximation Stack
+
+Open with Agent-427 receiving a sandboxed, read-only diagnosis task: classify a broken citation without editing the manuscript or retaining durable memory. Treat its POMDP contract as a useful constitution immediately betrayed by implementation. Walk down the approximation stack symbol by symbol: finite state versus a 10,000-token history, stationary dynamics versus an API that changes during deliberation, conditionally modeled observations versus correlated and adversarial telemetry, reward versus a test-deleting optimizer, and a mathematical action space versus malformed JSON. Preserve the formal tuple and constrained-return objective, but follow each formal block with arithmetic and each ideal with an interpreter repair. End with an executable exercise that asks the reader to implement validators and reproduce reward gaming rather than merely describe a contract. Reserve the fixed 03:47 timestamp/404/wrong-import incident for Chapter 2.
+
+The preferred synthesis takes this lifecycle alternative because it gives Chapter 1 a birth scene, a technical spine, and a reason to care about every symbol. It retains the existing contract and coding example, while making the gap between model and machine the actual subject rather than an apologetic paragraph.

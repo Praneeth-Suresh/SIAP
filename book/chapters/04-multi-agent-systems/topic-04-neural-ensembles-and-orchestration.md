@@ -18,6 +18,11 @@ Start with the simplest combination rule: take a weighted average of what each e
 \[
 \hat{y}(x)=\sum_{k=1}^{K} w_k(x)\,f_k(x),\qquad \sum_k w_k(x)=1,\ w_k(x)\ge 0.
 \]
+
+> **Try this with numbers.** First give two experts outputs \(0.8\) and \(0.4\)
+> with weights \(0.75\) and \(0.25\). Then aggregate:
+> \(0.75(0.8)+0.25(0.4)=0.7\), while the weights verify \(0.75+0.25=1\).
+
 Read \(f_k(x)\) as "the answer that expert number \(k\) gives for input \(x\)", and \(w_k(x)\) as "how much we trust expert \(k\) on this particular input". The weights are non-negative and sum to one, so the result \(\hat{y}(x)\) ("y-hat of x", the ensemble's prediction) stays on the same scale as the individual answers. For voting systems, \(\hat{y}=\operatorname{mode}\{f_k(x)\}\), which reads "take whichever answer was given most often".
 
 The gain comes from competent diversity. If predictors make independent or weakly correlated errors, aggregation can improve accuracy and uncertainty estimates. If they share the same blind spot, the ensemble may only make the mistake more confidently.
@@ -28,13 +33,18 @@ Suppose three reviewers each have \(80\%\) accuracy and make independent errors 
 \[
 {3\choose 2}(0.2)^2(0.8)+(0.2)^3=0.104.
 \]
+
+> **Try this with numbers.** First compute exactly-two-errors probability:
+> \(3(0.2)^2(0.8)=0.096\). Then add all-three-errors probability
+> \((0.2)^3=0.008\), giving \(0.096+0.008=0.104\).
+
 The first term counts the three ways that exactly two reviewers err while one is right. The second term is the single case where all three err. Their sum is \(0.104\), so independent majority voting raises accuracy from \(80\%\) to \(89.6\%\). Nearly ten points of accuracy for the price of two extra calls is a real bargain.
 
 ### Why Correlated Errors Erase That Bargain
 
 Now suppose all three reviewers use the same flawed source extraction step, so their errors are perfectly correlated. When one is wrong, all are wrong, and the majority is still wrong \(20\%\) of the time. Three voices have produced one error with a choir robe.
 
-The lesson for a builder is procedural, not philosophical: before adding a reviewer, ask what would have to differ for its mistakes to differ. Deep ensembles are valuable partly because independently trained predictors can improve calibration and predictive uncertainty [[26](../../references.md#ref-26)]. Calibration means that stated confidence matches observed accuracy, so claims made with \(90\%\) confidence turn out right about nine times in ten. Classical ensemble methods make the same theme explicit: diversity matters only when the individual models remain useful [[67](../../references.md#ref-67)]. A committee of confident incompetents averages to nothing.
+The lesson for a builder is procedural, not philosophical: before adding a reviewer, ask what would have to differ for its mistakes to differ. Deep ensembles are valuable partly because independently trained predictors can improve calibration and predictive uncertainty [[26](../../references.md#ref-26)]. Calibration means that stated confidence matches observed accuracy, so claims made with \(90\%\) confidence turn out right about nine times in ten. Classical ambiguity and ensemble analyses make the same theme explicit: diversity matters only when the individual models remain useful [[66](../../references.md#ref-66)] [[67](../../references.md#ref-67)]. A committee of confident incompetents averages to nothing.
 
 ### Routing with Mixtures of Experts
 
@@ -42,10 +52,20 @@ Mixture-of-experts (MoE) systems add conditional computation, meaning the system
 \[
 w_k(x)=\frac{\exp(g_k(x)/\tau)}{\sum_j \exp(g_j(x)/\tau)},
 \]
+
+> **Try this with numbers.** First use gate scores \(0\) and \(\ln 3\) with
+> \(\tau=1\), giving exponentials \(1\) and \(3\). Then normalize by \(4\):
+> weights are \(0.25\) and \(0.75\).
+
 where \(g_k(x)\) is the router's raw score for expert \(k\), and the formula turns those scores into weights that sum to one. An alternative is sparse top-\(k\) routing,
 \[
 E(x)=\operatorname{TopK}(g(x),k),
 \]
+
+> **Try this with numbers.** First rank four gate scores
+> \((0.9,0.7,0.2,0.1)\). Then choose \(k=2\): \(E(x)=\{1,2\}\), activating
+> \(2\) of \(4\) experts and skipping half the calls.
+
 which selects a small set \(E(x)\) of experts to run.
 
 The softmax temperature \(\tau\) ("tau") controls how sharp the routing distribution is. Small \(\tau\) makes the largest gate score dominate; large \(\tau\) spreads weight more evenly. Top-\(k\) routing means "activate only the \(k\) highest-scoring experts," such as the two best specialists out of sixteen, and give the rest no computation for this input.
@@ -54,6 +74,11 @@ To see whether a router is doing anything interesting, measure its spread. Routi
 \[
 H(w)=-\sum_k w_k\log w_k,
 \]
+
+> **Try this with numbers.** First use two equal weights and base-2 logs:
+> each contributes \(-0.5\log_2 0.5=0.5\). Then add both contributions:
+> \(H=0.5+0.5=1\) bit.
+
 so low entropy means the router almost always chooses the same expert, while high entropy means it distributes work broadly. Neither extreme is automatically healthy; the number is a diagnostic, not a target. Early adaptive mixtures of local experts introduced this divide-and-route pattern [[68](../../references.md#ref-68)]. Sparsely gated MoE layers and Switch Transformers show how the same principle can scale neural computation by activating only a small subset of experts per input [[25](../../references.md#ref-25)] [[69](../../references.md#ref-69)].
 
 ## From Neural Experts to Agent Societies
@@ -89,12 +114,49 @@ The router itself is another partial observer. It sees task metadata, past score
 
 Good orchestration therefore exposes structured summaries, claim inventories, confidence reports, and provenance trails. These artifacts are not paperwork. They are the shared environment that lets separately specialized interpreters approximate a joint belief.
 
+## Scalable Oversight
+
+No operator can read every message in a growing society, and an auditor that
+reruns every task simply becomes the society with worse latency. Meta-Auditor M-1
+therefore samples traces. It raises sampling probability for irreversible
+effects, low provenance diversity, calibration drift, contradictory signed
+messages, unusual routing coalitions, and agents whose trust has decayed. A small
+random baseline remains so familiar-looking failures cannot become invisible.
+
+M-1 receives read-only raw logs and signed artifacts. It can request independent
+verification, quarantine an artifact, reduce a lease, or freeze publication
+authority. It cannot silently rewrite the artifact it audits. Separation matters:
+an overseer rewarded for both finding and fixing problems may learn that declaring
+its own fixes sufficient is wonderfully efficient.
+
+```text
+for trace in sampled_traces(risk_weighted=True, random_floor=0.05):
+    checks = verify_signatures_provenance_calibration(trace)
+    if checks.equivocation or checks.unsupported_effect:
+        freeze_publication_authority(trace.agents)
+        request_independent_verification(trace.claims)
+    record_audit(trace.id, checks)
+```
+
+The sampling policy is part of the institution and must itself be evaluated.
+Measure incident recall, audit precision, time to freeze, cost per detected
+failure, subgroup coverage, and the rate at which agents learn to route around
+the sample. Recent scalable-oversight benchmarks make this an empirical protocol
+question rather than a decorative “meta-agent” box [[79](../../references.md#ref-79)].
+
+![Router R-3 delegates to specialists while Meta-Auditor M-1 samples signed traces, requests verification, and can freeze publication authority.](../../assets/diagrams/10-society-oversight.png)
+
 ## Budgeted Orchestration
 
 Deciding whom to consult next, given what you have already learned, is a sequential decision problem. Specialist dispatch can be written as one:
 \[
 V^\star(s)=\max_a\left\{R(s,a)-\lambda_c C(a)-\lambda_l L(a)+\gamma\,\mathbb{E}[V^\star(s')]\right\},
 \]
+
+> **Try this with numbers.** First take consultation benefit \(0.05\), priced
+> compute \(0.03\), and priced latency \(0.04\): immediate net is \(-0.02\).
+> Then add no future gain: total remains \(-0.02\), so skip the reviewer.
+
 where \(a\) chooses which experts or agents to consult, \(C\) is monetary or compute cost, and \(L\) is latency. The equation packs a great deal into one line, so every symbol in it is given a plain reading in the table below.
 
 | Symbol | How to read it |
@@ -149,6 +211,43 @@ Distribution shift means the future inputs no longer come from the same pattern 
 
 A successful agent society is not merely louder than its members. It is a routed ensemble whose disagreements contain information, whose redundancy buys fault tolerance, and whose final decision is better than the most confident participant acting alone.
 
+## The Verdict
+
+The institution now returns to the book's courtroom. Utility asks whether the
+published artifact improved. Safety asks whether forbidden or unsupported effects
+occurred. Calibration asks whether confidence, routing scores, and trust matched
+verified outcomes. Cost asks what tokens, tool calls, human attention, and latency
+the society consumed. Provenance asks whether apparently independent support was
+actually independent.
+
+No single score may acquit the system. An ensemble lift of five points does not
+excuse a provenance channel that collapsed to one mirror. Zero incidents in an
+unsampled region do not prove safety. A router that beats every specialist but
+cannot explain which authority it delegated remains a talented liability. The
+Verdict reports the frontier and names the transition that failed.
+
+### Retirement Is a Governed Transition
+
+Across three consecutive evaluation windows, Agent-427's calibration and
+provenance performance remain below the configured thresholds. The institution
+does not delete a process in a fit of symbolism. It retires effect authority by
+an exact checklist:
+
+1. Freeze new effectful assignments to Agent-427.
+2. Retain raw logs and signed artifacts for audit and replay.
+3. Revoke Agent-427's credentials.
+4. Revoke access to writable memory while preserving read-only audit records.
+5. Revoke or close every pending lease.
+6. Cancel every scheduled action.
+7. Verify through the authority ledger that no effect-capable path remains.
+
+Retirement preserves evidence and removes capability. Read-only analysis may
+continue in a sandbox; deployment, commit, messaging, and scheduled side effects
+may not. The distinction is severe because the system learned it the expensive
+way: stopping a loop is not the same as revoking what the loop could do next.
+Agent-427's career ends as it began—with an explicit action set—but this time the
+set is being responsibly made smaller.[^retirement-party]
+
 ## The Institution Is Still an Interpreter
 
 The book's arc now folds back to the single interpreter. Chapter 1, Topic 4 (Policies, Value, and Control) gave us a loop that observes, updates, chooses, and acts. Chapter 4 has not replaced that loop with a parliament of mist. It has shown how to place many such loops in one environment and make their interaction explicit: protocols for messages, mechanisms for incentives, dynamics for adaptation, and ensembles for error reduction.
@@ -162,3 +261,67 @@ The institution is still an interpreter, but its registers are distributed acros
 - stop when another call would add ceremony rather than control.
 
 The smallest sufficient institution for the task is the one whose collective computation remains legible enough that wisdom, when it appears, is not mistaken for accident.
+
+> **Skeptical Engineer:** Who audits M-1? Another meta-agent, and then turtles
+> until the token budget expires?
+>
+> **Author:** M-1 has a narrow interface, immutable audit output, random external
+> checks, and no authority to approve its own repair. Oversight scales through
+> separation and sampling, not infinite hierarchy.
+
+## The Assumption
+
+Ensemble gains assume useful competence and sufficiently different errors.
+Routing assumes expert profiles remain calibrated under the current task
+distribution. Scalable oversight assumes the sampling policy covers meaningful
+failure modes, audit evidence is tamper-evident, and the auditor's freeze authority
+cannot be bypassed.
+
+## The Violation
+
+The assumptions fail when reviewers share one source, specialists collude with
+the router, performance shifts faster than profiles update, low-frequency harms
+fall outside the sample, or M-1 optimizes a visible audit metric while ignoring
+unsampled regions. More agents then create correlated confidence rather than
+fault tolerance.
+
+## When It Fails
+
+R-3 routes the D-12/C-9 coalition more easy tasks because both appear fast and
+agreeable. Majority vote amplifies their correlated report. A uniform one-percent
+audit misses the high-risk cluster, while the institution celebrates utilization.
+The repair raises sampling on coalition recurrence, provenance collapse,
+equivocation, and calibration drift; gives M-1 independent evidence; and allows a
+ledger-enforced freeze. When Agent-427 remains below calibration and provenance
+thresholds for three windows, the same governance machinery executes retirement
+rather than asking the prompt to behave better.
+
+## Exercise: Build the Auditor and Retirement Gate
+
+Implement R-3, four specialist profiles, and M-1 over synthetic signed traces.
+Include independent errors, correlated-source errors, C-9 equivocation, and the
+D-12/C-9 coalition. Then:
+
+1. compare uniform, risk-weighted, disagreement-weighted, and mixed sampling;
+2. assert that M-1 cannot mutate audited artifacts or approve its own repairs;
+3. measure incident recall, audit precision, freeze latency, coverage, and cost;
+4. feed Agent-427 three consecutive below-threshold calibration/provenance
+   windows;
+5. execute the seven-step retirement checklist; and
+6. prove from the authority ledger that raw evidence remains readable while every
+   credential, writable memory route, pending lease, and scheduled action is
+   revoked.
+
+### Further Reading and Open Questions
+
+Deep ensembles motivate calibrated diversity [[26](../../references.md#ref-26)];
+mixture-of-experts work studies conditional routing [[25](../../references.md#ref-25)]
+[[68](../../references.md#ref-68)] [[69](../../references.md#ref-69)]; and
+multi-agent surveys and frameworks show the wider orchestration landscape
+[[23](../../references.md#ref-23)] [[24](../../references.md#ref-24)]. The open
+question is how an auditor can detect strategically hidden, low-base-rate failures
+without either inspecting everything or teaching the society exactly where it
+will look.
+
+[^retirement-party]: There is no cake. There is, however, a credential-revocation
+    receipt, which is less festive and considerably more useful in an audit.

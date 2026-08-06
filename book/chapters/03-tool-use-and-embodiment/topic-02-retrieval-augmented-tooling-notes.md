@@ -36,3 +36,13 @@ Equation set to include: latent-document mixture \(p(y|x)\approx\sum_{d\in\mathc
 2. Build around a single question that fails under no-retrieval, succeeds under targeted retrieval, and regresses under over-retrieval.
 3. Present a retrieval "triage board" with explicit actions for null, stale, and contradictory evidence.
 4. Write as a dialogue between a fast hallucinating model and a slower evidence auditor.
+
+## Editor Rewrite Alternative Before Primary Synthesis
+
+Stage retrieval as Agent-427's emergency evidence board. A fresh manifest, a
+stale cached copy, and a poisoned note all match the query; two share the same
+upstream source and therefore masquerade as independent agreement. Explain RAG
+as sparse external attention, but keep provenance, permissions, and time outside
+the neural metaphor. Let the agent quarantine correlated evidence rather than
+average it into confident sludge, and finish with a runnable poisoned-index
+experiment.

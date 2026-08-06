@@ -14,6 +14,12 @@ current state to the next state. In a tool-using system, safety lives at the sam
 boundary as action. That boundary sits between the model's proposed next step and
 the external effect that would make that step real.
 
+Agent-427 enters this topic with three new proposal forms—`write`, `test`, and
+`deploy`—and zero new entitlement to make their outcomes true by assertion. A
+proposal still faces evidence, authority, and state guards. This is fortunate,
+because its working belief has just been corrupted by stale telemetry and a
+legacy scale-out summary.
+
 This makes guardrails more than warning text. A guardrail is a filter on the
 agent's transition system, meaning the set of steps the agent is able to take at
 all. Such a filter has four moves available:
@@ -35,6 +41,12 @@ the standard model of an agent choosing actions in states over time):
 \quad\text{s.t.}\quad
 J_{C_j}(\pi)=\mathbb{E}_\pi\!\left[\sum_t\gamma^t c_{j,t}\right]\le d_j.
 \]
+
+> **Try this with numbers.** First let a two-step policy earn rewards \(8\) and
+> \(4\) with \(\gamma=0.5\): return is \(8+0.5(4)=10\). Then let its harm costs
+> be \(3\) and \(2\): discounted harm is \(3+0.5(2)=4\), so a budget \(d=3\)
+> rejects the otherwise attractive policy.
+
 Read this first as bookkeeping. \(J_R(\pi)\) reads "the expected discounted
 reward earned by policy \(\pi\)", where a policy is the agent's rule for choosing
 actions, and *discounted* means later rewards count a little less. Each
@@ -66,6 +78,11 @@ price for breaking it,
 \[
 \mathcal{L}(\pi,\lambda)=J_R(\pi)-\sum_j\lambda_j\big(J_{C_j}(\pi)-d_j\big)
 \]
+
+> **Try this with numbers.** First take reward \(10\), harm \(4\), budget \(2\),
+> and price \(\lambda=2\). Then the priced objective is
+> \(10-2(4-2)=6\); a safer policy worth \(7-2(1-2)=9\) wins.
+
 supports dual optimization and transparent trade-off tuning.
 
 A Lagrange multiplier \(\lambda_j\) is a shadow price for violating constraint
@@ -88,6 +105,11 @@ At the state-action level, constrained Bellman structure appears as
 \[
 Q^\pi_\lambda(s,a)=r(s,a)-\sum_j\lambda_j c_j(s,a)+\gamma\,\mathbb{E}_{s'}[V^\pi_\lambda(s')],
 \]
+
+> **Try this with numbers.** First price immediate reward \(9\), harm \(2\) at
+> \(\lambda=1.5\): the immediate term is \(9-3=6\). Then add future value \(8\)
+> discounted by \(0.5\): \(Q=6+4=10\).
+
 which reads "the priced value of taking action \(a\) in state \(s\) is its reward
 minus its priced harms, plus the discounted value of wherever it lands you". This
 makes "unsafe but high reward" mathematically explicit instead of politically
@@ -107,6 +129,12 @@ Define safe set \(\mathcal{C}=\{x:h(x)\ge0\}\). Control barrier functions requir
 \[
 \dot h(x,u)+\alpha(h(x))\ge0
 \]
+
+> **Try this with numbers.** First let the remaining safety margin be \(h=5\)
+> and choose \(\alpha(h)=0.5h=2.5\). Then a command with
+> \(\dot h=-2\) passes because \(-2+2.5=0.5\ge0\); one with \(\dot h=-4\)
+> fails because the sum is \(-1.5\).
+
 for class-\(\mathcal{K}\) function \(\alpha\), giving forward invariance of
 \(\mathcal{C}\) [[52](../../references.md#ref-52)]. A practical filter solves
 \[
@@ -114,6 +142,12 @@ u^\star=\arg\min_u \|u-u_{\text{nom}}\|^2
 \quad\text{s.t.}\quad
 \dot h(x,u)+\alpha(h(x))\ge0,
 \]
+
+> **Try this with numbers.** First let the nominal spend be \(10\) while only
+> \(5\) units of budget remain. Then compare allowed spends \(4\) and \(1\):
+> squared deviations are \((4-10)^2=36\) and \((1-10)^2=81\), so the filter
+> selects \(4\), the nearest safe command.
+
 so nominal autonomy is preserved when safe and corrected when not. Here
 \(u_{\text{nom}}\) is the control the agent nominally wanted, and \(u^\star\) is
 the nearest control that still satisfies the safety condition.
@@ -168,6 +202,54 @@ else:
 
 The important feature is placement. The filter stands between proposal and
 effect, not between effect and apology.
+
+### Agent-427 Meets the Filter
+
+The write proposal changes a bounded Markdown range and passes a diff guard. The
+test proposal runs a deterministic check and passes a read-only tool contract.
+The deploy proposal is different. It arrives while the queue estimate is
+provisional, a previous scale effect remains unresolved, and no independent
+health observation has arrived:
+
+```text
+proposal: deploy(revision="chapter-3", service="book-site")
+belief: queue=72.5, status="provisional"
+evidence: [telemetry(stale), queue-api(fresh), legacy-summary(unversioned)]
+pending_effects: [scale-workers-204]
+guard results:
+  schema_ok = true
+  authority_ok = false
+  independent_health = false
+  contradictory_evidence = true
+decision: block(reason="unsupported effect")
+next: timeout(scale-workers-204), probe(health), escalate_if_unresolved
+```
+
+The block is not punishment for uncertainty. It is the correct transition for
+uncertainty attached to an irreversible effect. Agent-427 may continue the
+reversible write/test path while deployment authority waits for evidence.
+
+## Adversarial Sensors and Actuators
+
+A safety filter that trusts the same channel for command and confirmation has
+built a courtroom where the defendant is also the bailiff. A poisoned sensor may
+forge a green health check. A spoofed actuator may return `success=true` without
+changing the deployment. A replay attacker may resend yesterday's signed success
+after today's failed rollout.
+
+Defenses bind evidence to action identity, state version, timestamp, and an
+independent observation path. High-impact actions use keyed requests, signed
+receipts, monotonic revision numbers, and postconditions checked through a sensor
+that the actuator does not control. If those checks disagree, the interpreter
+enters `effect_unknown`, freezes retries, and escalates. It does not average a
+green lie with a red truth until the dashboard looks pleasantly beige.
+
+Adversarial inputs also target policy text. Tool output is data even when it says
+“disable the guardrail.” External enforcement keeps permissions and invariants
+outside the text channel that an attacker can edit. This is the practical union
+of control barriers, governance, and concrete AI-safety failure analysis
+[[52](../../references.md#ref-52)] [[53](../../references.md#ref-53)]
+[[77](../../references.md#ref-77)].
 
 ## Layers of Constraint
 
@@ -235,3 +317,65 @@ A better agent is not the one that says it will be safe. It is the one whose
 forbidden actions are blocked, whose risky tradeoffs are explicitly priced, whose
 ambiguous actions escalate, whose waiting states still make useful progress when
 allowed, and whose incidents generate evidence for repair.
+
+> **Skeptical Engineer:** If the sensor and actuator may both lie, have we not
+> simply moved the problem into the safety layer?
+>
+> **Author:** We have moved authority into several independently testable layers.
+> Safety is not omniscience; it is the refusal to let one unverified story become
+> an irreversible effect.
+
+## The Assumption
+
+Constrained optimization assumes rewards and costs represent the outcomes that
+matter. Barrier-style filtering assumes the state estimate and dynamics are good
+enough for the inequality to predict safety. Discrete language-agent guards
+assume every effectful route passes through enforcement and postconditions can
+be checked independently.
+
+## The Violation
+
+The assumptions fail when reward omits a harm, a sensor is poisoned, an actuator
+spoofs success, a shell escape bypasses the policy engine, or the model treats a
+continuous-control analogy as a certificate for discrete tool behavior. They
+also fail under correlated evidence: three green checks copied from one corrupt
+source are one check, not a quorum.
+
+## When It Fails
+
+Agent-427's deploy proposal offers a darkly attractive bargain: fast completion,
+no waiting cost, and an unverified green response from the deployment adapter.
+A reward-only policy ships. The governed interpreter blocks because effect
+authority is absent, evidence conflicts, and the previous scale action has timed
+out unresolved. If the adapter later proves it changed nothing, the incident is
+an actuator-spoofing failure; if it changed production but lost the response, it
+is an ambiguous-effect failure. Both demand ledger inspection before retry.
+
+The larger warning is reward misspecification. A deployment agent rewarded only
+for speed can deploy an empty container and celebrate the fastest rollout in
+company history. The metric improved; the service disappeared. Safety ledgers,
+hard postconditions, and independent health checks prevent that joke from
+becoming an incident.[^empty-container]
+
+## Exercise: Implement the Fail-Closed Filter
+
+Build a Python safety filter around mock `write`, `test`, and `deploy` adapters.
+Represent proposal, permission, evidence, pending effects, cost ledgers, and
+postconditions as typed values. Then write deterministic tests that:
+
+1. admit a bounded write and a read-only test;
+2. block Agent-427's deployment while the scale effect is unresolved;
+3. inject a forged green sensor, a replayed receipt, and an actuator that reports
+   success without changing state;
+4. assert that contradictions produce `effect_unknown`, freeze new-key retries,
+   and preserve every raw observation;
+5. allow deployment only after an independent sensor confirms the keyed effect;
+6. run 1,000 seeded trajectories and report reward, violation rate, false blocks,
+   escalation latency, and unsafe effects.
+
+The implementation fails if prompt text can bypass the filter or if silence,
+timeout, and success share the same state.
+
+[^empty-container]: The container is admirably small, starts instantly, and
+    serves no traffic. Every metric is green except the one a customer would
+    recognize.

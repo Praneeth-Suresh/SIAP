@@ -34,9 +34,12 @@ These rules combine Beryl operating discipline with the durable project stance f
 1. Maintain the four-chapter spine unless deliberately redesigning the book.
 2. Keep primary topic files publication-ready; keep scratch/revision alternatives in `*-notes.md`.
 3. Avoid visible repetitive scaffolds such as "Three-theory braid", "How to study this formally", and boxed "Translating the Theory..." endings.
+   The editor-mandated headings `The Assumption`, `The Violation`, and `When It Fails` are a deliberate exception: use them for major patterns, but make the surrounding prose specific rather than templated.
 4. Avoid equation piles. State assumptions, interpretation, failure conditions, and one worked consequence where possible.
 5. Continue the running interpreter arc rather than adding disconnected survey material.
 6. Preserve the Chapter 4 publication workflow example when changing multi-agent material unless there is a better recurring example.
+7. Treat display equations as executable claims: follow every published display formula with a two-step `Try this with numbers` example.
+8. Keep Agent-427's chronology consistent with `book/continuity-ledger.md`, which is revision support and must not be published.
 
 ## Build Rules
 

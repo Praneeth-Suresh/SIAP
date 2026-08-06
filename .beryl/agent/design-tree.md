@@ -8,10 +8,9 @@ SIAP is a compact, publishable monograph organized around an agent interpreter. 
 
 | Decision | Options | Current Lean | Why |
 | --- | --- | --- | --- |
-| Runnable exercises | Keep pseudocode only; add executable Python notebooks/scripts; add tests around examples | Add focused Python exercises later | AGENT.md identifies runnable code exercises as the next manuscript improvement, but publication PDF is already passable |
 | Legacy `AGENT.md` | Keep as historical root instruction; fold entirely into Beryl; remove after migration | Keep and keep aligned for now | User explicitly asked to carry `AGENT.md` context into Beryl; deletion should wait for explicit approval |
 | HTML/CSS PDF path | Maintain alongside LaTeX; deprecate in favor of LaTeX | Maintain for now | README documents both outputs; LaTeX is publication artifact |
-| Project-specific test command | Configure `python3 scripts/build_latex_pdf.py` as broad check; leave no-op until faster test suite exists | Use Beryl check plus explicit build commands in testing policy | Beryl affected-test config should not invent a unit-test suite |
+| Project-specific test command | Expand focused builder tests; rely on explicit builds for publication checks | Start with standard-library site-builder regression tests plus Beryl and build commands | The static-site manifest and navigation now have a fast deterministic test surface |
 
 ## Settled Decisions
 
@@ -26,8 +25,26 @@ SIAP is a compact, publishable monograph organized around an agent interpreter. 
 | Beryl profile | Full profile installed: agent core, shims, checks, githooks, CI, driver | 2026-07-19 | n/a |
 | Accessibility floor | Entry-level undergraduate readers must receive first-use definitions, symbol explanations, worked traces, and engineering consequences without removing existing equations or concepts | 2026-07-19 | n/a |
 | Research-question spine | Pattern representation, effectiveness, composition effects, and task dependence provide the implicit connective questions from preface through evaluation passages | 2026-07-19 | n/a |
+| Public book site | Keep the custom static builder; publish only reader-facing pages in manuscript order, with hierarchical chapter/topic navigation, adjacent-reading controls, and MathJax rendering | 2026-08-06 | n/a |
+| Recursive editorial arc | Add an unnumbered Part 0 before the stable four chapters; Part 1 is Chapter 1's single-agent survival problem, Part 2 spans Chapters 2--3's reasoning, memory, tools, and embodied foundations, and Part 3 returns to Chapter 4's society | 2026-08-06 | [ADR 0008](adr/0008-publication-spine-and-recursive-arc.md) |
+| Publication ordering | Declare reader-facing source order and section kind in `book/publication.toml`; all builders and manuscript audits consume the same manifest | 2026-08-06 | [ADR 0008](adr/0008-publication-spine-and-recursive-arc.md) |
+| Exercise contract | Every topic ends in an implementable, code-required exercise; reference implementations may be added later without weakening the assignment | 2026-08-06 | n/a |
+| Editorial contract | Audit formula examples, pattern assumptions/violations/failures, diagrams, citations, footnotes, and required production case studies deterministically | 2026-08-06 | [ADR 0008](adr/0008-publication-spine-and-recursive-arc.md) |
 
 ## Publication Pass Record
+
+## Complete Rewrite Placement Map
+
+The editor-directed recursive arc preserves the stable chapter routes while changing the reader's encounter with them:
+
+| Movement | Canonical source owner | Existing topics retained in place | New burden |
+| --- | --- | --- | --- |
+| Part 0: The System in Action | `book/parts/00-system-in-action.md` | none | Publication workflow, perfect run, collusive catastrophe, first Verdict, and the institutional question |
+| Part 1: The Single Agent | Chapter 1 index and four Chapter 1 topics | goals/actions, belief, abstraction, policy/control | Agent-427's birth, The Gap for the POMDP tuple, learning lifecycle, and theorem violations |
+| Part 2: The Foundations in Motion | Chapter 2 and Chapter 3 indexes and topics | interpreter, planning, memory, evaluation, tools, retrieval, embodiment, safety | memory war room, responsive environment, strategic sensing, poisoning, timeout action, and evaluation as The Verdict |
+| Part 3: The Society | Chapter 4 index and four Chapter 4 topics | protocols, mechanisms, learning dynamics, orchestration | scalable oversight, Byzantine router lie, collusion simulation, trust interest, self-play stress, and retirement |
+
+No existing topic changes ownership. The new part and narrative labels change the order of explanation, not stable chapter URLs.
 
 The publication pass used:
 
@@ -48,7 +65,7 @@ Material corrections made:
 
 ## Pressure Points
 
-- The manuscript is compact rather than SICP-length; future expansion should add executable exercises rather than broad survey material.
+- The manuscript is compact rather than SICP-length; future expansion should add maintained reference implementations for its code-required exercises rather than broad survey material.
 - Chapter 4 now has a recurring worked example, but deeper Dec-POMDP treatment could be a future feature if the book expands.
 - Bibliography normalization can continue, but current citations resolve and no material publication blocker remains.
 - Generated artifacts are tracked, so source changes must rebuild them deliberately.

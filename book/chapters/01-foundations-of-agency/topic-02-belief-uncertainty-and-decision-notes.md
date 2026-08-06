@@ -36,3 +36,9 @@ Core mathematical spine for this topic: Bayesian filtering \(b'(s')=\eta\,O(o\mi
 2. Use a trading-floor metaphor where uncertainty, information cost, and expected gain are treated as portfolio decisions over actions.
 3. Structure the exposition around one recurring numerical toy problem, updated at each section to show posterior movement and policy shifts.
 4. Write as a dialogue between an overconfident planner and a calibration auditor, with equations settling each dispute.
+
+## Editor-Rewrite Alternative: Agent-427 Learns to Doubt the Dashboard
+
+Begin with two mutually inconsistent sandbox observations: a cached citation probe reports success while a fresh resolver reports failure. Agent-427 must maintain a belief over stale cache, mirror mismatch, permission failure, and genuine missing evidence rather than baptize the latest log line as truth. Preserve every Bayesian, value-of-information, entropy, and calibration equation, but turn each into a small arithmetic checkpoint. Insert the required belief-update diagram and make the skeptical engineer object that probabilities merely relocate uncertainty. Answer with contradictory-observation handling and a concrete stopping rule. The failure section should show correlated evidence counted twice and an adversarial log message trying to become an instruction. The exercise should implement the filter and test its behavior under duplicated and poisoned evidence. Reserve the fixed invalid-timestamp CI trace for Chapter 2.
+
+The preferred synthesis uses this alternative because it makes belief a runtime object with observable failure modes. It keeps the existing storm and information-value examples as compact theory demonstrations while Agent-427 supplies the production pressure.

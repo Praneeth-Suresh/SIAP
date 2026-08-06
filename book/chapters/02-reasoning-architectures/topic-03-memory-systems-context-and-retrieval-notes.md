@@ -36,3 +36,7 @@ Equation stack for rewrite depth: memory-control Bellman form \(V^\star(m,h)=\ma
 2. Build around a failure case where one contaminated memory entry corrupts several downstream tool calls, then repair it with policy constraints.
 3. Use a legal brief style in which each retrieved document must justify its relevance and reliability before entering context.
 4. Anchor the exposition around one persistent assistant persona that improves over sessions by disciplined memory curation rather than prompt bloat.
+
+## Editor-Rewrite Alternative Before Primary Synthesis
+
+Replace the filing cabinet with a war room. Agent-427 retrieves `service.yaml` from `main` while standing on `legacy-v2`, whose service is configured in `service.toml`; walk through the wrong retrieval, wrong edit, failed parser, seductive summary, and repair line by line. Treat retrieval as sparse attention over an external corpus, then show where that analogy breaks: retrieval changes the available evidence, provenance, latency, and attack surface. Preserve the three-store abstraction as a useful map, but surround it with interference, consolidation, and deliberate forgetting. Include a complete self-citing contamination trace in which a false reflection becomes semantic memory, gets retrieved as evidence, and earns confidence by citing its own descendants. End with an implementable memory controller and a rate-distortion experiment.

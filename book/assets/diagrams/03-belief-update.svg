@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">Belief update</title>
+  <desc id="desc">Overlapping predict and correct circles combine transition dynamics with weighted observations.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="10" refX="10" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#172a3a"/></marker>
+    <marker id="red-arrow" markerWidth="12" markerHeight="10" refX="10" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b24c2b"/></marker>
+    <filter id="wobble" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="1" seed="427" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="1.2"/></filter>
+    <style>
+      .paper { fill:#f4f0e6; }
+      text { fill:#172a3a; font-family:"Courier New",monospace; }
+      .title { font-family:Georgia,serif; font-size:34px; font-weight:bold; }
+      .subtitle { font-size:16px; letter-spacing:1px; }
+      .label { font-size:19px; font-weight:bold; }
+      .detail { font-size:14px; }
+      .tiny { font-size:13px; font-weight:bold; paint-order:stroke; stroke:#f4f0e6; stroke-width:5px; stroke-linejoin:round; }
+      .rough { filter:url(#wobble); }
+      rect, circle, ellipse, path, line, polygon { fill:#fbf8ef; stroke:#172a3a; stroke-width:3; }
+      .arrow { fill:none; marker-end:url(#arrow); }
+      .red .arrow, .red path, .red line, .red rect, .red circle { stroke:#b24c2b; }
+      .red .arrow { marker-end:url(#red-arrow); }
+      .red text, text.red { fill:#b24c2b; }
+      .green rect, .green circle { fill:#dbe4d5; }
+      .amber rect, .amber circle { fill:#efe0b8; }
+      .danger rect, .danger circle { fill:#f0c9bb; stroke:#b24c2b; }
+      .ghost rect, .ghost circle { fill:#e3e7e3; stroke-dasharray:9 7; }
+      .scribble { fill:none; stroke:#b24c2b; stroke-width:4; stroke-linecap:round; }
+    </style>
+  </defs>
+  <rect class="paper" width="1200" height="700" stroke="none"/>
+  <text class="title" x="56" y="62">BELIEF UPDATE</text><text class="subtitle" x="58" y="94">predict what the world did; correct what your sensor claimed</text><path class="scribble" d="M56,108 C260,101 410,116 620,107"/><g class="green rough"><circle cx="420" cy="345" r="190"/><text class="label" x="360" y="300" text-anchor="middle">PREDICT</text><text class="detail" x="340" y="330" text-anchor="middle">T moves mass</text></g><g class="amber rough"><circle cx="690" cy="345" r="190"/><text class="label" x="755" y="300" text-anchor="middle">CORRECT</text><text class="detail" x="770" y="330" text-anchor="middle">OMEGA weighs evidence</text></g><text class="label" x="555" y="350" text-anchor="middle">POSTERIOR</text><text class="detail" x="555" y="380" text-anchor="middle">belief after both</text><g class="rough "><rect x="60" y="530" width="230" height="78" rx="18"/><text class="label" x="175.0" y="561.0" text-anchor="middle">OLD BELIEF</text><text class="detail" x="175.0" y="593.0" text-anchor="middle">0.60 stale cache</text></g><g class=""><path class="arrow rough" d="M290,569 C350.0,561 350.0,508 410,500"/><text class="tiny" x="350.0" y="524.5" text-anchor="middle">DYNAMICS</text></g><g class="rough danger"><rect x="900" y="530" width="230" height="78" rx="18"/><text class="label" x="1015.0" y="561.0" text-anchor="middle">OBSERVATION</text><text class="detail" x="1015.0" y="593.0" text-anchor="middle">test says pass</text></g><g class="red"><path class="arrow rough" d="M900,569 C830.0,561 830.0,508 760,500"/><text class="tiny" x="830.0" y="524.5" text-anchor="middle">TRUST?</text></g><text class="tiny red" x="600" y="645" text-anchor="middle">CORRELATED SENSORS DO NOT BECOME INDEPENDENT BY ARRIVING TWICE.</text>
+</svg>

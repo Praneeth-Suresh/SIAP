@@ -36,3 +36,11 @@ Equation set: Nash condition \(u_i(\sigma_i^\star,\sigma_{-i}^\star)\ge u_i(\sig
 2. Use a "treaty negotiation" metaphor where equilibrium is ceasefire and dynamics are diplomatic drift.
 3. Build around exploitability dashboards to show how apparently improving agents can still destabilize collectives.
 4. Write as a lab notebook tracking strategy trajectories over many self-play rounds.
+
+## Editor Rewrite Alternative Before Primary Synthesis
+
+Use a fixed-seed toy simulation as a microscope, not as evidence about deployed
+models. D-12 and C-9 choose whether to reveal uncertainty; hiding it earns easier
+follow-up tasks under the naive router. Run honest, collusive, and repaired
+protocols under the same seed, report the illustrative counts, and use self-play
+variants to search for the scoring loophole before production does.

@@ -35,7 +35,8 @@ This file defines the durable principles and operating instructions for future a
 
 ## Content structure conventions
 
-- Book scope: **4 chapters**, up to **7 topics per chapter**.
+- Book scope: an unnumbered **Part 0** followed by **4 chapters**, up to **7 topics per chapter**.
+- `book/publication.toml` is the canonical reader-facing order for every publisher.
 - Each chapter has an `index.md`.
 - Each topic has:
   - a primary file: `topic-XX-*.md`
@@ -127,6 +128,18 @@ This file defines the durable principles and operating instructions for future a
 - Repeated scaffolding phrasing is forbidden in this manuscript. Do not reintroduce uniform openings such
   as "This section is about ..." or uniform table lead-ins such as "several symbols arrive at once".
 
+## Rewrite milestone: recursive science-of-agency overhaul (completed)
+
+- Added Part 0 to introduce the publication institution before the individual agent, then organized the
+  existing chapters as the single agent, foundations in motion, and society.
+- Recast the manuscript around Agent-427, adversarial failures, and evaluation as **The Verdict** while
+  preserving the four stable chapter routes.
+- Closed the theory/practice gap for state, dynamics, observations, reward, policy execution, learning,
+  memory, embodiment, and multi-agent governance.
+- Added ten reproducible SICP-style diagrams and a deterministic manuscript-contract audit.
+- Added implementable exercises, immediate two-step numerical examples for display mathematics, explicit
+  assumptions and violations, skeptical-engineer exchanges, and chapter footnotes.
+
 ## Current status
 - Core scaffold is complete: chapter/topic sources, companion rewrite notes, references, build scripts, site template, stylesheet, and deployment workflow.
 - Documentation baseline is refreshed: `.gitignore`, `README.md`, and `AGENT.md` now reflect project conventions and voice requirements.
@@ -136,9 +149,12 @@ This file defines the durable principles and operating instructions for future a
 - Chapter 2 topics and notes now reflect full three-pass rewrites with storyline outlines, equation harvests, and polished narrative synthesis.
 - Chapters 3 and 4 topics and notes now reflect full three-pass rewrites with storyline outlines, equation harvests, and polished narrative synthesis.
 - All twenty-one published sections now reflect the beginner-accessibility pass, with content preservation verified against the pre-rewrite baseline and artifacts rebuilt from source.
+- The reader-facing spine now contains twenty-three sections: preface, Part 0, four chapter indexes,
+  sixteen primary topics, and references. Companion notes remain editorial rather than published.
+- The publication manifest, recursive narrative, Agent-427 continuity, ten-diagram visual system, and
+  manuscript-contract audit are implemented and reflected in the rebuilt publication artifacts.
 
 ## Next steps
-1. Add runnable code exercises per chapter (especially interpreter and planner sections).
-2. Strengthen cross-links between theoretical claims and concrete orchestration patterns.
-3. Continue style-pass editing to keep a consistent witty, slightly grandiose pedagogical tone.
-4. Add benchmark/evaluation writeups for agent loop quality and tool-use reliability.
+1. Turn selected code-required exercises into maintained reference implementations without softening them.
+2. Add empirical result packages for the trajectory, collusion, and oversight experiments proposed by the exercises.
+3. Continue bibliography normalization as sources and public failure reports mature.

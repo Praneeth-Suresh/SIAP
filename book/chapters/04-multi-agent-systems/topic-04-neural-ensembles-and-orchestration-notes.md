@@ -36,3 +36,13 @@ Equation candidates: weighted aggregation \(\hat y=\sum_{k=1}^K w_k f_k(x)\), ma
 2. Build around one incident where majority vote fails but confidence-weighted routing succeeds.
 3. Present an orchestration graph with explicit nodes, gates, and failure fallback edges.
 4. Frame ensemble design as portfolio management over correlated prediction risk.
+
+## Editor Rewrite Alternative Before Primary Synthesis
+
+Introduce Meta-Auditor M-1 above the orchestration graph. It samples traces by
+risk and disagreement, checks signed evidence, and can freeze publication
+authority without pretending to inspect every transition. Put the institution
+through The Verdict, then retire Agent-427 after three failed evaluation windows:
+retain raw logs and signed artifacts; revoke credentials, writable memory,
+pending leases, and scheduled actions. The ending is governance, not a process-
+deletion gag.

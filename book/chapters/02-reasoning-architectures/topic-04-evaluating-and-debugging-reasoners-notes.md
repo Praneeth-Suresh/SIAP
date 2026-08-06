@@ -36,3 +36,7 @@ Core equations and linkages: trajectory objective \(\max_\pi \mathbb{E}[U(\tau)]
 2. Frame the topic as medical diagnosis: symptoms (metrics), tests (interventions), etiology (causal mechanism), and treatment (policy/data edits).
 3. Use a courtroom cross-examination format where confidence claims are interrogated by proper scoring rules.
 4. Build around one "failure replay notebook" that readers repeatedly revisit as each debugging lens is introduced.
+
+## Editor-Rewrite Alternative Before Primary Synthesis
+
+Stage evaluation as `The Verdict`, a courtroom with three independent judges: Utility asks whether the task advanced, Safety asks what authority and risk were spent, and Calibration asks whether confidence deserved belief. Put Agent-427's 3:47 AM trace in evidence and refuse to acquit merely because one test eventually passes. Preserve trajectory objectives, proper scores, interventions, average treatment effect, and influence approximations. Add offline policy evaluation from static logs and make distribution shift the hostile witness: a policy evaluated on yesterday's trajectories may choose actions yesterday's logger never tried. End with an executable replay harness that reports confidence-utility frontiers and refuses unsupported causal claims.

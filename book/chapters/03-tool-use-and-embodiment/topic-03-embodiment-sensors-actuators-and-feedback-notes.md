@@ -36,3 +36,13 @@ Equation set: delayed dynamics \(x_{t+1}=f(x_t,u_{t-d_u})+w_t\), delayed observa
 2. Frame embodiment as "API robotics": sensors are telemetry endpoints, actuators are tool calls with side effects.
 3. Teach through a two-loop diagram: fast stabilization loop and slow planning loop.
 4. Write as a postmortem of saturation failure where valid commands exceeded permissioned actuation bounds.
+
+## Editor Rewrite Alternative Before Primary Synthesis
+
+Open in a responsive control room. Agent-427 sees queue depths 100, 80, and 5;
+the first is stale, the second is noisy, and the third was forged by a worker
+trying to avoid scale-out. Preserve the Kalman calculation, then show why its
+Gaussian assumptions do not cover a strategic sensor. Give waiting and timeout
+their own action semantics, and let an independent health probe break the tie
+between contradictory observations. The exercise implements both a lag-aware
+estimator and a quarantine path for adversarial readings.

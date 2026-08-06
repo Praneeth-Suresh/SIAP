@@ -2,7 +2,7 @@
 
 What should an agent carry in its head from one decision to the next? Two ideas answer that question. A **world model** says how the world tends to change. A **state abstraction** says which parts of the past are worth keeping when choosing the next action. Get these wrong and the agent either forgets what it needed or chokes on what it did not.
 
-Belief cannot remain an ever-growing transcript. An agent that remembers every token as equally available state has not become wise; it has made planning expensive and brittle.
+Belief cannot remain an ever-growing transcript. Newborn Agent-427 has no durable memory at all; within one run, even its temporary history can outgrow the useful decision state. An agent that treats every token as equally available state has not become wise; it has made planning expensive and brittle.
 
 The design problem is selective forgetting. Forget too much and the agent loses the variables that make action competent. Retain too much and the policy drowns in irrelevant distinctions. Good abstraction is compression in service of control.
 
@@ -18,6 +18,8 @@ Now let \(\phi:\mathcal S\to\mathcal Z\) map detailed states to abstract states.
 R(s,a)=\bar R(\phi(s),a),\qquad
 \sum_{s':\phi(s')=z'}T(s'\mid s,a)=\bar T(z'\mid \phi(s),a).
 \]
+
+> **Try this with numbers.** Step 1: two detailed states both give reward 3 under `inspect`, so reward mismatch is 0. Step 2: their probabilities of reaching abstract state `known` are 0.80 and 0.78, so transition mismatch is 0.02.
 
 A homomorphism is a structure-preserving map. In ordinary programming terms, \(\phi\) is a compression function. It is allowed to rename and merge states only when the merged states still behave the same way for decisions.
 
@@ -46,6 +48,8 @@ Under those assumptions, planning can occur in the compressed space:
 \bar V^{*}(z)=\max_{a\in\mathcal A}\Big[\bar R(z,a)+\gamma\sum_{z'}\bar T(z'\mid z,a)\bar V^{*}(z')\Big].
 \]
 
+> **Try this with numbers.** Step 1: an action earns 2 and reaches abstract values 6 and 4 with equal probability. Step 2: at \(\gamma=0.5\), its value is \(2+0.5[0.5(6)+0.5(4)]=4.5\).
+
 Read this as: the best long-run value of an abstract state is the best available immediate abstract reward plus the discounted average value of wherever that action lands you. The practical payoff is that the planner never has to look at the full detailed state space.
 
 ### What Approximate Abstractions Cost You
@@ -55,6 +59,8 @@ The assumptions are strong. Approximate abstractions are more realistic. Their e
 \[
 \|V^{*}-\bar V^{*}\!\circ\phi\|_\infty \lesssim \frac{\varepsilon_R}{1-\gamma}+\frac{\gamma R_{\max}}{(1-\gamma)^2}\varepsilon_P,
 \]
+
+> **Try this with numbers.** Step 1: with \(\gamma=0.5\), \(\varepsilon_R=0.1\), \(R_{\max}=1\), and \(\varepsilon_P=0.02\), the reward term is \(0.1/0.5=0.2\). Step 2: the transition term is \(0.5(1)(0.02)/0.5^2=0.04\), for a bound scale of \(0.24\).
 
 where \(\varepsilon_R\) and \(\varepsilon_P\) bound reward and transition mismatch [[37](../../references.md#ref-37)] [[39](../../references.md#ref-39)]. The message is practical. Every compressed-away detail is acceptable only if it does not materially change the action the agent should take.
 
@@ -68,11 +74,19 @@ The assumptions behind the bound are doing real work:
 
 Watch the discount term. With \(\gamma=0.9\), the factor \(1/(1-\gamma)^2\) is \(100\). With \(\gamma=0.99\) it is \(10{,}000\). If \(\gamma\) is close to \(1\), small transition errors can echo for a long time. That is why a cheerful summary such as `repo_status: messy` is not enough for high-stakes editing.
 
+## The Assumption
+
+State abstraction assumes that histories merged into one abstract state support the same consequential choices. Exact homomorphism states the ideal; approximate bounds price the deviation. The theorem-shaped promise is conditional: bounded reward, \(\gamma<1\), and honest mismatch bounds. Violate any of them and the displayed value-loss bound no longer licenses the policy. If reward is unbounded or the measured transition error omits a rare release-freeze regime, the arithmetic can be immaculate and irrelevant.
+
+> **Skeptical Engineer:** “The context window is enormous now. Why not keep everything and let attention sort it out?”
+>
+> **Author:** Capacity is not relevance, and attention is not a contract [[76](../../references.md#ref-76)]. The policy still needs to know which branch, authority boundary, freshness marker, and unresolved hypothesis controls the next action. A larger attic does not tell the forklift which crate contains the brakes.
+
 ## Logs Are Archives; State Is Policy Fuel
 
 ### Separating the Audit Trail from the Decision State
 
-A useful implementation separates raw memory from decision state. The code below keeps two fields: an append-only `event_log` for auditing and retrieval, and a small `decision_state` that the policy actually reads. Ingestion writes to both; acting reads only the compact one.
+A useful implementation separates the raw in-run log from decision state. Agent-427 cannot persist either across runs yet. The code below keeps two in-memory fields: an append-only `event_log` for auditing during the run, and a small `decision_state` that the policy actually reads. Ingestion writes to both; acting reads only the compact one.
 
 ```python
 from dataclasses import dataclass
@@ -114,11 +128,29 @@ The formal requirement is conditional sufficiency:
 P(s_{t+1},r_t\mid h_t,a_t)=P(s_{t+1},r_t\mid z_t,a_t),\qquad z_t=\psi(h_t).
 \]
 
+> **Try this with numbers.** Step 1: suppose full history predicts pass/fail as 0.8/0.2. Step 2: if compressed state predicts the same 0.8/0.2, the one-step discrepancy is 0; if it predicts 0.5/0.5, sufficiency has failed visibly.
+
 Read the left side as "the chance of the next state and this step's reward given the whole history \(h_t\) and the action \(a_t\)". Read the right side the same way, but with the compressed state \(z_t\) in place of the history. The map \(\psi\) (psi) is the summarizer that turns history into that compact state.
 
 This says that, for the next decision, the compressed state \(z_t\) carries the predictive information from history that matters. It does not say the archive is useless. It says the policy should not be forced to plan over the archive unless the current decision needs it.
 
 Action selection can then be interpreted as expected-utility maximization over \(z_t\), provided the abstraction preserves the distinctions that affect utility [[34](../../references.md#ref-34)]. A quick check for builders: if two histories produce the same \(z_t\) but you would want different next actions, the abstraction is already broken.
+
+## The Violation
+
+Agent-427 inspects two publication workspaces. One targets `draft-a`; the other targets `draft-b`. Both have a red citation check. The abstraction `{"checks": "red"}` maps them to one state and deletes the target identifier. A policy asked to inspect the relevant source now cannot choose the correct path. The compression saved perhaps twenty tokens and erased the variable that determines the action.
+
+The opposite failure is contamination by correlation. A trace says that clearing a cache preceded a successful check three times. An abstraction stores `cache_clear_fixes_checks=True` and drops the simultaneous dependency refresh. The summary is compact, predictive on old logs, and causally wrong. When the environment changes, Agent-427 recommends the ritual cache clear with the grave confidence of a machine that has mistaken coincidence for physics.[^attic]
+
+Because Agent-427 has no durable memory, neither state survives a restart. That limitation is explicit. Chapter 2 will add memory and inherit the harder obligation to preserve provenance and version across time.
+
+## When It Fails
+
+The sufficiency equation is falsifiable. Find two histories that map to the same \(z_t\), hold the proposed action fixed, and compare next-state or reward distributions. In the workspace example, `inspect draft-a` is useful in one history and wrong in the other. The equality fails, so the summarizer must restore `target_workspace` or force a fresh inspection before acting.
+
+Approximation bounds fail more quietly. If tests cover common states but omit the release-freeze tail, measured \(\varepsilon_P\) can look tiny while the actual policy changes exactly when the stakes rise. The repair is stratified evaluation: measure action preservation and value loss across task regimes, especially rare ones, and include an `unknown` state that makes missing distinctions visible rather than silently defaulting them.
+
+[^attic]: “We have always cleared the cache” is not a causal model. It is an origin myth with a shell command.
 
 ## Behavioral and Causal Fidelity
 
@@ -129,6 +161,8 @@ Bisimulation metrics sharpen the idea of "close enough" by measuring whether two
 \[
 d(s,s')=\max_{a\in\mathcal A}\Big(|R(s,a)-R(s',a)|+\gamma\,W_d\big(T(\cdot\mid s,a),T(\cdot\mid s',a)\big)\Big),
 \]
+
+> **Try this with numbers.** Step 1: let reward difference be 2 and lifted transition distance be 0.4. Step 2: with \(\gamma=0.5\), the action contributes \(2+0.5(0.4)=2.2\) to the distance.
 
 with \(W_d\) the Kantorovich lift induced by \(d\), which turns a distance between single states into a distance between distributions over states. If \(d(s,s')\) is small, the states are interchangeable up to a quantified tolerance. If "test failed because dependency missing" and "test failed because behavior regressed" collapse into the same feature `tests_red`, the abstraction may be compact, but it is not behaviorally faithful.
 
@@ -146,11 +180,15 @@ Agents also need causal fidelity when they intervene. A causal world model encod
 X_i=f_i(\mathrm{Pa}(X_i),U_i),\qquad P(x_1,\dots,x_n)=\prod_i P(x_i\mid \mathrm{pa}_i).
 \]
 
+> **Try this with numbers.** Step 1: let a binary parent occur with probability 0.5 and its child with conditional probability 0.8. Step 2: that joint assignment has probability \(0.5\times0.8=0.4\).
+
 Intervention semantics replace observation with action:
 
 \[
 P(x_1,\dots,x_n\mid \mathrm{do}(X_j=x))=\mathbf{1}[x_j=x]\prod_{i\neq j}P(x_i\mid \mathrm{pa}_i).
 \]
+
+> **Try this with numbers.** Step 1: intervene so \(X_j=x\), making the indicator 1. Step 2: if the two remaining conditional factors are 0.6 and 0.5, the interventional assignment has probability \(1\times0.6\times0.5=0.3\).
 
 These are **structural causal equations**. Each variable \(X_i\) is produced by a function \(f_i\) of its parents \(\mathrm{Pa}(X_i)\) and background disturbance \(U_i\). Read \(\mathrm{Pa}(X_i)\) as "the parents of \(X_i\)", meaning the variables that directly cause it. The product factorization says the joint probability can be assembled from each variable given its parents.
 
@@ -181,3 +219,9 @@ These are the quantities to instrument when you are judging a candidate abstract
 - Token and latency savings: whether the smaller state reduces context size, model time, retrieval work, and tool waiting, without buying those savings by erasing decision-relevant variables.
 
 The interpreter now has a compact internal language. Topic 1 (Goals, Environments, and Actions) gave it a contract. Topic 2 (Belief, Uncertainty, and Decision) gave it belief. This topic gives it a state representation small enough to act on but faithful enough to trust. The remaining question is how action selection becomes governed control rather than a single eager choice.
+
+## Exercise: Break Two Summarizers
+
+Implement two Python functions over synthetic agent traces. `last_n_tokens(history, n)` keeps a fixed suffix. `decision_state(history)` extracts target workspace, check status, evidence freshness, permissions, unresolved hypotheses, and remaining budget. Generate at least 1,000 seeded traces in which the decisive target or permission appears early, while later log noise is longer than the suffix budget.
+
+For each abstraction, measure token count, action-preservation rate, and realized value under a reference policy that sees full history. Add a second dataset where cache clearing correlates with success but dependency refresh is the true intervention. Your test must demonstrate one state pair with distance zero under the naive abstraction but different optimal actions, then repair the abstraction until the pair separates. No prose-only victory conditions: submit the generator, assertions, and a table of measured failures.

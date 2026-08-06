@@ -36,3 +36,14 @@ Canonical equations to include: contract legality \(\texttt{legal}(u_t)=\mathbf{
 2. Teach with a single end-to-end JSON schema walkthrough including validation errors and corrected calls.
 3. Frame the topic as "constitution + courts + emergency powers": contracts, validators, and fallback handlers.
 4. Use a cockpit metaphor: tool calls are control surfaces, and schemas are flight envelopes that prevent stall.
+
+## Editor Rewrite Alternative Before Primary Synthesis
+
+Follow Agent-427 through one rejected edit. It invents the import
+`load_manifest`, then invents tool fields named `path` and `patch`. The runtime
+does not reward confidence with filesystem access: it returns two exact schema
+errors, preserves the repository, and turns refusal into the next observation.
+Build the formal contract outward from that moment, then let the duplicate-
+invoice trace show why valid syntax is only the first court an action must pass.
+End with an executable validator exercise that proves malformed proposals cannot
+cross the effect boundary.

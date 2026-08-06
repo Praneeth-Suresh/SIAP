@@ -36,3 +36,7 @@ Canonical backbone to weave into the rewrite: (1) small-step semantics rule form
 2. Build one minimal "loop bytecode" and interpret it line by line, then lift to modern LLM orchestration.
 3. Frame the chapter as a ship's helm metaphor: utility is compass heading, Bellman recursion is route planning, and feedback is rudder correction.
 4. Write as a debugging diary that starts with a mysterious failure trace and reconstructs semantics backward to identify the root cause.
+
+## Editor-Rewrite Alternative Before Primary Synthesis
+
+Open at 3:47 AM with Agent-427 staring at a CI error whose message is itself wrong. Let the agent hallucinate an import, follow a documentation link into a 404, and nearly act before the interpreter rejects the step. Build operational semantics from that wreckage: the loop becomes a tiny court in which `think`, `act`, `observe`, and `reflect` each require jurisdiction. Preserve the formal state, transition, utility, Bellman, budget-control, and abstract-interpretation machinery, but pair every law with a production violation. The diagram should show feedback returning to state rather than escaping into a transcript. End with an executable invariant checker, because a semantic rule that cannot arrest an illegal tool call is merely a very educated wish.

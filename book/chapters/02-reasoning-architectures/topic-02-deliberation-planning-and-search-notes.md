@@ -36,3 +36,7 @@ Equation set to emphasize: A* priority \(f(n)=g(n)+h(n)\) with admissibility \(h
 2. Center the topic on one warehouse-robot case where symbolic plans, A*, and MCTS are compared under increasing uncertainty.
 3. Tell it as a duel between "greedy now" and "strategic later," with equations as arbitration.
 4. Build the exposition around budget clocks, showing how each planning method spends seconds and buys down regret.
+
+## Editor-Rewrite Alternative Before Primary Synthesis
+
+Make Agent-427's first plan fail because time passes. At 3:47:18 the agent plans against API version 2; at 3:47:51 the service rolls to version 3; at 3:48:07 the agent faithfully executes a now-obsolete step and oscillates between two incompatible repairs. Use the trace to distinguish a plan from a prophecy. Retain graph search, A*, symbolic preconditions, expected utility, Bellman recursion, MCTS, and receding-horizon control, then put `The Assumption`, `The Violation`, and `When It Fails` around the stationary-model bargain. The exercise should require a runnable planner, a changing environment, logged replans, and a measured failure rate rather than a prose itinerary.

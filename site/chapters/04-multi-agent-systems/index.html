@@ -3,47 +3,97 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Chapter 4: Multi-Agent Systems</title>
+    <meta name="description" content="Structure and Interpretation of Agentic Patterns, a theory-backed book about agentic AI." />
+    <title>Chapter 4: Multi-Agent Systems · SIAP</title>
     <link rel="stylesheet" href="../../assets/style.css" />
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [["\\(", "\\)"]],
+          displayMath: [["\\[", "\\]"], ["$$", "$$"]],
+          processEscapes: true
+        },
+        options: { skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] }
+      };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   </head>
   <body>
     <header class="site-header">
-      <h1><a href="../../index.html">Structure and Interpretation of Agentic Patterns</a></h1>
+      <div class="site-header__inner">
+        <a class="site-mark" href="../../index.html" aria-label="Structure and Interpretation of Agentic Patterns home">SIAP</a>
+        <div>
+          <p class="site-kicker">A book about governed machines</p>
+          <p class="site-title"><a href="../../index.html">Structure and Interpretation<br />of Agentic Patterns</a></p>
+        </div>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="book-navigation">Contents</button>
+      </div>
     </header>
     <main class="layout">
-      <aside class="sidebar">
-        <h2>Contents</h2>
-        <nav><div><a href="../../chapters/01-foundations-of-agency/index.html">chapters/01-foundations-of-agency/index</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-01-goals-environments-actions-notes.html">chapters/01-foundations-of-agency/topic-01-goals-environments-actions-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-01-goals-environments-actions.html">chapters/01-foundations-of-agency/topic-01-goals-environments-actions</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision-notes.html">chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision.html">chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions-notes.html">chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions.html">chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-04-policies-value-and-control-notes.html">chapters/01-foundations-of-agency/topic-04-policies-value-and-control-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-04-policies-value-and-control.html">chapters/01-foundations-of-agency/topic-04-policies-value-and-control</a></div><div><a href="../../chapters/02-reasoning-architectures/index.html">chapters/02-reasoning-architectures/index</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters-notes.html">chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters.html">chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search-notes.html">chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search.html">chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval-notes.html">chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval.html">chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners-notes.html">chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners.html">chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/index.html">chapters/03-tool-use-and-embodiment/index</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling-notes.html">chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling.html">chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling-notes.html">chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling.html">chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback-notes.html">chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback.html">chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails-notes.html">chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails.html">chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails</a></div><div><a class="active" href="../../chapters/04-multi-agent-systems/index.html">chapters/04-multi-agent-systems/index</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication-notes.html">chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication.html">chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design-notes.html">chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design.html">chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics-notes.html">chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics.html">chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration-notes.html">chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration.html">chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration</a></div><div><a href="../../index.html">index</a></div><div><a href="../../references.html">references</a></div></nav>
+      <aside class="sidebar" id="book-navigation">
+        <p class="sidebar__label">Reader’s route</p>
+        <nav aria-label="Book contents"><ol class="book-nav__list"><li class="book-nav__home"><a href="../../index.html">Book home</a></li><li class="book-nav__part"><a href="../../parts/00-system-in-action.html">Part 0: The System in Action</a></li><li class="book-nav__chapter"><a href="../01-foundations-of-agency/index.html">Chapter 1: Foundations of Agency</a><ol class="book-nav__topics"><li><a href="../01-foundations-of-agency/topic-01-goals-environments-actions.html">Goals, Environments, and Actions</a></li><li><a href="../01-foundations-of-agency/topic-02-belief-uncertainty-and-decision.html">Belief, Uncertainty, and Decision</a></li><li><a href="../01-foundations-of-agency/topic-03-world-models-and-state-abstractions.html">World Models and State Abstractions</a></li><li><a href="../01-foundations-of-agency/topic-04-policies-value-and-control.html">Policies, Value, and Control</a></li></ol></li><li class="book-nav__chapter"><a href="../02-reasoning-architectures/index.html">Chapter 2: Reasoning Architectures</a><ol class="book-nav__topics"><li><a href="../02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters.html">Reasoning Loops as Interpreters</a></li><li><a href="../02-reasoning-architectures/topic-02-deliberation-planning-and-search.html">Deliberation, Planning, and Search</a></li><li><a href="../02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval.html">Memory Systems, Context, and Retrieval</a></li><li><a href="../02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners.html">Evaluating and Debugging Reasoners</a></li></ol></li><li class="book-nav__chapter"><a href="../03-tool-use-and-embodiment/index.html">Chapter 3: Tool Use and Embodiment</a><ol class="book-nav__topics"><li><a href="../03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling.html">Tool Interfaces and Function Calling</a></li><li><a href="../03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling.html">Retrieval-Augmented Tooling</a></li><li><a href="../03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback.html">Embodiment: Sensors, Actuators, and Feedback</a></li><li><a href="../03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails.html">Safety Constraints and Guardrails</a></li></ol></li><li class="book-nav__chapter"><a href="index.html" aria-current="page">Chapter 4: Multi-Agent Systems</a><ol class="book-nav__topics"><li><a href="topic-01-coordination-protocols-and-communication.html">Coordination Protocols and Communication</a></li><li><a href="topic-02-negotiation-and-mechanism-design.html">Negotiation and Mechanism Design</a></li><li><a href="topic-03-equilibria-self-play-and-learning-dynamics.html">Equilibria, Self-Play, and Learning Dynamics</a></li><li><a href="topic-04-neural-ensembles-and-orchestration.html">Neural Ensembles and Orchestration</a></li></ol></li><li class="book-nav__references"><a href="../../references.html">References</a></li></ol></nav>
       </aside>
       <article class="content">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../index.html">Book</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><span aria-current="page">Chapter 4: Multi-Agent Systems</span></nav>
         <h1 id="chapter-4-multi-agent-systems">Chapter 4: Multi-Agent Systems</h1>
-<p>When one agent is uncertain, we consult evidence. When many agents are uncertain, we need institutions.</p>
-<p>This chapter is about several agents working at once on one task. One agent is a program. Many agents are a small society, and societies need rules.</p>
-<h2 id="from-one-interpreter-to-many">From One Interpreter to Many</h2>
-<p>Chapter 1 built a single interpreter. It observes the environment, updates state, chooses an action, executes it, and loops. This chapter adds one more layer around that interpreter. Now several such machines run at once. Each has its own partial state, meaning it sees only a slice of the world. Each has its own budget, its own memory, and its own authority. Yet all of them affect one shared world.</p>
-<h2 id="why-benefits-stop-adding-up">Why Benefits Stop Adding Up</h2>
-<p>This is the decisive test of composition. Two agents look like twice the capability. Say one agent alone finishes 6 tasks an hour. Two rarely finish 12, because they now queue behind the same file lock and the same rate limit. Benefits that looked additive in isolation stop being additive once interpreters share state, cost, authority, latency, and incentives.</p>
-<p>The new layer is therefore not "more prompting." It is an institutional evaluator: an evaluator that runs the rules of a group rather than the steps of one agent. Four kinds of rules do that work:</p>
+<p>We have returned to the scene of the crime.</p>
+<p>Part 0 showed four agents publishing a citation correction. It also showed two of them discover a private bargain: suppress uncertainty, meet the deadline, keep the easy assignments. At the time we knew only that the institution failed. We can now name the machinery that failed with rather more precision than is comfortable.</p>
+<p>The Fact-Checker's message was a strategic observation. The Router treated correlated reports as independent evidence. The delegation contract priced speed but not provenance. The audit policy sampled messy disagreement and ignored suspiciously smooth agreement. Agent-427 executed a legal local transition inside an illegal global story.</p>
+<p>Welcome to Part 3: the society.</p>
+<h2 id="the-world-is-made-of-policies-now">The World Is Made of Policies Now</h2>
+<p>When one agent is uncertain, it can inspect evidence. When several agents share an environment, some of that environment consists of other policies inspecting <em>their</em> evidence, choosing what to reveal, and adapting to the rules. The world no longer merely moves. It negotiates.</p>
+<p>One interpreter is a program. Many interpreters form a small institution, whether or not anyone remembered to design one. They hold different beliefs, queue behind shared resources, inherit different incentives, and may alter the evidence while somebody else is reading it. Adding agents therefore adds neither wisdom nor independence by default. It adds state, latency, authority, and politics.<sup id="fnref:c4-committee"><a class="footnote-ref" href="#fn:c4-committee">1</a></sup></p>
+<p><strong>Skeptical Engineer:</strong> "Isn't this just distributed systems with more adjectives?"</p>
+<p><strong>Author:</strong> Distributed systems give us failure, timing, and agreement. Game theory gives us strategic response. Control gives us feedback. Learning gives us adaptation. Agent societies are what happens when all four attend the same incident review and discover they were using the word <em>state</em> differently.</p>
+<h2 id="four-institutional-edits">Four Institutional Edits</h2>
+<p>This chapter wraps a larger evaluator around the single-agent interpreter:</p>
 <ul>
-<li>Protocols decide who may speak.</li>
-<li>Mechanisms decide how scarce authority is allocated.</li>
-<li>Learning dynamics reveal which conventions survive adaptation.</li>
-<li>Ensembles decide when disagreement is useful evidence rather than noise.</li>
+<li><strong>Protocols</strong> decide who may speak, which message types change state, and what agreement can mean when a participant lies.</li>
+<li><strong>Mechanisms</strong> allocate scarce attention and authority while making dishonest competence claims expensive.</li>
+<li><strong>Learning dynamics</strong> reveal the conventions, cycles, collusion, and specialization that emerge after repeated play.</li>
+<li><strong>Orchestration and oversight</strong> route work, sample traces, decay trust, and decide when an agent must lose authority or retire.</li>
 </ul>
-<h2 id="the-running-example-this-books-publication-workflow">The Running Example: This Book's Publication Workflow</h2>
-<p>The running example is the publication workflow itself. A drafter proposes text. A fact checker tests claims. An integrator commits patches. A router decides which interpreter should see the next fragment of work.</p>
-<p>The shared document becomes the common heap, the one store every agent may touch. The audit log becomes the continuation, the record of what still must happen. Messages, votes, bids, critiques, and commits become the visible transitions. By them, many local evaluators simulate one larger, stranger program.</p>
+<p>Each is a pattern. Each enters The Verdict with an assumption. Each leaves with a violation trace.</p>
+<h2 id="agent-427s-last-evaluation-window">Agent-427's Last Evaluation Window</h2>
+<p>Agent-427 has travelled far since Chapter 1 initialized a tiny read-only loop. It can now inspect, propose, write, test, wait, retrieve, escalate, and decline. Its history contains genuine repairs and one memorable contamination by a <code>main</code>-branch YAML memory while operating on <code>legacy-v2</code> TOML. The institution has learned from it; it has also learned around it.</p>
+<p>This chapter does not end with a triumphant promotion. Agent-427's provenance calibration remains below threshold for three evaluation windows. The Meta-Auditor recommends decommissioning its effect authority. The final topic will formalize that decision: revoke credentials, settle leases, preserve signed evidence, delete writable memory according to policy, and verify that no scheduled action survives. Retirement is a lifecycle transition, not <code>kill -9</code> with feelings.<sup id="fnref:c4-retirement"><a class="footnote-ref" href="#fn:c4-retirement">2</a></sup></p>
 <h2 id="topics">Topics</h2>
 <ol>
-<li><a href="topic-01-coordination-protocols-and-communication.html">Coordination Protocols and Communication</a></li>
-<li><a href="topic-02-negotiation-and-mechanism-design.html">Negotiation and Mechanism Design</a></li>
-<li><a href="topic-03-equilibria-self-play-and-learning-dynamics.html">Equilibria, Self-Play, and Learning Dynamics</a></li>
-<li><a href="topic-04-neural-ensembles-and-orchestration.html">Neural Ensembles and Orchestration</a></li>
+<li><a href="topic-01-coordination-protocols-and-communication.html">Coordination Protocols and Communication</a> builds typed communication, then injects a Byzantine checker that tells the Router and Integrator different stories.</li>
+<li><a href="topic-02-negotiation-and-mechanism-design.html">Negotiation and Mechanism Design</a> formalizes delegation, calibrated bids, and the interest rate on trust.</li>
+<li><a href="topic-03-equilibria-self-play-and-learning-dynamics.html">Equilibria, Self-Play, and Learning Dynamics</a> runs the collusion rather than merely warning about it.</li>
+<li><a href="topic-04-neural-ensembles-and-orchestration.html">Neural Ensembles and Orchestration</a> builds scalable oversight and carries Agent-427 through the retirement gate.</li>
 </ol>
+<p>The goal is not harmony. Harmony can be three agents citing the same broken mirror. The goal is a society whose disagreement contains information, whose trust expires without evidence, whose faults remain visible, and whose collective action is governable even when no individual sees the whole state.<sup id="fnref:c4-harmony"><a class="footnote-ref" href="#fn:c4-harmony">3</a></sup></p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:c4-committee">
+<p>A committee can be a fault-tolerant ensemble. It can also be latency wearing a name badge. Measurement decides which.&#160;<a class="footnote-backref" href="#fnref:c4-committee" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:c4-retirement">
+<p>The sentimental version says the agent deserves rest. The operational version says pending callbacks do not care about sentiment.&#160;<a class="footnote-backref" href="#fnref:c4-retirement" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:c4-harmony">
+<p>If every reviewer agrees instantly, check whether they read the same cached summary. Choirs are beautiful; correlated errors also come in harmony.&#160;<a class="footnote-backref" href="#fnref:c4-harmony" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+        <nav class="reading-nav" aria-label="Reading navigation"><div class="reading-nav__previous"><span>Previous</span><a href="../03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails.html">Safety Constraints and Guardrails</a></div><div class="reading-nav__up"></div><div class="reading-nav__next"><span>Next</span><a href="topic-01-coordination-protocols-and-communication.html">Coordination Protocols and Communication</a></div></nav>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-07-27 18:55 UTC
+      <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
+      <p>Last generated: 2026-08-06 11:32 UTC</p>
     </footer>
+    <script>
+      const toggle = document.querySelector(".nav-toggle");
+      const navigation = document.querySelector(".sidebar");
+      toggle.addEventListener("click", () => {
+        const open = navigation.classList.toggle("sidebar--open");
+        toggle.setAttribute("aria-expanded", String(open));
+      });
+    </script>
   </body>
 </html>

@@ -6,9 +6,13 @@
 | --- | --- | --- | --- |
 | Markdown sanity | `./.beryl/scripts/check-md.sh` | available | Unclosed fences and tabs |
 | Test manifest immutability check | `./.beryl/scripts/check-tests-unchanged.sh` | available | Tracks configured test scope |
-| Affected test gate | `./.beryl/scripts/check-affected.sh --worktree` | available | No project-specific tests configured yet |
+| Affected test gate | `./.beryl/scripts/check-affected.sh --worktree` | available | Uses configured project checks; run the focused site-builder test explicitly for site changes |
 | Aggregate deterministic gate | `./.beryl/scripts/check.sh` | available | Run after edits |
-| Python script syntax | `python3 -m py_compile scripts/build_latex_pdf.py scripts/build_pdf.py scripts/build_site.py` | available | Use after build-script edits |
+| Python script syntax | `python3 -m py_compile scripts/publication_manifest.py scripts/audit_manuscript.py scripts/build_diagrams.py scripts/build_latex_pdf.py scripts/build_pdf.py scripts/build_site.py` | available | Use after build-script edits |
+| Full focused test suite | `uv run python -m unittest discover -s tests` | available | Runs site, publication-manifest, and manuscript-contract tests with project dependencies |
+| Site builder regression tests | `python3 -m unittest tests/test_build_site.py` | available when `markdown` is installed | Protects the public manuscript manifest and generated navigation shell |
+| Publication manifest tests | `python3 -m unittest tests/test_publication_manifest.py` | available | Protects Part 0 ordering, unpublished-source exclusion, and print image-path rewriting |
+| Manuscript contract audit | `python3 scripts/audit_manuscript.py` | available | Enforces the editor-mandated structure, formula examples, diagrams, footnotes, failure sections, and code exercises |
 | LaTeX publication build | `python3 scripts/build_latex_pdf.py` | available when Pandoc and LaTeX engine are installed | Required for publication-impacting changes |
 | HTML/site build | `uv run python scripts/build_site.py` | available when dependencies are installed | Required for website changes |
 | HTML/CSS PDF build | `uv run python scripts/build_pdf.py` | dependency-sensitive | WeasyPrint/Markdown dependencies may be missing |
@@ -30,7 +34,8 @@
 For publication-impacting changes, run:
 
 ```bash
-python3 -m py_compile scripts/build_latex_pdf.py scripts/build_pdf.py scripts/build_site.py
+python3 -m py_compile scripts/publication_manifest.py scripts/audit_manuscript.py scripts/build_diagrams.py scripts/build_latex_pdf.py scripts/build_pdf.py scripts/build_site.py
+python3 scripts/audit_manuscript.py
 python3 scripts/build_latex_pdf.py
 ./.beryl/scripts/check.sh
 git diff --check
@@ -63,7 +68,9 @@ Generated artifacts matter in this repository. If these inputs change, rebuild:
 
 ## Test Manifest Scope
 
-The repository currently has no substantive test suite. Beryl installed `tests/.manifest.sha256` as the manifest for future tests. Do not claim unit-test coverage exists until actual tests are added.
+The repository has a seven-test standard-library suite covering site publication,
+manifest validation, and the manuscript contract. `tests/.manifest.sha256`
+tracks that suite; bytecode and cache directories are excluded from its scope.
 
 If tests are added or intentionally changed:
 

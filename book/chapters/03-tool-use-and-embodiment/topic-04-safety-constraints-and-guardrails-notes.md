@@ -36,3 +36,14 @@ Core equations: CMDP objective \(\max_\pi J_R(\pi)\) subject to \(J_{C_j}(\pi)\l
 2. Build around one unsafe-trajectory simulation with a before/after safety-filter insertion.
 3. Contrast soft guardrails (prompt constraints) with hard guardrails (permissioning middleware) using failure examples.
 4. Write as an operations runbook where equations justify each incident-response step.
+
+## Editor Rewrite Alternative Before Primary Synthesis
+
+Treat safety as the machinery that survives compromised senses and actuators.
+Agent-427 receives a forged green health check, proposes a rollout inside its
+nominal budget, and then faces an actuator that reports success without changing
+the deployment. The safety filter requires independent evidence, bounds the
+effect, records the unresolved contradiction, and escalates. Preserve the CMDP
+and barrier mathematics, but state exactly which assumptions the discrete tool
+world violates. Close with code that tests fail-closed behavior under spoofing,
+replay, and partial actuator failure.

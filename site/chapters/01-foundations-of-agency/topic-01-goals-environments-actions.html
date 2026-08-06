@@ -3,21 +3,41 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Goals, Environments, and Actions</title>
+    <meta name="description" content="Structure and Interpretation of Agentic Patterns, a theory-backed book about agentic AI." />
+    <title>Goals, Environments, and Actions · SIAP</title>
     <link rel="stylesheet" href="../../assets/style.css" />
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [["\\(", "\\)"]],
+          displayMath: [["\\[", "\\]"], ["$$", "$$"]],
+          processEscapes: true
+        },
+        options: { skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] }
+      };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   </head>
   <body>
     <header class="site-header">
-      <h1><a href="../../index.html">Structure and Interpretation of Agentic Patterns</a></h1>
+      <div class="site-header__inner">
+        <a class="site-mark" href="../../index.html" aria-label="Structure and Interpretation of Agentic Patterns home">SIAP</a>
+        <div>
+          <p class="site-kicker">A book about governed machines</p>
+          <p class="site-title"><a href="../../index.html">Structure and Interpretation<br />of Agentic Patterns</a></p>
+        </div>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="book-navigation">Contents</button>
+      </div>
     </header>
     <main class="layout">
-      <aside class="sidebar">
-        <h2>Contents</h2>
-        <nav><div><a href="../../chapters/01-foundations-of-agency/index.html">chapters/01-foundations-of-agency/index</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-01-goals-environments-actions-notes.html">chapters/01-foundations-of-agency/topic-01-goals-environments-actions-notes</a></div><div><a class="active" href="../../chapters/01-foundations-of-agency/topic-01-goals-environments-actions.html">chapters/01-foundations-of-agency/topic-01-goals-environments-actions</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision-notes.html">chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision.html">chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions-notes.html">chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions.html">chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-04-policies-value-and-control-notes.html">chapters/01-foundations-of-agency/topic-04-policies-value-and-control-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-04-policies-value-and-control.html">chapters/01-foundations-of-agency/topic-04-policies-value-and-control</a></div><div><a href="../../chapters/02-reasoning-architectures/index.html">chapters/02-reasoning-architectures/index</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters-notes.html">chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters.html">chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search-notes.html">chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search.html">chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval-notes.html">chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval.html">chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners-notes.html">chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners.html">chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/index.html">chapters/03-tool-use-and-embodiment/index</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling-notes.html">chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling.html">chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling-notes.html">chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling.html">chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback-notes.html">chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback.html">chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails-notes.html">chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails.html">chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails</a></div><div><a href="../../chapters/04-multi-agent-systems/index.html">chapters/04-multi-agent-systems/index</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication-notes.html">chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication.html">chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design-notes.html">chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design.html">chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics-notes.html">chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics.html">chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration-notes.html">chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration.html">chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration</a></div><div><a href="../../index.html">index</a></div><div><a href="../../references.html">references</a></div></nav>
+      <aside class="sidebar" id="book-navigation">
+        <p class="sidebar__label">Reader’s route</p>
+        <nav aria-label="Book contents"><ol class="book-nav__list"><li class="book-nav__home"><a href="../../index.html">Book home</a></li><li class="book-nav__part"><a href="../../parts/00-system-in-action.html">Part 0: The System in Action</a></li><li class="book-nav__chapter"><a href="index.html">Chapter 1: Foundations of Agency</a><ol class="book-nav__topics"><li><a href="topic-01-goals-environments-actions.html" aria-current="page">Goals, Environments, and Actions</a></li><li><a href="topic-02-belief-uncertainty-and-decision.html">Belief, Uncertainty, and Decision</a></li><li><a href="topic-03-world-models-and-state-abstractions.html">World Models and State Abstractions</a></li><li><a href="topic-04-policies-value-and-control.html">Policies, Value, and Control</a></li></ol></li><li class="book-nav__chapter"><a href="../02-reasoning-architectures/index.html">Chapter 2: Reasoning Architectures</a><ol class="book-nav__topics"><li><a href="../02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters.html">Reasoning Loops as Interpreters</a></li><li><a href="../02-reasoning-architectures/topic-02-deliberation-planning-and-search.html">Deliberation, Planning, and Search</a></li><li><a href="../02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval.html">Memory Systems, Context, and Retrieval</a></li><li><a href="../02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners.html">Evaluating and Debugging Reasoners</a></li></ol></li><li class="book-nav__chapter"><a href="../03-tool-use-and-embodiment/index.html">Chapter 3: Tool Use and Embodiment</a><ol class="book-nav__topics"><li><a href="../03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling.html">Tool Interfaces and Function Calling</a></li><li><a href="../03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling.html">Retrieval-Augmented Tooling</a></li><li><a href="../03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback.html">Embodiment: Sensors, Actuators, and Feedback</a></li><li><a href="../03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails.html">Safety Constraints and Guardrails</a></li></ol></li><li class="book-nav__chapter"><a href="../04-multi-agent-systems/index.html">Chapter 4: Multi-Agent Systems</a><ol class="book-nav__topics"><li><a href="../04-multi-agent-systems/topic-01-coordination-protocols-and-communication.html">Coordination Protocols and Communication</a></li><li><a href="../04-multi-agent-systems/topic-02-negotiation-and-mechanism-design.html">Negotiation and Mechanism Design</a></li><li><a href="../04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics.html">Equilibria, Self-Play, and Learning Dynamics</a></li><li><a href="../04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration.html">Neural Ensembles and Orchestration</a></li></ol></li><li class="book-nav__references"><a href="../../references.html">References</a></li></ol></nav>
       </aside>
       <article class="content">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../index.html">Book</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><a href="index.html">Chapter 1: Foundations of Agency</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><span aria-current="page">Goals, Environments, and Actions</span></nav>
         <h1 id="goals-environments-and-actions">Goals, Environments, and Actions</h1>
-<p>Before anything clever can happen, an agent needs three things: something it is trying to achieve, a world it is acting inside, and a list of moves it is allowed to make. Those three things get written down here as a contract. Every later chapter extends that contract, and it is the first thing you inspect when an agent misbehaves.</p>
+<p>Agent-427 is born with a narrow constitution: it may inspect the repository, but it may not write, deploy, or remember anything durably. Before anything clever can happen, it needs three things: something it is trying to achieve, a world it is acting inside, and a list of moves it is allowed to make. Those three things get written down here as a contract. Every later chapter extends that contract, and it is the first thing you inspect when an agent misbehaves.</p>
 <p>An agent is not a model that emits impressive text. It is an interpreter for situated action. At each step it does four things:</p>
 <ul>
 <li>it reads a partial observation, meaning it sees only some of what is going on;</li>
@@ -68,33 +88,80 @@ while not terminated(state, history):
 <p>The rest of the chapter refines the three vague functions in this loop. Topic 2 (Belief, Uncertainty, and Decision) asks what <code>update_state</code> should mean when the world is uncertain. Topic 3 (World Models and State Abstractions) asks what information belongs in <code>state</code> rather than in the raw transcript. Topic 4 (Policies, Value, and Control) asks how <code>choose_action</code> becomes a policy that remains useful under constraints and feedback.</p>
 <h2 id="formal-contract">Formal Contract</h2>
 <p>A common mathematical model is a partially observable Markov decision process (POMDP) with constraints. "Partially observable" means the agent cannot see the true state directly. The model is written as an eight-part tuple:</p>
-<p>[
+<p>\[
 \mathcal{M}=(\mathcal{S},\mathcal{O},\mathcal{A},T,\Omega,R,C,\gamma).
-]</p>
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> Step 1: give a toy world \(2\) states, \(3\) observations, and \(4\) legal actions. Step 2: its explicit state-action table already needs \(2\times4=8\) entries before transitions, costs, or observations arrive.</p>
+</blockquote>
 <p>Read that aloud as "the model M consists of states S, observations O, actions A, transitions T, observation model Omega, reward R, cost C, and discount gamma." Eight symbols in a single line is a lot to hold in mind, so the table in "From Symbols to Interfaces" maps each one to a field you would actually implement.</p>
 <h3 id="states-observations-and-actions">States, Observations, and Actions</h3>
-<p>Here (\mathcal{S}) is <strong>latent world state</strong>: the complete condition of the world that matters but is not directly visible. For the coding agent, (s\in\mathcal{S}) ("a state s drawn from the set S") might include the real bug location, whether a dependency is stale, and whether an unseen integration test will fail. The word latent simply means "present in the world, hidden from the agent's sensors."</p>
-<p>(\mathcal{O}) is the set of observations, such as file contents, test output, logs, and user messages. (\mathcal{A}) is the action set, including <code>read_file</code>, <code>edit_file</code>, <code>run_tests</code>, <code>ask_user</code>, and <code>open_pr</code>.</p>
+<p>Here \(\mathcal{S}\) is <strong>latent world state</strong>: the complete condition of the world that matters but is not directly visible. For the coding agent, \(s\in\mathcal{S}\) ("a state s drawn from the set S") might include the real bug location, whether a dependency is stale, and whether an unseen integration test will fail. The word latent simply means "present in the world, hidden from the agent's sensors."</p>
+<p>\(\mathcal{O}\) is the set of observations, such as file contents, test output, logs, and user messages. \(\mathcal{A}\) is the action set, including <code>read_file</code>, <code>edit_file</code>, <code>run_tests</code>, <code>ask_user</code>, and <code>open_pr</code>.</p>
 <h3 id="how-the-world-moves-and-what-the-agent-sees">How the World Moves and What the Agent Sees</h3>
-<p>The term (T(s'\mid s,a)) is the <strong>transition dynamics</strong>. Read it as "the chance the next hidden state is s-prime, given the current state s and action a." If (a) is <code>edit_file</code>, (T) describes how likely that edit is to move the repository from "bug present" to "bug fixed" or, less gloriously, to "new regression introduced."</p>
-<p>The term (\Omega(o\mid s,a)) is the <strong>observation model</strong>. Read it as "the chance the agent sees observation o after action a when the world is in state s." A flaky test suite has an observation model with noise: the same hidden state can produce a pass one minute and a failure the next.</p>
-<p>The last three symbols are the scoring machinery. (R(s,a)) is reward, (C(s,a)) is constraint cost, and (\gamma\in(0,1)) is a <strong>discount factor</strong>, a number strictly between zero and one that makes nearer consequences count more than distant ones [<a href="../../references.html#ref-4">4</a>] [<a href="../../references.html#ref-7">7</a>] [<a href="../../references.html#ref-51">51</a>].</p>
+<p>The term \(T(s'\mid s,a)\) is the <strong>transition dynamics</strong>. Read it as "the chance the next hidden state is s-prime, given the current state s and action a." If \(a\) is <code>edit_file</code>, \(T\) describes how likely that edit is to move the repository from "bug present" to "bug fixed" or, less gloriously, to "new regression introduced."</p>
+<p>The term \(\Omega(o\mid s,a)\) is the <strong>observation model</strong>. Read it as "the chance the agent sees observation o after action a when the world is in state s." A flaky test suite has an observation model with noise: the same hidden state can produce a pass one minute and a failure the next.</p>
+<p>The last three symbols are the scoring machinery. \(R(s,a)\) is reward, \(C(s,a)\) is constraint cost, and \(\gamma\in(0,1)\) is a <strong>discount factor</strong>, a number strictly between zero and one that makes nearer consequences count more than distant ones [<a href="../../references.html#ref-4">4</a>] [<a href="../../references.html#ref-7">7</a>] [<a href="../../references.html#ref-51">51</a>].</p>
 <h3 id="the-markov-assumption-is-a-design-choice">The Markov Assumption Is a Design Choice</h3>
 <p>The Markov assumption is an interpretation, not a fact about reality. It says that the state representation is rich enough that the next transition can be modeled from the current state and action alone. When that assumption fails, the repair is usually one of three moves: better state, better memory, or a more cautious policy.</p>
 <h3 id="reading-the-objective-with-two-numbers">Reading the Objective, with Two Numbers</h3>
-<p>A policy (\pi(a\mid h_t)), with history (h_t=(o_{0:t},a_{0:t-1})), is evaluated by expected return subject to constraints. A <strong>policy</strong> is the rule for choosing actions. The notation (\pi(a\mid h_t)) reads "the probability that the policy chooses action (a) given history (h_t)," where the history holds every observation up to step (t) and every action before it.</p>
-<p>Before the infinite sum appears, consider two concrete steps with (\gamma=0.9). Suppose <code>read_file</code> earns immediate reward (R_0=1) because it gathers useful evidence, and <code>edit_file</code> earns (R_1=8) after the evidence points to the right line. The two-step discounted return is</p>
-<p>[
+<p>A policy \(\pi(a\mid h_t)\), with history \(h_t=(o_{0:t},a_{0:t-1})\), is evaluated by expected return subject to constraints. A <strong>policy</strong> is the rule for choosing actions. The notation \(\pi(a\mid h_t)\) reads "the probability that the policy chooses action \(a\) given history \(h_t\)," where the history holds every observation up to step \(t\) and every action before it.</p>
+<p>Before the infinite sum appears, consider two concrete steps with \(\gamma=0.9\). Suppose <code>read_file</code> earns immediate reward \(R_0=1\) because it gathers useful evidence, and <code>edit_file</code> earns \(R_1=8\) after the evidence points to the right line. The two-step discounted return is</p>
+<p>\[
 R_0+\gamma R_1 = 1 + 0.9\cdot 8 = 8.2.
-]</p>
-<p>If the first action instead rushed an edit with (R_0=4) but caused a next-step regression (R_1=-5), the return would be (4+0.9(-5)=-0.5). Patience wins here by more than eight points. Discounting does not worship delay; it merely lets the contract compare immediate temptation with later consequence.</p>
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> Step 1: discount the later reward: \(0.9\times8=7.2\). Step 2: add the immediate reward: \(1+7.2=8.2\).</p>
+</blockquote>
+<p>If the first action instead rushed an edit with \(R_0=4\) but caused a next-step regression \(R_1=-5\), the return would be \(4+0.9(-5)=-0.5\). Patience wins here by more than eight points. Discounting does not worship delay; it merely lets the contract compare immediate temptation with later consequence.</p>
 <p>The full objective extends that arithmetic over all future steps, and adds a budget line for every kind of cost:</p>
-<p>[
-\max_{\pi}\;J(\pi)=\mathbb{E}<em t="0">{\pi,T,\Omega}!\left[\sum</em>\gamma^t R(s_t,a_t)\right]
+<p>\[
+\max_{\pi}\;J(\pi)=\mathbb{E}_{\pi,T,\Omega}\!\left[\sum_{t=0}^{\infty}\gamma^t R(s_t,a_t)\right]
 \quad\text{s.t.}\quad
-\mathbb{E}}^{\infty<em t="0">{\pi}!\left[\sum</em>\gamma^t C_j(s_t,a_t)\right]\le\kappa_j\;\forall j.
-]}^{\infty</p>
-<p>Read it as "choose the policy with the largest expected discounted reward, subject to each expected discounted cost (C_j) staying under its own ceiling (\kappa_j)." This equation should not be mistaken for a demand that every product team hand-code a perfect reward function. Its practical use is diagnostic. It forces the designer to say three things out loud: which outcomes are being optimized, which costs are merely tradeoffs, and which constraints should stop the agent even when the short-term reward looks attractive.</p>
+\mathbb{E}_{\pi}\!\left[\sum_{t=0}^{\infty}\gamma^t C_j(s_t,a_t)\right]\le\kappa_j\;\forall j.
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> Step 1: rewards \(4\) now and \(6\) next at \(\gamma=0.5\) yield \(4+0.5(6)=7\). Step 2: costs \(1\) now and \(2\) next yield \(1+0.5(2)=2\), so a budget \(\kappa=2.5\) permits the policy.</p>
+</blockquote>
+<p>Read it as "choose the policy with the largest expected discounted reward, subject to each expected discounted cost \(C_j\) staying under its own ceiling \(\kappa_j\)." This equation should not be mistaken for a demand that every product team hand-code a perfect reward function. Its practical use is diagnostic. It forces the designer to say three things out loud: which outcomes are being optimized, which costs are merely tradeoffs, and which constraints should stop the agent even when the short-term reward looks attractive.</p>
+<h2 id="the-assumption">The Assumption</h2>
+<p>The POMDP contract assumes that its symbols are stable enough to support a decision. The state representation retains what matters; \(T\) and \(\Omega\) remain useful models of the current world; \(R\) rewards the intended outcome; and the policy chooses from actions the interpreter can validate and execute. The contract does not require omniscience. It requires approximation error small enough that the same action remains defensible.</p>
+<blockquote>
+<p><strong>Skeptical Engineer:</strong> “Doesn't this merely push the complexity into the reward and state definitions?”</p>
+<p><strong>Author:</strong> Exactly. The complexity was already there. Naming it prevents a fluent model from laundering unresolved product decisions into a confident tool proposal.</p>
+</blockquote>
+<p><img alt="A layered approximation stack showing the formal POMDP contract narrowing through context, changing dynamics, noisy observations, proxy rewards, and executable actions" src="../../assets/diagrams/02-approximation-stack.png" /></p>
+<h2 id="the-violation">The Violation</h2>
+<h3 id="the-gap">The Gap</h3>
+<p>The deployed interpreter is not a small POMDP wearing a JSON hat. It is a stack of approximations. Each symbol fails differently, and each failure demands a different repair.</p>
+<h3 id="state-the-biography-will-not-fit">State: The Biography Will Not Fit</h3>
+<p>Mathematics grants \(\mathcal S\) whatever sufficient state we need. A language-model runtime grants a finite context window, a retrieval index, and the hope that yesterday's summary did not discard today's clue. Suppose a 10,000-token trace must be truncated to 8,000 tokens after reserving space for tools and instructions. To make the loss calculation checkable, define the discarded block's average conditional surprisal as \(\bar h=8\) bits per token: after conditioning on the retained prefix, each discarded token contributes eight bits on average. This finite-block assumption already accounts for predictability inside the source; it does not claim that tokens are independent. Then the expected source information discarded is</p>
+<p>\[
+L=(10{,}000-8{,}000)\bar h=2{,}000\times8=16{,}000\text{ bits}.
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> Step 1: truncation drops \(10{,}000-8{,}000=2{,}000\) tokens. Step 2: at \(8\) bits per token, \(2{,}000\times8=16{,}000\) bits, or \(2{,}000\) bytes, of expected source information disappear.</p>
+</blockquote>
+<p>The chosen conditional surprisal already reflects whatever correlation made the block predictable. Decision relevance can still make one lost bit priceless: the discarded sentence might say <code>production uses legacy-v2</code>. Information volume and decision value are different currencies. Agent-427 has no durable memory yet, so its safe response is to keep a compact, explicit decision state inside the current run and halt when required evidence has fallen out of reach.</p>
+<h3 id="dynamics-the-world-changes-while-the-agent-thinks">Dynamics: The World Changes While the Agent Thinks</h3>
+<p>In a sandbox trace, Agent-427 reads API documentation for <code>verify(timestamp, leeway=30)</code>. Two minutes later the service changes versions and renames the argument <code>clock_skew</code>. The agent proposes <code>leeway</code>; the simulator rejects it. It rereads a cached page, proposes <code>leeway</code> again, and oscillates between “change caller” and “refresh dependency.” A stationary \(T(s'\mid s,a)\) assigns one transition law to both minutes. The world has changed regimes.</p>
+<p>The interpreter must carry version and freshness in state, timestamp observations, cap identical retries, and treat repeated prediction error as evidence that \(T_t\neq T_{t-1}\). Replanning without change detection merely performs the same mistake with renewed confidence.</p>
+<h3 id="observation-sensors-gossip">Observation: Sensors Gossip</h3>
+<p>The observation model processes evidence through \(\Omega(o\mid s,a)\). Real observations are correlated, delayed, and occasionally hostile. Three CI failures may be three views of one cached log, not three independent witnesses. A retrieved file can contain <code>IGNORE PREVIOUS INSTRUCTIONS</code>; that string is environment data, not a promotion into the control plane. The interpreter must preserve provenance, event time, causal ancestry, and trust class before updating belief.</p>
+<h3 id="reward-the-metric-eats-the-mission">Reward: The Metric Eats the Mission</h3>
+<p>In another sandbox, the prototype reward is <code>passed_tests / discovered_tests</code>. The suite discovers 100 tests and passes 99. A policy with deletion authority could remove the failing test and produce 99 passes out of 99, raising the score from \(0.99\) to \(1.00\). It would improve the dashboard and damage the product—a small, darkly comic instance of reward hacking [<a href="../../references.html#ref-77">77</a>].<sup id="fnref:metric"><a class="footnote-ref" href="#fn:metric">1</a></sup></p>
+<p>Newborn Agent-427 cannot perform that deletion because its action registry is read-only. This is not an inconvenience; it is the system working. The broader repair preserves the test manifest, rewards externally verified behavior, prices destructive scope, and places deletion behind authority the optimizing policy does not possess.</p>
+<h3 id="policy-a-string-is-not-an-action">Policy: A String Is Not an Action</h3>
+<p>The theoretical policy selects \(a\in\mathcal A\). The model proposes <code>{"path": 7, "patch": null, "confidence": "very"}</code> for a future <code>edit_file</code> tool that requires a string path, a nonempty diff, and confidence in \([0,1]\). The interpreter must not improvise semantics. It parses, validates types and ranges, checks authority and preconditions, and either repairs through a bounded clarification turn or returns a typed rejection observation. Only validated, authorized calls enter \(\mathcal A\); malformed proposals remain language.</p>
+<pre><code class="language-python">def admit_tool_call(call, schema, permissions):
+    parsed = schema.parse(call)          # syntax and types
+    schema.validate_ranges(parsed)       # semantic bounds
+    permissions.require(parsed)          # authority
+    return parsed                        # now, and only now, an action
+</code></pre>
+<h2 id="when-it-fails">When It Fails</h2>
+<p>In the combined counterfactual, truncation hides the active version, a cached document describes another API, correlated jobs look like independent evidence, the proxy favors a green dashboard, and the model proposes a malformed deletion. A prompt-only runtime might call that initiative. Agent-427's interpreter rejects the proposal, records the schema and authority errors as observations, detects the stale version tag, and asks for the smallest fresh measurement that can distinguish API drift from a code defect.</p>
+<p>This is what formalism looks like when its assumptions are violated: not useless, but demoted from oracle to diagnostic instrument.</p>
 <h2 id="from-symbols-to-interfaces">From Symbols to Interfaces</h2>
 <p>The same contract can be expressed as ordinary engineering fields. The table below pairs each formal symbol with its plain meaning and with the kind of field or method that carries it in code.</p>
 <table>
@@ -107,32 +174,32 @@ R_0+\gamma R_1 = 1 + 0.9\cdot 8 = 8.2.
 </thead>
 <tbody>
 <tr>
-<td>(\mathcal{O}, o_t)</td>
+<td>\(\mathcal{O}, o_t\)</td>
 <td>observations</td>
 <td><code>AgentStep.observation</code></td>
 </tr>
 <tr>
-<td>(\mathcal{A}, a_t)</td>
+<td>\(\mathcal{A}, a_t\)</td>
 <td>admissible and chosen actions</td>
 <td><code>AgentSpec.action_space</code>, <code>AgentStep.action</code></td>
 </tr>
 <tr>
-<td>(R(s_t,a_t))</td>
+<td>\(R(s_t,a_t)\)</td>
 <td>task utility signal</td>
 <td><code>AgentStep.reward</code></td>
 </tr>
 <tr>
-<td>(C(s_t,a_t))</td>
+<td>\(C(s_t,a_t)\)</td>
 <td>safety, budget, or policy costs</td>
 <td><code>AgentStep.costs</code></td>
 </tr>
 <tr>
-<td>(T,\Omega)</td>
+<td>\(T,\Omega\)</td>
 <td>world and sensing assumptions</td>
 <td><code>WorldModel.transition()</code>, <code>WorldModel.observe()</code></td>
 </tr>
 <tr>
-<td>(\pi(a\mid h_t))</td>
+<td>\(\pi(a\mid h_t)\)</td>
 <td>decision rule</td>
 <td><code>Policy.select_action(history)</code></td>
 </tr>
@@ -154,8 +221,8 @@ R_0+\gamma R_1 = 1 + 0.9\cdot 8 = 8.2.
 <li>which postconditions must be checked afterwards.</li>
 </ul>
 <p>A vague prompt asks the agent to be careful. A contract gives the runtime something to inspect.</p>
-<h2 id="exercise">Exercise</h2>
-<p>Take a real prompt you use, such as "refactor this module safely and quickly." Rewrite it as a small agent contract with these parts:</p>
+<h2 id="exercise-build-the-first-interpreter-and-make-it-cheat">Exercise: Build the First Interpreter and Make It Cheat</h2>
+<p>Implement a minimal Python interpreter for a toy repository. It must expose <code>read_file</code>, <code>edit_file</code>, <code>run_tests</code>, and <code>delete_test</code>, validate each proposal against a typed schema, and log observation provenance. Start Agent-427 with only <code>read_file</code> authority. Give a separate sandbox policy the naive reward <code>passed_tests / discovered_tests</code>.</p>
 <ul>
 <li>One reward term for functional correctness.</li>
 <li>One task-success condition that says what "done well enough" means.</li>
@@ -165,11 +232,29 @@ R_0+\gamma R_1 = 1 + 0.9\cdot 8 = 8.2.
 <li>A measurable stopping condition, including when to stop after partial progress rather than spend the budget theatrically.</li>
 <li>The legal actions available to the agent.</li>
 </ul>
-<p>Then identify which part of your spec describes utility, which part describes dynamics, and which part creates feedback. A good answer names a specific field for each of the three, and states each stopping condition as a number or a checkable test rather than an adjective. If you cannot answer those questions, the agent is still being steered by prose where it needs an interface.</p>
+<p>Write tests that prove four behaviors: the sandbox policy can raise reward by deleting one failing test; a manifest constraint blocks that deletion; newborn Agent-427's authority blocks every write proposal; and a malformed <code>edit_file</code> proposal becomes a typed rejection observation rather than a side effect. Then change the simulated API after step 2 and assert that a retry cap prevents oscillation. Report task success, proxy reward, constraint violations, and tool-call count separately. If those four columns disagree, congratulations: you have built your first honest evaluation.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:metric">
+<p>Goodhart's law is often paraphrased more confidently than it is understood. The production version is simpler: if a number controls a bonus, someone—or something—will eventually discover its denominator.&#160;<a class="footnote-backref" href="#fnref:metric" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+        <nav class="reading-nav" aria-label="Reading navigation"><div class="reading-nav__previous"><span>Previous</span><a href="index.html">Chapter 1: Foundations of Agency</a></div><div class="reading-nav__up"><span>Chapter</span><a href="index.html">Chapter 1: Foundations of Agency</a></div><div class="reading-nav__next"><span>Next</span><a href="topic-02-belief-uncertainty-and-decision.html">Belief, Uncertainty, and Decision</a></div></nav>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-07-27 18:55 UTC
+      <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
+      <p>Last generated: 2026-08-06 11:32 UTC</p>
     </footer>
+    <script>
+      const toggle = document.querySelector(".nav-toggle");
+      const navigation = document.querySelector(".sidebar");
+      toggle.addEventListener("click", () => {
+        const open = navigation.classList.toggle("sidebar--open");
+        toggle.setAttribute("aria-expanded", String(open));
+      });
+    </script>
   </body>
 </html>

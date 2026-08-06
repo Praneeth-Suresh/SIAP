@@ -15,6 +15,11 @@ uv run python scripts/build_site.py
 
 The generated website is in `site/`.
 
+The site builder publishes the reader-facing book only: the preface, Part 0,
+chapter introductions, primary topics, and references. Revision `*-notes.md` files are
+intentionally excluded. The shared page shell provides hierarchical contents,
+previous/next reading links, and MathJax typesetting for manuscript equations.
+
 ## 3. Build PDF book
 
 ```bash
@@ -43,4 +48,5 @@ sudo apt-get install -y libcairo2 libpango-1.0-0 libgdk-pixbuf2.0-0 libffi-dev s
 1. Run local build (`build_site.py`, `build_pdf.py`).
 2. Review generated `site/` and `dist/book.pdf`.
 3. Commit markdown source and scripts.
-4. Push to `main` to trigger GitHub Pages deploy.
+4. Push to `main` to trigger GitHub Pages deploy, then open the deployment URL
+   and confirm contents navigation and equation rendering in a chapter topic.

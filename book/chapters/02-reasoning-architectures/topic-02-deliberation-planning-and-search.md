@@ -1,142 +1,132 @@
 # Deliberation, Planning, and Search
 
-Imagine an agent that has just received a bug report. It can act at once, or it can first imagine two or three futures. This section is about that second option. Deliberation means spending part of the budget simulating steps before committing to one. Planning and search buy that foresight without pretending computation is free.
+At 3:47:25 AM, Agent-427 has survived its first illegal import. It now possesses a safer tool, `inspect_file`, and a choice: inspect the authentication code immediately, or spend scarce seconds imagining what it might find. A proposal says “open this file.” A plan says “open this file, expect this evidence, and do this if the evidence laughs at us.”
 
-The interpreter from the previous topic, Reasoning Loops as Interpreters, executes one legal step at a time. Deliberation asks a sharper question: should the agent look ahead before choosing that step?
+Deliberation is the wager that simulated futures will save more than they cost. Search operationalizes the wager. Planning gives the selected future preconditions, expected observations, costs, risks, and contingencies. The difficulty is that reality continues running while the planner enjoys its miniature theatre.
 
-## A Proposal Says "Try This"; A Plan Says "And Then What"
+## Plans as Paths, Not Prophecies
 
-A proposal says, "try this next action." A plan embeds the same action inside an imagined trajectory, and states five further things:
-
-- what state should follow the action;
-- what evidence should appear if the plan is on track;
-- what cost will be paid;
-- what constraint might bind, that is, which limit could stop the plan;
-- what fallback remains if the world disagrees.
-
-Search is the procedure that compares such trajectories under limited time, a comparison shop for imagined futures, closing when the clock stops.
-
-## Plans as Paths Through Interpreter States
-
-Draw the choices as a graph. Let \(G=(V,E)\) be a search graph whose vertices are decision states. Read \(V\) as the states the agent could occupy, and \(E\) as the legal moves between them.
-
-A deterministic plan is then a path \(p=(v_0,\dots,v_T)\) through that graph, from the current state \(v_0\) to \(v_T\) after \(T\) steps. The planner wants the cheapest such path, minimizing
+Let \(G=(V,E)\) be a search graph. Vertices are decision states and edges are legal transitions. A deterministic plan \(p=(v_0,\ldots,v_T)\) is a path whose cost is
 
 \[
-J(p)=\sum_{t=0}^{T-1} c(v_t,v_{t+1}) + \Phi(v_T).
+J(p)=\sum_{t=0}^{T-1}c(v_t,v_{t+1})+\Phi(v_T).
 \]
 
-Read \(J(p)\) as "total cost of plan \(p\)". The sum prices every move, since \(c(v_t,v_{t+1})\) is one step's cost in tokens, time, or money. The term \(\Phi(v_T)\) is a terminal penalty on where the plan leaves the agent: low for a good ending, high for a bad one.
+> **Try this with numbers.** Step 1: price three moves at 2, 1, and 4, then assign terminal penalty 3. Step 2: compute \(J=2+1+4+3=10\); a two-step plan costing 8 with penalty 1 wins at 9.
 
-### How A\* Ranks Candidate Nodes
+The step cost \(c\) may combine tokens, latency, money, and risk. The terminal penalty \(\Phi\) prices the state in which the plan abandons the agent. “Tests still red but root cause localized” deserves a different penalty from “repository edited and no tests run.”
 
-A\* ("A star") is a classic search algorithm choosing which node to examine next. It prioritizes candidate nodes by
+A* ranks candidate nodes by
 
 \[
-f(n)=g(n)+h(n),
+f(n)=g(n)+h(n).
 \]
 
-where admissibility \(h(n)\le h^\star(n)\) gives shortest-path guarantees when the graph assumptions hold [[8](../../references.md#ref-8)]. In the agent interpreter, \(g\) accounts for already-spent cost and \(h\) estimates the remaining cost to reach an acceptable halt state.
+> **Try this with numbers.** Step 1: candidate A has \(g=2,h=5\), so \(f=7\). Step 2: candidate B has \(g=4,h=1\), so \(f=5\); expand B first despite its dearer history.
 
-The three letters are intentionally humble.
+Here \(g\) is cost already paid and \(h\) is estimated remaining cost. If \(h(n)\le h^\star(n)\), the heuristic is admissible and supports shortest-path guarantees under the usual graph assumptions [[8](../../references.md#ref-8)]. It may be ignorant. It may not be boastful.
 
-1. \(g(n)\) is the cost already paid to reach node \(n\): history, and not negotiable.
-2. \(h(n)\) is a heuristic estimate, a cheap guess replacing expensive calculation, of the cost still required from \(n\) to a goal.
-3. \(f(n)\) is their sum, the planner's current guess at total path cost through \(n\).
+The branching factor counts successor choices. Ten plausible next actions over depth five yield \(10^5=100{,}000\) naive action sequences; three well-typed actions yield \(3^5=243\). Constrained action generation is therefore not merely syntax hygiene. It reshapes the search geometry.
 
-A heuristic is admissible when it never overestimates the true remaining cost \(h^\star(n)\), read "h-star of n": the real cheapest cost from \(n\) to a goal. An admissible heuristic may be naive, but it must not be boastful. To check yours, take nodes whose true cost you know and confirm the estimate is never larger.
+## The Assumption
 
-### A Two-Branch Example with Numbers You Can Check
-
-For a tiny graph, suppose \(v_0\) is "bug report received." From it the agent can inspect logs and reach \(A\), or inspect the recent diff and reach \(B\).
-
-The path to \(A\) has already cost \(g(A)=2\), and the heuristic says \(h(A)=5\), so \(f(A)=7\). The path to \(B\) has already cost \(g(B)=4\), and the heuristic says \(h(B)=1\), so \(f(B)=5\).
-
-A\* expands \(B\) first, not because inspecting diffs is morally superior, but because the combined arithmetic says that route currently looks cheaper; \(B\) started out more expensive, and the estimate of what remains tipped it.
-
-The branching factor is the number of successor choices the search faces at each node. Reducing it from ten plausible actions to three well-typed actions can turn a hopeless thicket into a walkable garden path.
-
-## Preconditions and Effects: Planning as Set Editing
-
-Symbolic planning makes the transition model explicit. "Symbolic" here means the state is a set of named facts, not an opaque blob of text. An action is legal only when its preconditions are present, and its effects transform the state:
+Planning assumes that the search state preserves what future actions need, that transitions remain useful approximations during deliberation, and that heuristic scores compare candidates in the world where execution will occur. Symbolic planning makes the first bargain explicit:
 
 \[
-s_{t+1}=(s_t\mathbin{\backslash}\mathrm{Del}(a_t))\cup \mathrm{Add}(a_t),\qquad \mathrm{Pre}(a_t)\subseteq s_t.
+s_{t+1}=(s_t\mathbin{\backslash}\mathrm{Del}(a_t))\cup\mathrm{Add}(a_t),
+\qquad \mathrm{Pre}(a_t)\subseteq s_t.
 \]
 
-Read the first equation as "next state = current state, minus deleted facts, plus added ones." Read \(\mathrm{Pre}(a_t)\subseteq s_t\) as "the action's preconditions must all be facts of the current state."
+> **Try this with numbers.** Step 1: let state contain 4 facts, delete 1 stale fact, and add 2 fresh facts. Step 2: the next state has \(4-1+2=5\) facts, provided every precondition was among the original 4.
 
-This is not limited to toy blocks-world domains, the tabletop puzzles of planning textbooks. A coding agent's `run_tests` action may require a clean dependency environment; a `deploy` action may require passing tests, approval, and rollback instructions. Preconditions prevent the planner from treating hope as an executable dependency [[9](../../references.md#ref-9)] [[10](../../references.md#ref-10)].
-
-Decode the notation as set editing.
-
-- \(\mathrm{Pre}(a)\) is the set of facts that must already be true before action \(a\) may run.
-- \(\mathrm{Add}(a)\) is the set of facts made true afterward.
-- \(\mathrm{Del}(a)\) is the set of facts removed afterward.
-
-For `run_tests`, one toy model might be
+The planner may represent a hypothetical `run_tests` node with this toy contract:
 
 \[
-\mathrm{Pre}(\texttt{run\_tests})=\{\texttt{deps\_installed},\texttt{worktree\_readable}\},
+\mathrm{Pre}(\texttt{run\_tests})=
+\{\texttt{deps\_installed},\texttt{worktree\_readable}\}.
 \]
 
+> **Try this with numbers.** Step 1: satisfy 2 of 2 preconditions and the action is legal. Step 2: satisfy only 1 of 2 and legality is false; ninety-nine percent readiness remains zero percent authorization.
+
+Its effects are
+
 \[
-\mathrm{Add}(\texttt{run\_tests})=\{\texttt{test\_result\_known}\},\qquad
+\mathrm{Add}(\texttt{run\_tests})=\{\texttt{test\_result\_known}\},
+\qquad
 \mathrm{Del}(\texttt{run\_tests})=\{\texttt{test\_result\_stale}\}.
 \]
 
-If the current state contains installed dependencies and a readable worktree, the action is legal. Afterward, the planner may rely on a fresh test result and must stop trusting the stale one. The notation is austere because the promise is austere: no premise, no action.
+> **Try this with numbers.** Step 1: begin with one stale-result fact. Step 2: delete that fact and add one known-result fact; the fact count stays 1 while its epistemic quality changes completely.
 
-## Choosing When the Future Is Uncertain
+This is STRIPS-style set editing: preconditions say what must already be true, add effects say what becomes true, and delete effects say what must no longer be trusted [[9](../../references.md#ref-9)] [[10](../../references.md#ref-10)]. In Chapter 2, however, `run_tests`, patching, and suite execution remain **simulated planner actions**, not executable tools. Agent-427 can execute only `inspect_file`; its authority guard rejects patch and test proposals. Chapter 3 will grant effectful proposals behind contracts. A future deployment plan may require passing tests, approval, a rollback handle, and a version-fresh target. Hope is not a dependency manager.
 
-Something must then choose among candidates. Expected utility supplies the rule:
+> **Skeptical Engineer:** Doesn't a language model infer these preconditions anyway?
+>
+> **Author:** Sometimes. It also inferred a module that did not exist. We write preconditions down because “usually remembered by a stochastic process” is not the same type as `bool`.
+
+## The Violation
+
+At 3:47:28, Agent-427 builds a sensible four-step plan against the world it observed. Then the world changes while the plan is still thinking:
+
+```text
+03:47:28 observe  auth service reports API v2; replica A serves config epoch 81
+03:47:31 plan     inspect verifier -> [simulate patch] -> [simulate test] -> [simulate suite]
+03:47:44 search   prefer v2 adapter branch; estimated cost 7
+03:47:51 world    replica B promotes API v3; config epoch becomes 82
+03:47:56 act      inspect v2 adapter on replica A; finds deprecated field
+03:48:01 simulate model predicts replica B would reject deprecated field
+03:48:04 replan   propose removing field for v3
+03:48:09 guard    reject patch/test proposals: inspect_file is the only executable tool
+03:48:13 replan   restore v2 hypothesis; request authority or hand off
+```
+
+The agent's **proposed plans** oscillate because its hidden model contains one stationary “auth service,” while production contains asynchronously replicated versions. Its guard prevents those proposals from becoming edits or test executions. The world changed while it thought; worse, different observations sampled different worlds. A plan versioned only by task is under-specified. It also needs observation time, target identity, configuration epoch, and an invalidation policy. Meta-learning can train fast adaptation across task distributions, but it does not excuse a runtime from observing which distribution has arrived [[74](../../references.md#ref-74)].
+
+Expected utility still ranks candidates:
 
 \[
-a_t^\star=\arg\max_a \mathbb{E}[U(a,S_t)\mid h_t],
+a_t^\star=\arg\max_a\mathbb{E}[U(a,S_t)\mid h_t].
 \]
 
-read as "choose the action \(a\) with the largest average usefulness \(U\), given the state \(S_t\) and the history \(h_t\) seen so far." A direct consequence follows: additional planning depth is justified only when its expected improvement exceeds its compute and latency costs [[33](../../references.md#ref-33)] [[34](../../references.md#ref-34)]. If another level of lookahead costs two seconds but improves the decision by half a second of value, it is a loss.
+> **Try this with numbers.** Step 1: an immediate inspection is worth 6; a two-second search promises 9 but costs 1, yielding 8. Step 2: if a 0.5 probability of version drift imposes loss 6, its drift-adjusted value is \(8-0.5\times6=5\); inspect now.
 
-In stochastic settings, where the same action can lead to different outcomes, this becomes Bellman recursion,
+The violation is not “expected utility failed.” The expectation omitted a relevant event: model expiry during deliberation [[33](../../references.md#ref-33)] [[34](../../references.md#ref-34)]. Non-stationarity belongs in the state and transition model, or in robust uncertainty around them.
+
+For stochastic outcomes, Bellman recursion writes the long-horizon bargain:
 
 \[
-V^\star(s)=\max_a\left\{R(s,a)+\gamma\sum_{s'}P(s'|s,a)V^\star(s')\right\},
+V^\star(s)=\max_a\left\{R(s,a)+\gamma\sum_{s'}P(s'\mid s,a)V^\star(s')\right\}.
 \]
 
-read as "the best achievable value of \(s\) is the best over actions of immediate reward \(R(s,a)\) plus the discounted average value of wherever you land next." Here \(\gamma\) (gamma) is a discount factor between 0 and 1 that shrinks distant outcomes, and \(P(s'|s,a)\) is the chance of landing in \(s'\). The same recursion becomes a belief-space recursion when the state is only partially observed, meaning the agent sees clues rather than the state itself [[5](../../references.md#ref-5)] [[4](../../references.md#ref-4)] [[7](../../references.md#ref-7)].
+> **Try this with numbers.** Step 1: an action earns 2 now and reaches values 10 and 4 with probabilities 0.7 and 0.3, so expected successor value is \(8.2\). Step 2: with \(\gamma=0.9\), total value is \(2+0.9\times8.2=9.38\).
 
-### Spending Simulations Wisely with Monte Carlo Tree Search
+In partial observability the recursion runs over belief, not omniscient state [[5](../../references.md#ref-5)] [[4](../../references.md#ref-4)] [[7](../../references.md#ref-7)]. In non-stationary production, the belief should include model/version hypotheses or change points. Otherwise \(P\) describes the museum exhibit while the live API rearranges the furniture.
 
-When the branching factor is large, the planner needs search control: a rule for spending limited thinking. Monte Carlo tree search (MCTS) allocates rollouts by optimism:
+## Spending Simulations Under a Clock
+
+Monte Carlo tree search allocates rollouts with an optimism bonus:
 
 \[
-a^\star=\arg\max_a\left(Q(s,a)+c\sqrt{\frac{\ln N(s)}{N(s,a)}}\right),
+a^\star=\arg\max_a\left(
+Q(s,a)+c\sqrt{\frac{\ln N(s)}{N(s,a)}}
+\right).
 \]
 
-balancing exploitation of promising branches with exploration of uncertain ones under finite time [[45](../../references.md#ref-45)]. The formula is a reminder that uncertainty is not merely a defect; it is sometimes a reason to inspect a branch before discarding it.
+> **Try this with numbers.** Step 1: let \(Q=4\), \(c=1\), parent visits \(N(s)=100\), and action visits \(N(s,a)=4\); the bonus is about \(\sqrt{4.605/4}=1.07\). Step 2: the selection score is about 5.07; after 40 action visits the bonus falls to about 0.34.
 
-A rollout is a simulated continuation: the planner imagines acting until a terminal or cutoff state, then uses the result to improve its estimates. Two pressures are traded:
+Rollouts trade exploitation of promising branches against exploration of neglected ones [[45](../../references.md#ref-45)]. Under change, timestamps matter: a thousand rollouts through yesterday's model are a beautifully estimated obsolete policy.
 
-- Exploitation means spending simulations on branches whose current value estimate \(Q(s,a)\) already looks good.
-- Exploration means spending some simulations on branches with few visits \(N(s,a)\), because ignorance may be hiding either treasure or calamity.
-
-The square-root term is that exploration bonus, and \(c\) sets how loudly curiosity may speak. It shrinks as one action is tried more often, and grows slowly as the parent state receives more total visits \(N(s)\). A branch tried once in a hundred visits gets a large bonus; after fifty, a small one.
-
-## Replanning After Every Step: Receding Horizons
-
-Long plans are fragile because the world answers back. Model predictive control (MPC) handles this by solving an \(H\)-step problem, where \(H\) is the horizon, the number of steps looked ahead:
+Anytime planning returns its best available candidate when interrupted [[44](../../references.md#ref-44)]. Receding-horizon control goes farther: optimize several steps, execute one, observe, and solve again:
 
 \[
 \mathbf{u}_{t:t+H-1}^{\star}
 =\arg\min_{\mathbf{u}_{t:t+H-1}}
-\sum_{k=0}^{H-1}\ell(x_{t+k},u_{t+k})+\ell_f(x_{t+H})
+\sum_{k=0}^{H-1}\ell(x_{t+k},u_{t+k})+\ell_f(x_{t+H}),
 \]
 
-subject to \(x_{k+1}=F(x_k,u_k)\) and \(g(x_k,u_k)\le 0\). Read \(\mathbf{u}\) as the sequence of control actions, \(x\) as the state, \(\ell\) (ell) as the cost of one step, and \(\ell_f\) as the cost of the final state. The first constraint says the state evolves by a known model \(F\); the second collects limits that must never be violated.
+> **Try this with numbers.** Step 1: for horizon 2, candidate A has step costs 2 and 3 plus terminal cost 1, totaling 6. Step 2: candidate B totals \(1+2+2=5\); choose B, execute only its first action, then measure again.
 
-The controller applies \(u_t^\star\), the first component of that sequence, observes the new state, and replans at the next step. The corrected control sequence is important: the optimizer reasons over a sequence, while the agent executes only the first action before feedback updates the problem [[41](../../references.md#ref-41)].
-
-For a language-agent planner, the pattern becomes the procedure below: search for candidates, pick the best, check that the first action is legal, execute only that action, and return to the loop.
+subject to \(x_{k+1}=F(x_k,u_k)\) and \(g(x_k,u_k)\le0\). The optimizer reasons over a sequence; the agent executes only the first component before feedback revises the problem [[41](../../references.md#ref-41)].
 
 ```text
 function RECEDING_HORIZON_STEP(sigma, horizon, budget):
@@ -144,65 +134,35 @@ function RECEDING_HORIZON_STEP(sigma, horizon, budget):
     plan <- argmax_expected_utility(candidates)
     a0 <- first_action(plan)
 
+    require plan.observation_epoch == current_epoch(a0.target)
     if not legal(a0, sigma):
         return fallback_or_clarify(sigma)
 
+    require a0.name == "inspect_file"  # Chapter 2 authority boundary
     sigma_next <- execute(a0, sigma)
     return observe_and_replan(sigma_next)
 ```
 
-If that first action is illegal in state `sigma`, the agent falls back or asks for clarification.
+The epoch guard turns “the world might have changed” into an executable invalidation rule.
 
-The plan is a hypothesis about controllable futures, not a contract that reality has signed. This is why "plan then execute" is weak when the execution environment changes, and why "plan, execute one step, observe, replan" is the natural extension of the interpreter built in Chapter 1.
+## When It Fails
 
-## When Decomposition Actually Improves the Search
+Planning fails when decomposition hides coupling, heuristics reward easily measured progress, or stale models produce precise nonsense. An adversarial API can exploit this by returning a cheap successful probe while reserving failure for the irreversible call. The planner learns “endpoint healthy” from the probe and spends its authority on a state the probe never represented.
 
-Task decomposition means breaking a task into smaller subtasks. It is useful only when it improves the search problem, in one of four ways:
+Reflection can repair a hard plan after contradictory evidence, but it can also tax a trivial task into insolvency. Planning earns its keep when horizon, branching, prerequisites, uncertainty, or irreversibility create genuine geometry. A one-line formatting fix does not need an opera.[^planner-opera]
 
-- it may reduce branching factor;
-- it may expose prerequisites;
-- it may create verifiable intermediate states;
-- it may isolate irreversible actions behind stronger checks.
+[^planner-opera]: The overture alone consumed 1,800 tokens and the variable is still misspelled.
 
-It is not useful merely because it produces a tidy list.
+Every candidate trajectory should record state estimate, state/version age, action, expected observation, cost, risk, and contingency. Log pruning decisions when they affect safety. Put symbolic preconditions around irreversible actions. Trigger replanning on new evidence, failed preconditions, budget drift, tool errors, observation expiry, or a value change that reorders the frontier.
 
-This is the first practical rule of planning: task structure predicts whether planning earns its keep. Planning tends to help in five situations:
+## Exercise: Make the World Betray Your Planner
 
-1. the horizon is long enough that early choices create or destroy later options;
-2. the branching factor is wide enough that unguided next-action choice wastes effort;
-3. prerequisites impose a real order;
-4. uncertainty must be reduced before commitment;
-5. an irreversible action deserves ceremony before the lever is pulled.
+Implement a small planner and a changing environment.
 
-A database migration, a multi-file refactor, and a research synthesis with conflicting sources all have enough internal geometry to reward decomposition. A one-line formatting fix usually does not. There, the planning ritual may cost more than the task.
+1. Model two API replicas, versions v2 and v3, with asynchronously changing epochs and incompatible preconditions.
+2. Implement A* over at least 20 states, then wrap it in a receding-horizon controller that executes one action per observation. The real adapter must expose only `inspect_file`; patch and test nodes remain simulations.
+3. Run 1,000 seeded episodes. Halfway through 30% of them, change one replica's version while the planner is searching.
+4. Compare three policies: execute the full original plan, replan after every action, and replan only when an epoch guard fails.
+5. Assert that patch/test adapters receive zero calls. Report success, oscillation count, planning latency, actions per repair, and unsafe/invalid proposals. Then introduce an API that lies on probes but would fail on commits, and patch one simulated precondition to detect it.
 
-## Reflection Repairs Hard Plans and Taxes Easy Ones
-
-The same lesson governs composition, meaning how planning combines with other patterns. Reflection can repair a difficult plan: after a failed test, the agent can inspect the trace, notice that a prerequisite was imaginary, and revise the frontier before doing more damage. The frontier is the set of nodes the search is still willing to expand.
-
-But reflection also adds latency, consumes tokens, and can induce overthinking on easy tasks. An agent asked to rename a local variable may spend three reflective turns debating architectural intent while the correct edit waits patiently in the file.
-
-Patterns interact; they are not virtues in isolation. Planning plus reflection is powerful when the task contains hidden dependencies or costly mistakes, and ornamental when the task is short, reversible, and already well specified.
-
-## What a Planning Loop Should Record
-
-In practice, each candidate trajectory should record six fields: state estimate, proposed action, expected observation, cost, risk, and contingency, which together make it auditable.
-
-Three commitments follow.
-
-- Heuristics should prioritize branches, but pruning decisions should be logged when they affect safety or correctness.
-- Irreversible or expensive actions should be protected by symbolic preconditions, using the \(\mathrm{Pre}\) sets described earlier.
-- Replan triggers should be explicit: new evidence, failed precondition, budget drift, tool error, or a value estimate that changes enough to reorder the frontier.
-
-Chapter 1, Topic 3 (World Models and State Abstractions) develops how that state estimate is built.
-
-## Exercise
-
-Choose a multi-step task: a database migration, a code refactor, or a research synthesis. The goal is a planning problem concrete enough to critique. Work in four steps:
-
-1. Write three candidate plan states, each a short description of what is true in it.
-2. Write one heuristic \(h\) for ranking them, and say what it estimates.
-3. Name one observation that would force replanning.
-4. Name one action that should require symbolic preconditions before execution, and list those preconditions.
-
-A good answer has a heuristic that is cheap to compute and never boastful about how little work remains, a replanning trigger tied to concrete evidence rather than vague discomfort, and preconditions a program could check.
+Your result must include code, tests for the version race, and a table of measurements. A hand-drawn plan receives partial credit only if it can also hand-draw a stack trace.

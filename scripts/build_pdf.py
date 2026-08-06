@@ -6,6 +6,7 @@ import re
 import shutil
 
 import markdown
+from publication_manifest import load_publication_manifest
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,16 +21,25 @@ def rewrite_md_links(markdown_text: str) -> str:
     return pattern.sub(lambda m: f"]({m.group(1)}.html{m.group(2) or ''})", markdown_text)
 
 
+def rewrite_local_image_links(section: Path, markdown_text: str) -> str:
+    pattern = re.compile(r"(!\[[^\]]*\]\()([^)]+)(\))")
+
+    def repl(match: re.Match[str]) -> str:
+        raw_target = match.group(2)
+        if re.match(r"(?:https?:|data:)", raw_target):
+            return match.group(0)
+        target_path = (section.parent / raw_target).resolve()
+        try:
+            relative = target_path.relative_to(ROOT.resolve()).as_posix()
+        except ValueError:
+            return match.group(0)
+        return f"{match.group(1)}{relative}{match.group(3)}"
+
+    return pattern.sub(repl, markdown_text)
+
+
 def gather_book_sections() -> list[tuple[Path, str]]:
-    sections: list[tuple[Path, str]] = [(BOOK_DIR / "index.md", "preface")]
-    for chapter_index in sorted((BOOK_DIR / "chapters").glob("*/index.md")):
-        chapter_dir = chapter_index.parent
-        sections.append((chapter_index, "chapter"))
-        for topic_path in sorted(chapter_dir.glob("topic-*.md")):
-            if not topic_path.name.endswith("-notes.md"):
-                sections.append((topic_path, "topic"))
-    sections.append((BOOK_DIR / "references.md", "references"))
-    return sections
+    return [(section.path, section.kind) for section in load_publication_manifest(BOOK_DIR)]
 
 
 def demote_headings(markdown_text: str, levels: int = 1) -> str:
@@ -42,9 +52,12 @@ def demote_headings(markdown_text: str, levels: int = 1) -> str:
 
 def prepare_book_markdown(section: Path, section_kind: str) -> str:
     text = rewrite_md_links(section.read_text(encoding="utf-8"))
+    text = rewrite_local_image_links(section, text)
 
     if section_kind == "preface":
         text = re.sub(r"^# .+$", "# Preface", text, count=1, flags=re.MULTILINE)
+    elif section_kind == "part":
+        pass
     elif section_kind == "chapter":
         text = re.sub(r"^# Chapter \d+:\s*", "# ", text, count=1, flags=re.MULTILINE)
     elif section_kind == "topic":

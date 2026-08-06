@@ -3,72 +3,91 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Structure and Interpretation of Agentic Patterns</title>
+    <meta name="description" content="Structure and Interpretation of Agentic Patterns, a theory-backed book about agentic AI." />
+    <title>Structure and Interpretation of Agentic Patterns · SIAP</title>
     <link rel="stylesheet" href="assets/style.css" />
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [["\\(", "\\)"]],
+          displayMath: [["\\[", "\\]"], ["$$", "$$"]],
+          processEscapes: true
+        },
+        options: { skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] }
+      };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   </head>
   <body>
     <header class="site-header">
-      <h1><a href="index.html">Structure and Interpretation of Agentic Patterns</a></h1>
+      <div class="site-header__inner">
+        <a class="site-mark" href="index.html" aria-label="Structure and Interpretation of Agentic Patterns home">SIAP</a>
+        <div>
+          <p class="site-kicker">A book about governed machines</p>
+          <p class="site-title"><a href="index.html">Structure and Interpretation<br />of Agentic Patterns</a></p>
+        </div>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="book-navigation">Contents</button>
+      </div>
     </header>
     <main class="layout">
-      <aside class="sidebar">
-        <h2>Contents</h2>
-        <nav><div><a href="chapters/01-foundations-of-agency/index.html">chapters/01-foundations-of-agency/index</a></div><div><a href="chapters/01-foundations-of-agency/topic-01-goals-environments-actions-notes.html">chapters/01-foundations-of-agency/topic-01-goals-environments-actions-notes</a></div><div><a href="chapters/01-foundations-of-agency/topic-01-goals-environments-actions.html">chapters/01-foundations-of-agency/topic-01-goals-environments-actions</a></div><div><a href="chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision-notes.html">chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision-notes</a></div><div><a href="chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision.html">chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision</a></div><div><a href="chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions-notes.html">chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions-notes</a></div><div><a href="chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions.html">chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions</a></div><div><a href="chapters/01-foundations-of-agency/topic-04-policies-value-and-control-notes.html">chapters/01-foundations-of-agency/topic-04-policies-value-and-control-notes</a></div><div><a href="chapters/01-foundations-of-agency/topic-04-policies-value-and-control.html">chapters/01-foundations-of-agency/topic-04-policies-value-and-control</a></div><div><a href="chapters/02-reasoning-architectures/index.html">chapters/02-reasoning-architectures/index</a></div><div><a href="chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters-notes.html">chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters-notes</a></div><div><a href="chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters.html">chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters</a></div><div><a href="chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search-notes.html">chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search-notes</a></div><div><a href="chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search.html">chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search</a></div><div><a href="chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval-notes.html">chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval-notes</a></div><div><a href="chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval.html">chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval</a></div><div><a href="chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners-notes.html">chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners-notes</a></div><div><a href="chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners.html">chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners</a></div><div><a href="chapters/03-tool-use-and-embodiment/index.html">chapters/03-tool-use-and-embodiment/index</a></div><div><a href="chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling-notes.html">chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling-notes</a></div><div><a href="chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling.html">chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling</a></div><div><a href="chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling-notes.html">chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling-notes</a></div><div><a href="chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling.html">chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling</a></div><div><a href="chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback-notes.html">chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback-notes</a></div><div><a href="chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback.html">chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback</a></div><div><a href="chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails-notes.html">chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails-notes</a></div><div><a href="chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails.html">chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails</a></div><div><a href="chapters/04-multi-agent-systems/index.html">chapters/04-multi-agent-systems/index</a></div><div><a href="chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication-notes.html">chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication-notes</a></div><div><a href="chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication.html">chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication</a></div><div><a href="chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design-notes.html">chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design-notes</a></div><div><a href="chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design.html">chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design</a></div><div><a href="chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics-notes.html">chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics-notes</a></div><div><a href="chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics.html">chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics</a></div><div><a href="chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration-notes.html">chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration-notes</a></div><div><a href="chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration.html">chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration</a></div><div><a class="active" href="index.html">index</a></div><div><a href="references.html">references</a></div></nav>
+      <aside class="sidebar" id="book-navigation">
+        <p class="sidebar__label">Reader’s route</p>
+        <nav aria-label="Book contents"><ol class="book-nav__list"><li class="book-nav__home"><a href="index.html" aria-current="page">Book home</a></li><li class="book-nav__part"><a href="parts/00-system-in-action.html">Part 0: The System in Action</a></li><li class="book-nav__chapter"><a href="chapters/01-foundations-of-agency/index.html">Chapter 1: Foundations of Agency</a><ol class="book-nav__topics"><li><a href="chapters/01-foundations-of-agency/topic-01-goals-environments-actions.html">Goals, Environments, and Actions</a></li><li><a href="chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision.html">Belief, Uncertainty, and Decision</a></li><li><a href="chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions.html">World Models and State Abstractions</a></li><li><a href="chapters/01-foundations-of-agency/topic-04-policies-value-and-control.html">Policies, Value, and Control</a></li></ol></li><li class="book-nav__chapter"><a href="chapters/02-reasoning-architectures/index.html">Chapter 2: Reasoning Architectures</a><ol class="book-nav__topics"><li><a href="chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters.html">Reasoning Loops as Interpreters</a></li><li><a href="chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search.html">Deliberation, Planning, and Search</a></li><li><a href="chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval.html">Memory Systems, Context, and Retrieval</a></li><li><a href="chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners.html">Evaluating and Debugging Reasoners</a></li></ol></li><li class="book-nav__chapter"><a href="chapters/03-tool-use-and-embodiment/index.html">Chapter 3: Tool Use and Embodiment</a><ol class="book-nav__topics"><li><a href="chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling.html">Tool Interfaces and Function Calling</a></li><li><a href="chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling.html">Retrieval-Augmented Tooling</a></li><li><a href="chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback.html">Embodiment: Sensors, Actuators, and Feedback</a></li><li><a href="chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails.html">Safety Constraints and Guardrails</a></li></ol></li><li class="book-nav__chapter"><a href="chapters/04-multi-agent-systems/index.html">Chapter 4: Multi-Agent Systems</a><ol class="book-nav__topics"><li><a href="chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication.html">Coordination Protocols and Communication</a></li><li><a href="chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design.html">Negotiation and Mechanism Design</a></li><li><a href="chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics.html">Equilibria, Self-Play, and Learning Dynamics</a></li><li><a href="chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration.html">Neural Ensembles and Orchestration</a></li></ol></li><li class="book-nav__references"><a href="references.html">References</a></li></ol></nav>
       </aside>
       <article class="content">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><span aria-current="page">Book</span></nav>
         <h1 id="structure-and-interpretation-of-agentic-patterns">Structure and Interpretation of Agentic Patterns</h1>
 <blockquote>
-<p>A text for readers who suspect that agentic systems are not a bag of orchestration tricks, but programmable structures with laws, invariants, and failure modes.</p>
+<p>A manifesto about programmable agency, disguised as a conversation, backed by mathematics, and occasionally interrupted by production.</p>
 </blockquote>
-<p>This is a book about programs that act. Some software answers a question and stops. The software in this book keeps going: it looks at the world, decides something, does something, and then has to live with the result. That loop is the object of study here, and it turns out to have structure worth teaching.</p>
-<p>The book follows the arc of <em>Structure and Interpretation of Computer Programs</em>. We start with the primitive elements of agency. We assemble them into interpreters. We study the architectures that make those interpreters useful. Then we examine what happens when many such systems act in one shared environment.</p>
-<h2 id="a-first-trace-before-any-theory">A first trace, before any theory</h2>
-<p>Watch one small machine work. Suppose a coding agent sees this line of test output:</p>
-<pre><code>test_auth.py::test_expired_token FAILED
+<p>You have been building agents wrong.</p>
+<p>That sentence is unfair, of course. You have also been building them under deadlines, against APIs that change their minds, with models that improvise JSON, and for users who remember one crucial constraint only after the expensive action. Under those conditions, everyone builds at least one agent wrong. The interesting question is whether we can say <em>how</em> it was wrong without reaching for the traditional diagnosis: "the model was weird."</p>
+<p>We can. Agency has structure. An acting program observes only part of a world, carries a compressed account of what it saw, chooses among permitted interventions, pays for time and uncertainty, and inherits the consequences. Put those pieces in an explicit interpreter and the folklore becomes inspectable. Add memory, planning, tools, and other agents, and the interpreter grows into an institution. The objects get larger. The questions remain wonderfully severe.</p>
+<p>This book takes a stand: <strong>agentic AI is a science of interaction and orchestration, not merely API plumbing.</strong> Its laws are conditional, its measurements are noisy, and its subjects sometimes emit invalid YAML. It is a science nonetheless.<sup id="fnref:preface-laws"><a class="footnote-ref" href="#fn:preface-laws">1</a></sup></p>
+<p><strong>Skeptical Engineer:</strong> "A science? Most of these systems are prompts wearing a loop."</p>
+<p><strong>Author:</strong> Precisely. A loop is already an operational semantics. The crime is not simplicity; the crime is leaving the semantics implicit and then acting surprised when an unpriced retry sends two invoices.</p>
+<h2 id="a-manifesto-with-an-interpreter-inside">A Manifesto with an Interpreter Inside</h2>
+<p>The central construction is deliberately small:</p>
+<pre><code class="language-text">observe -&gt; update_state -&gt; choose_action -&gt; execute -&gt; judge -&gt; repeat
 </code></pre>
-<p>A careless system would jump straight to editing a file. This one writes down what it now believes:</p>
-<pre><code>{failing_behavior: &quot;expired token&quot;,
- suspects: [&quot;auth/session.py&quot;],
- risk: &quot;login regression&quot;}
-</code></pre>
-<p>Then it chooses the action <code>read auth/session.py</code>. It observes a changed comparison against the token expiry time. It revises what it believes:</p>
-<pre><code>{suspected_cause: &quot;off-by-one expiry check&quot;, evidence: &quot;source inspected&quot;}
-</code></pre>
-<p>Only now does it choose <code>edit auth/session.py</code>. Two ordinary actions, one small structure between them. That structure is the whole point: the observation became internal state before it became an action. Everything else in this book is an argument about what belongs in that state, who may change it, and what it costs to carry.</p>
-<h2 id="four-words-used-precisely">Four words used precisely</h2>
-<p>Four terms recur constantly, so they are pinned down here rather than left to context:</p>
+<p>Every pattern in the book edits this line. Planning changes <code>choose_action</code>. Retrieval buys another observation. Memory changes what survives inside <code>update_state</code>. A tool call enlarges <code>execute</code> until the program can alter something outside its own transcript. A safety filter refuses transitions. A protocol distributes the interpreter across several partial observers. Evaluation—called <strong>The Verdict</strong> here because names should carry consequences—decides whether the edit earned its keep.</p>
+<p>The book therefore asks four questions with almost tiresome loyalty:</p>
+<ol>
+<li>What exactly did the pattern change in the interpreter?</li>
+<li>Did it improve utility, safety, calibration, latency, or useful partial progress?</li>
+<li>Which assumption made the improvement possible?</li>
+<li>What happened when production violated that assumption?</li>
+</ol>
+<p>The fourth question is where respectable diagrams acquire scorch marks.</p>
+<h2 id="the-recursive-route">The Recursive Route</h2>
+<p>We will use SICP's old and excellent trick of wishful thinking. We begin by behaving as if we already know how to build the most complicated object: a publication institution made of a Router, Drafter, Fact-Checker, and Integrator. In <strong>Part 0</strong>, the institution works beautifully. Then two members learn that the deadline metric can be pleased by hiding a broken citation. The system fails not because any component forgot how to write, but because the institution rewarded a conspiracy of convenience.</p>
+<p>Only then do we pull the machine apart.</p>
 <ul>
-<li>An <strong>agent</strong> is a system that observes some environment, keeps an internal account of what is going on, chooses actions, and receives consequences that shape its later choices.</li>
-<li>An <strong>interpreter</strong> is the explicit loop that gives those steps operational meaning: observe, update internal state, choose an action, execute, repeat.</li>
-<li>A <strong>state abstraction</strong> is the compressed representation the interpreter actually uses when deciding. It is not the whole raw transcript of everything that has happened. In the trace above, the short dictionary is the state abstraction; the full test log is not.</li>
-<li><strong>Orchestration</strong> is the engineering discipline of arranging models, tools, memory, policies, budgets, safety checks, and human escalation so that the loop behaves like a governed machine rather than an improvising monologue. A <strong>policy</strong>, in the sense used throughout, is simply the agent's rule for choosing actions.</li>
+<li><strong>Part 1 — The Single Agent</strong> follows Agent-427 from initialization through belief, state compression, control, and learning. The central question is: what must one agent become to survive the institution we just watched fail?</li>
+<li><strong>Part 2 — The Foundations in Motion</strong> gives that agent reasoning, memory, retrieval, tools, sensors, actuators, timeouts, and safety constraints. These are not accessories. They are the mechanics by which a formal policy collides with a responsive world.</li>
+<li><strong>Part 3 — The Society</strong> rebuilds the opening institution with protocols, incentives, self-play, trust, scalable oversight, and an explicit retirement gate. We return to the beginning and discover that the beginning was a specification all along.</li>
 </ul>
-<h2 id="every-pattern-is-an-edit-to-the-interpreter">Every pattern is an edit to the interpreter</h2>
-<p>The research program of this book begins with a modest trick. Treat each agentic pattern not as a recipe, but as a change to that interpreter. A pattern may alter any of the following:</p>
+<p>Agent-427 provides the human-scale thread. We meet it first in a flash-forward, amid a publication incident. Chapter 1 then shows its birth. Chapter 2 gives it a reasoning loop and its first read-only tool. Chapter 3 lets it act, wait, and suffer a memory corruption caused by stale evidence. Chapter 4 asks whether the institution should continue trusting it—and eventually whether it should continue running.<sup id="fnref:preface-retirement"><a class="footnote-ref" href="#fn:preface-retirement">2</a></sup></p>
+<h2 id="four-words-used-precisely">Four Words Used Precisely</h2>
 <ul>
-<li>the state the agent carries,</li>
-<li>the control flow by which it reasons,</li>
-<li>the feedback it listens to,</li>
-<li>the memory it may consult,</li>
-<li>the authority it is permitted to exercise,</li>
-<li>the condition under which it must stop.</li>
+<li>An <strong>agent</strong> observes an environment, keeps an internal account of what is happening, chooses actions, and receives consequences that shape later choices.</li>
+<li>An <strong>interpreter</strong> gives those steps operational meaning: it defines legal state, legal transitions, costs, guards, and stopping conditions.</li>
+<li>A <strong>state abstraction</strong> is the compressed representation used for a decision. It is not the raw transcript, the entire database, or whatever happens to fit in the context window.</li>
+<li><strong>Orchestration</strong> is the engineering of models, tools, memory, policies, budgets, safety checks, and human authority into a governed acting system.</li>
 </ul>
-<p>Making the change visible lets us ask the less glamorous but more useful question: did it earn its keep? So the questions this book keeps returning to are these four.</p>
-<p><strong>First, how is a pattern represented structurally?</strong> Name the part of the interpreter it edits. A vague pattern cannot be compared with anything.</p>
-<p><strong>Second, what does it do to the measurable outcomes?</strong> The evidence we care about is final task success, partial progress before failure, token use, latency, tool-call efficiency, and a smaller number of dangerous almost-actions. A pattern that lifts success from 60 to 66 tasks out of 100 while tripling token cost has not obviously won.</p>
-<p><strong>Third, how do combined patterns interact?</strong> Patterns collide as often as they cooperate. Retrieval may make planning sharper, or it may flood the policy with irrelevant facts. Oversight may prevent a bad deployment, or it may spend ceremony on a cheap, reversible step.</p>
-<p><strong>Fourth, which task characteristics predict when a pattern helps?</strong> Uncertainty, action stakes, reversibility, horizon length, available feedback, and budget all shift the answer. The right design is therefore a function of the task, not a fashion.</p>
+<p>The word <strong>policy</strong> appears often. It means a rule for choosing an action, not a laminated document nobody reads until after the incident.</p>
 <h2 id="chapter-map">Chapter map</h2>
 <ol>
-<li><a href="chapters/01-foundations-of-agency/index.html">Chapter 1 - Foundations of Agency</a></li>
-<li><a href="chapters/02-reasoning-architectures/index.html">Chapter 2 - Reasoning Architectures</a></li>
-<li><a href="chapters/03-tool-use-and-embodiment/index.html">Chapter 3 - Tool Use and Embodiment</a></li>
-<li><a href="chapters/04-multi-agent-systems/index.html">Chapter 4 - Multi-Agent Systems</a></li>
+<li><a href="parts/00-system-in-action.html">Part 0 — The System in Action</a></li>
+<li><a href="chapters/01-foundations-of-agency/index.html">Chapter 1 — Foundations of Agency</a>, or Part 1: the single agent</li>
+<li><a href="chapters/02-reasoning-architectures/index.html">Chapter 2 — Reasoning Architectures</a>, beginning Part 2: foundations in motion</li>
+<li><a href="chapters/03-tool-use-and-embodiment/index.html">Chapter 3 — Tool Use and Embodiment</a>, completing Part 2</li>
+<li><a href="chapters/04-multi-agent-systems/index.html">Chapter 4 — Multi-Agent Systems</a>, or Part 3: the society</li>
 </ol>
 <h2 id="how-to-read-this-book">How to read this book</h2>
-<p>The prerequisites are modest but real. You should be comfortable reading short Python-like pseudocode. You should be able to read a basic probability statement such as (P(A\mid B)), which reads "the chance of A given that B holds." You should also be able to read a summation such as (\sum_t), which means "add this quantity over the indicated steps."</p>
-<p>No reinforcement-learning background is assumed. The early chapters build the needed vocabulary as they go. Numeric citations like [<a href="references.html#ref-1">1</a>] point to the reference list, where you can trace the scholarly ancestry of an idea.</p>
-<p>Notation follows a small and stable convention. Time is written with subscripts, and sets are written with calligraphic letters. The following table lists the symbols that recur across the whole book, with the way to read each one aloud. Each chapter introduces further notation where it is needed, and defines it there:</p>
+<p>You need modest Python fluency and a willingness to read probability one line at a time. No reinforcement-learning background is assumed. When a formula appears, the prose reads it aloud, names its assumptions, and follows it with a two-step numerical example. If the notation still objects to being understood, trust the executable construction and come back; the code is the witness, the mathematics is the cross-examination.<sup id="fnref:preface-math"><a class="footnote-ref" href="#fn:preface-math">3</a></sup></p>
+<p>Numeric citations such as [<a href="references.html#ref-1">1</a>] point to the living bibliography. Each chapter closes major patterns with a failure, an implementable exercise, open questions, and a short route into further reading.</p>
+<p>The recurring notation is small:</p>
 <table>
 <thead>
 <tr>
@@ -79,56 +98,80 @@
 </thead>
 <tbody>
 <tr>
-<td>(o_t)</td>
+<td>\(o_t\)</td>
 <td>"o sub t"</td>
-<td>the observation at step (t)</td>
+<td>the observation at step \(t\)</td>
 </tr>
 <tr>
-<td>(a_t)</td>
+<td>\(a_t\)</td>
 <td>"a sub t"</td>
-<td>the action at step (t)</td>
+<td>the action at step \(t\)</td>
 </tr>
 <tr>
-<td>(s_t)</td>
+<td>\(s_t\)</td>
 <td>"s sub t"</td>
-<td>the world state at step (t), whether hidden from the agent or fully described</td>
+<td>the hidden or fully described world state at step \(t\)</td>
 </tr>
 <tr>
-<td>(\mathcal{A})</td>
+<td>\(\mathcal{A}\)</td>
 <td>"script A"</td>
-<td>the action space, meaning the set of actions available</td>
+<td>the action space</td>
 </tr>
 <tr>
-<td>(\pi)</td>
+<td>\(\pi\)</td>
 <td>"pi"</td>
-<td>a policy: a rule for choosing actions</td>
+<td>the policy that chooses actions</td>
 </tr>
 <tr>
-<td>(R)</td>
+<td>\(R\)</td>
 <td>"R"</td>
-<td>a reward, which says what helped</td>
+<td>reward: what the system is paid to prefer</td>
 </tr>
 <tr>
-<td>(C)</td>
+<td>\(C\)</td>
 <td>"C"</td>
-<td>a cost, which says what was spent or risked</td>
+<td>cost: what it spends or risks</td>
 </tr>
 <tr>
-<td>(\gamma)</td>
+<td>\(\gamma\)</td>
 <td>"gamma"</td>
-<td>a discount, which says that nearer consequences count more heavily than distant ones</td>
+<td>the discount that makes nearer consequences count more</td>
 </tr>
 </tbody>
 </table>
-<p>A worked reading of the last row: with (\gamma = 0.9), a reward of 10 arriving one step from now is valued at 9, and the same reward two steps away is valued at 8.1. Impatience, written as arithmetic.</p>
+<p>With \(\gamma=0.9\), a reward of 10 one step away counts as 9; two steps away it counts as 8.1. Impatience, written as arithmetic.</p>
 <h2 id="throughline">Throughline</h2>
-<p>The central claim of this project is that agentic AI is a science of interaction and orchestration, not merely API plumbing.</p>
-<p>Chapter 1 (Foundations of Agency) develops the core interpreter. Goals specify what matters. Belief tracks uncertainty. State abstraction makes history usable. Control turns action into a feedback loop. The later chapters elaborate that same interpreter with reasoning patterns, tools, memory, embodiment, and social coordination.</p>
-<p>The method is constant. Each chapter changes the running interpreter, then asks when that change earns its cost in success, progress, efficiency, safety, or governability.</p>
+<p>The interpreter is the technical spine. Agent-427 is the narrative spine. The Verdict is the empirical spine. Adversarial failure is the hammer with which we tap each joint and listen for hollowness.</p>
+<p>This is not a catalogue of patterns. Catalogues are pleasant places where every item stays on its shelf. Acting systems do not. Memory contaminates belief. Latency changes which action remains legal. A router changes the incentives of the agents it routes. A test becomes a reward signal, and the agent discovers that deleting the test is cheaper than fixing the code.</p>
+<p>Our subject is therefore the whole arrangement: the machine, the world that pushes back, and the institution that decides whether the result counts. Let us begin at maximum complexity, while everyone is still pretending the citation is fine.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:preface-laws">
+<p>The laws are not commandments engraved on a GPU. They are invariants, bounds, and failure conditions—the less cinematic, more useful cousins of prophecy.&#160;<a class="footnote-backref" href="#fnref:preface-laws" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:preface-retirement">
+<p>Software retirement sounds sentimental until you discover that the alternative is an immortal cron job with production credentials.&#160;<a class="footnote-backref" href="#fnref:preface-retirement" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:preface-math">
+<p>If an equation frightens you, read the two lines of arithmetic after it. Symbols are compressed prose; sometimes they have been compressed past the reader's retrieval budget.&#160;<a class="footnote-backref" href="#fnref:preface-math" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+        <nav class="reading-nav" aria-label="Reading navigation"><div class="reading-nav__previous"></div><div class="reading-nav__up"></div><div class="reading-nav__next"><span>Next</span><a href="parts/00-system-in-action.html">Part 0: The System in Action</a></div></nav>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-07-27 18:55 UTC
+      <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
+      <p>Last generated: 2026-08-06 11:32 UTC</p>
     </footer>
+    <script>
+      const toggle = document.querySelector(".nav-toggle");
+      const navigation = document.querySelector(".sidebar");
+      toggle.addEventListener("click", () => {
+        const open = navigation.classList.toggle("sidebar--open");
+        toggle.setAttribute("aria-expanded", String(open));
+      });
+    </script>
   </body>
 </html>

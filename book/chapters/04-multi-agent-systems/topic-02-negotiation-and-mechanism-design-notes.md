@@ -36,3 +36,12 @@ Equation set: dominant-strategy IC \(u_i(g(\hat\theta_i,\hat\theta_{-i}),p_i;\th
 2. Use a cloud-resource auction case study comparing first-price, VCG, and contract-net outcomes.
 3. Write as a strategic game between honest and manipulative bidders with policy countermeasures.
 4. Structure around fairness-efficiency frontiers and show where each mechanism sits.
+
+## Editor Rewrite Alternative Before Primary Synthesis
+
+Make delegation a signed four-message handshake: request, accept, evidence, and
+verify. Trust is not a personality adjective but discounted credit backed by
+verified outcomes. Show D-12 lying about type, then D-12 and C-9 coordinating
+reports so each wins easier work. Reputation decay becomes the interest charged
+on unverified trust, and the exercise implements the mechanism under strategic
+misreports and collusion.

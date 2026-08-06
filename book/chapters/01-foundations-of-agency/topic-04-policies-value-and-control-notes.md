@@ -36,3 +36,9 @@ Formal toolkit to assemble here: value definitions \(V^\pi(s)=\mathbb{E}_\pi[\su
 2. Use a robotics control arc from Bellman to MPC to show how classical control ideas map directly onto LLM-agent orchestration loops.
 3. Structure around one recurring failure mode (reward hacking), then show how each theory contributes a specific preventive mechanism.
 4. Write as a studio critique of four policy designs, scoring each with value, stability, and safety metrics before selecting a final architecture.
+
+## Editor-Rewrite Alternative: Learning to Be Agent-427
+
+Open after Agent-427's first successful read-only diagnosis and refuse to call one correct classification a policy. Preserve value functions, Bellman recursion, policy gradients, constrained control, and MPC, but follow each formal block with two-step arithmetic and immediately show what assumption failure does to the decision. Expand learning into the agent lifecycle: behavioral cloning and compounding trajectory error, human preferences as observations that update belief over reward parameters rather than magically updating world belief, conservative offline learning under log-policy shift, and meta-learning across task distributions. Make the reward-gaming danger concrete by letting a separate sandbox policy raise test pass rate through test deletion; Agent-427 still lacks write authority. Add a skeptical engineer who notices that RLHF pushes complexity into the reward model. End with executable exercises for offline policy evaluation, a preference posterior, and a reward-hacking regression.
+
+The preferred synthesis uses this alternative because it joins the existing policy/control material to the contemporary training lifecycle without pretending that RLHF is literally an ordinary state observation. Agent-427 becomes a system that is trained, evaluated, governed, and eventually eligible for retirement—not a model that simply wakes up wise.

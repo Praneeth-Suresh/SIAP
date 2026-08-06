@@ -1,0 +1,91 @@
+[[section]]
+source = "index.md"
+kind = "preface"
+
+[[section]]
+source = "parts/00-system-in-action.md"
+kind = "part"
+
+[[section]]
+source = "chapters/01-foundations-of-agency/index.md"
+kind = "chapter"
+
+[[section]]
+source = "chapters/01-foundations-of-agency/topic-01-goals-environments-actions.md"
+kind = "topic"
+
+[[section]]
+source = "chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision.md"
+kind = "topic"
+
+[[section]]
+source = "chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions.md"
+kind = "topic"
+
+[[section]]
+source = "chapters/01-foundations-of-agency/topic-04-policies-value-and-control.md"
+kind = "topic"
+
+[[section]]
+source = "chapters/02-reasoning-architectures/index.md"
+kind = "chapter"
+
+[[section]]
+source = "chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters.md"
+kind = "topic"
+
+[[section]]
+source = "chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search.md"
+kind = "topic"
+
+[[section]]
+source = "chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval.md"
+kind = "topic"
+
+[[section]]
+source = "chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners.md"
+kind = "topic"
+
+[[section]]
+source = "chapters/03-tool-use-and-embodiment/index.md"
+kind = "chapter"
+
+[[section]]
+source = "chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling.md"
+kind = "topic"
+
+[[section]]
+source = "chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling.md"
+kind = "topic"
+
+[[section]]
+source = "chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback.md"
+kind = "topic"
+
+[[section]]
+source = "chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails.md"
+kind = "topic"
+
+[[section]]
+source = "chapters/04-multi-agent-systems/index.md"
+kind = "chapter"
+
+[[section]]
+source = "chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication.md"
+kind = "topic"
+
+[[section]]
+source = "chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design.md"
+kind = "topic"
+
+[[section]]
+source = "chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics.md"
+kind = "topic"
+
+[[section]]
+source = "chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration.md"
+kind = "topic"
+
+[[section]]
+source = "references.md"
+kind = "references"

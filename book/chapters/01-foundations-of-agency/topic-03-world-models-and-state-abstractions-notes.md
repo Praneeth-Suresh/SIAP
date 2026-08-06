@@ -36,3 +36,9 @@ Equation inventory for a rigorous rewrite: abstraction mapping \(\phi:\mathcal{S
 2. Build the chapter around successive compression experiments, measuring what control capability is lost or retained at each step.
 3. Compare two competing world models (correlational vs. causal) on the same task and let outcomes reveal the conceptual gap.
 4. Frame the narrative as an engineering postmortem of an agent failure caused by the wrong state abstraction.
+
+## Editor-Rewrite Alternative: The Biography That Does Not Fit in Context
+
+Treat Agent-427's growing history as an engineering liability: by its hundredth step the transcript contains duplicated logs, an obsolete branch name, and one decisive clue near the beginning. Preserve the abstraction, sufficiency, bisimulation, and causal-model formalism, following every display equation with arithmetic. Make the assumption explicit: the compression retains distinctions needed for action. Violate it by dropping the active branch and by retaining a correlated but noncausal cache-clearing anecdote. Add a skeptical-engineer exchange about whether a larger context window removes the need for state design; answer that capacity is not relevance and attention is not a contract. End with an executable comparison of two abstraction functions on action preservation, value loss, and token count.
+
+The preferred synthesis uses this alternative because it turns state abstraction from elegant compression into survival under finite attention. Agent-427 provides continuity, while the existing four-state example remains the hand-checkable core.

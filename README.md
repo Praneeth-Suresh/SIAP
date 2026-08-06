@@ -51,7 +51,7 @@ uv run python scripts/build_pdf.py
 uv run python scripts/build_latex_pdf.py
 ```
 
-The site output in `site/` is GitHub Pages-compatible. Print outputs are emitted to `dist/`:
+The site output in `site/` is GitHub Pages-compatible. It publishes the complete reader-facing book with hierarchical chapter/topic navigation and MathJax-rendered equations; companion `*-notes.md` files stay out of the public site. Print outputs are emitted to `dist/`:
 - `book.pdf` (WeasyPrint from HTML/CSS)
 - `book-latex.pdf` and `book.tex` (Pandoc + LaTeX engine for cleaner math)
 

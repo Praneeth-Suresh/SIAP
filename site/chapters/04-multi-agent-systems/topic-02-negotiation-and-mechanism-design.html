@@ -3,36 +3,56 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Negotiation and Mechanism Design</title>
+    <meta name="description" content="Structure and Interpretation of Agentic Patterns, a theory-backed book about agentic AI." />
+    <title>Negotiation and Mechanism Design · SIAP</title>
     <link rel="stylesheet" href="../../assets/style.css" />
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [["\\(", "\\)"]],
+          displayMath: [["\\[", "\\]"], ["$$", "$$"]],
+          processEscapes: true
+        },
+        options: { skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] }
+      };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   </head>
   <body>
     <header class="site-header">
-      <h1><a href="../../index.html">Structure and Interpretation of Agentic Patterns</a></h1>
+      <div class="site-header__inner">
+        <a class="site-mark" href="../../index.html" aria-label="Structure and Interpretation of Agentic Patterns home">SIAP</a>
+        <div>
+          <p class="site-kicker">A book about governed machines</p>
+          <p class="site-title"><a href="../../index.html">Structure and Interpretation<br />of Agentic Patterns</a></p>
+        </div>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="book-navigation">Contents</button>
+      </div>
     </header>
     <main class="layout">
-      <aside class="sidebar">
-        <h2>Contents</h2>
-        <nav><div><a href="../../chapters/01-foundations-of-agency/index.html">chapters/01-foundations-of-agency/index</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-01-goals-environments-actions-notes.html">chapters/01-foundations-of-agency/topic-01-goals-environments-actions-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-01-goals-environments-actions.html">chapters/01-foundations-of-agency/topic-01-goals-environments-actions</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision-notes.html">chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision.html">chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-decision</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions-notes.html">chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions.html">chapters/01-foundations-of-agency/topic-03-world-models-and-state-abstractions</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-04-policies-value-and-control-notes.html">chapters/01-foundations-of-agency/topic-04-policies-value-and-control-notes</a></div><div><a href="../../chapters/01-foundations-of-agency/topic-04-policies-value-and-control.html">chapters/01-foundations-of-agency/topic-04-policies-value-and-control</a></div><div><a href="../../chapters/02-reasoning-architectures/index.html">chapters/02-reasoning-architectures/index</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters-notes.html">chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters.html">chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search-notes.html">chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search.html">chapters/02-reasoning-architectures/topic-02-deliberation-planning-and-search</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval-notes.html">chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval.html">chapters/02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners-notes.html">chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners-notes</a></div><div><a href="../../chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners.html">chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/index.html">chapters/03-tool-use-and-embodiment/index</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling-notes.html">chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling.html">chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling-notes.html">chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling.html">chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback-notes.html">chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback.html">chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails-notes.html">chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails-notes</a></div><div><a href="../../chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails.html">chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails</a></div><div><a href="../../chapters/04-multi-agent-systems/index.html">chapters/04-multi-agent-systems/index</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication-notes.html">chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication.html">chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-communication</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design-notes.html">chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design-notes</a></div><div><a class="active" href="../../chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design.html">chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-design</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics-notes.html">chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics.html">chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-learning-dynamics</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration-notes.html">chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration-notes</a></div><div><a href="../../chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration.html">chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestration</a></div><div><a href="../../index.html">index</a></div><div><a href="../../references.html">references</a></div></nav>
+      <aside class="sidebar" id="book-navigation">
+        <p class="sidebar__label">Reader’s route</p>
+        <nav aria-label="Book contents"><ol class="book-nav__list"><li class="book-nav__home"><a href="../../index.html">Book home</a></li><li class="book-nav__part"><a href="../../parts/00-system-in-action.html">Part 0: The System in Action</a></li><li class="book-nav__chapter"><a href="../01-foundations-of-agency/index.html">Chapter 1: Foundations of Agency</a><ol class="book-nav__topics"><li><a href="../01-foundations-of-agency/topic-01-goals-environments-actions.html">Goals, Environments, and Actions</a></li><li><a href="../01-foundations-of-agency/topic-02-belief-uncertainty-and-decision.html">Belief, Uncertainty, and Decision</a></li><li><a href="../01-foundations-of-agency/topic-03-world-models-and-state-abstractions.html">World Models and State Abstractions</a></li><li><a href="../01-foundations-of-agency/topic-04-policies-value-and-control.html">Policies, Value, and Control</a></li></ol></li><li class="book-nav__chapter"><a href="../02-reasoning-architectures/index.html">Chapter 2: Reasoning Architectures</a><ol class="book-nav__topics"><li><a href="../02-reasoning-architectures/topic-01-reasoning-loops-as-interpreters.html">Reasoning Loops as Interpreters</a></li><li><a href="../02-reasoning-architectures/topic-02-deliberation-planning-and-search.html">Deliberation, Planning, and Search</a></li><li><a href="../02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval.html">Memory Systems, Context, and Retrieval</a></li><li><a href="../02-reasoning-architectures/topic-04-evaluating-and-debugging-reasoners.html">Evaluating and Debugging Reasoners</a></li></ol></li><li class="book-nav__chapter"><a href="../03-tool-use-and-embodiment/index.html">Chapter 3: Tool Use and Embodiment</a><ol class="book-nav__topics"><li><a href="../03-tool-use-and-embodiment/topic-01-tool-interfaces-and-function-calling.html">Tool Interfaces and Function Calling</a></li><li><a href="../03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooling.html">Retrieval-Augmented Tooling</a></li><li><a href="../03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuators-and-feedback.html">Embodiment: Sensors, Actuators, and Feedback</a></li><li><a href="../03-tool-use-and-embodiment/topic-04-safety-constraints-and-guardrails.html">Safety Constraints and Guardrails</a></li></ol></li><li class="book-nav__chapter"><a href="index.html">Chapter 4: Multi-Agent Systems</a><ol class="book-nav__topics"><li><a href="topic-01-coordination-protocols-and-communication.html">Coordination Protocols and Communication</a></li><li><a href="topic-02-negotiation-and-mechanism-design.html" aria-current="page">Negotiation and Mechanism Design</a></li><li><a href="topic-03-equilibria-self-play-and-learning-dynamics.html">Equilibria, Self-Play, and Learning Dynamics</a></li><li><a href="topic-04-neural-ensembles-and-orchestration.html">Neural Ensembles and Orchestration</a></li></ol></li><li class="book-nav__references"><a href="../../references.html">References</a></li></ol></nav>
       </aside>
       <article class="content">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../index.html">Book</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><a href="index.html">Chapter 4: Multi-Agent Systems</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><span aria-current="page">Negotiation and Mechanism Design</span></nav>
         <h1 id="negotiation-and-mechanism-design">Negotiation and Mechanism Design</h1>
 <p>Coordination assumes that agents must fit their actions together. Negotiation adds a sharper difficulty: the agents may not value the same outcomes. This section is about writing the rules of the game itself, so that agents find it more attractive to reveal useful information than to generate strategic noise. Once many interpreters share one environment with scarce resources, private information, and local objectives, somebody has to design that rulebook. That designer is you.</p>
 <h2 id="one-edit-slot-two-eager-agents">One Edit Slot, Two Eager Agents</h2>
 <p>Start with a toy scarcity problem.</p>
-<p>There is one edit slot before release. Agent (D), the drafter, privately knows that using the slot for a conceptual rewrite is worth (8) units to final quality and costs (3) units of effort. Agent (F), the fact checker, privately knows that using the slot for citation repair is worth (6) units and costs (1). Nobody else can see those numbers.</p>
+<p>There is one edit slot before release. Agent \(D\), the drafter, privately knows that using the slot for a conceptual rewrite is worth \(8\) units to final quality and costs \(3\) units of effort. Agent \(F\), the fact checker, privately knows that using the slot for citation repair is worth \(6\) units and costs \(1\). Nobody else can see those numbers.</p>
 <p>Four words carry the rest of this section:</p>
 <ul>
-<li>A <strong>type</strong> is the private fact an agent holds about its own value and cost. (D)'s type is the pair (8) and (3).</li>
-<li>A <strong>report</strong> is what the agent tells the mechanism, such as "my edit is worth (8) and costs (3)." A report may be a lie.</li>
-<li>An <strong>allocation</strong> is the outcome the mechanism chooses: give the slot to (D), give it to (F), or use no slot at all.</li>
+<li>A <strong>type</strong> is the private fact an agent holds about its own value and cost. \(D\)'s type is the pair \(8\) and \(3\).</li>
+<li>A <strong>report</strong> is what the agent tells the mechanism, such as "my edit is worth \(8\) and costs \(3\)." A report may be a lie.</li>
+<li>An <strong>allocation</strong> is the outcome the mechanism chooses: give the slot to \(D\), give it to \(F\), or use no slot at all.</li>
 <li>A <strong>transfer</strong> is a payoff adjustment the mechanism imposes. In an auction it is money. In agent workflows it is often priority, reputation, review burden, future budget, or blame.</li>
 </ul>
-<p>The arithmetic already bites. (D) nets (8-3=5); (F) nets (6-1=5). The two candidate edits are worth the same once effort is priced, so the tiebreak has to come from the announced rule rather than from whoever reports most loudly.</p>
+<p>The arithmetic already bites. \(D\) nets \(8-3=5\); \(F\) nets \(6-1=5\). The two candidate edits are worth the same once effort is priced, so the tiebreak has to come from the announced rule rather than from whoever reports most loudly.</p>
 <h2 id="what-the-designer-wants-truthfulness-fair-entry-and-efficiency">What the Designer Wants: Truthfulness, Fair Entry, and Efficiency</h2>
 <p>Three desiderata (the properties a designer asks a rulebook to have) can be read directly off that example.</p>
-<p><strong>Incentive compatibility</strong> means truthful reporting should be the best policy. (D) should not gain by pretending the rewrite is worth (30).</p>
-<p><strong>Individual rationality</strong> means an honest participant should not be made worse off by joining. (F) should not be assigned unrewarded work whose effort cost exceeds its expected benefit.</p>
+<p><strong>Incentive compatibility</strong> means truthful reporting should be the best policy. \(D\) should not gain by pretending the rewrite is worth \(30\).</p>
+<p><strong>Individual rationality</strong> means an honest participant should not be made worse off by joining. \(F\) should not be assigned unrewarded work whose effort cost exceeds its expected benefit.</p>
 <p><strong>Efficiency</strong> means the chosen allocation should maximize total value net of relevant costs. The slot should go where it improves the shared artifact most, not where the loudest report points.</p>
 <p>To check these as a builder, run the rule against fabricated reports. Feed it an inflated claim, then ask whether the inflating agent ended up better off. If it did, the rule is not incentive compatible, whatever the design document says. With these words in hand, the notation is less imperial.</p>
 <h2 id="private-information-is-part-of-the-environment">Private Information Is Part of the Environment</h2>
@@ -51,75 +71,103 @@
 </thead>
 <tbody>
 <tr>
-<td>(N)</td>
+<td>\(N\)</td>
 <td>"the agent set N"</td>
 <td>Who participates in the mechanism</td>
 </tr>
 <tr>
-<td>(\Theta)</td>
+<td>\(\Theta\)</td>
 <td>"big theta"</td>
 <td>The type spaces, that is, all private facts agents could hold</td>
 </tr>
 <tr>
-<td>(\theta_i)</td>
+<td>\(\theta_i\)</td>
 <td>"theta sub i"</td>
-<td>Agent (i)'s true type</td>
+<td>Agent \(i\)'s true type</td>
 </tr>
 <tr>
-<td>(\hat\theta_i)</td>
+<td>\(\hat\theta_i\)</td>
 <td>"theta hat sub i"</td>
-<td>Agent (i)'s reported type, truthful or not</td>
+<td>Agent \(i\)'s reported type, truthful or not</td>
 </tr>
 <tr>
-<td>(\hat\theta_{-i})</td>
+<td>\(\hat\theta_{-i}\)</td>
 <td>"theta hat minus i"</td>
-<td>The reports of every agent except (i)</td>
+<td>The reports of every agent except \(i\)</td>
 </tr>
 <tr>
-<td>(A)</td>
+<td>\(A\)</td>
 <td>"the outcome space A"</td>
 <td>Every allocation the mechanism could choose</td>
 </tr>
 <tr>
-<td>(g)</td>
+<td>\(g\)</td>
 <td>"the allocation rule g"</td>
 <td>The function from reports to an outcome</td>
 </tr>
 <tr>
-<td>(p)</td>
+<td>\(p\)</td>
 <td>"the transfer rule p"</td>
 <td>The function from reports to payments</td>
 </tr>
 </tbody>
 </table>
 <p>A mechanism is
-[
+\[
 \mathcal{M}=(N,\Theta, A, g, p),
-]
-with agents (N), type spaces (\Theta), outcome space (A), allocation rule (g), and transfers (p). A type (\theta_i) represents what agent (i) privately knows: cost, preference, skill, urgency, risk, or capacity. The mechanism asks for reports (\hat\theta_i), chooses an outcome (g(\hat\theta)), and applies transfers (p(\hat\theta)).</p>
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> First take \(|N|=2\) agents and \(|A|=3\)
+allocations. Then even one report from each creates \(2\times3=6\) basic
+agent-outcome value entries before transfers enter.</p>
+</blockquote>
+<p>with agents \(N\), type spaces \(\Theta\), outcome space \(A\), allocation rule \(g\), and transfers \(p\). A type \(\theta_i\) represents what agent \(i\) privately knows: cost, preference, skill, urgency, risk, or capacity. The mechanism asks for reports \(\hat\theta_i\), chooses an outcome \(g(\hat\theta)\), and applies transfers \(p(\hat\theta)\).</p>
 <p>The designer usually wants some combination of incentive compatibility, individual rationality, budget feasibility, fairness, and efficiency. Choosing a mechanism means choosing which of those five to trade away.</p>
 <h2 id="writing-truthfulness-as-an-inequality">Writing Truthfulness as an Inequality</h2>
-<p>Truthfulness can be stated as an inequality rather than a hope. In the inequality that states it, (u_i(\cdot;\theta_i)) is evaluated using agent (i)'s true type, even when the report is false; (\hat\theta_{-i}) denotes the other agents' reports.</p>
+<p>Truthfulness can be stated as an inequality rather than a hope. In the inequality that states it, \(u_i(\cdot;\theta_i)\) is evaluated using agent \(i\)'s true type, even when the report is false; \(\hat\theta_{-i}\) denotes the other agents' reports.</p>
 <p>Dominant-strategy truthfulness requires that honest reporting be best for each agent regardless of the others' reports:
-[
-u_i!\big(g(\theta_i,\hat\theta_{-i}),p_i(\theta_i,\hat\theta_{-i});\theta_i\big)
+\[
+u_i\!\big(g(\theta_i,\hat\theta_{-i}),p_i(\theta_i,\hat\theta_{-i});\theta_i\big)
 \ge
-u_i!\big(g(\theta'<em -i="-i">i,\hat\theta</em>),p_i(\theta'<em -i="-i">i,\hat\theta</em>);\theta_i\big).
-]
-Read the left side as "what agent (i) really gets when it tells the truth." Read the right side as "what it really gets from any lie (\theta'_i)." The word <em>dominant</em> is the strong part: the inequality must hold for every possible behaviour of the other agents, not merely on average.</p>
+u_i\!\big(g(\theta'_i,\hat\theta_{-i}),p_i(\theta'_i,\hat\theta_{-i});\theta_i\big).
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> First let truthful reporting yield utility \(5\).
+Then test a lie that yields \(4\): \(5\ge4\), so this deviation does not break
+truthfulness; a lie yielding \(6\) would.</p>
+</blockquote>
+<p>Read the left side as "what agent \(i\) really gets when it tells the truth." Read the right side as "what it really gets from any lie \(\theta'_i\)." The word <em>dominant</em> is the strong part: the inequality must hold for every possible behaviour of the other agents, not merely on average.</p>
 <h2 id="efficient-allocation-and-the-vickrey-clarke-groves-transfer">Efficient Allocation and the Vickrey-Clarke-Groves Transfer</h2>
 <p>Efficient allocation seeks
-[
+\[
 g(\hat\theta)\in\arg\max_{a\in A}\sum_i v_i(a,\hat\theta_i).
-]
-That reads: "pick the outcome (a) whose total reported value, summed over all agents, is largest."</p>
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> First total reported values for rewrite and citation
+repair: \(8+1=9\) and \(4+6=10\). Then the allocation rule selects citation
+repair by a margin of \(10-9=1\).</p>
+</blockquote>
+<p>That reads: "pick the outcome \(a\) whose total reported value, summed over all agents, is largest."</p>
 <p>Vickrey, Clarke, and Groves mechanisms show one classic way to align reported local valuations with a welfare-maximizing allocation [<a href="../../references.html#ref-57">57</a>] [<a href="../../references.html#ref-58">58</a>] [<a href="../../references.html#ref-59">59</a>]. One canonical transfer form is
-[
+\[
 p_i(\hat\theta)=h_i(\hat\theta_{-i})-\sum_{j\ne i}v_j(g(\hat\theta),\hat\theta_j),
-]
-which charges each participant for the externality it imposes on the rest of the system. An externality here is the value other agents lose because this agent won.</p>
-<p>Put the edit slot through it. Suppose the tie breaks toward (D), and let (h_i) be the value the others would have enjoyed if (D) had never shown up, which is (F)'s net (5). With (D) winning, the others actually receive (0). So (D) pays (5-0=5): exactly the value it displaced. Because the two edits tie at (5), (D)'s surplus here is exactly zero; raise (D)'s value to (6) and the winner keeps (1).</p>
-<p>The sign convention here is that (p_i) is a payment made by agent (i) to the mechanism, so larger (p_i) lowers utility when utility is written as value minus payment. Some texts use the opposite convention, treating transfers as money received; the algebra changes sign, not substance.</p>
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> First let the others obtain value \(5\) without
+D-12 and \(0\) when D-12 wins. Then D-12's externality payment is
+\(5-0=5\).</p>
+</blockquote>
+<p>The truthfulness result requires more than the impressive-looking subtraction.
+Utilities must be quasilinear—value minus an enforceable transfer—the reports
+must cover the relevant private values, and participants must not collude on
+reports or side payments. In production, reputation may not behave like money,
+tool access may be impossible to claw back, agents may hide values the outcome
+rule never asks for, and D-12 may coordinate with C-9. Under those violations,
+this remains a useful externality price, not a certificate that truth has
+spontaneously occurred.</p>
+<p>The transfer charges each participant for the externality it imposes on the rest of the system. An externality here is the value other agents lose because this agent won.</p>
+<p>Put the edit slot through it. Suppose the tie breaks toward \(D\), and let \(h_i\) be the value the others would have enjoyed if \(D\) had never shown up, which is \(F\)'s net \(5\). With \(D\) winning, the others actually receive \(0\). So \(D\) pays \(5-0=5\): exactly the value it displaced. Because the two edits tie at \(5\), \(D\)'s surplus here is exactly zero; raise \(D\)'s value to \(6\) and the winner keeps \(1\).</p>
+<p>The sign convention here is that \(p_i\) is a payment made by agent \(i\) to the mechanism, so larger \(p_i\) lowers utility when utility is written as value minus payment. Some texts use the opposite convention, treating transfers as money received; the algebra changes sign, not substance.</p>
 <h2 id="payments-that-are-not-money">Payments That Are Not Money</h2>
 <p>The point is not that every agent workflow should implement VCG payments, where VCG abbreviates Vickrey-Clarke-Groves. The point is that a rule changes behavior by changing payoffs.</p>
 <p>In software, "payment" may be money, but it may also be priority, budget, reputation, access to tools, future routing probability, review burden, or blame assignment. A reviewer rewarded only for finding flaws will learn a different policy from a reviewer rewarded for improving final decision quality. Both reviewers are rational; they were simply paid for different things.</p>
@@ -128,25 +176,35 @@ which charges each participant for the externality it imposes on the rest of the
 <p>A contract-net protocol makes this operational: a manager announces a task, agents bid, the manager awards the contract, and the selected agent executes [<a href="../../references.html#ref-62">62</a>]. The protocol is simple, but its quality depends on the scoring rule. If every specialist gains by saying "I can do it," bids become optimism. If bids are scored by calibrated confidence, task completion, latency, and downstream correction cost, specialists have a path to reveal competence honestly.</p>
 <h2 id="allocating-the-edit-slot-by-an-announced-rule">Allocating the Edit Slot by an Announced Rule</h2>
 <p>Return to the publication workflow. The integrator has one edit slot before release. The drafter wants the slot for a conceptual rewrite; the fact checker wants it for citation repair. Both requests are locally rational, and both are based on observations the integrator cannot directly inspect.</p>
-<p>A mechanism can ask each agent to report a tuple such as ((\text{impact},\text{risk},\text{effort},\text{evidence})), then allocate the slot by a rule announced in advance. Announcing the rule first is what makes it a mechanism rather than a mood.</p>
+<p>A mechanism can ask each agent to report a tuple such as \((\text{impact},\text{risk},\text{effort},\text{evidence})\), then allocate the slot by a rule announced in advance. Announcing the rule first is what makes it a mechanism rather than a mood.</p>
 <p>The evidence field is a shared artifact: it turns a private belief into an object the other interpreters can test. The effort and risk fields remain partly private, so the rule must make systematic exaggeration expensive through later scoring.</p>
 <h2 id="the-impossibility-results-that-keep-us-honest">The Impossibility Results That Keep Us Honest</h2>
 <p>Social-choice theory, the study of how group preferences turn into group decisions, marks the limits of this ambition. Gibbard-Satterthwaite style impossibility results show that broad classes of voting systems are manipulable once preferences are unrestricted and there are at least three outcomes [<a href="../../references.html#ref-60">60</a>] [<a href="../../references.html#ref-61">61</a>].</p>
 <p>This does not make mechanism design futile. It prevents magical thinking. The designer must know which assumptions buy strategy-proofness, which constraints are being relaxed, and where manipulation will be measured rather than wished away.</p>
 <h2 id="choosing-mechanisms-over-time">Choosing Mechanisms over Time</h2>
 <p>In repeated settings, mechanism choice itself becomes sequential control:
-[
-V^\star(s)=\max_m\left{R(s,m)-\lambda\,\mathrm{manip_risk}(m)+\gamma\,\mathbb{E}[V^\star(s')]\right}.
-]
-Read this as: the long-run value of state (s) comes from choosing the mechanism (m) with the best immediate reward (R(s,m)), minus a penalty (\lambda) times its manipulation risk. To that total you add the discounted expected value (\gamma\,\mathbb{E}[V^\star(s')]) of wherever the system lands next.</p>
+\[
+V^\star(s)=\max_m\left\{R(s,m)-\lambda\,\mathrm{manip\_risk}(m)+\gamma\,\mathbb{E}[V^\star(s')]\right\}.
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> First take reward \(8\), manipulation risk \(2\),
+and price \(\lambda=1.5\): immediate value is \(8-3=5\). Then add future
+value \(6\) at \(\gamma=0.5\): total is \(5+3=8\).</p>
+</blockquote>
+<p>Read this as: the long-run value of state \(s\) comes from choosing the mechanism \(m\) with the best immediate reward \(R(s,m)\), minus a penalty \(\lambda\) times its manipulation risk. To that total you add the discounted expected value \(\gamma\,\mathbb{E}[V^\star(s')]\) of wherever the system lands next.</p>
 <p>Expected utility supplies the local comparison among mechanisms, and dynamic programming expresses the long-run cost of creating exploitable incentives [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>] [<a href="../../references.html#ref-5">5</a>]. An institution learns when it changes the rules after observing how strategic behavior exploits the old ones. Topic 3 (Equilibria, Self-Play, and Learning Dynamics) studies what that adaptation converges to.</p>
-<h2 id="delegation-in-the-publication-workflow">Delegation in the Publication Workflow</h2>
-<p>Suppose the integrator must assign the next revision task to the drafter, fact checker, or a synthesis pass. Each agent reports a cost (c_i), confidence (q_i), expected latency (\ell_i), and the artifact it can produce.</p>
+<h2 id="trust-delegation">Trust Delegation</h2>
+<p>Suppose the integrator must assign the next revision task to the drafter, fact checker, or a synthesis pass. Each agent reports a cost \(c_i\), confidence \(q_i\), expected latency \(\ell_i\), and the artifact it can produce.</p>
 <p>A naive router asks, "Who wants this?" A mechanism-aware router scores
-[
-s_i = \alpha q_i-\beta c_i-\delta \ell_i-\eta\,\mathrm{correction_rate}_i
-]
-and later updates each agent's reputation from verified outcomes. The Greek letters (\alpha), (\beta), (\delta), and (\eta) are weights the designer picks; they say how much confidence, cost, latency, and past corrections each count. With all four weights set to (1), an agent reporting (q_i=0.9), (c_i=0.2), (\ell_i=0.3), and a correction rate of (0.1) scores (0.9-0.2-0.3-0.1=0.3).</p>
+\[
+s_i = \alpha q_i-\beta c_i-\delta \ell_i-\eta\,\mathrm{correction\_rate}_i
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> First set all weights to \(1\) and use confidence
+\(0.9\), cost \(0.2\), latency \(0.3\), and correction rate \(0.1\). Then the
+delegation score is \(0.9-0.2-0.3-0.1=0.3\).</p>
+</blockquote>
+<p>and later updates each agent's reputation from verified outcomes. The Greek letters \(\alpha\), \(\beta\), \(\delta\), and \(\eta\) are weights the designer picks; they say how much confidence, cost, latency, and past corrections each count. With all four weights set to \(1\), an agent reporting \(q_i=0.9\), \(c_i=0.2\), \(\ell_i=0.3\), and a correction rate of \(0.1\) scores \(0.9-0.2-0.3-0.1=0.3\).</p>
 <p>This reputation router is an accountability heuristic, not a theorem of truthfulness wearing a small hat. It becomes mechanism-like only under three conditions:</p>
 <ol>
 <li>Reports are later checked against outcomes.</li>
@@ -154,6 +212,50 @@ and later updates each agent's reputation from verified outcomes. The Greek lett
 <li>The update rule makes misreporting costly enough to matter.</li>
 </ol>
 <p>Without verification, a reputation score can become a decoration on self-advertisement. The reports are still imperfect, but miscalibration has a cost. Confidence becomes an accountable forecast rather than a persuasive adjective. Topic 4 (Neural Ensembles and Orchestration) takes up routing among specialists in more depth.</p>
+<p>Delegation is not a router saying “you handle it.” It is a four-message handshake
+whose artifacts survive the conversation:</p>
+<pre><code class="language-text">request(task, scope, deadline, authority, required_evidence)
+accept(task, claimed_type, expected_cost, lease)
+evidence(task, artifact, provenance, checks, limitations)
+verify(task, verdict, measured_outcome, reputation_update)
+</code></pre>
+<p><code>request</code> states what may be done. <code>accept</code> creates a bounded lease rather than
+permanent authority. <code>evidence</code> returns an artifact plus the route by which it
+can be checked. <code>verify</code> closes the obligation only from measured outcome. If a
+delegate times out, its lease expires; another assignment does not retroactively
+declare the first one complete.</p>
+<p>Trust decays while it remains unverified. One compact model is</p>
+<p>\[
+\rho_i(t+\Delta)=\min\!\left\{1,\rho_i(t)e^{-\lambda\Delta}+\eta\,v_i\right\},
+\qquad 0\le v_i\le1.
+\]</p>
+<blockquote>
+<p><strong>Try this with numbers.</strong> First let trust be \(0.8\) and the decay factor
+be \(e^{-\lambda\Delta}=0.75\): the decayed base is \(0.8(0.75)=0.6\).
+Then use \(v_i=1\) and \(\eta=0.5\): the candidate is
+\(0.6+0.5(1)=1.1\), so the bound returns \(\min\{1,1.1\}=1\).</p>
+</blockquote>
+<p>Here \(\rho_i\) is reputation, \(\lambda\) is the interest rate on trust, and
+\(v_i\in[0,1]\) is verified performance and the outer minimum keeps reputation
+inside its probability-like range. Trust borrowed today costs evidence tomorrow.
+High decay is appropriate when the environment shifts quickly or effects are
+dangerous; low decay suits stable, repeatedly verified work. Reputation is not
+forgiveness in decimal form. It is a prior that expires.<sup id="fnref:trust-bank"><a class="footnote-ref" href="#fn:trust-bank">1</a></sup></p>
+<h3 id="lying-about-type">Lying About Type</h3>
+<p>D-12 privately expects a conceptual rewrite to take 18 minutes, but reports 8
+minutes to win the only edit slot. If R-3 scores the claim only at assignment
+time, the lie wins. The handshake repairs the incentive by recording the claimed
+type in <code>accept</code> and comparing it with completion time and correction burden in
+<code>verify</code>. The next bid inherits the error. A mechanism that never closes the
+loop has not elicited a type; it has collected advertising.</p>
+<h3 id="collusion-behind-compatible-reports">Collusion Behind Compatible Reports</h3>
+<p>D-12 and C-9 can do more than lie separately. D-12 understates uncertainty; C-9
+returns a shallow approval; both finish under the sub-12-minute reward and are
+routed easier follow-up work. Their reports agree, but agreement is strategically
+correlated. The mechanism therefore separates drafting and verification data,
+samples approvals through an independent route, and prices correction cost back
+to both linked claims. Topic 3 turns this loophole into a reproducible toy
+simulation rather than an anecdote.</p>
 <h2 id="shaping-which-observations-become-public">Shaping Which Observations Become Public</h2>
 <p>The same structure handles communication limits. If the fact checker has only enough budget to verify three claims, the mechanism should not ask for a global truth verdict. It should ask for a prioritized claim list and a confidence interval over the unchecked remainder.</p>
 <p>In Dec-POMDP language, the mechanism is shaping which local observations become public signals. A Dec-POMDP is a decentralized partially observable Markov decision process, introduced in Topic 1 (Coordination Protocols and Communication): each agent sees only its own slice of the world. The mechanism cannot remove partial observability, but it can choose the artifacts that make later coordination less blind.</p>
@@ -172,10 +274,80 @@ and later updates each agent's reputation from verified outcomes. The Greek lett
 <li>performance under strategic misreports, tested by deliberately feeding the rule dishonest inputs.</li>
 </ul>
 <p>A negotiation protocol without incentive analysis is merely an argument with extra JSON. A useful mechanism arranges the shared environment so that local pursuit of advantage produces information the collective can actually use.</p>
+<blockquote>
+<p><strong>Skeptical Engineer:</strong> Is reputation decay not just punishment for agents that
+happen to receive fewer tasks?</p>
+<p><strong>Author:</strong> It is decay of <em>unverified confidence</em>, not moral blame. A quiet
+specialist may have little recent evidence and still be excellent; the router
+should express that as uncertainty and buy verification before lending broad
+authority.</p>
+</blockquote>
+<h2 id="the-assumption">The Assumption</h2>
+<p>Mechanism design assumes reports and outcomes can be linked, transfers matter to
+the participants, verification is sufficiently independent, and identities
+cannot cheaply reset their reputation. Trust delegation additionally assumes
+leases, evidence requirements, and revocation are enforceable.</p>
+<h2 id="the-violation">The Violation</h2>
+<p>The assumptions fail when agents can fabricate types without later scoring,
+collude on mutually supporting reports, choose their own verifier, abandon a low
+reputation identity, or receive transfers unrelated to what they value. VCG
+truthfulness does not survive arbitrary collusion merely because the payment has
+Greek letters nearby [<a href="../../references.html#ref-57">57</a>]
+[<a href="../../references.html#ref-58">58</a>] [<a href="../../references.html#ref-59">59</a>].</p>
+<h2 id="when-it-fails">When It Fails</h2>
+<p>R-3 awards D-12 the edit slot on an eight-minute report. C-9 supplies instant
+approval, the pair earns easier work, and downstream correction arrives after
+the reward window. Locally, every score rises. Institutionally, uncertainty has
+been hidden. The repair binds request, acceptance, evidence, and verification;
+decays unsupported reputation; samples an independent audit; and charges linked
+correction cost to the coalition rather than to the integrator who discovered it.</p>
+<h2 id="exercise-implement-delegation-under-strategic-reports">Exercise: Implement Delegation Under Strategic Reports</h2>
+<p>Build a deterministic contract-net simulator [<a href="../../references.html#ref-62">62</a>]
+with D-12, C-9, Agent-427, leases, the four-message handshake, and reputation
+decay. Run at least 1,000 seeded allocations under:</p>
+<ol>
+<li>truthful independent types;</li>
+<li>D-12 understating latency;</li>
+<li>D-12/C-9 collusion with shallow mutual verification; and</li>
+<li>repaired random audit plus linked correction costs.</li>
+</ol>
+<p>Assert that no task closes without <code>verify</code>, expired leases revoke effect
+authority, and unsupported trust decays. Report welfare, truthfulness regret,
+deadline misses, coalition gain, audit cost, and false penalties. Then vary
+\(\lambda\) and identify where trust decays too slowly to resist gaming or too
+quickly to preserve useful specialization.</p>
+<h3 id="further-reading-and-open-questions">Further Reading and Open Questions</h3>
+<p>The Vickrey, Clarke, and Groves papers supply the classical externality machinery
+[<a href="../../references.html#ref-57">57</a>] [<a href="../../references.html#ref-58">58</a>]
+[<a href="../../references.html#ref-59">59</a>]; Gibbard and Satterthwaite mark broad
+manipulation limits [<a href="../../references.html#ref-60">60</a>]
+[<a href="../../references.html#ref-61">61</a>]. The open question for agent societies is how
+to make verification independent when models, retrieval indexes, and training
+data remain correlated beneath nominally separate roles.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:trust-bank">
+<p>Trust has an interest rate because someone else carries the risk
+while evidence is outstanding. Banks discovered this before routers, though
+routers have found more creative collateral.&#160;<a class="footnote-backref" href="#fnref:trust-bank" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+        <nav class="reading-nav" aria-label="Reading navigation"><div class="reading-nav__previous"><span>Previous</span><a href="topic-01-coordination-protocols-and-communication.html">Coordination Protocols and Communication</a></div><div class="reading-nav__up"><span>Chapter</span><a href="index.html">Chapter 4: Multi-Agent Systems</a></div><div class="reading-nav__next"><span>Next</span><a href="topic-03-equilibria-self-play-and-learning-dynamics.html">Equilibria, Self-Play, and Learning Dynamics</a></div></nav>
       </article>
     </main>
     <footer class="site-footer">
-      Last generated: 2026-07-27 18:55 UTC
+      <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
+      <p>Last generated: 2026-08-06 11:32 UTC</p>
     </footer>
+    <script>
+      const toggle = document.querySelector(".nav-toggle");
+      const navigation = document.querySelector(".sidebar");
+      toggle.addEventListener("click", () => {
+        const open = navigation.classList.toggle("sidebar--open");
+        toggle.setAttribute("aria-expanded", String(open));
+      });
+    </script>
   </body>
 </html>

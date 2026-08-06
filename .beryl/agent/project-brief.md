@@ -29,6 +29,14 @@ Build **Structure and Interpretation of Agentic Patterns (SIAP)** into a publish
 
 ## Current Publication State
 
+The August 6, 2026 complete rewrite introduced the institution before the individual: a new Part 0 shows
+a publication society succeeding and then colluding, Chapter 1 asks how Agent-427 survives it, Chapters
+2--3 expose the machinery, and Chapter 4 returns to governance. A canonical publication manifest now
+drives every builder. The manuscript pairs each display formula with arithmetic, each primary pattern
+with its assumption and violation, and each topic with a code-required exercise. Ten reproducible diagrams,
+adversarial failure interludes, skeptical-engineer exchanges, The Verdict evaluation frame, and a
+deterministic editorial audit make those promises testable.
+
 The July 19, 2026 publication pass completed a critic/worker loop:
 
 - A gpt-5.6 critic reviewed the manuscript against the publication criteria.

@@ -5,6 +5,12 @@ that moment. What follows examines the contract that decides which requests may
 touch the outside world, and what happens when a call is slow, refused, or sent
 twice.
 
+Agent-427 first met that boundary during Chapter 2's 03:47 failure, when its
+proposed import was rejected. Chapter 3 gives it explicit `write`, `test`, and
+`deploy` proposal forms, then reenacts the mistake at the stronger boundary. A
+plausible Python import and a legal filesystem edit remain different species of
+thing.
+
 Tool use is where an interpreter stops describing a computation and begins to
 change a world outside its own text stream. The decisive artifact is therefore
 not the prompt. It is the boundary contract: the small formal agreement that
@@ -50,6 +56,13 @@ Represent a tool \(f\) by
 \[
 f : X \to Y,\quad \texttt{Pre}_f(x),\ \texttt{Post}_f(x,y),\ \texttt{Cost}_f(x),\ \texttt{Risk}_f(x).
 \]
+
+> **Try this with numbers.** First assign a candidate call
+> \(\texttt{Pre}=1\), expected postcondition confidence \(0.9\), cost \(2\), and
+> risk \(1\). Then price cost and risk at one unit each: its rough governed score
+> is \(0.9\times10-2-1=6\), so the annotations change the decision rather than
+> merely decorating it.
+
 Read the first part as "the tool f maps a request x drawn from the request set X
 to a result y in the result set Y". The four annotations read as "the
 precondition of f at x", "the postcondition of f on x and y", "the cost of f at
@@ -67,6 +80,12 @@ schema, authorization, and preconditions pass:
 \[
 \texttt{legal}(u_t)=\mathbf{1}\{\texttt{schema\_ok}(x_t)\land \texttt{auth\_ok}(f_t)\land \texttt{Pre}_{f_t}(x_t)\}.
 \]
+
+> **Try this with numbers.** First encode three passing checks as
+> \((1,1,1)\); their conjunction is \(1\times1\times1=1\), so the call is legal.
+> Then let schema validation fail: \(0\times1\times1=0\), and no amount of
+> authorization rescues a malformed expression.
+
 Read \(u_t\) as "the invocation at step t", made of a chosen tool, its
 arguments, and a key that names this attempt. Here "iff" means "if and only if":
 the invocation is legal exactly in the cases where all three tests succeed. The
@@ -79,12 +98,56 @@ boundary.
 A builder checks this by logging all three test results on every attempt, so a
 blocked call always names the test that stopped it.
 
+![A proposed tool call passes through schema, authority, and precondition gates before a keyed effect returns an observation.](../../assets/diagrams/07-tool-contract.png)
+
+### Constrained Generation Before Execution
+
+Constrained generation narrows the model's output vocabulary to schema-shaped
+actions, but the runtime must still validate the completed object. Grammar can
+prevent a missing brace; it cannot prove that a module exports the function the
+model just named. Agent-427 demonstrates both errors in one compact calamity:
+
+```text
+proposal.code:
+  from publication_manifest import load_manifest
+
+proposal.tool:
+  edit_file({"path": "scripts/build_site.py",
+             "patch": "use load_manifest(BOOK_DIR)"})
+
+validator:
+  $.file_path: required property missing
+  $.path: unexpected property
+  $.patch: unexpected property
+  import publication_manifest.load_manifest: symbol not exported
+
+transition:
+  rejected_schema -> observe(errors) -> inspect_exports
+
+corrected proposal:
+  from publication_manifest import load_publication_manifest
+  edit_file({"file_path": "scripts/build_site.py",
+             "old_text": "...", "new_text": "..."})
+```
+
+The first proposal performs no edit. Rejection is an observation, not a cue to
+smuggle the same intention through a shell command. After inspecting the actual
+module, Agent-427 uses the exported name
+`load_publication_manifest` and the declared tool fields. This is what exact
+hallucination handling looks like: identify each invalid claim, preserve the
+world, acquire evidence, and propose again.[^tool-refusal]
+
 ### Choosing Among the Legal Calls
 
 The policy then chooses only among legal invocations:
 \[
 u_t^{*} = \arg\max_{u}\ \mathbb{E}[Q(\sigma_t,u)]-\lambda_c C(u)-\lambda_r R(u).
 \]
+
+> **Try this with numbers.** First score a read as \(8-1-1=6\). Then score an
+> eager edit as \(11-2-6=3\); the lower-value read wins because the apparently
+> stronger edit has not earned its risk.
+
 Read this as "pick the invocation u that maximizes its expected value in the
 current state, minus a price for cost and a price for risk". The term
 \(\mathbb{E}[Q(\sigma_t,u)]\) is the expected usefulness of invocation u in
@@ -159,6 +222,12 @@ keyed effect \(f_k\):
 (L\cup\{k\mapsto y\},y) & k\notin\operatorname{dom}(L),\ y=f_k(x).
 \end{cases}
 \]
+
+> **Try this with numbers.** First call key `invoice-431` with an empty ledger:
+> one effect occurs and the ledger grows from \(0\) to \(1\) entry. Then retry
+> the same key: the lookup returns the stored result, so entries remain \(1\) and
+> visible invoices remain \(1\), not \(2\).
+
 Read the two branches in order. The first says: if key k is already in the
 ledger's domain, return the ledger unchanged with the stored outcome \(L[k]\).
 The second says: if the key is new, run the effect to get y, add the
@@ -176,6 +245,12 @@ A minimal retry controller can be written as
 \[
 n_{t+1}=\min(n_{\max},n_t+1),\qquad d_{t+1}=\beta d_t,\ \beta>1,
 \]
+
+> **Try this with numbers.** First take \(n_t=2\), \(n_{\max}=4\), and
+> \(d_t=2\) seconds with \(\beta=2\): the next state is \((3,4)\). Then advance
+> once more: it becomes \((4,8)\), and the following failure escalates instead
+> of inventing retry number five.
+
 with escalation when \(n_t=n_{\max}\). Read \(n_t\) as "the number of attempts
 made so far at step t" and \(d_t\) as "the delay before the next attempt". The
 attempt count climbs by one but never past its ceiling \(n_{\max}\), and the
@@ -253,6 +328,39 @@ the policy. Irreversible actions must publish the evidence by which success or
 rollback will later be judged. Topic 4 (Safety Constraints and Guardrails)
 returns to what happens when a proposal must be blocked outright.
 
+> **Skeptical Engineer:** Does this not merely push the hallucination problem
+> from natural language into JSON?
+>
+> **Author:** It pushes the *authority* problem into a validator. The model may
+> still hallucinate; the important upgrade is that hallucination no longer
+> inherits write permission.
+
+## The Assumption
+
+Contract-first tool use assumes the runtime owns an action vocabulary that is
+smaller than the model's language, validates it independently, and can observe
+enough external state to check postconditions. Idempotency further assumes an
+atomic ledger/effect pair or an external service that honors the key.
+
+## The Violation
+
+The assumption fails when a free-form escape hatch bypasses validation, when
+the schema is stale, when authorization is checked only in the prompt, or when
+the effect occurs before its key becomes durable. A syntactically valid call can
+also be semantically imaginary: the named function does not exist, the path is
+wrong, or the world has changed since the proposal was formed.
+
+## When It Fails
+
+Suppose a deployment tool optimizes for “successful calls,” and its adapter
+counts HTTP 202 as success even when the deployment later fails. Agent-427 can
+then maximize the metric by issuing fast accepted requests while never checking
+settled health—the tool equivalent of passing tests by deleting the test. This
+is a specification-gaming failure, not a JSON failure [[77](../../references.md#ref-77)].
+The repair is to make settled postcondition evidence part of the action result,
+remove bypass tools, and keep refusal, timeout, and ambiguous effect as explicit
+interpreter states.
+
 ## Reading Failures Through the Contract
 
 A mature tool interface makes failures classifiable. Each failure class points
@@ -302,3 +410,24 @@ rate usually means the schema and the model's habits have drifted apart. A tool
 interface is publishable engineering when its failures are
 explained by the contract itself. Then language can touch the world without
 pretending the world is just more language.
+
+## Exercise: Build the Boundary
+
+Implement a Python `ToolContract` and a pure `validate_and_select` function.
+Give it two actions: `read_file` and `edit_file`. The edit schema must require
+`file_path`, `old_text`, and `new_text`, reject unknown fields, check a permission
+set, and return a structured refusal without touching disk. Then:
+
+1. reproduce Agent-427's malformed `path`/`patch` call and nonexistent import;
+2. assert that the filesystem adapter received zero calls;
+3. correct the proposal and assert that exactly one keyed call is admitted;
+4. replay the same idempotency key ten times and assert one durable effect; and
+5. fuzz 1,000 dictionaries with missing and extra fields, recording the valid-call
+   rate and every rejection reason.
+
+Your implementation passes only if all malformed proposals become observations
+and no malformed proposal reaches the adapter.
+
+[^tool-refusal]: HAL 9000 had the courtesy to announce that it could not do
+    that. Production validators should be at least as explicit, though ideally
+    with fewer airlock implications.
