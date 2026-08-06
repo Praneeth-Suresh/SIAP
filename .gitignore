@@ -47,3 +47,5 @@ temp/
 plan.md
 prompt.md
 .beryl/agent/session-state.md
+
+.playwright-mcp

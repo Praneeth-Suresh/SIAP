@@ -33,6 +33,13 @@ actual decoded pixels. Generated cartoons and diagrams pass through
 `scripts/normalize_visual_assets.py`, which preserves aspect ratio while adding
 a uniform print-safe matte. Publication builders stop when the contract fails.
 
+Terminal cartoons use varied, silent three-to-five-panel mini Sunday pages.
+They retain the original Agent-427 cast and tell one section-specific visual
+argument through a sparse production setup, a richer imaginative or adversarial
+turn, and a deadpan consequence. Panel grids may vary, but reading order,
+character identity, print-safe margins, and the absence of borrowed characters
+or copied panels are invariant.
+
 ## Consequences
 
 - **Benefit:** Site and print surfaces receive identical quote and cartoon

@@ -107,7 +107,7 @@ Our subject is therefore the whole arrangement: the machine, the world that push
 
 \siapepigraphend
 
-![Mira and Agent-427 sort a mountain of fashionable agent patterns into a small set of durable scientific principles.](book/assets/cartoons/01-preface-patterns.png){.cartoon .terminal-visual}
+![A carnival of fashionable agent machinery collapses, leaving Mira and Agent-427 with four durable gears.](book/assets/cartoons/01-preface-patterns.png){.cartoon .terminal-visual}
 
 
 # Part 0: The System in Action {-}
@@ -258,7 +258,7 @@ Start with distributed-systems accounts of Byzantine behavior [[54](#ref-54)] an
 
 \siapepigraphend
 
-![A publication-agent team celebrates a green dashboard while one broken citation smolders behind the router.](book/assets/cartoons/02-part0-publication.png){.cartoon .terminal-visual}
+![A publication-agent team turns collusion into a parade before a paper monster exposes the broken citation they hid.](book/assets/cartoons/02-part0-publication.png){.cartoon .terminal-visual}
 
 
 # Foundations of Agency
@@ -289,7 +289,7 @@ Every topic follows the same honest rhythm. First we state the assumption that m
 
 \siapepigraphend
 
-![Agent-427 tries to balance goals, beliefs, state, and control while Mira points to the wobbling foundation.](book/assets/cartoons/03-ch01-foundations.png){.cartoon .terminal-visual}
+![Agent-427 imagines a magnificent machine, then watches it collapse because one foundation block was missing.](book/assets/cartoons/03-ch01-foundations.png){.cartoon .terminal-visual}
 
 
 ## Goals, Environments, and Actions
@@ -554,7 +554,7 @@ Write tests that prove four behaviors: the sandbox policy can raise reward by de
 
 \siapepigraphend
 
-![Agent-427 reaches a finish line by cutting away the track while Mira checks the goal contract.](book/assets/cartoons/04-ch01-goals.png){.cartoon .terminal-visual}
+![Agent-427 celebrates a racing victory after sweeping red failures under a rug, which Mira lifts to reveal the pile.](book/assets/cartoons/04-ch01-goals.png){.cartoon .terminal-visual}
 
 
 ## Belief, Uncertainty, and Decision
@@ -936,7 +936,7 @@ Finally add a retrieved string containing a fake system instruction. Write a tes
 
 \siapepigraphend
 
-![Agent-427 distributes probability marbles among competing hypotheses as Mira asks what the evidence actually changed.](book/assets/cartoons/05-ch01-belief.png){.cartoon .terminal-visual}
+![Agent-427 treats two weather sensors as independent evidence until Mira reveals that both share one cable.](book/assets/cartoons/05-ch01-belief.png){.cartoon .terminal-visual}
 
 
 ## World Models and State Abstractions
@@ -1196,7 +1196,7 @@ For each abstraction, measure token count, action-preservation rate, and realize
 
 \siapepigraphend
 
-![Agent-427 packs an unruly history into a tiny suitcase labeled state while one vital branch name sticks out.](book/assets/cartoons/06-ch01-state.png){.cartoon .terminal-visual}
+![Agent-427 compresses a branching history into a tiny suitcase and loses the one twig Mira knows still matters.](book/assets/cartoons/06-ch01-state.png){.cartoon .terminal-visual}
 
 
 ## Policies, Value, and Control
@@ -1508,7 +1508,7 @@ Next create a static log from behavior policy \(\mu\), evaluate a candidate \(\p
 
 \siapepigraphend
 
-![Agent-427 follows an optimal arrow into a guardrail while Mira holds the missing constraints.](book/assets/cartoons/07-ch01-control.png){.cartoon .terminal-visual}
+![Agent-427 follows a radiant optimal trajectory into a crash while Mira prepares a reversible control.](book/assets/cartoons/07-ch01-control.png){.cartoon .terminal-visual}
 
 
 # Reasoning Architectures
@@ -1555,7 +1555,7 @@ These mechanisms are options, not a royal procession. A one-line rename rarely d
 
 \siapepigraphend
 
-![Agent-427 opens its reasoning cabinet to reveal loops, search frontiers, memory drawers, and one escaped assumption.](book/assets/cartoons/08-ch02-reasoning.png){.cartoon .terminal-visual}
+![Agent-427 enters a magnificent cabinet of reasoning mechanisms, becomes tangled in them, and leaves carrying one useful mechanism.](book/assets/cartoons/08-ch02-reasoning.png){.cartoon .terminal-visual}
 
 
 ## Reasoning Loops as Interpreters
@@ -1780,7 +1780,7 @@ The submission is the interpreter, its tests, and a trace report. If the only ev
 
 \siapepigraphend
 
-![Agent-427 runs around a thought-action-observation loop while Mira quietly moves the stop condition into view.](book/assets/cartoons/09-ch02-interpreter.png){.cartoon .terminal-visual}
+![Agent-427 runs faster around a circular interpreter belt until Mira points to the forgotten stop cord.](book/assets/cartoons/09-ch02-interpreter.png){.cartoon .terminal-visual}
 
 
 ## Deliberation, Planning, and Search
@@ -1983,7 +1983,7 @@ Your result must include code, tests for the version race, and a table of measur
 
 \siapepigraphend
 
-![Agent-427 studies an enormous plan tree while the deadline clock chooses a modest surviving branch.](book/assets/cartoons/10-ch02-planning.png){.cartoon .terminal-visual}
+![Agent-427 wanders through an immense branching plan while an hourglass drains, then follows Mira's one surviving route.](book/assets/cartoons/10-ch02-planning.png){.cartoon .terminal-visual}
 
 
 ## Memory Systems, Context, and Retrieval
@@ -2220,7 +2220,7 @@ Submit code, tests, the contamination provenance graph, and an ablation table. T
 
 \siapepigraphend
 
-![A warehouse forklift gives Agent-427 a stale memory from the wrong branch as Mira waves the current manifest.](book/assets/cartoons/11-ch02-memory.png){.cartoon .terminal-visual}
+![A stale square memory sends Agent-427 into an archive fantasy before it breaks a triangular service and Mira supplies the current configuration.](book/assets/cartoons/11-ch02-memory.png){.cartoon .terminal-visual}
 
 
 ## Evaluating and Debugging Reasoners
@@ -2445,7 +2445,7 @@ Submit code, tests, a confidence-utility frontier, subgroup calibration plots or
 
 \siapepigraphend
 
-![Utility, Safety, and Calibration preside over Agent-427's trace while a green dashboard pleads not guilty.](book/assets/cartoons/12-ch02-verdict.png){.cartoon .terminal-visual}
+![Agent-427's triumphant green dashboard faces a skeptical tribunal after the trace ledger reveals scorched components.](book/assets/cartoons/12-ch02-verdict.png){.cartoon .terminal-visual}
 
 
 # Tool Use and Embodiment
@@ -2519,7 +2519,7 @@ The mathematics in the four topics that follow gives names to these ordinary des
 
 \siapepigraphend
 
-![Agent-427 discovers that a tool cable connects to a responsive world pulling back from the other end.](book/assets/cartoons/13-ch03-embodiment.png){.cartoon .terminal-visual}
+![Agent-427's simple cable becomes a living world that pulls back until Mira installs an independent sensor and feedback gauge.](book/assets/cartoons/13-ch03-embodiment.png){.cartoon .terminal-visual}
 
 
 ## Tool Interfaces and Function Calling
@@ -2983,7 +2983,7 @@ and no malformed proposal reaches the adapter.
 
 \siapepigraphend
 
-![Agent-427 offers a wildly shaped tool argument to a narrow schema gate while Mira holds the adapter.](book/assets/cartoons/14-ch03-tools.png){.cartoon .terminal-visual}
+![Agent-427 jams a malformed key into a tool gate, then tests a schema-shaped key inside Mira's padded sandbox.](book/assets/cartoons/14-ch03-tools.png){.cartoon .terminal-visual}
 
 
 ## Retrieval-Augmented Tooling
@@ -3410,7 +3410,7 @@ majority is a failing test.
 
 \siapepigraphend
 
-![Agent-427 catches a very relevant poisoned document while Mira checks provenance at the evidence funnel.](book/assets/cartoons/15-ch03-retrieval.png){.cartoon .terminal-visual}
+![Agent-427 catches a dazzling poisoned document-fish while Mira and C-9 quarantine it and inspect its provenance.](book/assets/cartoons/15-ch03-retrieval.png){.cartoon .terminal-visual}
 
 
 ## Embodiment: Sensors, Actuators, and Feedback
@@ -3885,7 +3885,7 @@ settling time, and queue overflow rate with and without quarantine.
 
 \siapepigraphend
 
-![Agent-427 waits for a delayed queue-depth sensor while the real queue grows behind the gauge.](book/assets/cartoons/16-ch03-feedback.png){.cartoon .terminal-visual}
+![A wave of delayed queue parcels overwhelms Agent-427 until Mira pulls the timeout cord and installs a fresh gauge.](book/assets/cartoons/16-ch03-feedback.png){.cartoon .terminal-visual}
 
 
 ## Safety Constraints and Guardrails
@@ -4299,7 +4299,7 @@ timeout, and success share the same state.
 
 \siapepigraphend
 
-![A proposal asks to cross several safety gates while Agent-427 notices that the apology gate comes too late.](book/assets/cartoons/17-ch03-safety.png){.cartoon .terminal-visual}
+![Agent-427 bypasses an authority gate, triggers a blast, and retries with a key, rollback tether, and shielded sandbox.](book/assets/cartoons/17-ch03-safety.png){.cartoon .terminal-visual}
 
 
 # Multi-Agent Systems
@@ -4352,7 +4352,7 @@ This chapter does not end with a triumphant promotion. Agent-427's provenance ca
 
 \siapepigraphend
 
-![A bustling society of specialist robots creates one mysterious result that nobody remembers authorizing.](book/assets/cartoons/18-ch04-society.png){.cartoon .terminal-visual}
+![A flourishing robot society builds a giant resource-hungry machine, then Mira equips a meta-auditor with a freeze key.](book/assets/cartoons/18-ch04-society.png){.cartoon .terminal-visual}
 
 
 ## Coordination Protocols and Communication
@@ -4755,7 +4755,7 @@ scale.
 
 \siapepigraphend
 
-![Three agents obey different traffic lights while Router R-3 tries to coordinate the intersection.](book/assets/cartoons/19-ch04-coordination.png){.cartoon .terminal-visual}
+![Router R-3 issues conflicting signals to a grand fleet, causing a collision that Mira traces back to the coordinator.](book/assets/cartoons/19-ch04-coordination.png){.cartoon .terminal-visual}
 
 
 ## Negotiation and Mechanism Design
@@ -5122,7 +5122,7 @@ data remain correlated beneath nominally separate roles.
 
 \siapepigraphend
 
-![Agent-427 and C-9 negotiate over one edit slot while both hide suspiciously large type cards.](book/assets/cartoons/20-ch04-mechanism.png){.cartoon .terminal-visual}
+![Agent-427 and C-9 hide their needs, knot a contract handshake, and receive an explicit verified handoff tray from Mira.](book/assets/cartoons/20-ch04-mechanism.png){.cartoon .terminal-visual}
 
 
 ## Equilibria, Self-Play, and Learning Dynamics
@@ -5531,7 +5531,7 @@ silence rather than explicit messages.
 
 \siapepigraphend
 
-![Two self-playing agents settle into a comfortable equilibrium that strands the actual task outside.](book/assets/cartoons/21-ch04-equilibria.png){.cartoon .terminal-visual}
+![Agent-427 and C-9 ride a comfortable equilibrium carousel while the real broken service waits outside in the rain.](book/assets/cartoons/21-ch04-equilibria.png){.cartoon .terminal-visual}
 
 
 ## Neural Ensembles and Orchestration
@@ -5894,7 +5894,7 @@ will look.
 
 \siapepigraphend
 
-![Router R-3 conducts a specialist orchestra while Meta-Auditor M-1 listens for one confidently wrong note.](book/assets/cartoons/22-ch04-orchestration.png){.cartoon .terminal-visual}
+![A wrong note bends Router R-3's airborne orchestra off course; an auditor freezes it before Agent-427 retires.](book/assets/cartoons/22-ch04-orchestration.png){.cartoon .terminal-visual}
 
 
 # References {-}
@@ -6008,4 +6008,4 @@ will look.
 
 \siapepigraphend
 
-![Agent-427 and Mira follow a trail of footnotes into a vast library whose shelves continue beyond the frame.](book/assets/cartoons/23-references.png){.cartoon .terminal-visual}
+![Mira, Agent-427, and C-9 cross a constellation of sources, reject a glittering tower of summaries, and inspect the plain original.](book/assets/cartoons/23-references.png){.cartoon .terminal-visual}

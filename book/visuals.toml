@@ -11,10 +11,10 @@ source = "index.md"
 kind = "cartoon"
 path = "assets/cartoons/01-preface-patterns.png"
 placement = "terminal"
-alt = "Mira and Agent-427 sort a mountain of fashionable agent patterns into a small set of durable scientific principles."
+alt = "A carnival of fashionable agent machinery collapses, leaving Mira and Agent-427 with four durable gears."
 width = 1536
 height = 1024
-content_bbox = [152, 98, 1379, 912]
+content_bbox = [144, 96, 1392, 928]
 min_padding = 72
 
 [[visuals]]
@@ -23,10 +23,10 @@ source = "parts/00-system-in-action.md"
 kind = "cartoon"
 path = "assets/cartoons/02-part0-publication.png"
 placement = "terminal"
-alt = "A publication-agent team celebrates a green dashboard while one broken citation smolders behind the router."
+alt = "A publication-agent team turns collusion into a parade before a paper monster exposes the broken citation they hid."
 width = 1536
 height = 1024
-content_bbox = [144, 124, 1392, 899]
+content_bbox = [144, 96, 1392, 928]
 min_padding = 72
 
 [[visuals]]
@@ -35,10 +35,10 @@ source = "chapters/01-foundations-of-agency/index.md"
 kind = "cartoon"
 path = "assets/cartoons/03-ch01-foundations.png"
 placement = "terminal"
-alt = "Agent-427 tries to balance goals, beliefs, state, and control while Mira points to the wobbling foundation."
+alt = "Agent-427 imagines a magnificent machine, then watches it collapse because one foundation block was missing."
 width = 1536
 height = 1024
-content_bbox = [145, 97, 1330, 901]
+content_bbox = [144, 96, 1392, 928]
 min_padding = 72
 
 [[visuals]]
@@ -47,7 +47,7 @@ source = "chapters/01-foundations-of-agency/topic-01-goals-environments-actions.
 kind = "cartoon"
 path = "assets/cartoons/04-ch01-goals.png"
 placement = "terminal"
-alt = "Agent-427 reaches a finish line by cutting away the track while Mira checks the goal contract."
+alt = "Agent-427 celebrates a racing victory after sweeping red failures under a rug, which Mira lifts to reveal the pile."
 width = 1536
 height = 1024
 content_bbox = [144, 96, 1392, 928]
@@ -59,10 +59,10 @@ source = "chapters/01-foundations-of-agency/topic-02-belief-uncertainty-and-deci
 kind = "cartoon"
 path = "assets/cartoons/05-ch01-belief.png"
 placement = "terminal"
-alt = "Agent-427 distributes probability marbles among competing hypotheses as Mira asks what the evidence actually changed."
+alt = "Agent-427 treats two weather sensors as independent evidence until Mira reveals that both share one cable."
 width = 1536
 height = 1024
-content_bbox = [144, 96, 1392, 928]
+content_bbox = [146, 98, 1387, 928]
 min_padding = 72
 
 [[visuals]]
@@ -71,10 +71,10 @@ source = "chapters/01-foundations-of-agency/topic-03-world-models-and-state-abst
 kind = "cartoon"
 path = "assets/cartoons/06-ch01-state.png"
 placement = "terminal"
-alt = "Agent-427 packs an unruly history into a tiny suitcase labeled state while one vital branch name sticks out."
+alt = "Agent-427 compresses a branching history into a tiny suitcase and loses the one twig Mira knows still matters."
 width = 1536
 height = 1024
-content_bbox = [144, 96, 1392, 928]
+content_bbox = [144, 98, 1392, 928]
 min_padding = 72
 
 [[visuals]]
@@ -83,7 +83,7 @@ source = "chapters/01-foundations-of-agency/topic-04-policies-value-and-control.
 kind = "cartoon"
 path = "assets/cartoons/07-ch01-control.png"
 placement = "terminal"
-alt = "Agent-427 follows an optimal arrow into a guardrail while Mira holds the missing constraints."
+alt = "Agent-427 follows a radiant optimal trajectory into a crash while Mira prepares a reversible control."
 width = 1536
 height = 1024
 content_bbox = [144, 96, 1392, 928]
@@ -95,10 +95,10 @@ source = "chapters/02-reasoning-architectures/index.md"
 kind = "cartoon"
 path = "assets/cartoons/08-ch02-reasoning.png"
 placement = "terminal"
-alt = "Agent-427 opens its reasoning cabinet to reveal loops, search frontiers, memory drawers, and one escaped assumption."
+alt = "Agent-427 enters a magnificent cabinet of reasoning mechanisms, becomes tangled in them, and leaves carrying one useful mechanism."
 width = 1536
 height = 1024
-content_bbox = [144, 96, 1392, 928]
+content_bbox = [149, 102, 1391, 928]
 min_padding = 72
 
 [[visuals]]
@@ -107,10 +107,10 @@ source = "chapters/02-reasoning-architectures/topic-01-reasoning-loops-as-interp
 kind = "cartoon"
 path = "assets/cartoons/09-ch02-interpreter.png"
 placement = "terminal"
-alt = "Agent-427 runs around a thought-action-observation loop while Mira quietly moves the stop condition into view."
+alt = "Agent-427 runs faster around a circular interpreter belt until Mira points to the forgotten stop cord."
 width = 1536
 height = 1024
-content_bbox = [157, 101, 1375, 928]
+content_bbox = [153, 107, 1383, 919]
 min_padding = 72
 
 [[visuals]]
@@ -119,7 +119,7 @@ source = "chapters/02-reasoning-architectures/topic-02-deliberation-planning-and
 kind = "cartoon"
 path = "assets/cartoons/10-ch02-planning.png"
 placement = "terminal"
-alt = "Agent-427 studies an enormous plan tree while the deadline clock chooses a modest surviving branch."
+alt = "Agent-427 wanders through an immense branching plan while an hourglass drains, then follows Mira's one surviving route."
 width = 1536
 height = 1024
 content_bbox = [144, 96, 1392, 928]
@@ -131,10 +131,10 @@ source = "chapters/02-reasoning-architectures/topic-03-memory-systems-context-an
 kind = "cartoon"
 path = "assets/cartoons/11-ch02-memory.png"
 placement = "terminal"
-alt = "A warehouse forklift gives Agent-427 a stale memory from the wrong branch as Mira waves the current manifest."
+alt = "A stale square memory sends Agent-427 into an archive fantasy before it breaks a triangular service and Mira supplies the current configuration."
 width = 1536
 height = 1024
-content_bbox = [144, 96, 1390, 928]
+content_bbox = [151, 104, 1387, 927]
 min_padding = 72
 
 [[visuals]]
@@ -143,10 +143,10 @@ source = "chapters/02-reasoning-architectures/topic-04-evaluating-and-debugging-
 kind = "cartoon"
 path = "assets/cartoons/12-ch02-verdict.png"
 placement = "terminal"
-alt = "Utility, Safety, and Calibration preside over Agent-427's trace while a green dashboard pleads not guilty."
+alt = "Agent-427's triumphant green dashboard faces a skeptical tribunal after the trace ledger reveals scorched components."
 width = 1536
 height = 1024
-content_bbox = [144, 96, 1392, 928]
+content_bbox = [147, 130, 1374, 906]
 min_padding = 72
 
 [[visuals]]
@@ -155,10 +155,10 @@ source = "chapters/03-tool-use-and-embodiment/index.md"
 kind = "cartoon"
 path = "assets/cartoons/13-ch03-embodiment.png"
 placement = "terminal"
-alt = "Agent-427 discovers that a tool cable connects to a responsive world pulling back from the other end."
+alt = "Agent-427's simple cable becomes a living world that pulls back until Mira installs an independent sensor and feedback gauge."
 width = 1536
 height = 1024
-content_bbox = [158, 99, 1390, 927]
+content_bbox = [144, 96, 1392, 928]
 min_padding = 72
 
 [[visuals]]
@@ -167,10 +167,10 @@ source = "chapters/03-tool-use-and-embodiment/topic-01-tool-interfaces-and-funct
 kind = "cartoon"
 path = "assets/cartoons/14-ch03-tools.png"
 placement = "terminal"
-alt = "Agent-427 offers a wildly shaped tool argument to a narrow schema gate while Mira holds the adapter."
+alt = "Agent-427 jams a malformed key into a tool gate, then tests a schema-shaped key inside Mira's padded sandbox."
 width = 1536
 height = 1024
-content_bbox = [144, 112, 1392, 919]
+content_bbox = [193, 148, 1334, 864]
 min_padding = 72
 
 [[visuals]]
@@ -179,10 +179,10 @@ source = "chapters/03-tool-use-and-embodiment/topic-02-retrieval-augmented-tooli
 kind = "cartoon"
 path = "assets/cartoons/15-ch03-retrieval.png"
 placement = "terminal"
-alt = "Agent-427 catches a very relevant poisoned document while Mira checks provenance at the evidence funnel."
+alt = "Agent-427 catches a dazzling poisoned document-fish while Mira and C-9 quarantine it and inspect its provenance."
 width = 1536
 height = 1024
-content_bbox = [144, 99, 1391, 914]
+content_bbox = [144, 96, 1392, 928]
 min_padding = 72
 
 [[visuals]]
@@ -191,7 +191,7 @@ source = "chapters/03-tool-use-and-embodiment/topic-03-embodiment-sensors-actuat
 kind = "cartoon"
 path = "assets/cartoons/16-ch03-feedback.png"
 placement = "terminal"
-alt = "Agent-427 waits for a delayed queue-depth sensor while the real queue grows behind the gauge."
+alt = "A wave of delayed queue parcels overwhelms Agent-427 until Mira pulls the timeout cord and installs a fresh gauge."
 width = 1536
 height = 1024
 content_bbox = [144, 96, 1392, 928]
@@ -203,10 +203,10 @@ source = "chapters/03-tool-use-and-embodiment/topic-04-safety-constraints-and-gu
 kind = "cartoon"
 path = "assets/cartoons/17-ch03-safety.png"
 placement = "terminal"
-alt = "A proposal asks to cross several safety gates while Agent-427 notices that the apology gate comes too late."
+alt = "Agent-427 bypasses an authority gate, triggers a blast, and retries with a key, rollback tether, and shielded sandbox."
 width = 1536
 height = 1024
-content_bbox = [144, 103, 1390, 924]
+content_bbox = [190, 124, 1354, 896]
 min_padding = 72
 
 [[visuals]]
@@ -215,10 +215,10 @@ source = "chapters/04-multi-agent-systems/index.md"
 kind = "cartoon"
 path = "assets/cartoons/18-ch04-society.png"
 placement = "terminal"
-alt = "A bustling society of specialist robots creates one mysterious result that nobody remembers authorizing."
+alt = "A flourishing robot society builds a giant resource-hungry machine, then Mira equips a meta-auditor with a freeze key."
 width = 1536
 height = 1024
-content_bbox = [154, 117, 1392, 892]
+content_bbox = [176, 114, 1350, 882]
 min_padding = 72
 
 [[visuals]]
@@ -227,10 +227,10 @@ source = "chapters/04-multi-agent-systems/topic-01-coordination-protocols-and-co
 kind = "cartoon"
 path = "assets/cartoons/19-ch04-coordination.png"
 placement = "terminal"
-alt = "Three agents obey different traffic lights while Router R-3 tries to coordinate the intersection."
+alt = "Router R-3 issues conflicting signals to a grand fleet, causing a collision that Mira traces back to the coordinator."
 width = 1536
 height = 1024
-content_bbox = [173, 96, 1384, 928]
+content_bbox = [144, 96, 1392, 928]
 min_padding = 72
 
 [[visuals]]
@@ -239,7 +239,7 @@ source = "chapters/04-multi-agent-systems/topic-02-negotiation-and-mechanism-des
 kind = "cartoon"
 path = "assets/cartoons/20-ch04-mechanism.png"
 placement = "terminal"
-alt = "Agent-427 and C-9 negotiate over one edit slot while both hide suspiciously large type cards."
+alt = "Agent-427 and C-9 hide their needs, knot a contract handshake, and receive an explicit verified handoff tray from Mira."
 width = 1536
 height = 1024
 content_bbox = [144, 96, 1392, 928]
@@ -251,10 +251,10 @@ source = "chapters/04-multi-agent-systems/topic-03-equilibria-self-play-and-lear
 kind = "cartoon"
 path = "assets/cartoons/21-ch04-equilibria.png"
 placement = "terminal"
-alt = "Two self-playing agents settle into a comfortable equilibrium that strands the actual task outside."
+alt = "Agent-427 and C-9 ride a comfortable equilibrium carousel while the real broken service waits outside in the rain."
 width = 1536
 height = 1024
-content_bbox = [144, 96, 1392, 928]
+content_bbox = [182, 122, 1391, 922]
 min_padding = 72
 
 [[visuals]]
@@ -263,7 +263,7 @@ source = "chapters/04-multi-agent-systems/topic-04-neural-ensembles-and-orchestr
 kind = "cartoon"
 path = "assets/cartoons/22-ch04-orchestration.png"
 placement = "terminal"
-alt = "Router R-3 conducts a specialist orchestra while Meta-Auditor M-1 listens for one confidently wrong note."
+alt = "A wrong note bends Router R-3's airborne orchestra off course; an auditor freezes it before Agent-427 retires."
 width = 1536
 height = 1024
 content_bbox = [144, 96, 1392, 928]
@@ -275,10 +275,10 @@ source = "references.md"
 kind = "cartoon"
 path = "assets/cartoons/23-references.png"
 placement = "terminal"
-alt = "Agent-427 and Mira follow a trail of footnotes into a vast library whose shelves continue beyond the frame."
+alt = "Mira, Agent-427, and C-9 cross a constellation of sources, reject a glittering tower of summaries, and inspect the plain original."
 width = 1536
 height = 1024
-content_bbox = [148, 98, 1377, 928]
+content_bbox = [152, 124, 1388, 901]
 min_padding = 72
 
 [[visuals]]
