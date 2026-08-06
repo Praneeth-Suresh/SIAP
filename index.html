@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Structure and Interpretation of Agentic Patterns, a theory-backed book about agentic AI." />
     <title>Structure and Interpretation of Agentic Patterns · SIAP</title>
+    <script>
+      (() => {
+        try {
+          const saved = localStorage.getItem("siap-theme");
+          document.documentElement.dataset.theme = saved || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        } catch { document.documentElement.dataset.theme = "light"; }
+      })();
+    </script>
     <link rel="stylesheet" href="assets/style.css" />
     <script>
       window.MathJax = {
@@ -26,6 +34,7 @@
           <p class="site-kicker">A book about governed machines</p>
           <p class="site-title"><a href="index.html">Structure and Interpretation<br />of Agentic Patterns</a></p>
         </div>
+        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Use dark mode"><span aria-hidden="true">◐</span><span>Theme</span></button>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="book-navigation">Contents</button>
       </div>
     </header>
@@ -38,14 +47,18 @@
         <nav class="breadcrumbs" aria-label="Breadcrumb"><span aria-current="page">Book</span></nav>
         <h1 id="structure-and-interpretation-of-agentic-patterns">Structure and Interpretation of Agentic Patterns</h1>
 <blockquote>
+<p><em>“Programs must be written for people to read, and only incidentally for machines to execute.”</em></p>
+<p>— Harold Abelson and Gerald Jay Sussman, with Julie Sussman, <em>Structure and Interpretation of Computer Programs</em> (1996), Second edition, preface, second paragraph. <a href="https://libraries.mit.edu/150books/2011/05/11/1985/">Source</a>, accessed 2026-08-06. Creative Commons Attribution-ShareAlike 4.0; short quotation reproduced with attribution..</p>
 <p>A manifesto about programmable agency, disguised as a conversation, backed by mathematics, and occasionally interrupted by production.</p>
 </blockquote>
 <p>You have been building agents wrong.</p>
 <p>That sentence is unfair, of course. You have also been building them under deadlines, against APIs that change their minds, with models that improvise JSON, and for users who remember one crucial constraint only after the expensive action. Under those conditions, everyone builds at least one agent wrong. The interesting question is whether we can say <em>how</em> it was wrong without reaching for the traditional diagnosis: "the model was weird."</p>
 <p>We can. Agency has structure. An acting program observes only part of a world, carries a compressed account of what it saw, chooses among permitted interventions, pays for time and uncertainty, and inherits the consequences. Put those pieces in an explicit interpreter and the folklore becomes inspectable. Add memory, planning, tools, and other agents, and the interpreter grows into an institution. The objects get larger. The questions remain wonderfully severe.</p>
 <p>This book takes a stand: <strong>agentic AI is a science of interaction and orchestration, not merely API plumbing.</strong> Its laws are conditional, its measurements are noisy, and its subjects sometimes emit invalid YAML. It is a science nonetheless.<sup id="fnref:preface-laws"><a class="footnote-ref" href="#fn:preface-laws">1</a></sup></p>
+<section class="reader-question">
 <p><strong>Skeptical Engineer:</strong> "A science? Most of these systems are prompts wearing a loop."</p>
 <p><strong>Author:</strong> Precisely. A loop is already an operational semantics. The crime is not simplicity; the crime is leaving the semantics implicit and then acting surprised when an unpriced retry sends two invoices.</p>
+</section>
 <h2 id="a-manifesto-with-an-interpreter-inside">A Manifesto with an Interpreter Inside</h2>
 <p>The central construction is deliberately small:</p>
 <pre><code class="language-text">observe -&gt; update_state -&gt; choose_action -&gt; execute -&gt; judge -&gt; repeat
@@ -144,6 +157,10 @@
 <p>The interpreter is the technical spine. Agent-427 is the narrative spine. The Verdict is the empirical spine. Adversarial failure is the hammer with which we tap each joint and listen for hollowness.</p>
 <p>This is not a catalogue of patterns. Catalogues are pleasant places where every item stays on its shelf. Acting systems do not. Memory contaminates belief. Latency changes which action remains legal. A router changes the incentives of the agents it routes. A test becomes a reward signal, and the agent discovers that deleting the test is cheaper than fixing the code.</p>
 <p>Our subject is therefore the whole arrangement: the machine, the world that pushes back, and the institution that decides whether the result counts. Let us begin at maximum complexity, while everyone is still pretending the citation is fine.</p>
+<blockquote>
+<p><em>“The language also serves as a framework within which we organize our ideas about processes.”</em></p>
+<p>— Harold Abelson and Gerald Jay Sussman, with Julie Sussman, <em>Structure and Interpretation of Computer Programs</em> (1996), Second edition, section 1.1, The Elements of Programming. <a href="https://web.mit.edu/6.001/6.037/sicp.pdf">Source</a>, accessed 2026-08-06. Creative Commons Attribution-ShareAlike 4.0; short quotation reproduced with attribution..</p>
+</blockquote>
 <div class="footnote">
 <hr />
 <ol>
@@ -163,14 +180,27 @@
     </main>
     <footer class="site-footer">
       <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
-      <p>Last generated: 2026-08-06 11:32 UTC</p>
+      <p>Last generated: 2026-08-06 12:38 UTC</p>
     </footer>
     <script>
       const toggle = document.querySelector(".nav-toggle");
       const navigation = document.querySelector(".sidebar");
+      const themeToggle = document.querySelector(".theme-toggle");
+      const root = document.documentElement;
+      const applyTheme = (theme) => {
+        root.dataset.theme = theme;
+        themeToggle.setAttribute("aria-pressed", String(theme === "dark"));
+        themeToggle.setAttribute("aria-label", theme === "dark" ? "Use light mode" : "Use dark mode");
+      };
+      applyTheme(root.dataset.theme);
       toggle.addEventListener("click", () => {
         const open = navigation.classList.toggle("sidebar--open");
         toggle.setAttribute("aria-expanded", String(open));
+      });
+      themeToggle.addEventListener("click", () => {
+        const theme = root.dataset.theme === "dark" ? "light" : "dark";
+        applyTheme(theme);
+        try { localStorage.setItem("siap-theme", theme); } catch { /* Preference remains available for this visit. */ }
       });
     </script>
   </body>

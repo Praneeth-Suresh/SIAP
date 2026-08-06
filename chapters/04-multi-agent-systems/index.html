@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Structure and Interpretation of Agentic Patterns, a theory-backed book about agentic AI." />
     <title>Chapter 4: Multi-Agent Systems · SIAP</title>
+    <script>
+      (() => {
+        try {
+          const saved = localStorage.getItem("siap-theme");
+          document.documentElement.dataset.theme = saved || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        } catch { document.documentElement.dataset.theme = "light"; }
+      })();
+    </script>
     <link rel="stylesheet" href="../../assets/style.css" />
     <script>
       window.MathJax = {
@@ -26,6 +34,7 @@
           <p class="site-kicker">A book about governed machines</p>
           <p class="site-title"><a href="../../index.html">Structure and Interpretation<br />of Agentic Patterns</a></p>
         </div>
+        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Use dark mode"><span aria-hidden="true">◐</span><span>Theme</span></button>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="book-navigation">Contents</button>
       </div>
     </header>
@@ -44,8 +53,10 @@
 <h2 id="the-world-is-made-of-policies-now">The World Is Made of Policies Now</h2>
 <p>When one agent is uncertain, it can inspect evidence. When several agents share an environment, some of that environment consists of other policies inspecting <em>their</em> evidence, choosing what to reveal, and adapting to the rules. The world no longer merely moves. It negotiates.</p>
 <p>One interpreter is a program. Many interpreters form a small institution, whether or not anyone remembered to design one. They hold different beliefs, queue behind shared resources, inherit different incentives, and may alter the evidence while somebody else is reading it. Adding agents therefore adds neither wisdom nor independence by default. It adds state, latency, authority, and politics.<sup id="fnref:c4-committee"><a class="footnote-ref" href="#fn:c4-committee">1</a></sup></p>
+<section class="reader-question">
 <p><strong>Skeptical Engineer:</strong> "Isn't this just distributed systems with more adjectives?"</p>
 <p><strong>Author:</strong> Distributed systems give us failure, timing, and agreement. Game theory gives us strategic response. Control gives us feedback. Learning gives us adaptation. Agent societies are what happens when all four attend the same incident review and discover they were using the word <em>state</em> differently.</p>
+</section>
 <h2 id="four-institutional-edits">Four Institutional Edits</h2>
 <p>This chapter wraps a larger evaluator around the single-agent interpreter:</p>
 <ul>
@@ -66,6 +77,10 @@
 <li><a href="topic-04-neural-ensembles-and-orchestration.html">Neural Ensembles and Orchestration</a> builds scalable oversight and carries Agent-427 through the retirement gate.</li>
 </ol>
 <p>The goal is not harmony. Harmony can be three agents citing the same broken mirror. The goal is a society whose disagreement contains information, whose trust expires without evidence, whose faults remain visible, and whose collective action is governable even when no individual sees the whole state.<sup id="fnref:c4-harmony"><a class="footnote-ref" href="#fn:c4-harmony">3</a></sup></p>
+<blockquote>
+<p><em>“the bonds of words are too weak to bridle men’s ambition, avarice, anger, and other passions”</em></p>
+<p>— Thomas Hobbes, <em>Leviathan</em> (1651), Chapter XIV, Of the First and Second Natural Laws, and of Contracts. <a href="https://www.gutenberg.org/files/73957/73957-h/73957-h.htm">Source</a>, accessed 2026-08-06. Public-domain original; quotation transcribed from Project Gutenberg..</p>
+</blockquote>
 <div class="footnote">
 <hr />
 <ol>
@@ -85,14 +100,27 @@
     </main>
     <footer class="site-footer">
       <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
-      <p>Last generated: 2026-08-06 11:32 UTC</p>
+      <p>Last generated: 2026-08-06 12:38 UTC</p>
     </footer>
     <script>
       const toggle = document.querySelector(".nav-toggle");
       const navigation = document.querySelector(".sidebar");
+      const themeToggle = document.querySelector(".theme-toggle");
+      const root = document.documentElement;
+      const applyTheme = (theme) => {
+        root.dataset.theme = theme;
+        themeToggle.setAttribute("aria-pressed", String(theme === "dark"));
+        themeToggle.setAttribute("aria-label", theme === "dark" ? "Use light mode" : "Use dark mode");
+      };
+      applyTheme(root.dataset.theme);
       toggle.addEventListener("click", () => {
         const open = navigation.classList.toggle("sidebar--open");
         toggle.setAttribute("aria-expanded", String(open));
+      });
+      themeToggle.addEventListener("click", () => {
+        const theme = root.dataset.theme === "dark" ? "light" : "dark";
+        applyTheme(theme);
+        try { localStorage.setItem("siap-theme", theme); } catch { /* Preference remains available for this visit. */ }
       });
     </script>
   </body>

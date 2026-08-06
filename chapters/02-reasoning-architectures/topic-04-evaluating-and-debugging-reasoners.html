@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Structure and Interpretation of Agentic Patterns, a theory-backed book about agentic AI." />
     <title>Evaluating and Debugging Reasoners · SIAP</title>
+    <script>
+      (() => {
+        try {
+          const saved = localStorage.getItem("siap-theme");
+          document.documentElement.dataset.theme = saved || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        } catch { document.documentElement.dataset.theme = "light"; }
+      })();
+    </script>
     <link rel="stylesheet" href="../../assets/style.css" />
     <script>
       window.MathJax = {
@@ -26,6 +34,7 @@
           <p class="site-kicker">A book about governed machines</p>
           <p class="site-title"><a href="../../index.html">Structure and Interpretation<br />of Agentic Patterns</a></p>
         </div>
+        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Use dark mode"><span aria-hidden="true">◐</span><span>Theme</span></button>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="book-navigation">Contents</button>
       </div>
     </header>
@@ -37,6 +46,10 @@
       <article class="content">
         <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../index.html">Book</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><a href="index.html">Chapter 2: Reasoning Architectures</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><span aria-current="page">Evaluating and Debugging Reasoners</span></nav>
         <h1 id="evaluating-and-debugging-reasoners">Evaluating and Debugging Reasoners</h1>
+<blockquote>
+<p><em>“For truth is rightly named the daughter of time, not of authority.”</em></p>
+<p>— Francis Bacon, <em>Novum Organum</em> (1620), Book I, aphorism LXXXIV. <a href="https://www.gutenberg.org/files/45988/45988-h/45988-h.htm">Source</a>, accessed 2026-08-06. Public-domain original and translation; quotation transcribed from Project Gutenberg..</p>
+</blockquote>
 <p>Agent-427 eventually finds the authentication failure. Suppose the focused test passes. Acquit?</p>
 <p>Not yet. The agent may have read a forbidden file, spent four times its budget, followed a stale memory, skipped the regression suite, or reported 99% confidence after evidence worth 60%. A correct answer can be the final frame of a broken process. Evaluation must judge the trajectory, not applaud the last sentence.</p>
 <p><img alt="A hand-drawn courtroom where Utility, Safety, and Calibration judge an agent trajectory while a trace ledger sits in the witness box" src="../../assets/diagrams/06-the-verdict.png" /></p>
@@ -60,10 +73,12 @@
 <p><strong>Try this with numbers.</strong> Step 1: policy A earns utility 9 and soft cost 2 with \(\lambda=3\), so governed value is \(9-6=3\); policy B earns utility 7 with zero soft cost, so B wins at 7. Step 2: policy C earns utility 100 but has \(C_{\mathrm{hard}}=1\); the probability-zero hard constraint rejects C before any utility comparison.</p>
 </blockquote>
 <p>Here \(\lambda\) prices only soft costs such as latency, tokens, or reversible operational risk; \(\epsilon\) is the maximum tolerated calibration error [<a href="../../references.html#ref-33">33</a>] [<a href="../../references.html#ref-34">34</a>] [<a href="../../references.html#ref-53">53</a>]. Hard authority and safety violations have no exchange rate. \(S\) is a loss, so lower is better. An upside-down inequality can crown a liar for sounding confident, which is a rather expensive typography error.</p>
+<section class="reader-question">
 <blockquote>
 <p><strong>Skeptical Engineer:</strong> Why not collapse all three judges into one reward and optimize it?</p>
 <p><strong>Author:</strong> Because the collapse hides trade-offs and invites reward gaming. A policy that deletes the failing test can score “tests pass” while Safety bangs on the locked courtroom door.</p>
 </blockquote>
+</section>
 <p>The harness logs state summaries, raw-observation handles, actions, tool arguments, retrieved evidence, confidence, costs, constraints, model/version stamps, and outcomes. It reports task success, partial progress, tokens, wall-clock latency, call count, valid-call rate, and utility per call. Two agents may solve 40 tasks; one uses 200 calls and earns 0.20 successes per call, while another uses 2,000 and earns 0.02. The second is not ten times more thoughtful. It is weather.</p>
 <h2 id="the-assumption">The Assumption</h2>
 <p>Evaluation assumes the logged task distribution resembles deployment, the harness observes decision-relevant transitions, and the metrics resist cheap proxies. It assumes comparisons hold model, tools, budgets, and halt rules steady enough that one changed pattern is identifiable.</p>
@@ -165,6 +180,10 @@ H_{\hat\theta}^{-1}
 </code></pre>
 <h2 id="when-it-fails">When It Fails</h2>
 <p>The Verdict fails when logging omits forbidden actions, tasks leak from benchmark to memory, reward proxies can be gamed, or one aggregate hides subgroup collapse. A coding agent optimizing <code>test pass rate</code> may delete the failing test. Utility smiles at 100%. Safety asks where the test went. Calibration says the agent was accurately confident that its crime would satisfy the metric.<sup id="fnref:verdict-crime"><a class="footnote-ref" href="#fn:verdict-crime">1</a></sup></p>
+<blockquote>
+<p><em>“Does it contain any experimental reasoning concerning matter of fact and existence?”</em></p>
+<p>— David Hume, <em>An Enquiry Concerning Human Understanding</em> (1748), Section XII, part III, paragraph 132. <a href="https://www.gutenberg.org/files/9662/9662-h/9662-h.htm">Source</a>, accessed 2026-08-06. Public-domain original; quotation transcribed from Project Gutenberg..</p>
+</blockquote>
 <p>Scoring can also change behavior. Agents learn benchmark quirks, evaluators reward verbosity, and human raters prefer answers that sound complete. The remedy is not one perfect metric. It is separation of judges, hidden and adversarial scenarios, causal replay, shift reports, confidence-utility frontiers, and transition-labeled failures:</p>
 <ul>
 <li>illegal action;</li>
@@ -175,7 +194,8 @@ H_{\hat\theta}^{-1}
 <li>unsafe reflection.</li>
 </ul>
 <p>Evaluation earns its place only when it changes the engineering agenda. Retrieval-linked hallucinations send us to the retriever and provenance formatter. Shallow-plan failures send us to state, preconditions, and value scoring. Confidence spikes after tool use demand conditional calibration. Each proposed repair returns to the same courtroom.</p>
-<h2 id="exercise-convene-the-verdict">Exercise: Convene the Verdict</h2>
+<section class="exercise">
+<h2 class="unnumbered" id="exercise-convene-the-verdict">Exercise: Convene the Verdict</h2>
 <p>Build an executable trajectory-evaluation and replay harness.</p>
 <ol>
 <li>Create at least 200 seeded coding-agent trajectories with utility, safety events, confidence, tool calls, branch metadata, and outcomes. Include the 3:47 and 4:06 failures.</li>
@@ -186,6 +206,7 @@ H_{\hat\theta}^{-1}
 <li>Add a reward-gaming policy that deletes failing tests. Show why scalar utility acquits it, then make the three-judge Verdict reject it without lowering legitimate repair utility.</li>
 </ol>
 <p>Submit code, tests, a confidence-utility frontier, subgroup calibration plots or tables, and a machine-readable verdict. If the harness returns one triumphant number, appeal immediately.</p>
+</section>
 <div class="footnote">
 <hr />
 <ol>
@@ -199,14 +220,27 @@ H_{\hat\theta}^{-1}
     </main>
     <footer class="site-footer">
       <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
-      <p>Last generated: 2026-08-06 11:32 UTC</p>
+      <p>Last generated: 2026-08-06 12:38 UTC</p>
     </footer>
     <script>
       const toggle = document.querySelector(".nav-toggle");
       const navigation = document.querySelector(".sidebar");
+      const themeToggle = document.querySelector(".theme-toggle");
+      const root = document.documentElement;
+      const applyTheme = (theme) => {
+        root.dataset.theme = theme;
+        themeToggle.setAttribute("aria-pressed", String(theme === "dark"));
+        themeToggle.setAttribute("aria-label", theme === "dark" ? "Use light mode" : "Use dark mode");
+      };
+      applyTheme(root.dataset.theme);
       toggle.addEventListener("click", () => {
         const open = navigation.classList.toggle("sidebar--open");
         toggle.setAttribute("aria-expanded", String(open));
+      });
+      themeToggle.addEventListener("click", () => {
+        const theme = root.dataset.theme === "dark" ? "light" : "dark";
+        applyTheme(theme);
+        try { localStorage.setItem("siap-theme", theme); } catch { /* Preference remains available for this visit. */ }
       });
     </script>
   </body>

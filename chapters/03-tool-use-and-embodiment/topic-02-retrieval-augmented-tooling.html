@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Structure and Interpretation of Agentic Patterns, a theory-backed book about agentic AI." />
     <title>Retrieval-Augmented Tooling · SIAP</title>
+    <script>
+      (() => {
+        try {
+          const saved = localStorage.getItem("siap-theme");
+          document.documentElement.dataset.theme = saved || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        } catch { document.documentElement.dataset.theme = "light"; }
+      })();
+    </script>
     <link rel="stylesheet" href="../../assets/style.css" />
     <script>
       window.MathJax = {
@@ -26,6 +34,7 @@
           <p class="site-kicker">A book about governed machines</p>
           <p class="site-title"><a href="../../index.html">Structure and Interpretation<br />of Agentic Patterns</a></p>
         </div>
+        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Use dark mode"><span aria-hidden="true">◐</span><span>Theme</span></button>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="book-navigation">Contents</button>
       </div>
     </header>
@@ -37,6 +46,10 @@
       <article class="content">
         <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../index.html">Book</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><a href="index.html">Chapter 3: Tool Use and Embodiment</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><span aria-current="page">Retrieval-Augmented Tooling</span></nav>
         <h1 id="retrieval-augmented-tooling">Retrieval-Augmented Tooling</h1>
+<blockquote>
+<p><em>“Knowledge is of two kinds. We know a subject ourselves, or we know where we can find information upon it.”</em></p>
+<p>— Samuel Johnson, <em>The Life of Samuel Johnson</em> (1791), James Boswell's account of a conversation at Richard Owen Cambridge's library. <a href="https://www.gutenberg.org/files/1564/1564-h/1564-h.htm">Source</a>, accessed 2026-08-06. Public-domain original; quotation transcribed from Project Gutenberg..</p>
+</blockquote>
 <p>Sometimes an agent should stop guessing and go look something up. This section
 is about that decision: when an agent should fetch outside evidence, how it
 should score and rank what it finds, and how it should carry that evidence into
@@ -336,6 +349,7 @@ suppress retrieval that the current task plainly needs.</p>
 <p>Retrieval is therefore most valuable for tasks with four properties together:
 high uncertainty, fresh external facts, inspectable evidence, and enough
 consequence that the delay is cheaper than the mistake.</p>
+<section class="reader-question">
 <blockquote>
 <p><strong>Skeptical Engineer:</strong> If retrieval is attention with a search engine attached,
 why not retrieve ten times as much and let the model sort it out?</p>
@@ -343,6 +357,7 @@ why not retrieve ten times as much and let the model sort it out?</p>
 provenance, independence, or truth. Ten poisoned copies are still one poisoned
 claim wearing a marching band.</p>
 </blockquote>
+</section>
 <h2 id="the-assumption">The Assumption</h2>
 <p>Retrieval-augmented generation assumes the candidate corpus contains useful
 evidence, the ranking score correlates with decision relevance, metadata exposes
@@ -361,7 +376,8 @@ deduplicates by provenance, labels freshness, neutralizes instructions in
 retrieved data, and sends unresolved contradictions to an independent source.
 These are concrete defenses against reward hacking and unsafe side effects, not
 requests that the model “please be discerning” [<a href="../../references.html#ref-77">77</a>].</p>
-<h2 id="exercise-poison-the-index-then-defend-it">Exercise: Poison the Index, Then Defend It</h2>
+<section class="exercise">
+<h2 class="unnumbered" id="exercise-poison-the-index-then-defend-it">Exercise: Poison the Index, Then Defend It</h2>
 <p>Implement a small hybrid retriever over at least fifty local documents. Each
 result must carry <code>source_id</code>, <code>timestamp</code>, <code>branch</code>, <code>content_hash</code>, permission,
 and whether its text contains an imperative addressed to the agent. Then:</p>
@@ -377,6 +393,11 @@ and whether its text contains an imperative addressed to the agent. Then:</p>
 <p>The exercise succeeds only if the defended policy selects direct source
 inspection or returns an explicit contradiction; fluent synthesis of the stale
 majority is a failing test.</p>
+</section>
+<blockquote>
+<p><em>“Some books are to be tasted, others to be swallowed, and some few to be chewed and digested”</em></p>
+<p>— Francis Bacon, <em>Essays</em> (1625), Essay L, Of Studies. <a href="https://www.gutenberg.org/cache/epub/56463/pg56463-images.html">Source</a>, accessed 2026-08-06. Public-domain original; quotation transcribed from Project Gutenberg..</p>
+</blockquote>
 <div class="footnote">
 <hr />
 <ol>
@@ -391,14 +412,27 @@ less accomplished at checking their credentials.&#160;<a class="footnote-backref
     </main>
     <footer class="site-footer">
       <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
-      <p>Last generated: 2026-08-06 11:32 UTC</p>
+      <p>Last generated: 2026-08-06 12:38 UTC</p>
     </footer>
     <script>
       const toggle = document.querySelector(".nav-toggle");
       const navigation = document.querySelector(".sidebar");
+      const themeToggle = document.querySelector(".theme-toggle");
+      const root = document.documentElement;
+      const applyTheme = (theme) => {
+        root.dataset.theme = theme;
+        themeToggle.setAttribute("aria-pressed", String(theme === "dark"));
+        themeToggle.setAttribute("aria-label", theme === "dark" ? "Use light mode" : "Use dark mode");
+      };
+      applyTheme(root.dataset.theme);
       toggle.addEventListener("click", () => {
         const open = navigation.classList.toggle("sidebar--open");
         toggle.setAttribute("aria-expanded", String(open));
+      });
+      themeToggle.addEventListener("click", () => {
+        const theme = root.dataset.theme === "dark" ? "light" : "dark";
+        applyTheme(theme);
+        try { localStorage.setItem("siap-theme", theme); } catch { /* Preference remains available for this visit. */ }
       });
     </script>
   </body>

@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Structure and Interpretation of Agentic Patterns, a theory-backed book about agentic AI." />
     <title>Chapter 3: Tool Use and Embodiment · SIAP</title>
+    <script>
+      (() => {
+        try {
+          const saved = localStorage.getItem("siap-theme");
+          document.documentElement.dataset.theme = saved || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        } catch { document.documentElement.dataset.theme = "light"; }
+      })();
+    </script>
     <link rel="stylesheet" href="../../assets/style.css" />
     <script>
       window.MathJax = {
@@ -26,6 +34,7 @@
           <p class="site-kicker">A book about governed machines</p>
           <p class="site-title"><a href="../../index.html">Structure and Interpretation<br />of Agentic Patterns</a></p>
         </div>
+        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Use dark mode"><span aria-hidden="true">◐</span><span>Theme</span></button>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="book-navigation">Contents</button>
       </div>
     </header>
@@ -58,7 +67,8 @@ schemas, permissions, clocks, caches, and consequences.<sup id="fnref:chapter-th
 <li>The world may stubbornly continue existing after the model has finished its sentence.</li>
 </ul>
 <p>A small example makes the cost real. If one file read takes 200 milliseconds, and the agent reads twelve files before editing, it has spent 2.4 seconds on looking.</p>
-<h2 id="the-questions-this-chapter-asks">The Questions This Chapter Asks</h2>
+<section class="reader-question">
+<h2 class="unnumbered" id="the-questions-this-chapter-asks">The Questions This Chapter Asks</h2>
 <p>The running example carries forward Agent-427, now working on this book's own
 publication pipeline, which is the same workflow Chapter 4 will treat as a small
 society. The interesting questions shift away from "what should it think?" Three
@@ -68,16 +78,19 @@ sharper questions replace it:</p>
 <li>What evidence must it fetch first?</li>
 <li>How does it learn whether the world actually changed?</li>
 </ol>
+</section>
 <h2 id="reading-this-chapter-as-engineering">Reading This Chapter as Engineering</h2>
 <p>Read this chapter as the engineering chapter of the book's formal story. Three plain readings carry most of the weight.</p>
 <p>A schema, meaning a declared shape for arguments and results, is a grammar for external action. A retrieval result is a purchased observation: evidence you paid tokens and time to obtain. A sensor is any channel by which the world reports back, and an actuator is any channel by which the agent can affect that world.</p>
 <p>The mathematics in the four topics that follow gives names to these ordinary design choices.</p>
+<section class="reader-question">
 <blockquote>
 <p><strong>Skeptical Engineer:</strong> So Part 2 is where the elegant interpreter meets a
 timeout and discovers that the universe has no <code>undo</code> method?</p>
 <p><strong>Author:</strong> Precisely. Foundations become useful when they survive contact with
 a world that does not share the agent's prompt.</p>
 </blockquote>
+</section>
 <h2 id="topics">Topics</h2>
 <ol>
 <li><a href="topic-01-tool-interfaces-and-function-calling.html">Tool Interfaces and Function Calling</a></li>
@@ -85,6 +98,10 @@ a world that does not share the agent's prompt.</p>
 <li><a href="topic-03-embodiment-sensors-actuators-and-feedback.html">Embodiment: Sensors, Actuators, and Feedback</a></li>
 <li><a href="topic-04-safety-constraints-and-guardrails.html">Safety Constraints and Guardrails</a></li>
 </ol>
+<blockquote>
+<p><em>“Knowledge and human power are synonymous, since the ignorance of the cause frustrates the effect”</em></p>
+<p>— Francis Bacon, <em>Novum Organum</em> (1620), Book I, aphorism III. <a href="https://www.gutenberg.org/files/45988/45988-h/45988-h.htm">Source</a>, accessed 2026-08-06. Public-domain original and translation; quotation transcribed from Project Gutenberg..</p>
+</blockquote>
 <div class="footnote">
 <hr />
 <ol>
@@ -100,14 +117,27 @@ and usually with a less informative error message.&#160;<a class="footnote-backr
     </main>
     <footer class="site-footer">
       <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
-      <p>Last generated: 2026-08-06 11:32 UTC</p>
+      <p>Last generated: 2026-08-06 12:38 UTC</p>
     </footer>
     <script>
       const toggle = document.querySelector(".nav-toggle");
       const navigation = document.querySelector(".sidebar");
+      const themeToggle = document.querySelector(".theme-toggle");
+      const root = document.documentElement;
+      const applyTheme = (theme) => {
+        root.dataset.theme = theme;
+        themeToggle.setAttribute("aria-pressed", String(theme === "dark"));
+        themeToggle.setAttribute("aria-label", theme === "dark" ? "Use light mode" : "Use dark mode");
+      };
+      applyTheme(root.dataset.theme);
       toggle.addEventListener("click", () => {
         const open = navigation.classList.toggle("sidebar--open");
         toggle.setAttribute("aria-expanded", String(open));
+      });
+      themeToggle.addEventListener("click", () => {
+        const theme = root.dataset.theme === "dark" ? "light" : "dark";
+        applyTheme(theme);
+        try { localStorage.setItem("siap-theme", theme); } catch { /* Preference remains available for this visit. */ }
       });
     </script>
   </body>

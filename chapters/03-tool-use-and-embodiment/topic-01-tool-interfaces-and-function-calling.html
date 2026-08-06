@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Structure and Interpretation of Agentic Patterns, a theory-backed book about agentic AI." />
     <title>Tool Interfaces and Function Calling · SIAP</title>
+    <script>
+      (() => {
+        try {
+          const saved = localStorage.getItem("siap-theme");
+          document.documentElement.dataset.theme = saved || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        } catch { document.documentElement.dataset.theme = "light"; }
+      })();
+    </script>
     <link rel="stylesheet" href="../../assets/style.css" />
     <script>
       window.MathJax = {
@@ -26,6 +34,7 @@
           <p class="site-kicker">A book about governed machines</p>
           <p class="site-title"><a href="../../index.html">Structure and Interpretation<br />of Agentic Patterns</a></p>
         </div>
+        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Use dark mode"><span aria-hidden="true">◐</span><span>Theme</span></button>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="book-navigation">Contents</button>
       </div>
     </header>
@@ -37,6 +46,10 @@
       <article class="content">
         <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../index.html">Book</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><a href="index.html">Chapter 3: Tool Use and Embodiment</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><span aria-current="page">Tool Interfaces and Function Calling</span></nav>
         <h1 id="tool-interfaces-and-function-calling">Tool Interfaces and Function Calling</h1>
+<blockquote>
+<p><em>“Man is a Tool-using Animal”</em></p>
+<p>— Thomas Carlyle, <em>Sartor Resartus</em> (1836), Book I, chapter V, The World in Clothes. <a href="https://www.gutenberg.org/files/20585/20585-h/20585-h.htm">Source</a>, accessed 2026-08-06. Public-domain original; quotation transcribed from Project Gutenberg..</p>
+</blockquote>
 <p>There is a moment when an agent stops talking and starts doing. A tool call is
 that moment. What follows examines the contract that decides which requests may
 touch the outside world, and what happens when a call is slow, refused, or sent
@@ -320,6 +333,7 @@ represented as risky before they run. Expensive actions carry costs visible to
 the policy. Irreversible actions must publish the evidence by which success or
 rollback will later be judged. Topic 4 (Safety Constraints and Guardrails)
 returns to what happens when a proposal must be blocked outright.</p>
+<section class="reader-question">
 <blockquote>
 <p><strong>Skeptical Engineer:</strong> Does this not merely push the hallucination problem
 from natural language into JSON?</p>
@@ -327,6 +341,7 @@ from natural language into JSON?</p>
 still hallucinate; the important upgrade is that hallucination no longer
 inherits write permission.</p>
 </blockquote>
+</section>
 <h2 id="the-assumption">The Assumption</h2>
 <p>Contract-first tool use assumes the runtime owns an action vocabulary that is
 smaller than the model's language, validates it independently, and can observe
@@ -392,7 +407,8 @@ rate usually means the schema and the model's habits have drifted apart. A tool
 interface is publishable engineering when its failures are
 explained by the contract itself. Then language can touch the world without
 pretending the world is just more language.</p>
-<h2 id="exercise-build-the-boundary">Exercise: Build the Boundary</h2>
+<section class="exercise">
+<h2 class="unnumbered" id="exercise-build-the-boundary">Exercise: Build the Boundary</h2>
 <p>Implement a Python <code>ToolContract</code> and a pure <code>validate_and_select</code> function.
 Give it two actions: <code>read_file</code> and <code>edit_file</code>. The edit schema must require
 <code>file_path</code>, <code>old_text</code>, and <code>new_text</code>, reject unknown fields, check a permission
@@ -407,6 +423,11 @@ set, and return a structured refusal without touching disk. Then:</p>
 </ol>
 <p>Your implementation passes only if all malformed proposals become observations
 and no malformed proposal reaches the adapter.</p>
+</section>
+<blockquote>
+<p><em>“if the words alone were sufficient, a parrot might be taught as well to know truth, as to speak it.”</em></p>
+<p>— Thomas Hobbes, <em>Human Nature</em> (1650), Chapter VI, section 3, Evidence Defined. <a href="https://www.gutenberg.org/files/74236/74236-h/74236-h.htm">Source</a>, accessed 2026-08-06. Public-domain original; quotation transcribed from Project Gutenberg..</p>
+</blockquote>
 <div class="footnote">
 <hr />
 <ol>
@@ -422,14 +443,27 @@ with fewer airlock implications.&#160;<a class="footnote-backref" href="#fnref:t
     </main>
     <footer class="site-footer">
       <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
-      <p>Last generated: 2026-08-06 11:32 UTC</p>
+      <p>Last generated: 2026-08-06 12:38 UTC</p>
     </footer>
     <script>
       const toggle = document.querySelector(".nav-toggle");
       const navigation = document.querySelector(".sidebar");
+      const themeToggle = document.querySelector(".theme-toggle");
+      const root = document.documentElement;
+      const applyTheme = (theme) => {
+        root.dataset.theme = theme;
+        themeToggle.setAttribute("aria-pressed", String(theme === "dark"));
+        themeToggle.setAttribute("aria-label", theme === "dark" ? "Use light mode" : "Use dark mode");
+      };
+      applyTheme(root.dataset.theme);
       toggle.addEventListener("click", () => {
         const open = navigation.classList.toggle("sidebar--open");
         toggle.setAttribute("aria-expanded", String(open));
+      });
+      themeToggle.addEventListener("click", () => {
+        const theme = root.dataset.theme === "dark" ? "light" : "dark";
+        applyTheme(theme);
+        try { localStorage.setItem("siap-theme", theme); } catch { /* Preference remains available for this visit. */ }
       });
     </script>
   </body>

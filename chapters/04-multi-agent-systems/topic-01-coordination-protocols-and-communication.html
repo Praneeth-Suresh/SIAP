@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Structure and Interpretation of Agentic Patterns, a theory-backed book about agentic AI." />
     <title>Coordination Protocols and Communication · SIAP</title>
+    <script>
+      (() => {
+        try {
+          const saved = localStorage.getItem("siap-theme");
+          document.documentElement.dataset.theme = saved || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        } catch { document.documentElement.dataset.theme = "light"; }
+      })();
+    </script>
     <link rel="stylesheet" href="../../assets/style.css" />
     <script>
       window.MathJax = {
@@ -26,6 +34,7 @@
           <p class="site-kicker">A book about governed machines</p>
           <p class="site-title"><a href="../../index.html">Structure and Interpretation<br />of Agentic Patterns</a></p>
         </div>
+        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Use dark mode"><span aria-hidden="true">◐</span><span>Theme</span></button>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="book-navigation">Contents</button>
       </div>
     </header>
@@ -37,6 +46,10 @@
       <article class="content">
         <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../index.html">Book</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><a href="index.html">Chapter 4: Multi-Agent Systems</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><span aria-current="page">Coordination Protocols and Communication</span></nav>
         <h1 id="coordination-protocols-and-communication">Coordination Protocols and Communication</h1>
+<blockquote>
+<p><em>“man is naturally a political animal”</em></p>
+<p>— Aristotle, <em>Politics</em> (c. 350 BCE), Book I, chapter II, 1253a. <a href="https://www.gutenberg.org/files/6762/6762-h/6762-h.htm">Source</a>, accessed 2026-08-06. Public-domain original and translation; quotation transcribed from Project Gutenberg..</p>
+</blockquote>
 <p>Several agents working the same job at the same time is not one agent doing more of it. Each one sees only a slice of the situation. Each one can send messages that change what the others believe and do. The rules governing those messages are called a protocol, and designing, reading, and testing one is the work ahead.</p>
 <p>When many interpreters share an environment, communication is not an ornament added to intelligence. It is one of the control surfaces of the system. Each agent sees only part of the state, updates its own local machine, and emits messages that may change the machines around it. A protocol is the rule that makes those local steps compose.</p>
 <p>The SICP way to read a multi-agent system, after <em>Structure and Interpretation of Computer Programs</em>, the classic text this book echoes, is to ask what each interpreter treats as its environment. In a single evaluator, an expression is reduced against a frame of bindings, meaning a table of names and their current values. In a collective, that frame is distributed across many places at once:</p>
@@ -281,6 +294,7 @@ integrator.commit(P1)
 <li>and degradation under corrupted or adversarial messages.</li>
 </ul>
 <p>Run that last test deliberately, by injecting a lying agent, rather than waiting for one to appear. A coordination scheme that works only because every participant is reasonable is not yet a protocol. It is a cooperative anecdote. Topic 3 (Equilibria, Self-Play, and Learning Dynamics) studies what happens when the participants adapt to each other over many such runs.</p>
+<section class="reader-question">
 <blockquote>
 <p><strong>Skeptical Engineer:</strong> If signatures prove C-9 sent both messages, why do we
 need all this protocol machinery? Just fire C-9.</p>
@@ -288,6 +302,7 @@ need all this protocol machinery? Just fire C-9.</p>
 depended on the lie. The protocol freezes authority, reconstructs impact, and
 keeps the institution safe while personnel policy catches up.</p>
 </blockquote>
+</section>
 <h2 id="the-assumption">The Assumption</h2>
 <p>Typed coordination assumes messages carry stable claim, sender, recipient,
 evidence, and version identifiers; recipient-visible logs can later be compared;
@@ -306,7 +321,8 @@ audit sees two internally coherent traces and no reason they disagree. The
 repaired protocol logs recipient-specific messages, exchanges compact digests at
 commit time, freezes on equivocation, and requires an independent verifier before
 publication authority returns.</p>
-<h2 id="exercise-inject-a-byzantine-fact-checker">Exercise: Inject a Byzantine Fact Checker</h2>
+<section class="exercise">
+<h2 class="unnumbered" id="exercise-inject-a-byzantine-fact-checker">Exercise: Inject a Byzantine Fact Checker</h2>
 <p>Implement a deterministic protocol simulator with R-3, C-9, Agent-427, typed
 messages, per-recipient queues, signatures, and a traffic-light claim state.
 Then:</p>
@@ -320,7 +336,9 @@ Then:</p>
    fires after detected equivocation without independent verification; and</li>
 <li>report safety violations, liveness time, message complexity, and false freezes.</li>
 </ol>
-<h3 id="further-reading-and-open-questions">Further Reading and Open Questions</h3>
+</section>
+<section class="reader-question">
+<h3 class="unnumbered" id="further-reading-and-open-questions">Further Reading and Open Questions</h3>
 <p>Read Lamport, Shostak, and Pease for Byzantine agreement [<a href="../../references.html#ref-54">54</a>],
 Fischer, Lynch, and Paterson for the asynchronous impossibility boundary
 [<a href="../../references.html#ref-55">55</a>], and the Dec-POMDP treatment for collective
@@ -328,6 +346,11 @@ decision-making under local observations [<a href="../../references.html#ref-22"
 open engineering question is how much recipient-specific communication can
 remain private while still making equivocation detectable at institutional
 scale.</p>
+</section>
+<blockquote>
+<p><em>“their counsels will be best when all advise with each other”</em></p>
+<p>— Aristotle, <em>Politics</em> (c. 350 BCE), Book IV, chapter XIV, 1298b. <a href="https://www.gutenberg.org/files/6762/6762-h/6762-h.htm">Source</a>, accessed 2026-08-06. Public-domain original and translation; quotation transcribed from Project Gutenberg..</p>
+</blockquote>
 <div class="footnote">
 <hr />
 <ol>
@@ -343,14 +366,27 @@ compatible.&#160;<a class="footnote-backref" href="#fnref:byzantine-wardrobe" ti
     </main>
     <footer class="site-footer">
       <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
-      <p>Last generated: 2026-08-06 11:32 UTC</p>
+      <p>Last generated: 2026-08-06 12:38 UTC</p>
     </footer>
     <script>
       const toggle = document.querySelector(".nav-toggle");
       const navigation = document.querySelector(".sidebar");
+      const themeToggle = document.querySelector(".theme-toggle");
+      const root = document.documentElement;
+      const applyTheme = (theme) => {
+        root.dataset.theme = theme;
+        themeToggle.setAttribute("aria-pressed", String(theme === "dark"));
+        themeToggle.setAttribute("aria-label", theme === "dark" ? "Use light mode" : "Use dark mode");
+      };
+      applyTheme(root.dataset.theme);
       toggle.addEventListener("click", () => {
         const open = navigation.classList.toggle("sidebar--open");
         toggle.setAttribute("aria-expanded", String(open));
+      });
+      themeToggle.addEventListener("click", () => {
+        const theme = root.dataset.theme === "dark" ? "light" : "dark";
+        applyTheme(theme);
+        try { localStorage.setItem("siap-theme", theme); } catch { /* Preference remains available for this visit. */ }
       });
     </script>
   </body>

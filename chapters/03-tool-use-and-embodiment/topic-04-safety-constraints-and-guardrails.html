@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Structure and Interpretation of Agentic Patterns, a theory-backed book about agentic AI." />
     <title>Safety Constraints and Guardrails · SIAP</title>
+    <script>
+      (() => {
+        try {
+          const saved = localStorage.getItem("siap-theme");
+          document.documentElement.dataset.theme = saved || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        } catch { document.documentElement.dataset.theme = "light"; }
+      })();
+    </script>
     <link rel="stylesheet" href="../../assets/style.css" />
     <script>
       window.MathJax = {
@@ -26,6 +34,7 @@
           <p class="site-kicker">A book about governed machines</p>
           <p class="site-title"><a href="../../index.html">Structure and Interpretation<br />of Agentic Patterns</a></p>
         </div>
+        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Use dark mode"><span aria-hidden="true">◐</span><span>Theme</span></button>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="book-navigation">Contents</button>
       </div>
     </header>
@@ -37,6 +46,10 @@
       <article class="content">
         <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../index.html">Book</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><a href="index.html">Chapter 3: Tool Use and Embodiment</a><span class="breadcrumbs__separator" aria-hidden="true">/</span><span aria-current="page">Safety Constraints and Guardrails</span></nav>
         <h1 id="safety-constraints-and-guardrails">Safety Constraints and Guardrails</h1>
+<blockquote>
+<p><em>“The greater the power, the more dangerous the abuse.”</em></p>
+<p>— Edmund Burke, <em>Speech Relative to the Middlesex Election</em> (1771), Speech of 7 February 1771. <a href="https://hansard.parliament.uk/lords/1975-04-16/debates/7cf9e3ff-6d2b-4065-b7ba-825490390fce/MultinationalCorporations">Source</a>, accessed 2026-08-06. Public-domain original; wording and attribution verified in the official UK Parliament record..</p>
+</blockquote>
 <p>Between what an agent wants to do and what the world actually suffers stands a
 layer of machinery. That machinery is what we build here. We will price harm
 with numbers, fence the state with an inequality, and decide who is allowed to
@@ -333,6 +346,7 @@ awkward operational numbers beside them.</p>
 forbidden actions are blocked, whose risky tradeoffs are explicitly priced, whose
 ambiguous actions escalate, whose waiting states still make useful progress when
 allowed, and whose incidents generate evidence for repair.</p>
+<section class="reader-question">
 <blockquote>
 <p><strong>Skeptical Engineer:</strong> If the sensor and actuator may both lie, have we not
 simply moved the problem into the safety layer?</p>
@@ -340,6 +354,7 @@ simply moved the problem into the safety layer?</p>
 Safety is not omniscience; it is the refusal to let one unverified story become
 an irreversible effect.</p>
 </blockquote>
+</section>
 <h2 id="the-assumption">The Assumption</h2>
 <p>Constrained optimization assumes rewards and costs represent the outcomes that
 matter. Barrier-style filtering assumes the state estimate and dynamics are good
@@ -365,7 +380,8 @@ for speed can deploy an empty container and celebrate the fastest rollout in
 company history. The metric improved; the service disappeared. Safety ledgers,
 hard postconditions, and independent health checks prevent that joke from
 becoming an incident.<sup id="fnref:empty-container"><a class="footnote-ref" href="#fn:empty-container">1</a></sup></p>
-<h2 id="exercise-implement-the-fail-closed-filter">Exercise: Implement the Fail-Closed Filter</h2>
+<section class="exercise">
+<h2 class="unnumbered" id="exercise-implement-the-fail-closed-filter">Exercise: Implement the Fail-Closed Filter</h2>
 <p>Build a Python safety filter around mock <code>write</code>, <code>test</code>, and <code>deploy</code> adapters.
 Represent proposal, permission, evidence, pending effects, cost ledgers, and
 postconditions as typed values. Then write deterministic tests that:</p>
@@ -382,6 +398,11 @@ postconditions as typed values. Then write deterministic tests that:</p>
 </ol>
 <p>The implementation fails if prompt text can bypass the filter or if silence,
 timeout, and success share the same state.</p>
+</section>
+<blockquote>
+<p><em>“Over himself, over his own body and mind, the individual is sovereign.”</em></p>
+<p>— John Stuart Mill, <em>On Liberty</em> (1859), Chapter I, Introductory. <a href="https://www.gutenberg.org/files/34901/34901-h/34901-h.htm">Source</a>, accessed 2026-08-06. Public-domain original; quotation transcribed from Project Gutenberg..</p>
+</blockquote>
 <div class="footnote">
 <hr />
 <ol>
@@ -397,14 +418,27 @@ recognize.&#160;<a class="footnote-backref" href="#fnref:empty-container" title=
     </main>
     <footer class="site-footer">
       <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
-      <p>Last generated: 2026-08-06 11:32 UTC</p>
+      <p>Last generated: 2026-08-06 12:38 UTC</p>
     </footer>
     <script>
       const toggle = document.querySelector(".nav-toggle");
       const navigation = document.querySelector(".sidebar");
+      const themeToggle = document.querySelector(".theme-toggle");
+      const root = document.documentElement;
+      const applyTheme = (theme) => {
+        root.dataset.theme = theme;
+        themeToggle.setAttribute("aria-pressed", String(theme === "dark"));
+        themeToggle.setAttribute("aria-label", theme === "dark" ? "Use light mode" : "Use dark mode");
+      };
+      applyTheme(root.dataset.theme);
       toggle.addEventListener("click", () => {
         const open = navigation.classList.toggle("sidebar--open");
         toggle.setAttribute("aria-expanded", String(open));
+      });
+      themeToggle.addEventListener("click", () => {
+        const theme = root.dataset.theme === "dark" ? "light" : "dark";
+        applyTheme(theme);
+        try { localStorage.setItem("siap-theme", theme); } catch { /* Preference remains available for this visit. */ }
       });
     </script>
   </body>
