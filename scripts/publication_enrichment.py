@@ -376,7 +376,8 @@ def adapt_semantic_divs(markdown_text: str, *, target: str) -> str:
             heading_seen = False
             primary = "exercise" if "exercise" in classes else "reader-question"
             if target == "html":
-                output.append(f'<section class="{' '.join(classes)}" markdown="1">')
+                class_names = " ".join(classes)
+                output.append(f'<section class="{class_names}" markdown="1">')
             else:
                 macro = "siapexercisebegin" if primary == "exercise" else "siapreaderquestionbegin"
                 output.extend([f"\\{macro}", ""])
