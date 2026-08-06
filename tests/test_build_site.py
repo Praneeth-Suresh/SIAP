@@ -91,6 +91,7 @@ class SiteManifestTests(unittest.TestCase):
 
         self.assertIn("mathjax@3", page)
         self.assertIn('href="../../assets/style.css"', page)
+        self.assertIn('href="../../assets/favicon.svg"', page)
         self.assertIn('class="reading-nav"', page)
         self.assertIn(r"\mathcal{M}", page)
         self.assertNotIn("SIAPMATH", page)

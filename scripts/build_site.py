@@ -234,6 +234,7 @@ def write_html_page(
     page = template.format(
         title=escape(title),
         css_path=relative_href(markdown_path, BOOK_DIR / "assets" / "style.md").replace("style.html", "style.css"),
+        favicon_path=relative_href(markdown_path, BOOK_DIR / "assets" / "favicon.svg").replace(".html", ".svg"),
         home_path=relative_href(markdown_path, BOOK_DIR / "index.md"),
         breadcrumbs=render_breadcrumbs(all_sections, section),
         nav=render_nav(all_sections, section),
