@@ -113,7 +113,8 @@ P(o_{t+1}\mid b_t,a_t)=\sum_{s'}\Omega(o_{t+1}\mid s',a_t)\sum_s T(s'\mid s,a_t)
 <p><strong>Try this with numbers.</strong> Step 1: predict next-state mass \(0.6\) and \(0.4\). Step 2: likelihoods \(0.8\) and \(0.2\) give observation probability \(0.8(0.6)+0.2(0.4)=0.56\).</p>
 </blockquote>
 <p>Read the filter as two moves: <strong>predict</strong>, then <strong>correct</strong>.</p>
-<p><img alt="Two overlapping loops labeled predict and correct, with an observation moving probability mass between hypotheses" src="../../assets/diagrams/03-belief-update.png" /></p>
+<figure class="diagram-frame"><img class="diagram inline-visual" src="../../assets/diagrams/03-belief-update.svg" alt="Predict and correct loops move probability mass among competing hypotheses after an observation." width="1200" height="700" loading="lazy" decoding="async"></figure>
+
 <ol>
 <li>The inner sum \(\sum_s T(s'\mid s,a_t)b_t(s)\) predicts how likely each next
    state \(s'\) is after action \(a_t\), before the new observation arrives.
@@ -390,7 +391,7 @@ in the state at all.</p>
     </main>
     <footer class="site-footer">
       <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
-      <p>Last generated: 2026-08-06 15:38 UTC</p>
+      <p>Last generated: 2026-08-06 18:31 UTC</p>
     </footer>
     <script>
       const toggle = document.querySelector(".nav-toggle");

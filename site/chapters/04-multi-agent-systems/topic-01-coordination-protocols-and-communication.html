@@ -163,7 +163,8 @@ recipients. The protocol preserves both signed messages, compares claim and
 evidence identifiers, marks the sender Byzantine for this transition, and moves
 the artifact from green to red. It does not let the router's earlier green light
 erase Agent-427's amber report.<sup id="fnref:byzantine-wardrobe"><a class="footnote-ref" href="#fn:byzantine-wardrobe">1</a></sup></p>
-<p><img alt="A traffic-light protocol freezes a claim when C-9 sends verified to Router R-3 and unsure to Agent-427." src="../../assets/diagrams/09-byzantine-traffic-light.png" /></p>
+<figure class="diagram-frame"><img class="diagram inline-visual" src="../../assets/diagrams/09-byzantine-traffic-light.svg" alt="A traffic-light protocol freezes a claim when a checker sends contradictory messages." width="1200" height="700" loading="lazy" decoding="async"></figure>
+
 <p>Contradictory evidence has its own type. If two honest agents interpret
 different sources, the system records <code>disagreement</code> and seeks a higher-authority
 source. If one sender signs incompatible claims over the same digest, it records
@@ -372,7 +373,7 @@ compatible.&#160;<a class="footnote-backref" href="#fnref:byzantine-wardrobe" ti
     </main>
     <footer class="site-footer">
       <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
-      <p>Last generated: 2026-08-06 15:38 UTC</p>
+      <p>Last generated: 2026-08-06 18:31 UTC</p>
     </footer>
     <script>
       const toggle = document.querySelector(".nav-toggle");

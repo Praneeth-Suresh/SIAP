@@ -223,7 +223,12 @@ def write_html_page(
     markdown_path = section.path
     raw_md = markdown_path.read_text(encoding="utf-8")
     if enrichment is not None:
-        raw_md = enrich_section_markdown(markdown_path, raw_md, enrichment)
+        raw_md = enrich_section_markdown(
+            markdown_path,
+            raw_md,
+            enrichment,
+            output="web",
+        )
     processed_md = rewrite_md_links(raw_md)
     title = extract_title(processed_md, markdown_path.stem)
     html_body = render_markdown(processed_md)

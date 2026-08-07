@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import date
+from html import escape
 from pathlib import Path
 import os
 import re
@@ -12,6 +13,10 @@ import tomllib
 SCHEMA_VERSION = 1
 STABLE_ID = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 SEMANTIC_CLASSES = frozenset({"exercise", "reader-question", "epigraph"})
+MARKDOWN_IMAGE = re.compile(
+    r"!\[(?P<alt>[^\]]*)\]\((?P<target>[^)\s]+)(?:\s+['\"][^'\"]*['\"])?\)"
+    r"(?:\{[^}\n]*\})?"
+)
 QUOTE_FIELDS = frozenset(
     {
         "id",
@@ -282,29 +287,103 @@ def _quote_markdown(quote: QuoteRecord) -> str:
     )
 
 
-def _visual_markdown(visual: VisualRecord, section_path: Path, book_dir: Path) -> str:
+def _visual_markdown(
+    visual: VisualRecord,
+    section_path: Path,
+    book_dir: Path,
+    *,
+    output: str,
+) -> str:
     target = book_dir / visual.path
     relative = Path(os.path.relpath(target, section_path.parent)).as_posix()
-    return f"![{visual.alt}]({relative}){{.{visual.kind} .{visual.placement}-visual}}"
+    classes = f".{visual.kind} .{visual.placement}-visual"
+    width = " width=5.12in" if output == "print" and visual.kind == "cartoon" else ""
+    return f"![{visual.alt}]({relative}){{{classes}{width}}}"
+
+
+def _canonicalize_inline_visuals(
+    section_path: Path,
+    markdown_text: str,
+    enrichment: PublicationEnrichment,
+    *,
+    output: str,
+) -> str:
+    source = _source_key(section_path, enrichment.book_dir)
+    inline_visuals = enrichment.visuals_for(source, "inline")
+    if not inline_visuals:
+        return markdown_text
+
+    by_path = {
+        (enrichment.book_dir / visual.path).resolve(): visual
+        for visual in inline_visuals
+    }
+    matched: dict[str, int] = {visual.id: 0 for visual in inline_visuals}
+
+    def replace(match: re.Match[str]) -> str:
+        raw_target = match.group("target")
+        if re.match(r"(?:https?:|data:)", raw_target):
+            return match.group(0)
+        candidate = (section_path.parent / raw_target).resolve()
+        visual = by_path.get(candidate)
+        if visual is None:
+            return match.group(0)
+        matched[visual.id] += 1
+
+        png_target = enrichment.book_dir / visual.path
+        if output == "web":
+            svg_target = png_target.with_suffix(".svg")
+            asset_target = svg_target if svg_target.is_file() else png_target
+            relative = Path(os.path.relpath(asset_target, section_path.parent)).as_posix()
+            # A bounded figure owns horizontal scrolling on narrow screens, so
+            # the page never grows wider than its reading column.
+            return (
+                '<figure class="diagram-frame">'
+                f'<img class="diagram inline-visual" src="{escape(relative, quote=True)}" '
+                f'alt="{escape(visual.alt, quote=True)}" width="1200" height="700" '
+                'loading="lazy" decoding="async">'
+                "</figure>"
+            )
+
+        relative = Path(os.path.relpath(png_target, section_path.parent)).as_posix()
+        return f"![{visual.alt}]({relative}){{.diagram .inline-visual}}"
+
+    rendered = MARKDOWN_IMAGE.sub(replace, markdown_text)
+    missing = [record_id for record_id, count in matched.items() if count != 1]
+    if missing:
+        raise ValueError(
+            f"{source}: registered inline visuals must occur exactly once: "
+            + ", ".join(missing)
+        )
+    return rendered
 
 
 def enrich_section_markdown(
     section_path: Path,
     markdown_text: str,
     enrichment: PublicationEnrichment,
+    *,
+    output: str = "print",
 ) -> str:
+    if output not in {"print", "web"}:
+        raise ValueError(f"unknown publication enrichment output: {output}")
     source = _source_key(section_path, enrichment.book_dir)
+    markdown_text = _canonicalize_inline_visuals(
+        section_path,
+        markdown_text,
+        enrichment,
+        output=output,
+    )
     opening = [
         *(_quote_markdown(quote) for quote in enrichment.quotes_for(source, "opening")),
         *(
-            _visual_markdown(visual, section_path, enrichment.book_dir)
+            _visual_markdown(visual, section_path, enrichment.book_dir, output=output)
             for visual in enrichment.visuals_for(source, "opening")
         ),
     ]
     terminal = [
         *(_quote_markdown(quote) for quote in enrichment.quotes_for(source, "closing")),
         *(
-            _visual_markdown(visual, section_path, enrichment.book_dir)
+            _visual_markdown(visual, section_path, enrichment.book_dir, output=output)
             for visual in enrichment.visuals_for(source, "terminal")
         ),
     ]

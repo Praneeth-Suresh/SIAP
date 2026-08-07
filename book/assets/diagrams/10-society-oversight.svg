@@ -8,11 +8,11 @@
     <style>
       .paper { fill:#f4f0e6; }
       text { fill:#172a3a; font-family:"Courier New",monospace; }
-      .title { font-family:Georgia,serif; font-size:34px; font-weight:bold; }
-      .subtitle { font-size:16px; letter-spacing:1px; }
-      .label { font-size:19px; font-weight:bold; }
-      .detail { font-size:14px; }
-      .tiny { font-size:13px; font-weight:bold; paint-order:stroke; stroke:#f4f0e6; stroke-width:5px; stroke-linejoin:round; }
+      .title { font-family:Georgia,serif; font-size:38px; font-weight:bold; }
+      .subtitle { font-size:18px; letter-spacing:0.8px; }
+      .label { font-size:22px; font-weight:bold; }
+      .detail { font-size:17px; }
+      .tiny { font-size:16px; font-weight:bold; paint-order:stroke; stroke:#f4f0e6; stroke-width:5px; stroke-linejoin:round; }
       .rough { filter:url(#wobble); }
       rect, circle, ellipse, path, line, polygon { fill:#fbf8ef; stroke:#172a3a; stroke-width:3; }
       .arrow { fill:none; marker-end:url(#arrow); }

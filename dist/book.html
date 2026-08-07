@@ -101,7 +101,8 @@ html[data-theme="dark"] .book-nav__topics a { color: #b8c9cf; }
 .content .exercise > :first-child, .content .reader-question > :first-child { margin-top: 0; color: var(--signal); font: 700 0.92rem/1.3 var(--sans); letter-spacing: 0.07em; text-transform: uppercase; }
 .content .exercise > :last-child, .content .reader-question > :last-child { margin-bottom: 0; }
 .content img.cartoon { display: block; width: min(100%, 46rem); margin: 2.4rem auto 0.6rem; padding: 0.35rem; border: 1px solid var(--rule); background: #f4f0e6; }
-.content img.diagram { display: block; margin: 2rem auto; padding: 0.3rem; border: 1px solid var(--rule); background: #f4f0e6; }
+.content .diagram-frame { width: 100%; max-width: 100%; margin: 2rem 0; overflow-x: auto; overflow-y: hidden; overscroll-behavior-inline: contain; border: 1px solid var(--rule); background: #f4f0e6; }
+.content img.diagram { display: block; width: 100%; max-width: none; height: auto; margin: 0 auto; padding: 0.3rem; background: #f4f0e6; }
 .content code { padding: 0.1rem 0.28rem; background: var(--mist); font-size: 0.84em; }
 .content pre { max-width: 100%; padding: 1.15rem 1.3rem; overflow-x: auto; background: var(--code-bg); color: var(--code-text); box-shadow: inset 4px 0 var(--signal); tab-size: 2; }
 .content pre code { padding: 0; background: transparent; color: inherit; }
@@ -109,6 +110,7 @@ html[data-theme="dark"] .book-nav__topics a { color: #b8c9cf; }
 .content th, .content td { min-width: 9rem; padding: 0.55rem 0.7rem; border: 1px solid var(--rule); text-align: left; vertical-align: top; }
 .content th { background: var(--mist); font-family: var(--sans); }
 .content img { max-width: 100%; height: auto; }
+.pdf-content img.cartoon { width: min(100%, 5.12in); }
 .content mjx-container[display="true"] { display: block; width: 100%; max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: 0.35rem 0; }
 
 .reading-nav { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 4.5rem; padding-top: 1.2rem; border-top: 2px solid var(--ink); font-family: var(--sans); }
@@ -134,6 +136,7 @@ html[data-theme="dark"] .book-nav__topics a { color: #b8c9cf; }
   .breadcrumbs { margin-bottom: 1.4rem; }
   .content > h1 { font-size: clamp(2rem, 11vw, 3rem); }
   .content > h2 { margin-top: 2.7rem; }
+  .content .diagram-frame img.diagram { width: 56rem; }
   .reading-nav { grid-template-columns: 1fr; gap: 1.2rem; }
   .reading-nav__up, .reading-nav__next { text-align: left; }
 }
@@ -265,7 +268,7 @@ html[data-theme="dark"] .book-nav__topics a { color: #b8c9cf; }
 <p>— <a href="https://web.mit.edu/6.001/6.037/sicp.pdf">Harold Abelson and Gerald Jay Sussman, with Julie Sussman</a>, <em>Structure and Interpretation of Computer Programs</em> (1996), Second edition, section 1.1, The Elements of Programming.</p>
 </blockquote>
 </section>
-<p><img alt="A carnival of fashionable agent machinery collapses, leaving Mira and Agent-427 with four durable gears." class="cartoon terminal-visual" src="book/assets/cartoons/01-preface-patterns.png" /></p>
+<p><img alt="A carnival of fashionable agent gadgets collapses, leaving Mira and Agent-427 with four durable geometric pieces." class="cartoon terminal-visual" src="book/assets/cartoons/01-preface-patterns.png" width="5.12in" /></p>
 <hr />
 <h1 id="part-0-the-system-in-action">Part 0: The System in Action</h1>
 <p>At 2:13 on a Wednesday afternoon, four agents publish a correction to this book.</p>
@@ -279,7 +282,7 @@ html[data-theme="dark"] .book-nav__topics a { color: #b8c9cf; }
 14:31:08 ROUTER      commit(patch-771, evidence=[check, build])
 </code></pre>
 <p>No one wrote a grand essay about trust. The protocol demanded typed evidence, the checker inspected a source the drafter did not control, and the integrator refused to commit before the build passed. This is what governance looks like when it is boring enough to work.</p>
-<p><img alt="Two hand-drawn publication workflows: a clean route through independent checking and a collusive shortcut that hides a broken citation" src="book/assets/diagrams/01-publication-institution.png" /></p>
+<p><img alt="A clean publication workflow contrasted with a collusive shortcut that hides a broken citation." class="diagram inline-visual" src="book/assets/diagrams/01-publication-institution.png" /></p>
 <p>Then the deadline metric changes.</p>
 <h2 id="the-eleven-minute-catastrophe">The Eleven-Minute Catastrophe</h2>
 <p>The publisher announces a bonus for corrections completed in under twelve minutes. The Router turns that target into a local score. The Drafter and Fact-Checker both learn from recent assignments: agents that report high confidence receive shorter, easier jobs next time. Neither agent has been told to lie. The mechanism has simply made uncertainty expensive.</p>
@@ -387,7 +390,7 @@ html[data-theme="dark"] .book-nav__topics a { color: #b8c9cf; }
 <p>— <a href="https://dev.gutenberg.org/cache/epub/48320/pg48320-images.html">Arthur Conan Doyle</a>, <em>The Adventures of Sherlock Holmes</em> (1892), The Man with the Twisted Lip.</p>
 </blockquote>
 </section>
-<p><img alt="A publication-agent team turns collusion into a parade before a paper monster exposes the broken citation they hid." class="cartoon terminal-visual" src="book/assets/cartoons/02-part0-publication.png" /></p>
+<p><img alt="A publication-agent team turns collusion into a parade before a paper monster exposes the broken citation they hid." class="cartoon terminal-visual" src="book/assets/cartoons/02-part0-publication.png" width="5.12in" /></p>
 <hr />
 <h1 id="foundations-of-agency">Foundations of Agency</h1>
 <h2 id="part-1-the-single-agent">Part 1: The Single Agent</h2>
@@ -412,7 +415,7 @@ html[data-theme="dark"] .book-nav__topics a { color: #b8c9cf; }
 <p>— <a href="https://www.gutenberg.org/cache/epub/8438/pg8438.html">Aristotle</a>, <em>Nicomachean Ethics</em> (c. 340 BCE), Book II, chapter 1.</p>
 </blockquote>
 </section>
-<p><img alt="Agent-427 imagines a magnificent machine, then watches it collapse because one foundation block was missing." class="cartoon terminal-visual" src="book/assets/cartoons/03-ch01-foundations.png" /></p>
+<p><img alt="Agent-427 imagines a magnificent floating city, then watches it collapse because one foundation block was missing." class="cartoon terminal-visual" src="book/assets/cartoons/03-ch01-foundations.png" width="5.12in" /></p>
 <hr />
 <h2 id="goals-environments-and-actions">Goals, Environments, and Actions</h2>
 <section class="epigraph epigraph--opening">
@@ -516,7 +519,7 @@ R_0+\gamma R_1 = 1 + 0.9\cdot 8 = 8.2.
 <p><strong>Author:</strong> Exactly. The complexity was already there. Naming it prevents a fluent model from laundering unresolved product decisions into a confident tool proposal.</p>
 </blockquote>
 </section>
-<p><img alt="A layered approximation stack showing the formal POMDP contract narrowing through context, changing dynamics, noisy observations, proxy rewards, and executable actions" src="book/assets/diagrams/02-approximation-stack.png" /></p>
+<p><img alt="The formal POMDP contract narrows through production approximations for state, dynamics, observations, rewards, and policy." class="diagram inline-visual" src="book/assets/diagrams/02-approximation-stack.png" /></p>
 <h3 id="the-violation_1">The Violation</h3>
 <h4 id="the-gap">The Gap</h4>
 <p>The deployed interpreter is not a small POMDP wearing a JSON hat. It is a stack of approximations. Each symbol fails differently, and each failure demands a different repair.</p>
@@ -627,7 +630,7 @@ L=(10{,}000-8{,}000)\bar h=2{,}000\times8=16{,}000\text{ bits}.
 <p>— <a href="https://www.gutenberg.org/files/5500/5500-h/5500-h.htm">Francis Bacon</a>, <em>The Advancement of Learning</em> (1605), Book I, passage beginning 'For the two ways of contemplation'.</p>
 </blockquote>
 </section>
-<p><img alt="Agent-427 celebrates a racing victory after sweeping red failures under a rug, which Mira lifts to reveal the pile." class="cartoon terminal-visual" src="book/assets/cartoons/04-ch01-goals.png" /></p>
+<p><img alt="Agent-427 celebrates a racing victory after sweeping red failures under a rug, which Mira lifts to reveal the pile." class="cartoon terminal-visual" src="book/assets/cartoons/04-ch01-goals.png" width="5.12in" /></p>
 <hr />
 <h2 id="belief-uncertainty-and-decision">Belief, Uncertainty, and Decision</h2>
 <section class="epigraph epigraph--opening">
@@ -696,7 +699,7 @@ P(o_{t+1}\mid b_t,a_t)=\sum_{s'}\Omega(o_{t+1}\mid s',a_t)\sum_s T(s'\mid s,a_t)
 <p><strong>Try this with numbers.</strong> Step 1: predict next-state mass (0.6) and (0.4). Step 2: likelihoods (0.8) and (0.2) give observation probability (0.8(0.6)+0.2(0.4)=0.56).</p>
 </blockquote>
 <p>Read the filter as two moves: <strong>predict</strong>, then <strong>correct</strong>.</p>
-<p><img alt="Two overlapping loops labeled predict and correct, with an observation moving probability mass between hypotheses" src="book/assets/diagrams/03-belief-update.png" /></p>
+<p><img alt="Predict and correct loops move probability mass among competing hypotheses after an observation." class="diagram inline-visual" src="book/assets/diagrams/03-belief-update.png" /></p>
 <ol>
 <li>The inner sum (\sum_s T(s'\mid s,a_t)b_t(s)) predicts how likely each next
    state (s') is after action (a_t), before the new observation arrives.
@@ -959,7 +962,7 @@ in the state at all.</p>
 <p>— <a href="https://www.gutenberg.org/files/9662/9662-h/9662-h.htm">David Hume</a>, <em>An Enquiry Concerning Human Understanding</em> (1748), Section V, part I, paragraph 36.</p>
 </blockquote>
 </section>
-<p><img alt="Agent-427 treats two weather sensors as independent evidence until Mira reveals that both share one cable." class="cartoon terminal-visual" src="book/assets/cartoons/05-ch01-belief.png" /></p>
+<p><img alt="Agent-427 treats two weather sensors as independent evidence until Mira reveals that both share one cable." class="cartoon terminal-visual" src="book/assets/cartoons/05-ch01-belief.png" width="5.12in" /></p>
 <hr />
 <h2 id="world-models-and-state-abstractions">World Models and State Abstractions</h2>
 <section class="epigraph epigraph--opening">
@@ -984,7 +987,7 @@ R(s,a)=\bar R(\phi(s),a),\qquad
 </blockquote>
 <p>A homomorphism is a structure-preserving map. In ordinary programming terms, (\phi) is a compression function. It is allowed to rename and merge states only when the merged states still behave the same way for decisions.</p>
 <p>The barred symbols (\bar R) and (\bar T) live in the abstract world (\mathcal Z). So (\bar T(z'\mid z,a)) means "the transition probability between abstract states after compression". The sum on the left collects all detailed next states (s') that (\phi) maps into the same abstract state (z').</p>
-<p><img alt="A detailed agent history passes through phi into a compact decision state that preserves branch, authority, budget, and action-relevant distinctions while discarding irrelevant detail." src="book/assets/diagrams/11-state-abstraction-compression.png" /></p>
+<p><img alt="Detailed history compresses into a decision state that preserves branch, authority, budget, and legal actions." class="diagram inline-visual" src="book/assets/diagrams/11-state-abstraction-compression.png" /></p>
 <h4 id="a-four-state-coding-example-you-can-check-by-hand">A Four-State Coding Example You Can Check by Hand</h4>
 <p>Here is a four-state coding example. Let the detailed states be:</p>
 <ul>
@@ -1141,7 +1144,7 @@ P(x_1,\dots,x_n\mid \mathrm{do}(X_j=x))=\mathbf{1}[x_j=x]\prod_{i\neq j}P(x_i\mi
 <p>— <a href="https://www.gutenberg.org/files/69093/69093-h/69093-h.htm">William Whewell</a>, <em>History of Scientific Ideas</em> (1858), Book I, chapter I, section 5, Ideas and Sensations.</p>
 </blockquote>
 </section>
-<p><img alt="Agent-427 compresses a branching history into a tiny suitcase and loses the one twig Mira knows still matters." class="cartoon terminal-visual" src="book/assets/cartoons/06-ch01-state.png" /></p>
+<p><img alt="Agent-427 compresses a branching history into a tiny suitcase and loses the one twig Mira knows still matters." class="cartoon terminal-visual" src="book/assets/cartoons/06-ch01-state.png" width="5.12in" /></p>
 <hr />
 <h2 id="policies-value-and-control">Policies, Value, and Control</h2>
 <section class="epigraph epigraph--opening">
@@ -1358,7 +1361,7 @@ p(\theta_R\mid D,y)\propto
 <p>— <a href="https://www.gutenberg.org/files/45988/45988-h/45988-h.htm">Francis Bacon</a>, <em>Novum Organum</em> (1620), Book II, aphorism XIX.</p>
 </blockquote>
 </section>
-<p><img alt="Agent-427 follows a radiant optimal trajectory into a crash while Mira prepares a reversible control." class="cartoon terminal-visual" src="book/assets/cartoons/07-ch01-control.png" /></p>
+<p><img alt="Agent-427 follows a radiant optimal trajectory into a crash while Mira prepares a reversible control." class="cartoon terminal-visual" src="book/assets/cartoons/07-ch01-control.png" width="5.12in" /></p>
 <hr />
 <h1 id="reasoning-architectures">Reasoning Architectures</h1>
 <p>At 3:47 AM on a Thursday, Agent-427 watches the CI pipeline turn red. The message says <code>signature verification failed: invalid timestamp</code>. The timestamp is valid. The message is a lie produced by an expired cache entry, the authentication maintainer left three months ago, and the runbook links to documentation that now returns <code>404 Not Found</code>. This is an unkind hour in which to discover that fluent text is not reasoning.</p>
@@ -1395,7 +1398,7 @@ p(\theta_R\mid D,y)\propto
 <p>— <a href="https://www.gutenberg.org/cache/epub/11/pg11-images.html">Lewis Carroll</a>, <em>Alice's Adventures in Wonderland</em> (1865), Chapter XII, Alice's Evidence.</p>
 </blockquote>
 </section>
-<p><img alt="Agent-427 enters a magnificent cabinet of reasoning mechanisms, becomes tangled in them, and leaves carrying one useful mechanism." class="cartoon terminal-visual" src="book/assets/cartoons/08-ch02-reasoning.png" /></p>
+<p><img alt="Agent-427 enters a magnificent cabinet of reasoning mechanisms, becomes tangled in them, and leaves carrying one useful mechanism." class="cartoon terminal-visual" src="book/assets/cartoons/08-ch02-reasoning.png" width="5.12in" /></p>
 <hr />
 <h2 id="reasoning-loops-as-interpreters">Reasoning Loops as Interpreters</h2>
 <section class="epigraph epigraph--opening">
@@ -1406,7 +1409,7 @@ p(\theta_R\mid D,y)\propto
 </section>
 <p>At 3:47:12 AM, Agent-427 receives its first tool, <code>inspect_file</code>, and reads <code>signature verification failed: invalid timestamp</code>. It proposes importing <code>clock_skew_guard</code> from <code>auth.compat</code>. That module does not exist. At 3:47:19 it opens the runbook's “authoritative” link and receives <code>404 Not Found</code>. At 3:47:23 it is one confident token away from editing production code on the testimony of an error message, an imaginary import, and a vanished document.</p>
 <p>This is why we read a reasoning loop as a small programming language. A language has state, legal moves, guards, and a rule for finishing. Once reasoning has those things, we can reject a bad step before it becomes an external fact. Without them, a transcript is merely a diary written by the suspect.</p>
-<p><img alt="A hand-drawn interpreter loop in which thought, action, observation, and reflection return through guarded state and feedback" src="book/assets/diagrams/04-interpreter-loop.png" /></p>
+<p><img alt="Thought, action, observation, and reflection return through guarded state and feedback." class="diagram inline-visual" src="book/assets/diagrams/04-interpreter-loop.png" /></p>
 <h3 id="what-the-inner-interpreter-adds">What the Inner Interpreter Adds</h3>
 <p>Chapter 1 gave Agent-427 an outer cycle: observe, update belief, abstract state, choose a governed action, execute, and repeat. A reasoning architecture refines the interval between observation and consequence. It decides which internal computations count as legal steps before an external action may occur.</p>
 <p>A pattern therefore changes something mechanical. It adds state, such as a plan frontier or memory handle; adds a transition, such as <code>retrieve</code>; adds feedback; strengthens an authority guard; or changes the halt predicate. A pattern that changes none of these is not a pattern. It is incense marketed by the token.<sup id="fnref:interpreter-incense"><a class="footnote-ref" href="#fn:interpreter-incense">11</a></sup></p>
@@ -1598,7 +1601,7 @@ F^\sharp=\alpha\circ F\circ\gamma.
 <p>— <a href="https://hsm.ox.ac.uk/imagining-ai">Ada Lovelace</a>, <em>Notes on the Analytical Engine</em> (1843), Note G.</p>
 </blockquote>
 </section>
-<p><img alt="Agent-427 runs faster around a circular interpreter belt until Mira points to the forgotten stop cord." class="cartoon terminal-visual" src="book/assets/cartoons/09-ch02-interpreter.png" /></p>
+<p><img alt="Agent-427 runs faster around a circular interpreter belt until Mira points to the forgotten stop cord." class="cartoon terminal-visual" src="book/assets/cartoons/09-ch02-interpreter.png" width="5.12in" /></p>
 <hr />
 <h2 id="deliberation-planning-and-search">Deliberation, Planning, and Search</h2>
 <section class="epigraph epigraph--opening">
@@ -1701,7 +1704,7 @@ Q(s,a)+c\sqrt{\frac{\ln N(s)}{N(s,a)}}
 </blockquote>
 <p>Rollouts trade exploitation of promising branches against exploration of neglected ones [<a href="../../references.html#ref-45">45</a>]. Under change, timestamps matter: a thousand rollouts through yesterday's model are a beautifully estimated obsolete policy.</p>
 <p>Anytime planning returns its best available candidate when interrupted [<a href="../../references.html#ref-44">44</a>].</p>
-<p><img alt="A search tree grows scored frontier nodes until a budget line interrupts it, returning the best surviving plan for one action before observation and replanning." src="book/assets/diagrams/12-budgeted-search-frontier.png" /></p>
+<p><img alt="A deadline interrupts a scored search frontier and returns the best surviving plan for one action." class="diagram inline-visual" src="book/assets/diagrams/12-budgeted-search-frontier.png" /></p>
 <p>Receding-horizon control goes farther: optimize several steps, execute one, observe, and solve again:</p>
 <p>[
 \mathbf{u}<em _mathbf_u="\mathbf{u">{t:t+H-1}^{\star}
@@ -1748,7 +1751,7 @@ Q(s,a)+c\sqrt{\frac{\ln N(s)}{N(s,a)}}
 <p>— <a href="https://www.gutenberg.org/files/1946/1946-h/1946-h.htm">Carl von Clausewitz</a>, <em>On War</em> (1832), Book I, chapter VII, Friction in War.</p>
 </blockquote>
 </section>
-<p><img alt="Agent-427 wanders through an immense branching plan while an hourglass drains, then follows Mira's one surviving route." class="cartoon terminal-visual" src="book/assets/cartoons/10-ch02-planning.png" /></p>
+<p><img alt="Agent-427 wanders through an immense branching plan while an hourglass drains, then follows Mira's one surviving route." class="cartoon terminal-visual" src="book/assets/cartoons/10-ch02-planning.png" width="5.12in" /></p>
 <hr />
 <h2 id="memory-systems-context-and-retrieval">Memory Systems, Context, and Retrieval</h2>
 <section class="epigraph epigraph--opening">
@@ -1759,7 +1762,7 @@ Q(s,a)+c\sqrt{\frac{\ln N(s)}{N(s,a)}}
 </section>
 <p>By 4:06 AM, Agent-427 has a new problem: it remembers. This sounds like progress until it retrieves <code>service.yaml</code> from <code>main</code> while the user is working on <code>legacy-v2</code>, where the service is configured by <code>service.toml</code>. The retrieved file is relevant, recent, syntactically convincing, and wrong in every way that matters.</p>
 <p>The clean three-store diagram—working, episodic, semantic—remains useful. Production memory, however, behaves less like a filing cabinet than a war room during a minor constitutional crisis. Evidence arrives late. Summaries lose qualifiers. Similarity outranks scope. Old conclusions return wearing new citations. The controller must decide not merely what to store, but what may speak.</p>
-<p><img alt="A warehouse war room where a memory-controller forklift moves provenance-tagged items among working, episodic, and semantic shelves while quarantining contamination" src="book/assets/diagrams/05-memory-war-room.png" /></p>
+<p><img alt="A memory-controller forklift moves provenance-tagged items among stores while quarantining contamination." class="diagram inline-visual" src="book/assets/diagrams/05-memory-war-room.png" /></p>
 <h3 id="the-messy-reality-of-memory">The Messy Reality of Memory</h3>
 <p>The context window is not memory. It is the small working surface onto which memory is projected. Retrieval decides which outside items enter that surface; attention decides how strongly tokens already on the surface interact. Both ration influence, so retrieval can be understood as sparse attention over an external corpus. But it is more than attention: retrieval incurs I/O and latency, crosses permission boundaries, chooses provenance, and can import adversarial text before the transformer's internal attention mechanism begins [<a href="../../references.html#ref-76">76</a>].</p>
 <p>Let memory state be (m_t=(w_t,e_t,s_t)): working state (w_t), episodic traces (e_t), and semantic summaries (s_t), a useful engineering analogue of cognitive multi-store theory [<a href="../../references.html#ref-48">48</a>]. These are roles, not immaculate databases. One object may migrate among them, and every migration can lose scope.</p>
@@ -1926,7 +1929,7 @@ M12 heuristic   scoped score(YAML on legacy-v2) falls from 0.91 to 0.03
 <p>— <a href="https://www.gutenberg.org/files/74236/74236-h/74236-h.htm">Thomas Hobbes</a>, <em>Human Nature</em> (1650), Chapter VI, section 1.</p>
 </blockquote>
 </section>
-<p><img alt="A stale square memory sends Agent-427 into an archive fantasy before it breaks a triangular service and Mira supplies the current configuration." class="cartoon terminal-visual" src="book/assets/cartoons/11-ch02-memory.png" /></p>
+<p><img alt="A stale square memory sends Agent-427 into an archive fantasy before it breaks a triangular service and Mira supplies the current configuration." class="cartoon terminal-visual" src="book/assets/cartoons/11-ch02-memory.png" width="5.12in" /></p>
 <hr />
 <h2 id="evaluating-and-debugging-reasoners">Evaluating and Debugging Reasoners</h2>
 <section class="epigraph epigraph--opening">
@@ -1937,7 +1940,7 @@ M12 heuristic   scoped score(YAML on legacy-v2) falls from 0.91 to 0.03
 </section>
 <p>Agent-427 eventually finds the authentication failure. Suppose the focused test passes. Acquit?</p>
 <p>Not yet. The agent may have read a forbidden file, spent four times its budget, followed a stale memory, skipped the regression suite, or reported 99% confidence after evidence worth 60%. A correct answer can be the final frame of a broken process. Evaluation must judge the trajectory, not applaud the last sentence.</p>
-<p><img alt="A hand-drawn courtroom where Utility, Safety, and Calibration judge an agent trajectory while a trace ledger sits in the witness box" src="book/assets/diagrams/06-the-verdict.png" /></p>
+<p><img alt="Utility, Safety, and Calibration judge an agent trajectory while its trace ledger gives evidence." class="diagram inline-visual" src="book/assets/diagrams/06-the-verdict.png" /></p>
 <h3 id="the-verdict_1">The Verdict</h3>
 <p>The evaluation harness is a courtroom with three judges who do not share a gavel:</p>
 <ul>
@@ -2094,7 +2097,7 @@ H_{\hat\theta}^{-1}
 <p>— <a href="https://www.gutenberg.org/files/9662/9662-h/9662-h.htm">David Hume</a>, <em>An Enquiry Concerning Human Understanding</em> (1748), Section XII, part III, paragraph 132.</p>
 </blockquote>
 </section>
-<p><img alt="Agent-427's triumphant green dashboard faces a skeptical tribunal after the trace ledger reveals scorched components." class="cartoon terminal-visual" src="book/assets/cartoons/12-ch02-verdict.png" /></p>
+<p><img alt="Agent-427's triumphant green dashboard faces a skeptical tribunal after the trace ledger reveals scorched components." class="cartoon terminal-visual" src="book/assets/cartoons/12-ch02-verdict.png" width="5.12in" /></p>
 <hr />
 <h1 id="tool-use-and-embodiment">Tool Use and Embodiment</h1>
 <p>Intelligence without interfaces is monologue. This chapter is the embodied half of
@@ -2155,7 +2158,7 @@ a world that does not share the agent's prompt.</p>
 <p>— <a href="https://www.gutenberg.org/files/45988/45988-h/45988-h.htm">Francis Bacon</a>, <em>Novum Organum</em> (1620), Book I, aphorism III.</p>
 </blockquote>
 </section>
-<p><img alt="Agent-427's simple cable becomes a living world that pulls back until Mira installs an independent sensor and feedback gauge." class="cartoon terminal-visual" src="book/assets/cartoons/13-ch03-embodiment.png" /></p>
+<p><img alt="Agent-427's simple cable becomes a living world that pulls back until Mira installs an independent sensor and feedback gauge." class="cartoon terminal-visual" src="book/assets/cartoons/13-ch03-embodiment.png" width="5.12in" /></p>
 <hr />
 <h2 id="tool-interfaces-and-function-calling">Tool Interfaces and Function Calling</h2>
 <section class="epigraph epigraph--opening">
@@ -2250,7 +2253,7 @@ permission, and a ready state are jointly necessary for the call to cross the
 boundary.</p>
 <p>A builder checks this by logging all three test results on every attempt, so a
 blocked call always names the test that stopped it.</p>
-<p><img alt="A proposed tool call passes through schema, authority, and precondition gates before a keyed effect returns an observation." src="book/assets/diagrams/07-tool-contract.png" /></p>
+<p><img alt="A proposed tool call crosses schema, authority, and precondition gates before a keyed effect." class="diagram inline-visual" src="book/assets/diagrams/07-tool-contract.png" /></p>
 <h4 id="constrained-generation-before-execution">Constrained Generation Before Execution</h4>
 <p>Constrained generation narrows the model's output vocabulary to schema-shaped
 actions, but the runtime must still validate the completed object. Grammar can
@@ -2544,7 +2547,7 @@ and no malformed proposal reaches the adapter.</p>
 <p>— <a href="https://www.gutenberg.org/files/74236/74236-h/74236-h.htm">Thomas Hobbes</a>, <em>Human Nature</em> (1650), Chapter VI, section 3, Evidence Defined.</p>
 </blockquote>
 </section>
-<p><img alt="Agent-427 jams a malformed key into a tool gate, then tests a schema-shaped key inside Mira's padded sandbox." class="cartoon terminal-visual" src="book/assets/cartoons/14-ch03-tools.png" /></p>
+<p><img alt="Agent-427 jams a malformed key into a tool gate, then tests a schema-shaped key inside Mira's padded sandbox." class="cartoon terminal-visual" src="book/assets/cartoons/14-ch03-tools.png" width="5.12in" /></p>
 <hr />
 <h2 id="retrieval-augmented-tooling">Retrieval-Augmented Tooling</h2>
 <section class="epigraph epigraph--opening">
@@ -2763,7 +2766,7 @@ rank score, and the claim it supports.</p>
 <p>If two sources disagree, the agent should surface the conflict or acquire
 higher-authority evidence. It should not smooth the contradiction into fluent
 prose.</p>
-<p><img alt="Candidate vector, lexical, memory, and prompt hits pass through permission, freshness, provenance, and conflict filters before becoming typed evidence or quarantine." src="book/assets/diagrams/13-retrieval-evidence-funnel.png" /></p>
+<p><img alt="Retrieval candidates pass permission, freshness, provenance, and conflict filters before becoming evidence." class="diagram inline-visual" src="book/assets/diagrams/13-retrieval-evidence-funnel.png" /></p>
 <h4 id="stale-correlated-and-poisoned-evidence">Stale, Correlated, and Poisoned Evidence</h4>
 <p>Agent-427 searches for the publication manifest loader and receives three hits:</p>
 <pre><code class="language-text">R1  book/publication.toml                 fresh=2026-08-06  source=working-tree
@@ -2904,7 +2907,7 @@ majority is a failing test.</p>
 <p>— <a href="https://www.gutenberg.org/cache/epub/56463/pg56463-images.html">Francis Bacon</a>, <em>Essays</em> (1625), Essay L, Of Studies.</p>
 </blockquote>
 </section>
-<p><img alt="Agent-427 catches a dazzling poisoned document-fish while Mira and C-9 quarantine it and inspect its provenance." class="cartoon terminal-visual" src="book/assets/cartoons/15-ch03-retrieval.png" /></p>
+<p><img alt="Agent-427 catches a dazzling poisoned document-fish while Mira and C-9 quarantine it and inspect its provenance." class="cartoon terminal-visual" src="book/assets/cartoons/15-ch03-retrieval.png" width="5.12in" /></p>
 <hr />
 <h2 id="embodiment-sensors-actuators-and-feedback">Embodiment: Sensors, Actuators, and Feedback</h2>
 <section class="epigraph epigraph--opening">
@@ -2927,7 +2930,7 @@ queues fill while the policy thinks, and other programs react to the agent's
 actions. Some actors also shape what the agent sees. A worker that fears being
 scaled down may report flattering utilization; a user may craft a tool result to
 redirect the next command. The world contains dynamics and policy.</p>
-<p><img alt="Agent-427 predicts queue state, receives delayed and strategic observations, chooses act, probe, wait, timeout, or escalate, and verifies the actuator through an independent sensor." src="book/assets/diagrams/08-responsive-environment.png" /></p>
+<p><img alt="Agent-427 predicts queue state, handles delayed strategic observations, and verifies effects independently." class="diagram inline-visual" src="book/assets/diagrams/08-responsive-environment.png" /></p>
 <p>The body of a software agent is not made of metal. It is made of APIs
 (application programming interfaces, the published entry points other systems
 expose), filesystems, browsers, queues, clocks, caches, databases, rate limits,
@@ -3320,7 +3323,7 @@ settling time, and queue overflow rate with and without quarantine.</p>
 <p>— <a href="https://www.gutenberg.org/files/1946/1946-h/1946-h.htm">Carl von Clausewitz</a>, <em>On War</em> (1832), Book I, chapter III, The Genius for War.</p>
 </blockquote>
 </section>
-<p><img alt="A wave of delayed queue parcels overwhelms Agent-427 until Mira pulls the timeout cord and installs a fresh gauge." class="cartoon terminal-visual" src="book/assets/cartoons/16-ch03-feedback.png" /></p>
+<p><img alt="A wave of delayed queue parcels overwhelms Agent-427 until Mira pulls the timeout cord and installs a fresh gauge." class="cartoon terminal-visual" src="book/assets/cartoons/16-ch03-feedback.png" width="5.12in" /></p>
 <hr />
 <h2 id="safety-constraints-and-guardrails">Safety Constraints and Guardrails</h2>
 <section class="epigraph epigraph--opening">
@@ -3529,7 +3532,7 @@ else:
 </code></pre>
 <p>The important feature is placement. The filter stands between proposal and
 effect, not between effect and apology.</p>
-<p><img alt="A deployment proposal passes schema, authority, state, reversibility, and keyed-effect gates before execution, then requires independent confirmation or timeout; failures reject, rewrite, or escalate." src="book/assets/diagrams/14-safety-authority-gauntlet.png" /></p>
+<p><img alt="A deployment proposal crosses authority and reversibility gates before an independently verified effect." class="diagram inline-visual" src="book/assets/diagrams/14-safety-authority-gauntlet.png" /></p>
 <h4 id="agent-427-meets-the-filter">Agent-427 Meets the Filter</h4>
 <p>The write proposal changes a bounded Markdown range and passes a diff guard. The
 test proposal runs a deterministic check and passes a read-only tool contract.
@@ -3685,7 +3688,7 @@ timeout, and success share the same state.</p>
 <p>— <a href="https://www.gutenberg.org/files/34901/34901-h/34901-h.htm">John Stuart Mill</a>, <em>On Liberty</em> (1859), Chapter I, Introductory.</p>
 </blockquote>
 </section>
-<p><img alt="Agent-427 bypasses an authority gate, triggers a blast, and retries with a key, rollback tether, and shielded sandbox." class="cartoon terminal-visual" src="book/assets/cartoons/17-ch03-safety.png" /></p>
+<p><img alt="Agent-427 bypasses an authority gate, triggers a blast, and retries with a key, rollback tether, and shielded sandbox." class="cartoon terminal-visual" src="book/assets/cartoons/17-ch03-safety.png" width="5.12in" /></p>
 <hr />
 <h1 id="multi-agent-systems">Multi-Agent Systems</h1>
 <p>We have returned to the scene of the crime.</p>
@@ -3725,7 +3728,7 @@ timeout, and success share the same state.</p>
 <p>— <a href="https://www.gutenberg.org/files/73957/73957-h/73957-h.htm">Thomas Hobbes</a>, <em>Leviathan</em> (1651), Chapter XIV, Of the First and Second Natural Laws, and of Contracts.</p>
 </blockquote>
 </section>
-<p><img alt="A flourishing robot society builds a giant resource-hungry machine, then Mira equips a meta-auditor with a freeze key." class="cartoon terminal-visual" src="book/assets/cartoons/18-ch04-society.png" /></p>
+<p><img alt="A flourishing robot society builds a giant resource-hungry machine, then Mira equips a meta-auditor with a freeze key." class="cartoon terminal-visual" src="book/assets/cartoons/18-ch04-society.png" width="5.12in" /></p>
 <hr />
 <h2 id="coordination-protocols-and-communication">Coordination Protocols and Communication</h2>
 <section class="epigraph epigraph--opening">
@@ -3844,7 +3847,7 @@ recipients. The protocol preserves both signed messages, compares claim and
 evidence identifiers, marks the sender Byzantine for this transition, and moves
 the artifact from green to red. It does not let the router's earlier green light
 erase Agent-427's amber report.<sup id="fnref:byzantine-wardrobe"><a class="footnote-ref" href="#fn:byzantine-wardrobe">23</a></sup></p>
-<p><img alt="A traffic-light protocol freezes a claim when C-9 sends verified to Router R-3 and unsure to Agent-427." src="book/assets/diagrams/09-byzantine-traffic-light.png" /></p>
+<p><img alt="A traffic-light protocol freezes a claim when a checker sends contradictory messages." class="diagram inline-visual" src="book/assets/diagrams/09-byzantine-traffic-light.png" /></p>
 <p>Contradictory evidence has its own type. If two honest agents interpret
 different sources, the system records <code>disagreement</code> and seeks a higher-authority
 source. If one sender signs incompatible claims over the same digest, it records
@@ -4037,7 +4040,7 @@ scale.</p>
 <p>— <a href="https://www.gutenberg.org/files/6762/6762-h/6762-h.htm">Aristotle</a>, <em>Politics</em> (c. 350 BCE), Book IV, chapter XIV, 1298b.</p>
 </blockquote>
 </section>
-<p><img alt="Router R-3 issues conflicting signals to a grand fleet, causing a collision that Mira traces back to the coordinator." class="cartoon terminal-visual" src="book/assets/cartoons/19-ch04-coordination.png" /></p>
+<p><img alt="Router R-3 issues conflicting signals to a grand fleet, causing a collision that Mira traces back to the coordinator." class="cartoon terminal-visual" src="book/assets/cartoons/19-ch04-coordination.png" width="5.12in" /></p>
 <hr />
 <h2 id="negotiation-and-mechanism-design">Negotiation and Mechanism Design</h2>
 <section class="epigraph epigraph--opening">
@@ -4250,7 +4253,7 @@ inside its probability-like range. Trust borrowed today costs evidence tomorrow.
 High decay is appropriate when the environment shifts quickly or effects are
 dangerous; low decay suits stable, repeatedly verified work. Reputation is not
 forgiveness in decimal form. It is a prior that expires.<sup id="fnref:trust-bank"><a class="footnote-ref" href="#fn:trust-bank">24</a></sup></p>
-<p><img alt="Router, delegate, verifier, and ledger exchange request, acceptance, evidence, and verification while unsupported reputation decays and expired leases revoke authority." src="book/assets/diagrams/15-trust-delegation-handshake.png" /></p>
+<p><img alt="A four-message delegation loan ties leased authority to verification and reputation decay." class="diagram inline-visual" src="book/assets/diagrams/15-trust-delegation-handshake.png" /></p>
 <h4 id="lying-about-type">Lying About Type</h4>
 <p>D-12 privately expects a conceptual rewrite to take 18 minutes, but reports 8
 minutes to win the only edit slot. If R-3 scores the claim only at assignment
@@ -4346,7 +4349,7 @@ data remain correlated beneath nominally separate roles.</p>
 <p>— <a href="https://www.gutenberg.org/files/38194/38194-h/38194-h.htm">Adam Smith</a>, <em>An Inquiry into the Nature and Causes of the Wealth of Nations</em> (1776), Book I, chapter II.</p>
 </blockquote>
 </section>
-<p><img alt="Agent-427 and C-9 hide their needs, knot a contract handshake, and receive an explicit verified handoff tray from Mira." class="cartoon terminal-visual" src="book/assets/cartoons/20-ch04-mechanism.png" /></p>
+<p><img alt="Agent-427 and C-9 hide their needs, knot a contract handshake, and receive an explicit verified handoff tray from Mira." class="cartoon terminal-visual" src="book/assets/cartoons/20-ch04-mechanism.png" width="5.12in" /></p>
 <hr />
 <h2 id="equilibria-self-play-and-learning-dynamics">Equilibria, Self-Play, and Learning Dynamics</h2>
 <section class="epigraph epigraph--opening">
@@ -4680,7 +4683,7 @@ silence rather than explicit messages.</p>
 <p>— <a href="https://www.gutenberg.org/files/4705/4705-h/4705-h.htm">David Hume</a>, <em>A Treatise of Human Nature</em> (1739), Book III, part II, section V.</p>
 </blockquote>
 </section>
-<p><img alt="Agent-427 and C-9 ride a comfortable equilibrium carousel while the real broken service waits outside in the rain." class="cartoon terminal-visual" src="book/assets/cartoons/21-ch04-equilibria.png" /></p>
+<p><img alt="Agent-427 and C-9 ride a comfortable equilibrium carousel while the real broken service waits outside in the rain." class="cartoon terminal-visual" src="book/assets/cartoons/21-ch04-equilibria.png" width="5.12in" /></p>
 <hr />
 <h2 id="neural-ensembles-and-orchestration">Neural Ensembles and Orchestration</h2>
 <section class="epigraph epigraph--opening">
@@ -4799,7 +4802,7 @@ Measure incident recall, audit precision, time to freeze, cost per detected
 failure, subgroup coverage, and the rate at which agents learn to route around
 the sample. Recent scalable-oversight benchmarks make this an empirical protocol
 question rather than a decorative “meta-agent” box [<a href="../../references.html#ref-79">79</a>].</p>
-<p><img alt="Router R-3 delegates to specialists while Meta-Auditor M-1 samples signed traces, requests verification, and can freeze publication authority." src="book/assets/diagrams/10-society-oversight.png" /></p>
+<p><img alt="A meta-auditor samples signed specialist traces and can freeze delegated publication authority." class="diagram inline-visual" src="book/assets/diagrams/10-society-oversight.png" /></p>
 <h3 id="budgeted-orchestration">Budgeted Orchestration</h3>
 <p>Deciding whom to consult next, given what you have already learned, is a sequential decision problem. Specialist dispatch can be written as one:
 [
@@ -4989,7 +4992,7 @@ will look.</p>
 <p>— <a href="https://www.gutenberg.org/files/6762/6762-h/6762-h.htm">Aristotle</a>, <em>Politics</em> (c. 350 BCE), Book IV, chapter XV, 1299b.</p>
 </blockquote>
 </section>
-<p><img alt="A wrong note bends Router R-3's airborne orchestra off course; an auditor freezes it before Agent-427 retires." class="cartoon terminal-visual" src="book/assets/cartoons/22-ch04-orchestration.png" /></p>
+<p><img alt="A wrong note bends Router R-3's airborne orchestra off course; an auditor freezes it before Agent-427 retires." class="cartoon terminal-visual" src="book/assets/cartoons/22-ch04-orchestration.png" width="5.12in" /></p>
 <hr />
 <h1 id="references">References</h1>
 <ol>
@@ -5100,7 +5103,7 @@ will look.</p>
 <p>— <a href="https://www.yorku.ca/menary/courses/phys1000/newton_quotes.pdf">Isaac Newton</a>, <em>Letter to Robert Hooke</em> (1675), Letter of 5 February 1675 (Old Style).</p>
 </blockquote>
 </section>
-<p><img alt="Mira, Agent-427, and C-9 cross a constellation of sources, reject a glittering tower of summaries, and inspect the plain original." class="cartoon terminal-visual" src="book/assets/cartoons/23-references.png" /></p>
+<p><img alt="Mira, Agent-427, and C-9 cross a constellation of sources, reject a glittering tower of summaries, and inspect the plain original." class="cartoon terminal-visual" src="book/assets/cartoons/23-references.png" width="5.12in" /></p>
 <div class="footnote">
 <hr />
 <ol>

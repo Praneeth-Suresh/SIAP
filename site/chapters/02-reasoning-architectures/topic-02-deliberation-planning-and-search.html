@@ -147,7 +147,8 @@ Q(s,a)+c\sqrt{\frac{\ln N(s)}{N(s,a)}}
 </blockquote>
 <p>Rollouts trade exploitation of promising branches against exploration of neglected ones [<a href="../../references.html#ref-45">45</a>]. Under change, timestamps matter: a thousand rollouts through yesterday's model are a beautifully estimated obsolete policy.</p>
 <p>Anytime planning returns its best available candidate when interrupted [<a href="../../references.html#ref-44">44</a>].</p>
-<p><img alt="A search tree grows scored frontier nodes until a budget line interrupts it, returning the best surviving plan for one action before observation and replanning." src="../../assets/diagrams/12-budgeted-search-frontier.png" /></p>
+<figure class="diagram-frame"><img class="diagram inline-visual" src="../../assets/diagrams/12-budgeted-search-frontier.svg" alt="A deadline interrupts a scored search frontier and returns the best surviving plan for one action." width="1200" height="700" loading="lazy" decoding="async"></figure>
+
 <p>Receding-horizon control goes farther: optimize several steps, execute one, observe, and solve again:</p>
 <p>\[
 \mathbf{u}_{t:t+H-1}^{\star}
@@ -208,7 +209,7 @@ Q(s,a)+c\sqrt{\frac{\ln N(s)}{N(s,a)}}
     </main>
     <footer class="site-footer">
       <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
-      <p>Last generated: 2026-08-06 15:38 UTC</p>
+      <p>Last generated: 2026-08-06 18:31 UTC</p>
     </footer>
     <script>
       const toggle = document.querySelector(".nav-toggle");

@@ -33,12 +33,29 @@ actual decoded pixels. Generated cartoons and diagrams pass through
 `scripts/normalize_visual_assets.py`, which preserves aspect ratio while adding
 a uniform print-safe matte. Publication builders stop when the contract fails.
 
+For registered inline diagrams, the registry is also the canonical source of
+alternative text and semantic classes. The web publisher substitutes the SVG
+master, places it in a bounded horizontal viewport at narrow widths, and never
+allows that viewport to widen the page. Print publishers retain a 2400-by-1400
+PNG fallback rendered from the same master. Terminal cartoons remain raster
+artwork and are capped at 5.12 inches in print, preserving 300 effective pixels
+per inch without inventing detail through upscaling. Diagram masters must keep
+labels inside their owning boxes and connectors visibly attached at final size;
+outer pixel bounds alone do not prove those internal conditions.
+
 Terminal cartoons use varied, silent three-to-five-panel mini Sunday pages.
 They retain the original Agent-427 cast and tell one section-specific visual
 argument through a sparse production setup, a richer imaginative or adversarial
 turn, and a deadpan consequence. Panel grids may vary, but reading order,
 character identity, print-safe margins, and the absence of borrowed characters
 or copied panels are invariant.
+
+The durable rendering language is economical brush-and-ink on bright paper:
+broken thick-to-thin contours, large untouched white fields, elastic physical
+acting, and transparent color used as punctuation. Ordinary scenes stay sparse;
+fantasy changes scale and perspective without becoming polished concept art.
+All-over sepia, realistic machinery, decorative steampunk detail, and smooth
+digital rendering are visual regressions rather than neutral variants.
 
 ## Consequences
 
@@ -48,6 +65,8 @@ or copied panels are invariant.
   bounding box becomes a deterministic build failure.
 - **Benefit:** Exercises and reader questions remain semantically and visually
   distinct while staying outside the normal heading-number sequence.
+- **Benefit:** Diagram descriptions cannot drift between the registry and the
+  rendered book, while web and print each receive an appropriate asset format.
 - **Tradeoff:** Replacing or regenerating an image requires normalization and a
   refreshed registry bounding box.
 - **Tradeoff:** Quote changes require provenance metadata even when the visible

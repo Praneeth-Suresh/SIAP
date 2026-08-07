@@ -51,11 +51,9 @@ def normalize(path: Path, *, canvas: tuple[int, int], matte: int) -> bool:
 def main() -> None:
     changed = 0
     for path in sorted((ASSET_DIR / "cartoons").glob("[0-9][0-9]-*.png")):
-        if path.name.startswith("00-"):
-            continue
         changed += int(normalize(path, canvas=(1536, 1024), matte=96))
     for path in sorted((ASSET_DIR / "diagrams").glob("*.png")):
-        changed += int(normalize(path, canvas=(1200, 700), matte=48))
+        changed += int(normalize(path, canvas=(2400, 1400), matte=96))
     print(f"Normalized {changed} visual asset(s) with aspect-preserving safe mattes")
 
 

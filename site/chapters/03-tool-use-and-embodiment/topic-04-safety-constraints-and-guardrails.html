@@ -253,7 +253,8 @@ else:
 </code></pre>
 <p>The important feature is placement. The filter stands between proposal and
 effect, not between effect and apology.</p>
-<p><img alt="A deployment proposal passes schema, authority, state, reversibility, and keyed-effect gates before execution, then requires independent confirmation or timeout; failures reject, rewrite, or escalate." src="../../assets/diagrams/14-safety-authority-gauntlet.png" /></p>
+<figure class="diagram-frame"><img class="diagram inline-visual" src="../../assets/diagrams/14-safety-authority-gauntlet.svg" alt="A deployment proposal crosses authority and reversibility gates before an independently verified effect." width="1200" height="700" loading="lazy" decoding="async"></figure>
+
 <h3 id="agent-427-meets-the-filter">Agent-427 Meets the Filter</h3>
 <p>The write proposal changes a bounded Markdown range and passes a diff guard. The
 test proposal runs a deterministic check and passes a read-only tool contract.
@@ -425,7 +426,7 @@ recognize.&#160;<a class="footnote-backref" href="#fnref:empty-container" title=
     </main>
     <footer class="site-footer">
       <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
-      <p>Last generated: 2026-08-06 15:38 UTC</p>
+      <p>Last generated: 2026-08-06 18:31 UTC</p>
     </footer>
     <script>
       const toggle = document.querySelector(".nav-toggle");

@@ -55,7 +55,8 @@
 </section>
 <p>At 3:47:12 AM, Agent-427 receives its first tool, <code>inspect_file</code>, and reads <code>signature verification failed: invalid timestamp</code>. It proposes importing <code>clock_skew_guard</code> from <code>auth.compat</code>. That module does not exist. At 3:47:19 it opens the runbook's “authoritative” link and receives <code>404 Not Found</code>. At 3:47:23 it is one confident token away from editing production code on the testimony of an error message, an imaginary import, and a vanished document.</p>
 <p>This is why we read a reasoning loop as a small programming language. A language has state, legal moves, guards, and a rule for finishing. Once reasoning has those things, we can reject a bad step before it becomes an external fact. Without them, a transcript is merely a diary written by the suspect.</p>
-<p><img alt="A hand-drawn interpreter loop in which thought, action, observation, and reflection return through guarded state and feedback" src="../../assets/diagrams/04-interpreter-loop.png" /></p>
+<figure class="diagram-frame"><img class="diagram inline-visual" src="../../assets/diagrams/04-interpreter-loop.svg" alt="Thought, action, observation, and reflection return through guarded state and feedback." width="1200" height="700" loading="lazy" decoding="async"></figure>
+
 <h2 id="what-the-inner-interpreter-adds">What the Inner Interpreter Adds</h2>
 <p>Chapter 1 gave Agent-427 an outer cycle: observe, update belief, abstract state, choose a governed action, execute, and repeat. A reasoning architecture refines the interval between observation and consequence. It decides which internal computations count as legal steps before an external action may occur.</p>
 <p>A pattern therefore changes something mechanical. It adds state, such as a plan frontier or memory handle; adds a transition, such as <code>retrieve</code>; adds feedback; strengthens an authority guard; or changes the halt predicate. A pattern that changes none of these is not a pattern. It is incense marketed by the token.<sup id="fnref:interpreter-incense"><a class="footnote-ref" href="#fn:interpreter-incense">1</a></sup></p>
@@ -261,7 +262,7 @@ F^\sharp=\alpha\circ F\circ\gamma.
     </main>
     <footer class="site-footer">
       <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
-      <p>Last generated: 2026-08-06 15:38 UTC</p>
+      <p>Last generated: 2026-08-06 18:31 UTC</p>
     </footer>
     <script>
       const toggle = document.querySelector(".nav-toggle");

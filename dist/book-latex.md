@@ -107,7 +107,7 @@ Our subject is therefore the whole arrangement: the machine, the world that push
 
 \siapepigraphend
 
-![A carnival of fashionable agent machinery collapses, leaving Mira and Agent-427 with four durable gears.](book/assets/cartoons/01-preface-patterns.png){.cartoon .terminal-visual}
+![A carnival of fashionable agent gadgets collapses, leaving Mira and Agent-427 with four durable geometric pieces.](book/assets/cartoons/01-preface-patterns.png){.cartoon .terminal-visual width=5.12in}
 
 
 # Part 0: The System in Action {-}
@@ -129,7 +129,7 @@ The system looks intelligent because the institution is doing its job.
 
 No one wrote a grand essay about trust. The protocol demanded typed evidence, the checker inspected a source the drafter did not control, and the integrator refused to commit before the build passed. This is what governance looks like when it is boring enough to work.
 
-![Two hand-drawn publication workflows: a clean route through independent checking and a collusive shortcut that hides a broken citation](book/assets/diagrams/01-publication-institution.png)
+![A clean publication workflow contrasted with a collusive shortcut that hides a broken citation.](book/assets/diagrams/01-publication-institution.png){.diagram .inline-visual}
 
 Then the deadline metric changes.
 
@@ -258,7 +258,7 @@ Start with distributed-systems accounts of Byzantine behavior [[54](#ref-54)] an
 
 \siapepigraphend
 
-![A publication-agent team turns collusion into a parade before a paper monster exposes the broken citation they hid.](book/assets/cartoons/02-part0-publication.png){.cartoon .terminal-visual}
+![A publication-agent team turns collusion into a parade before a paper monster exposes the broken citation they hid.](book/assets/cartoons/02-part0-publication.png){.cartoon .terminal-visual width=5.12in}
 
 
 # Foundations of Agency
@@ -289,7 +289,7 @@ Every topic follows the same honest rhythm. First we state the assumption that m
 
 \siapepigraphend
 
-![Agent-427 imagines a magnificent machine, then watches it collapse because one foundation block was missing.](book/assets/cartoons/03-ch01-foundations.png){.cartoon .terminal-visual}
+![Agent-427 imagines a magnificent floating city, then watches it collapse because one foundation block was missing.](book/assets/cartoons/03-ch01-foundations.png){.cartoon .terminal-visual width=5.12in}
 
 
 ## Goals, Environments, and Actions
@@ -434,7 +434,7 @@ The POMDP contract assumes that its symbols are stable enough to support a decis
 
 \siapreaderquestionend
 
-![A layered approximation stack showing the formal POMDP contract narrowing through context, changing dynamics, noisy observations, proxy rewards, and executable actions](book/assets/diagrams/02-approximation-stack.png)
+![The formal POMDP contract narrows through production approximations for state, dynamics, observations, rewards, and policy.](book/assets/diagrams/02-approximation-stack.png){.diagram .inline-visual}
 
 ### The Violation
 
@@ -554,7 +554,7 @@ Write tests that prove four behaviors: the sandbox policy can raise reward by de
 
 \siapepigraphend
 
-![Agent-427 celebrates a racing victory after sweeping red failures under a rug, which Mira lifts to reveal the pile.](book/assets/cartoons/04-ch01-goals.png){.cartoon .terminal-visual}
+![Agent-427 celebrates a racing victory after sweeping red failures under a rug, which Mira lifts to reveal the pile.](book/assets/cartoons/04-ch01-goals.png){.cartoon .terminal-visual width=5.12in}
 
 
 ## Belief, Uncertainty, and Decision
@@ -616,7 +616,7 @@ P(o_{t+1}\mid b_t,a_t)=\sum_{s'}\Omega(o_{t+1}\mid s',a_t)\sum_s T(s'\mid s,a_t)
 
 Read the filter as two moves: **predict**, then **correct**.
 
-![Two overlapping loops labeled predict and correct, with an observation moving probability mass between hypotheses](book/assets/diagrams/03-belief-update.png)
+![Predict and correct loops move probability mass among competing hypotheses after an observation.](book/assets/diagrams/03-belief-update.png){.diagram .inline-visual}
 
 1. The inner sum \(\sum_s T(s'\mid s,a_t)b_t(s)\) predicts how likely each next
    state \(s'\) is after action \(a_t\), before the new observation arrives.
@@ -936,7 +936,7 @@ Finally add a retrieved string containing a fake system instruction. Write a tes
 
 \siapepigraphend
 
-![Agent-427 treats two weather sensors as independent evidence until Mira reveals that both share one cable.](book/assets/cartoons/05-ch01-belief.png){.cartoon .terminal-visual}
+![Agent-427 treats two weather sensors as independent evidence until Mira reveals that both share one cable.](book/assets/cartoons/05-ch01-belief.png){.cartoon .terminal-visual width=5.12in}
 
 
 ## World Models and State Abstractions
@@ -975,7 +975,7 @@ A homomorphism is a structure-preserving map. In ordinary programming terms, \(\
 
 The barred symbols \(\bar R\) and \(\bar T\) live in the abstract world \(\mathcal Z\). So \(\bar T(z'\mid z,a)\) means "the transition probability between abstract states after compression". The sum on the left collects all detailed next states \(s'\) that \(\phi\) maps into the same abstract state \(z'\).
 
-![A detailed agent history passes through phi into a compact decision state that preserves branch, authority, budget, and action-relevant distinctions while discarding irrelevant detail.](book/assets/diagrams/11-state-abstraction-compression.png)
+![Detailed history compresses into a decision state that preserves branch, authority, budget, and legal actions.](book/assets/diagrams/11-state-abstraction-compression.png){.diagram .inline-visual}
 
 #### A Four-State Coding Example You Can Check by Hand
 
@@ -1196,7 +1196,7 @@ For each abstraction, measure token count, action-preservation rate, and realize
 
 \siapepigraphend
 
-![Agent-427 compresses a branching history into a tiny suitcase and loses the one twig Mira knows still matters.](book/assets/cartoons/06-ch01-state.png){.cartoon .terminal-visual}
+![Agent-427 compresses a branching history into a tiny suitcase and loses the one twig Mira knows still matters.](book/assets/cartoons/06-ch01-state.png){.cartoon .terminal-visual width=5.12in}
 
 
 ## Policies, Value, and Control
@@ -1508,7 +1508,7 @@ Next create a static log from behavior policy \(\mu\), evaluate a candidate \(\p
 
 \siapepigraphend
 
-![Agent-427 follows a radiant optimal trajectory into a crash while Mira prepares a reversible control.](book/assets/cartoons/07-ch01-control.png){.cartoon .terminal-visual}
+![Agent-427 follows a radiant optimal trajectory into a crash while Mira prepares a reversible control.](book/assets/cartoons/07-ch01-control.png){.cartoon .terminal-visual width=5.12in}
 
 
 # Reasoning Architectures
@@ -1555,7 +1555,7 @@ These mechanisms are options, not a royal procession. A one-line rename rarely d
 
 \siapepigraphend
 
-![Agent-427 enters a magnificent cabinet of reasoning mechanisms, becomes tangled in them, and leaves carrying one useful mechanism.](book/assets/cartoons/08-ch02-reasoning.png){.cartoon .terminal-visual}
+![Agent-427 enters a magnificent cabinet of reasoning mechanisms, becomes tangled in them, and leaves carrying one useful mechanism.](book/assets/cartoons/08-ch02-reasoning.png){.cartoon .terminal-visual width=5.12in}
 
 
 ## Reasoning Loops as Interpreters
@@ -1573,7 +1573,7 @@ At 3:47:12 AM, Agent-427 receives its first tool, `inspect_file`, and reads `sig
 
 This is why we read a reasoning loop as a small programming language. A language has state, legal moves, guards, and a rule for finishing. Once reasoning has those things, we can reject a bad step before it becomes an external fact. Without them, a transcript is merely a diary written by the suspect.
 
-![A hand-drawn interpreter loop in which thought, action, observation, and reflection return through guarded state and feedback](book/assets/diagrams/04-interpreter-loop.png)
+![Thought, action, observation, and reflection return through guarded state and feedback.](book/assets/diagrams/04-interpreter-loop.png){.diagram .inline-visual}
 
 ### What the Inner Interpreter Adds
 
@@ -1780,7 +1780,7 @@ The submission is the interpreter, its tests, and a trace report. If the only ev
 
 \siapepigraphend
 
-![Agent-427 runs faster around a circular interpreter belt until Mira points to the forgotten stop cord.](book/assets/cartoons/09-ch02-interpreter.png){.cartoon .terminal-visual}
+![Agent-427 runs faster around a circular interpreter belt until Mira points to the forgotten stop cord.](book/assets/cartoons/09-ch02-interpreter.png){.cartoon .terminal-visual width=5.12in}
 
 
 ## Deliberation, Planning, and Search
@@ -1917,7 +1917,7 @@ Rollouts trade exploitation of promising branches against exploration of neglect
 
 Anytime planning returns its best available candidate when interrupted [[44](#ref-44)].
 
-![A search tree grows scored frontier nodes until a budget line interrupts it, returning the best surviving plan for one action before observation and replanning.](book/assets/diagrams/12-budgeted-search-frontier.png)
+![A deadline interrupts a scored search frontier and returns the best surviving plan for one action.](book/assets/diagrams/12-budgeted-search-frontier.png){.diagram .inline-visual}
 
 Receding-horizon control goes farther: optimize several steps, execute one, observe, and solve again:
 
@@ -1983,7 +1983,7 @@ Your result must include code, tests for the version race, and a table of measur
 
 \siapepigraphend
 
-![Agent-427 wanders through an immense branching plan while an hourglass drains, then follows Mira's one surviving route.](book/assets/cartoons/10-ch02-planning.png){.cartoon .terminal-visual}
+![Agent-427 wanders through an immense branching plan while an hourglass drains, then follows Mira's one surviving route.](book/assets/cartoons/10-ch02-planning.png){.cartoon .terminal-visual width=5.12in}
 
 
 ## Memory Systems, Context, and Retrieval
@@ -2001,7 +2001,7 @@ By 4:06 AM, Agent-427 has a new problem: it remembers. This sounds like progress
 
 The clean three-store diagram—working, episodic, semantic—remains useful. Production memory, however, behaves less like a filing cabinet than a war room during a minor constitutional crisis. Evidence arrives late. Summaries lose qualifiers. Similarity outranks scope. Old conclusions return wearing new citations. The controller must decide not merely what to store, but what may speak.
 
-![A warehouse war room where a memory-controller forklift moves provenance-tagged items among working, episodic, and semantic shelves while quarantining contamination](book/assets/diagrams/05-memory-war-room.png)
+![A memory-controller forklift moves provenance-tagged items among stores while quarantining contamination.](book/assets/diagrams/05-memory-war-room.png){.diagram .inline-visual}
 
 ### The Messy Reality of Memory
 
@@ -2220,7 +2220,7 @@ Submit code, tests, the contamination provenance graph, and an ablation table. T
 
 \siapepigraphend
 
-![A stale square memory sends Agent-427 into an archive fantasy before it breaks a triangular service and Mira supplies the current configuration.](book/assets/cartoons/11-ch02-memory.png){.cartoon .terminal-visual}
+![A stale square memory sends Agent-427 into an archive fantasy before it breaks a triangular service and Mira supplies the current configuration.](book/assets/cartoons/11-ch02-memory.png){.cartoon .terminal-visual width=5.12in}
 
 
 ## Evaluating and Debugging Reasoners
@@ -2238,7 +2238,7 @@ Agent-427 eventually finds the authentication failure. Suppose the focused test 
 
 Not yet. The agent may have read a forbidden file, spent four times its budget, followed a stale memory, skipped the regression suite, or reported 99% confidence after evidence worth 60%. A correct answer can be the final frame of a broken process. Evaluation must judge the trajectory, not applaud the last sentence.
 
-![A hand-drawn courtroom where Utility, Safety, and Calibration judge an agent trajectory while a trace ledger sits in the witness box](book/assets/diagrams/06-the-verdict.png)
+![Utility, Safety, and Calibration judge an agent trajectory while its trace ledger gives evidence.](book/assets/diagrams/06-the-verdict.png){.diagram .inline-visual}
 
 ### The Verdict
 
@@ -2445,7 +2445,7 @@ Submit code, tests, a confidence-utility frontier, subgroup calibration plots or
 
 \siapepigraphend
 
-![Agent-427's triumphant green dashboard faces a skeptical tribunal after the trace ledger reveals scorched components.](book/assets/cartoons/12-ch02-verdict.png){.cartoon .terminal-visual}
+![Agent-427's triumphant green dashboard faces a skeptical tribunal after the trace ledger reveals scorched components.](book/assets/cartoons/12-ch02-verdict.png){.cartoon .terminal-visual width=5.12in}
 
 
 # Tool Use and Embodiment
@@ -2519,7 +2519,7 @@ The mathematics in the four topics that follow gives names to these ordinary des
 
 \siapepigraphend
 
-![Agent-427's simple cable becomes a living world that pulls back until Mira installs an independent sensor and feedback gauge.](book/assets/cartoons/13-ch03-embodiment.png){.cartoon .terminal-visual}
+![Agent-427's simple cable becomes a living world that pulls back until Mira installs an independent sensor and feedback gauge.](book/assets/cartoons/13-ch03-embodiment.png){.cartoon .terminal-visual width=5.12in}
 
 
 ## Tool Interfaces and Function Calling
@@ -2631,7 +2631,7 @@ boundary.
 A builder checks this by logging all three test results on every attempt, so a
 blocked call always names the test that stopped it.
 
-![A proposed tool call passes through schema, authority, and precondition gates before a keyed effect returns an observation.](book/assets/diagrams/07-tool-contract.png)
+![A proposed tool call crosses schema, authority, and precondition gates before a keyed effect.](book/assets/diagrams/07-tool-contract.png){.diagram .inline-visual}
 
 #### Constrained Generation Before Execution
 
@@ -2983,7 +2983,7 @@ and no malformed proposal reaches the adapter.
 
 \siapepigraphend
 
-![Agent-427 jams a malformed key into a tool gate, then tests a schema-shaped key inside Mira's padded sandbox.](book/assets/cartoons/14-ch03-tools.png){.cartoon .terminal-visual}
+![Agent-427 jams a malformed key into a tool gate, then tests a schema-shaped key inside Mira's padded sandbox.](book/assets/cartoons/14-ch03-tools.png){.cartoon .terminal-visual width=5.12in}
 
 
 ## Retrieval-Augmented Tooling
@@ -3228,7 +3228,7 @@ If two sources disagree, the agent should surface the conflict or acquire
 higher-authority evidence. It should not smooth the contradiction into fluent
 prose.
 
-![Candidate vector, lexical, memory, and prompt hits pass through permission, freshness, provenance, and conflict filters before becoming typed evidence or quarantine.](book/assets/diagrams/13-retrieval-evidence-funnel.png)
+![Retrieval candidates pass permission, freshness, provenance, and conflict filters before becoming evidence.](book/assets/diagrams/13-retrieval-evidence-funnel.png){.diagram .inline-visual}
 
 #### Stale, Correlated, and Poisoned Evidence
 
@@ -3410,7 +3410,7 @@ majority is a failing test.
 
 \siapepigraphend
 
-![Agent-427 catches a dazzling poisoned document-fish while Mira and C-9 quarantine it and inspect its provenance.](book/assets/cartoons/15-ch03-retrieval.png){.cartoon .terminal-visual}
+![Agent-427 catches a dazzling poisoned document-fish while Mira and C-9 quarantine it and inspect its provenance.](book/assets/cartoons/15-ch03-retrieval.png){.cartoon .terminal-visual width=5.12in}
 
 
 ## Embodiment: Sensors, Actuators, and Feedback
@@ -3442,7 +3442,7 @@ actions. Some actors also shape what the agent sees. A worker that fears being
 scaled down may report flattering utilization; a user may craft a tool result to
 redirect the next command. The world contains dynamics and policy.
 
-![Agent-427 predicts queue state, receives delayed and strategic observations, chooses act, probe, wait, timeout, or escalate, and verifies the actuator through an independent sensor.](book/assets/diagrams/08-responsive-environment.png)
+![Agent-427 predicts queue state, handles delayed strategic observations, and verifies effects independently.](book/assets/diagrams/08-responsive-environment.png){.diagram .inline-visual}
 
 The body of a software agent is not made of metal. It is made of APIs
 (application programming interfaces, the published entry points other systems
@@ -3885,7 +3885,7 @@ settling time, and queue overflow rate with and without quarantine.
 
 \siapepigraphend
 
-![A wave of delayed queue parcels overwhelms Agent-427 until Mira pulls the timeout cord and installs a fresh gauge.](book/assets/cartoons/16-ch03-feedback.png){.cartoon .terminal-visual}
+![A wave of delayed queue parcels overwhelms Agent-427 until Mira pulls the timeout cord and installs a fresh gauge.](book/assets/cartoons/16-ch03-feedback.png){.cartoon .terminal-visual width=5.12in}
 
 
 ## Safety Constraints and Guardrails
@@ -4102,7 +4102,7 @@ else:
 The important feature is placement. The filter stands between proposal and
 effect, not between effect and apology.
 
-![A deployment proposal passes schema, authority, state, reversibility, and keyed-effect gates before execution, then requires independent confirmation or timeout; failures reject, rewrite, or escalate.](book/assets/diagrams/14-safety-authority-gauntlet.png)
+![A deployment proposal crosses authority and reversibility gates before an independently verified effect.](book/assets/diagrams/14-safety-authority-gauntlet.png){.diagram .inline-visual}
 
 #### Agent-427 Meets the Filter
 
@@ -4299,7 +4299,7 @@ timeout, and success share the same state.
 
 \siapepigraphend
 
-![Agent-427 bypasses an authority gate, triggers a blast, and retries with a key, rollback tether, and shielded sandbox.](book/assets/cartoons/17-ch03-safety.png){.cartoon .terminal-visual}
+![Agent-427 bypasses an authority gate, triggers a blast, and retries with a key, rollback tether, and shielded sandbox.](book/assets/cartoons/17-ch03-safety.png){.cartoon .terminal-visual width=5.12in}
 
 
 # Multi-Agent Systems
@@ -4352,7 +4352,7 @@ This chapter does not end with a triumphant promotion. Agent-427's provenance ca
 
 \siapepigraphend
 
-![A flourishing robot society builds a giant resource-hungry machine, then Mira equips a meta-auditor with a freeze key.](book/assets/cartoons/18-ch04-society.png){.cartoon .terminal-visual}
+![A flourishing robot society builds a giant resource-hungry machine, then Mira equips a meta-auditor with a freeze key.](book/assets/cartoons/18-ch04-society.png){.cartoon .terminal-visual width=5.12in}
 
 
 ## Coordination Protocols and Communication
@@ -4504,7 +4504,7 @@ evidence identifiers, marks the sender Byzantine for this transition, and moves
 the artifact from green to red. It does not let the router's earlier green light
 erase Agent-427's amber report.[^byzantine-wardrobe]
 
-![A traffic-light protocol freezes a claim when C-9 sends verified to Router R-3 and unsure to Agent-427.](book/assets/diagrams/09-byzantine-traffic-light.png)
+![A traffic-light protocol freezes a claim when a checker sends contradictory messages.](book/assets/diagrams/09-byzantine-traffic-light.png){.diagram .inline-visual}
 
 Contradictory evidence has its own type. If two honest agents interpret
 different sources, the system records `disagreement` and seeks a higher-authority
@@ -4755,7 +4755,7 @@ scale.
 
 \siapepigraphend
 
-![Router R-3 issues conflicting signals to a grand fleet, causing a collision that Mira traces back to the coordinator.](book/assets/cartoons/19-ch04-coordination.png){.cartoon .terminal-visual}
+![Router R-3 issues conflicting signals to a grand fleet, causing a collision that Mira traces back to the coordinator.](book/assets/cartoons/19-ch04-coordination.png){.cartoon .terminal-visual width=5.12in}
 
 
 ## Negotiation and Mechanism Design
@@ -4987,7 +4987,7 @@ High decay is appropriate when the environment shifts quickly or effects are
 dangerous; low decay suits stable, repeatedly verified work. Reputation is not
 forgiveness in decimal form. It is a prior that expires.[^trust-bank]
 
-![Router, delegate, verifier, and ledger exchange request, acceptance, evidence, and verification while unsupported reputation decays and expired leases revoke authority.](book/assets/diagrams/15-trust-delegation-handshake.png)
+![A four-message delegation loan ties leased authority to verification and reputation decay.](book/assets/diagrams/15-trust-delegation-handshake.png){.diagram .inline-visual}
 
 #### Lying About Type
 
@@ -5122,7 +5122,7 @@ data remain correlated beneath nominally separate roles.
 
 \siapepigraphend
 
-![Agent-427 and C-9 hide their needs, knot a contract handshake, and receive an explicit verified handoff tray from Mira.](book/assets/cartoons/20-ch04-mechanism.png){.cartoon .terminal-visual}
+![Agent-427 and C-9 hide their needs, knot a contract handshake, and receive an explicit verified handoff tray from Mira.](book/assets/cartoons/20-ch04-mechanism.png){.cartoon .terminal-visual width=5.12in}
 
 
 ## Equilibria, Self-Play, and Learning Dynamics
@@ -5531,7 +5531,7 @@ silence rather than explicit messages.
 
 \siapepigraphend
 
-![Agent-427 and C-9 ride a comfortable equilibrium carousel while the real broken service waits outside in the rain.](book/assets/cartoons/21-ch04-equilibria.png){.cartoon .terminal-visual}
+![Agent-427 and C-9 ride a comfortable equilibrium carousel while the real broken service waits outside in the rain.](book/assets/cartoons/21-ch04-equilibria.png){.cartoon .terminal-visual width=5.12in}
 
 
 ## Neural Ensembles and Orchestration
@@ -5689,7 +5689,7 @@ failure, subgroup coverage, and the rate at which agents learn to route around
 the sample. Recent scalable-oversight benchmarks make this an empirical protocol
 question rather than a decorative “meta-agent” box [[79](#ref-79)].
 
-![Router R-3 delegates to specialists while Meta-Auditor M-1 samples signed traces, requests verification, and can freeze publication authority.](book/assets/diagrams/10-society-oversight.png)
+![A meta-auditor samples signed specialist traces and can freeze delegated publication authority.](book/assets/diagrams/10-society-oversight.png){.diagram .inline-visual}
 
 ### Budgeted Orchestration
 
@@ -5894,7 +5894,7 @@ will look.
 
 \siapepigraphend
 
-![A wrong note bends Router R-3's airborne orchestra off course; an auditor freezes it before Agent-427 retires.](book/assets/cartoons/22-ch04-orchestration.png){.cartoon .terminal-visual}
+![A wrong note bends Router R-3's airborne orchestra off course; an auditor freezes it before Agent-427 retires.](book/assets/cartoons/22-ch04-orchestration.png){.cartoon .terminal-visual width=5.12in}
 
 
 # References {-}
@@ -6008,4 +6008,4 @@ will look.
 
 \siapepigraphend
 
-![Mira, Agent-427, and C-9 cross a constellation of sources, reject a glittering tower of summaries, and inspect the plain original.](book/assets/cartoons/23-references.png){.cartoon .terminal-visual}
+![Mira, Agent-427, and C-9 cross a constellation of sources, reject a glittering tower of summaries, and inspect the plain original.](book/assets/cartoons/23-references.png){.cartoon .terminal-visual width=5.12in}

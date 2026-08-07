@@ -11,7 +11,7 @@ source = "index.md"
 kind = "cartoon"
 path = "assets/cartoons/01-preface-patterns.png"
 placement = "terminal"
-alt = "A carnival of fashionable agent machinery collapses, leaving Mira and Agent-427 with four durable gears."
+alt = "A carnival of fashionable agent gadgets collapses, leaving Mira and Agent-427 with four durable geometric pieces."
 width = 1536
 height = 1024
 content_bbox = [144, 96, 1392, 928]
@@ -35,10 +35,10 @@ source = "chapters/01-foundations-of-agency/index.md"
 kind = "cartoon"
 path = "assets/cartoons/03-ch01-foundations.png"
 placement = "terminal"
-alt = "Agent-427 imagines a magnificent machine, then watches it collapse because one foundation block was missing."
+alt = "Agent-427 imagines a magnificent floating city, then watches it collapse because one foundation block was missing."
 width = 1536
 height = 1024
-content_bbox = [144, 96, 1392, 928]
+content_bbox = [146, 96, 1388, 926]
 min_padding = 72
 
 [[visuals]]
@@ -50,7 +50,7 @@ placement = "terminal"
 alt = "Agent-427 celebrates a racing victory after sweeping red failures under a rug, which Mira lifts to reveal the pile."
 width = 1536
 height = 1024
-content_bbox = [144, 96, 1392, 928]
+content_bbox = [188, 97, 1371, 888]
 min_padding = 72
 
 [[visuals]]
@@ -62,7 +62,7 @@ placement = "terminal"
 alt = "Agent-427 treats two weather sensors as independent evidence until Mira reveals that both share one cable."
 width = 1536
 height = 1024
-content_bbox = [146, 98, 1387, 928]
+content_bbox = [144, 96, 1392, 919]
 min_padding = 72
 
 [[visuals]]
@@ -74,7 +74,7 @@ placement = "terminal"
 alt = "Agent-427 compresses a branching history into a tiny suitcase and loses the one twig Mira knows still matters."
 width = 1536
 height = 1024
-content_bbox = [144, 98, 1392, 928]
+content_bbox = [144, 96, 1392, 928]
 min_padding = 72
 
 [[visuals]]
@@ -86,7 +86,7 @@ placement = "terminal"
 alt = "Agent-427 follows a radiant optimal trajectory into a crash while Mira prepares a reversible control."
 width = 1536
 height = 1024
-content_bbox = [144, 96, 1392, 928]
+content_bbox = [144, 96, 1392, 926]
 min_padding = 72
 
 [[visuals]]
@@ -98,7 +98,7 @@ placement = "terminal"
 alt = "Agent-427 enters a magnificent cabinet of reasoning mechanisms, becomes tangled in them, and leaves carrying one useful mechanism."
 width = 1536
 height = 1024
-content_bbox = [149, 102, 1391, 928]
+content_bbox = [144, 96, 1392, 926]
 min_padding = 72
 
 [[visuals]]
@@ -110,7 +110,7 @@ placement = "terminal"
 alt = "Agent-427 runs faster around a circular interpreter belt until Mira points to the forgotten stop cord."
 width = 1536
 height = 1024
-content_bbox = [153, 107, 1383, 919]
+content_bbox = [144, 96, 1392, 927]
 min_padding = 72
 
 [[visuals]]
@@ -134,7 +134,7 @@ placement = "terminal"
 alt = "A stale square memory sends Agent-427 into an archive fantasy before it breaks a triangular service and Mira supplies the current configuration."
 width = 1536
 height = 1024
-content_bbox = [151, 104, 1387, 927]
+content_bbox = [144, 96, 1392, 928]
 min_padding = 72
 
 [[visuals]]
@@ -146,7 +146,7 @@ placement = "terminal"
 alt = "Agent-427's triumphant green dashboard faces a skeptical tribunal after the trace ledger reveals scorched components."
 width = 1536
 height = 1024
-content_bbox = [147, 130, 1374, 906]
+content_bbox = [144, 96, 1392, 928]
 min_padding = 72
 
 [[visuals]]
@@ -170,7 +170,7 @@ placement = "terminal"
 alt = "Agent-427 jams a malformed key into a tool gate, then tests a schema-shaped key inside Mira's padded sandbox."
 width = 1536
 height = 1024
-content_bbox = [193, 148, 1334, 864]
+content_bbox = [144, 96, 1392, 928]
 min_padding = 72
 
 [[visuals]]
@@ -182,7 +182,7 @@ placement = "terminal"
 alt = "Agent-427 catches a dazzling poisoned document-fish while Mira and C-9 quarantine it and inspect its provenance."
 width = 1536
 height = 1024
-content_bbox = [144, 96, 1392, 928]
+content_bbox = [144, 96, 1390, 906]
 min_padding = 72
 
 [[visuals]]
@@ -194,7 +194,7 @@ placement = "terminal"
 alt = "A wave of delayed queue parcels overwhelms Agent-427 until Mira pulls the timeout cord and installs a fresh gauge."
 width = 1536
 height = 1024
-content_bbox = [144, 96, 1392, 928]
+content_bbox = [147, 96, 1379, 919]
 min_padding = 72
 
 [[visuals]]
@@ -206,7 +206,7 @@ placement = "terminal"
 alt = "Agent-427 bypasses an authority gate, triggers a blast, and retries with a key, rollback tether, and shielded sandbox."
 width = 1536
 height = 1024
-content_bbox = [190, 124, 1354, 896]
+content_bbox = [144, 96, 1392, 928]
 min_padding = 72
 
 [[visuals]]
@@ -218,7 +218,7 @@ placement = "terminal"
 alt = "A flourishing robot society builds a giant resource-hungry machine, then Mira equips a meta-auditor with a freeze key."
 width = 1536
 height = 1024
-content_bbox = [176, 114, 1350, 882]
+content_bbox = [144, 96, 1392, 928]
 min_padding = 72
 
 [[visuals]]
@@ -230,7 +230,7 @@ placement = "terminal"
 alt = "Router R-3 issues conflicting signals to a grand fleet, causing a collision that Mira traces back to the coordinator."
 width = 1536
 height = 1024
-content_bbox = [144, 96, 1392, 928]
+content_bbox = [144, 96, 1392, 926]
 min_padding = 72
 
 [[visuals]]
@@ -254,7 +254,7 @@ placement = "terminal"
 alt = "Agent-427 and C-9 ride a comfortable equilibrium carousel while the real broken service waits outside in the rain."
 width = 1536
 height = 1024
-content_bbox = [182, 122, 1391, 922]
+content_bbox = [144, 96, 1392, 928]
 min_padding = 72
 
 [[visuals]]
@@ -266,7 +266,7 @@ placement = "terminal"
 alt = "A wrong note bends Router R-3's airborne orchestra off course; an auditor freezes it before Agent-427 retires."
 width = 1536
 height = 1024
-content_bbox = [144, 96, 1392, 928]
+content_bbox = [162, 112, 1390, 925]
 min_padding = 72
 
 [[visuals]]
@@ -278,7 +278,7 @@ placement = "terminal"
 alt = "Mira, Agent-427, and C-9 cross a constellation of sources, reject a glittering tower of summaries, and inspect the plain original."
 width = 1536
 height = 1024
-content_bbox = [152, 124, 1388, 901]
+content_bbox = [144, 96, 1391, 928]
 min_padding = 72
 
 [[visuals]]
@@ -288,10 +288,10 @@ kind = "diagram"
 path = "assets/diagrams/01-publication-institution.png"
 placement = "inline"
 alt = "A clean publication workflow contrasted with a collusive shortcut that hides a broken citation."
-width = 1200
-height = 700
-content_bbox = [82, 48, 1117, 652]
-min_padding = 40
+width = 2400
+height = 1400
+content_bbox = [164, 96, 2235, 1304]
+min_padding = 96
 
 [[visuals]]
 id = "approximation-stack-diagram"
@@ -300,10 +300,10 @@ kind = "diagram"
 path = "assets/diagrams/02-approximation-stack.png"
 placement = "inline"
 alt = "The formal POMDP contract narrows through production approximations for state, dynamics, observations, rewards, and policy."
-width = 1200
-height = 700
-content_bbox = [82, 48, 1117, 652]
-min_padding = 40
+width = 2400
+height = 1400
+content_bbox = [164, 96, 2235, 1304]
+min_padding = 96
 
 [[visuals]]
 id = "belief-update-diagram"
@@ -312,10 +312,10 @@ kind = "diagram"
 path = "assets/diagrams/03-belief-update.png"
 placement = "inline"
 alt = "Predict and correct loops move probability mass among competing hypotheses after an observation."
-width = 1200
-height = 700
-content_bbox = [82, 48, 1117, 652]
-min_padding = 40
+width = 2400
+height = 1400
+content_bbox = [164, 96, 2235, 1304]
+min_padding = 96
 
 [[visuals]]
 id = "state-abstraction-diagram"
@@ -324,10 +324,10 @@ kind = "diagram"
 path = "assets/diagrams/11-state-abstraction-compression.png"
 placement = "inline"
 alt = "Detailed history compresses into a decision state that preserves branch, authority, budget, and legal actions."
-width = 1200
-height = 700
-content_bbox = [82, 48, 1117, 652]
-min_padding = 40
+width = 2400
+height = 1400
+content_bbox = [164, 96, 2235, 1304]
+min_padding = 96
 
 [[visuals]]
 id = "interpreter-loop-diagram"
@@ -336,10 +336,10 @@ kind = "diagram"
 path = "assets/diagrams/04-interpreter-loop.png"
 placement = "inline"
 alt = "Thought, action, observation, and reflection return through guarded state and feedback."
-width = 1200
-height = 700
-content_bbox = [82, 48, 1117, 652]
-min_padding = 40
+width = 2400
+height = 1400
+content_bbox = [164, 96, 2235, 1304]
+min_padding = 96
 
 [[visuals]]
 id = "budgeted-search-diagram"
@@ -348,10 +348,10 @@ kind = "diagram"
 path = "assets/diagrams/12-budgeted-search-frontier.png"
 placement = "inline"
 alt = "A deadline interrupts a scored search frontier and returns the best surviving plan for one action."
-width = 1200
-height = 700
-content_bbox = [82, 48, 1117, 652]
-min_padding = 40
+width = 2400
+height = 1400
+content_bbox = [164, 96, 2235, 1304]
+min_padding = 96
 
 [[visuals]]
 id = "memory-war-room-diagram"
@@ -360,10 +360,10 @@ kind = "diagram"
 path = "assets/diagrams/05-memory-war-room.png"
 placement = "inline"
 alt = "A memory-controller forklift moves provenance-tagged items among stores while quarantining contamination."
-width = 1200
-height = 700
-content_bbox = [82, 48, 1117, 652]
-min_padding = 40
+width = 2400
+height = 1400
+content_bbox = [164, 96, 2235, 1304]
+min_padding = 96
 
 [[visuals]]
 id = "verdict-diagram"
@@ -372,10 +372,10 @@ kind = "diagram"
 path = "assets/diagrams/06-the-verdict.png"
 placement = "inline"
 alt = "Utility, Safety, and Calibration judge an agent trajectory while its trace ledger gives evidence."
-width = 1200
-height = 700
-content_bbox = [82, 48, 1117, 652]
-min_padding = 40
+width = 2400
+height = 1400
+content_bbox = [164, 96, 2235, 1304]
+min_padding = 96
 
 [[visuals]]
 id = "tool-contract-diagram"
@@ -384,10 +384,10 @@ kind = "diagram"
 path = "assets/diagrams/07-tool-contract.png"
 placement = "inline"
 alt = "A proposed tool call crosses schema, authority, and precondition gates before a keyed effect."
-width = 1200
-height = 700
-content_bbox = [82, 48, 1117, 652]
-min_padding = 40
+width = 2400
+height = 1400
+content_bbox = [164, 96, 2235, 1304]
+min_padding = 96
 
 [[visuals]]
 id = "retrieval-funnel-diagram"
@@ -396,10 +396,10 @@ kind = "diagram"
 path = "assets/diagrams/13-retrieval-evidence-funnel.png"
 placement = "inline"
 alt = "Retrieval candidates pass permission, freshness, provenance, and conflict filters before becoming evidence."
-width = 1200
-height = 700
-content_bbox = [82, 48, 1117, 652]
-min_padding = 40
+width = 2400
+height = 1400
+content_bbox = [164, 96, 2235, 1304]
+min_padding = 96
 
 [[visuals]]
 id = "responsive-environment-diagram"
@@ -408,10 +408,10 @@ kind = "diagram"
 path = "assets/diagrams/08-responsive-environment.png"
 placement = "inline"
 alt = "Agent-427 predicts queue state, handles delayed strategic observations, and verifies effects independently."
-width = 1200
-height = 700
-content_bbox = [82, 48, 1117, 652]
-min_padding = 40
+width = 2400
+height = 1400
+content_bbox = [164, 96, 2235, 1304]
+min_padding = 96
 
 [[visuals]]
 id = "safety-gauntlet-diagram"
@@ -420,10 +420,10 @@ kind = "diagram"
 path = "assets/diagrams/14-safety-authority-gauntlet.png"
 placement = "inline"
 alt = "A deployment proposal crosses authority and reversibility gates before an independently verified effect."
-width = 1200
-height = 700
-content_bbox = [82, 48, 1117, 652]
-min_padding = 40
+width = 2400
+height = 1400
+content_bbox = [164, 96, 2235, 1304]
+min_padding = 96
 
 [[visuals]]
 id = "byzantine-traffic-diagram"
@@ -432,10 +432,10 @@ kind = "diagram"
 path = "assets/diagrams/09-byzantine-traffic-light.png"
 placement = "inline"
 alt = "A traffic-light protocol freezes a claim when a checker sends contradictory messages."
-width = 1200
-height = 700
-content_bbox = [82, 48, 1117, 652]
-min_padding = 40
+width = 2400
+height = 1400
+content_bbox = [164, 96, 2235, 1304]
+min_padding = 96
 
 [[visuals]]
 id = "trust-handshake-diagram"
@@ -444,10 +444,10 @@ kind = "diagram"
 path = "assets/diagrams/15-trust-delegation-handshake.png"
 placement = "inline"
 alt = "A four-message delegation loan ties leased authority to verification and reputation decay."
-width = 1200
-height = 700
-content_bbox = [82, 48, 1117, 652]
-min_padding = 40
+width = 2400
+height = 1400
+content_bbox = [164, 96, 2235, 1304]
+min_padding = 96
 
 [[visuals]]
 id = "society-oversight-diagram"
@@ -456,7 +456,7 @@ kind = "diagram"
 path = "assets/diagrams/10-society-oversight.png"
 placement = "inline"
 alt = "A meta-auditor samples signed specialist traces and can freeze delegated publication authority."
-width = 1200
-height = 700
-content_bbox = [82, 48, 1117, 652]
-min_padding = 40
+width = 2400
+height = 1400
+content_bbox = [164, 96, 2235, 1304]
+min_padding = 96

@@ -55,7 +55,8 @@
 </section>
 <p>By 4:06 AM, Agent-427 has a new problem: it remembers. This sounds like progress until it retrieves <code>service.yaml</code> from <code>main</code> while the user is working on <code>legacy-v2</code>, where the service is configured by <code>service.toml</code>. The retrieved file is relevant, recent, syntactically convincing, and wrong in every way that matters.</p>
 <p>The clean three-store diagram—working, episodic, semantic—remains useful. Production memory, however, behaves less like a filing cabinet than a war room during a minor constitutional crisis. Evidence arrives late. Summaries lose qualifiers. Similarity outranks scope. Old conclusions return wearing new citations. The controller must decide not merely what to store, but what may speak.</p>
-<p><img alt="A warehouse war room where a memory-controller forklift moves provenance-tagged items among working, episodic, and semantic shelves while quarantining contamination" src="../../assets/diagrams/05-memory-war-room.png" /></p>
+<figure class="diagram-frame"><img class="diagram inline-visual" src="../../assets/diagrams/05-memory-war-room.svg" alt="A memory-controller forklift moves provenance-tagged items among stores while quarantining contamination." width="1200" height="700" loading="lazy" decoding="async"></figure>
+
 <h2 id="the-messy-reality-of-memory">The Messy Reality of Memory</h2>
 <p>The context window is not memory. It is the small working surface onto which memory is projected. Retrieval decides which outside items enter that surface; attention decides how strongly tokens already on the surface interact. Both ration influence, so retrieval can be understood as sparse attention over an external corpus. But it is more than attention: retrieval incurs I/O and latency, crosses permission boundaries, chooses provenance, and can import adversarial text before the transformer's internal attention mechanism begins [<a href="../../references.html#ref-76">76</a>].</p>
 <p>Let memory state be \(m_t=(w_t,e_t,s_t)\): working state \(w_t\), episodic traces \(e_t\), and semantic summaries \(s_t\), a useful engineering analogue of cognitive multi-store theory [<a href="../../references.html#ref-48">48</a>]. These are roles, not immaculate databases. One object may migrate among them, and every migration can lose scope.</p>
@@ -236,7 +237,7 @@ M12 heuristic   scoped score(YAML on legacy-v2) falls from 0.91 to 0.03
     </main>
     <footer class="site-footer">
       <p>SIAP is a book about making agentic systems legible enough to build, test, and govern.</p>
-      <p>Last generated: 2026-08-06 15:38 UTC</p>
+      <p>Last generated: 2026-08-06 18:31 UTC</p>
     </footer>
     <script>
       const toggle = document.querySelector(".nav-toggle");

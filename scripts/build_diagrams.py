@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_DIR = ROOT / "book" / "assets" / "diagrams"
 WIDTH = 1200
 HEIGHT = 700
+PNG_SCALE = 2
 
 
 def words(value: str) -> str:
@@ -55,14 +56,15 @@ def svg_document(title: str, description: str, body: str) -> str:
     <style>
       .paper {{ fill:#f4f0e6; }}
       text {{ fill:#172a3a; font-family:"Courier New",monospace; }}
-      .title {{ font-family:Georgia,serif; font-size:34px; font-weight:bold; }}
-      .subtitle {{ font-size:16px; letter-spacing:1px; }}
-      .label {{ font-size:19px; font-weight:bold; }}
-      .detail {{ font-size:14px; }}
-      .tiny {{ font-size:13px; font-weight:bold; paint-order:stroke; stroke:#f4f0e6; stroke-width:5px; stroke-linejoin:round; }}
+      .title {{ font-family:Georgia,serif; font-size:38px; font-weight:bold; }}
+      .subtitle {{ font-size:18px; letter-spacing:0.8px; }}
+      .label {{ font-size:22px; font-weight:bold; }}
+      .detail {{ font-size:17px; }}
+      .tiny {{ font-size:16px; font-weight:bold; paint-order:stroke; stroke:#f4f0e6; stroke-width:5px; stroke-linejoin:round; }}
       .rough {{ filter:url(#wobble); }}
       rect, circle, ellipse, path, line, polygon {{ fill:#fbf8ef; stroke:#172a3a; stroke-width:3; }}
       .arrow {{ fill:none; marker-end:url(#arrow); }}
+      .connector {{ fill:none; }}
       .red .arrow, .red path, .red line, .red rect, .red circle {{ stroke:#b24c2b; }}
       .red .arrow {{ marker-end:url(#red-arrow); }}
       .red text, text.red {{ fill:#b24c2b; }}
@@ -101,9 +103,9 @@ def diagram_approximation() -> str:
     body = title_block("THE APPROXIMATION STACK", "the POMDP descends into production and loses a shoe")
     labels = [
         ("STATE  S", "finite sufficient state", "context window + summary"),
-        ("DYNAMICS  T", "stationary transition law", "APIs drift while thinking"),
+        ("DYNAMICS  T", "stationary law", "APIs drift while thinking"),
         ("OBSERVATION  OMEGA", "known noise model", "delay + correlation + attack"),
-        ("REWARD  R", "objective says what we want", "metric becomes a loophole"),
+        ("REWARD  R", "objective names desire", "metric becomes a loophole"),
         ("POLICY  PI", "choose any valid action", "generate, parse, guard, reject"),
     ]
     y = 140
@@ -137,12 +139,12 @@ def diagram_interpreter() -> str:
     body += box(670, 175, 205, 88, "CHOOSE", "legal action only")
     body += box(955, 175, 180, 88, "EXECUTE", "external effect", "amber")
     body += arrow(280, 219, 365, 219) + arrow(585, 219, 670, 219) + arrow(875, 219, 955, 219)
-    body += box(455, 370, 290, 105, "THE VERDICT", "utility / safety / calibration", "green")
-    body += arrow(1045, 263, 745, 405, "OUTCOME")
+    body += box(425, 370, 350, 105, "THE VERDICT", "utility / safety / calibration", "green")
+    body += arrow(1045, 263, 775, 405, "OUTCOME")
     body += arrow(455, 423, 180, 263, "FEEDBACK")
     body += '<path class="scribble" d="M1000,510 C960,590 790,600 760,515"/><text class="tiny red" x="882" y="620" text-anchor="middle">INVALID TOOL CALL? REJECT THE TRANSITION.</text>'
-    body += '<g class="danger rough"><circle cx="225" cy="530" r="55"/><text class="label" x="225" y="525" text-anchor="middle">HALT</text><text class="detail" x="225" y="550" text-anchor="middle">is an action</text></g>'
-    body += arrow(455, 450, 280, 520, "BUDGET GONE", "red")
+    body += '<g class="danger rough"><circle cx="225" cy="530" r="72"/><text class="label" x="225" y="525" text-anchor="middle">HALT</text><text class="detail" x="225" y="553" text-anchor="middle">is an action</text></g>'
+    body += arrow(425, 450, 295, 520, "BUDGET GONE", "red")
     return svg_document("Agent interpreter", "Observe, update state, choose, execute, and judge connected by internal and external feedback loops.", body)
 
 
@@ -152,8 +154,8 @@ def diagram_memory() -> str:
     body += box(60, 285, 300, 90, "EPISODIC", "versioned traces")
     body += box(60, 415, 300, 90, "SEMANTIC", "consolidated rules")
     body += box(800, 210, 330, 120, "WORKING CONTEXT", "small, expensive, decisive", "amber")
-    body += '<g class="rough"><rect x="465" y="300" width="205" height="95" rx="8"/><circle cx="500" cy="415" r="30"/><circle cx="635" cy="415" r="30"/><text class="label" x="568" y="340" text-anchor="middle">FORKLIFT</text><text class="detail" x="568" y="370" text-anchor="middle">retrieve / compress / evict</text><path d="M670,330 L745,330 L745,260" fill="none"/></g>'
-    body += arrow(360, 330, 465, 335, "QUERY") + arrow(745, 260, 800, 260, "LOAD")
+    body += '<g class="rough"><rect x="440" y="285" width="285" height="120" rx="8"/><circle cx="485" cy="430" r="30"/><circle cx="675" cy="430" r="30"/><text class="label" x="582" y="325" text-anchor="middle">FORKLIFT</text><text class="detail" x="582" y="356" text-anchor="middle">retrieve / compress</text><text class="detail" x="582" y="382" text-anchor="middle">then evict</text><path d="M725,315 L765,315 L765,260" fill="none"/></g>'
+    body += arrow(360, 330, 440, 335, "QUERY") + arrow(765, 260, 800, 260, "LOAD")
     body += '<g class="danger rough"><ellipse cx="938" cy="480" rx="155" ry="75"/><text class="label red" x="938" y="465" text-anchor="middle">STALE MEMORY</text><text class="detail" x="938" y="495" text-anchor="middle">main YAML in legacy-v2 TOML</text></g>'
     body += arrow(938, 405, 965, 330, "CONTAMINATES", "red")
     body += '<text class="tiny" x="60" y="610">CONSOLIDATE WHAT REPEATS. KEEP THE EDGE CASE RECEIPT.</text>'
@@ -163,12 +165,12 @@ def diagram_memory() -> str:
 def diagram_verdict() -> str:
     body = title_block("THE VERDICT", "patterns enter with promises and leave with measurements")
     body += '<g class="rough green"><rect x="270" y="140" width="660" height="120" rx="10"/><text class="title" x="600" y="195" text-anchor="middle">THE BENCH</text><text class="detail" x="600" y="230" text-anchor="middle">UTILITY     SAFETY     CALIBRATION</text></g>'
-    body += box(70, 350, 250, 105, "PATTERN", "planning / memory / protocol", "amber")
-    body += box(475, 350, 250, 105, "TRACE EVIDENCE", "actions + costs + outcomes")
+    body += box(70, 350, 250, 105, "PATTERN", "plan / memory / protocol", "amber")
+    body += box(475, 350, 250, 105, "TRACE EVIDENCE", "actions, costs, outcomes")
     body += box(880, 350, 250, 105, "DECISION", "admit / repair / reject", "green")
     body += arrow(320, 402, 475, 402, "RUN") + arrow(725, 402, 880, 402, "JUDGE")
-    body += '<g class="danger rough"><rect x="395" y="540" width="410" height="80" rx="18"/><text class="label red" x="600" y="575" text-anchor="middle">FINAL ANSWER ONLY</text><text class="detail" x="600" y="601" text-anchor="middle">evidence dismissed: causal trace missing</text></g>'
-    body += arrow(600, 540, 600, 455, "APPEAL DENIED", "red")
+    body += '<g class="danger rough"><rect x="395" y="540" width="410" height="80" rx="18"/><text class="label" x="600" y="575" text-anchor="middle">FINAL ANSWER ONLY</text><text class="detail" x="600" y="601" text-anchor="middle">dismissed: causal trace missing</text></g>'
+    body += '<g class="red"><path class="arrow rough" d="M625,540 C700,515 700,480 625,455"/><text class="tiny" x="715" y="505" text-anchor="middle">APPEAL DENIED</text></g>'
     return svg_document("The Verdict", "A courtroom metaphor sends patterns and trajectory evidence before utility, safety, and calibration judges.", body)
 
 
@@ -181,7 +183,7 @@ def diagram_tool() -> str:
     body += box(695, 240, 210, 100, "EFFECT", "world changes", "green")
     body += box(980, 240, 170, 100, "OBSERVE", "confirm result")
     body += arrow(275, 290, 350, 290, "PARSE") + arrow(600, 290, 695, 290, "ALL PASS") + arrow(905, 290, 980, 290, "RECEIPT")
-    body += '<g class="red"><path class="arrow rough" d="M475,455 C475,545 260,560 260,470"/><text class="tiny red" x="374" y="555" text-anchor="middle">REJECT, DO NOT IMPROVISE</text></g>'
+    body += '<g class="red"><path class="arrow rough" d="M475,455 C475,535 165,535 165,340"/><text class="tiny red" x="330" y="525" text-anchor="middle">REJECT, DO NOT IMPROVISE</text></g>'
     body += '<text class="tiny" x="600" y="630" text-anchor="middle">A JSON OBJECT IS NOT AUTHORITY. IT IS A REQUEST WE CAN REFUSE.</text>'
     return svg_document("Tool contract", "A model proposal passes schema, authority, and idempotency guards before an external effect and confirmation observation.", body)
 
@@ -232,14 +234,14 @@ def diagram_society() -> str:
 
 def diagram_state_abstraction() -> str:
     body = title_block("STATE ABSTRACTION", "compress the history; preserve the choice")
-    body += box(60, 155, 280, 340, "DETAILED HISTORY", "many true things, one decision", "ghost")
+    body += '<g class="rough ghost"><rect x="60" y="155" width="280" height="340" rx="18"/><text class="label" x="200" y="194" text-anchor="middle">DETAILED HISTORY</text><line x1="78" y1="216" x2="322" y2="216"/><text class="detail" x="200" y="246" text-anchor="middle">many truths; one decision</text></g>'
     history = [
-        (205, "branch = legacy-v2"),
-        (255, "tests = red"),
-        (305, "cache = stale"),
-        (355, "authority = read-only"),
-        (405, "budget = 3 calls"),
-        (455, "two jokes about YAML"),
+        (292, "branch = legacy-v2"),
+        (330, "tests = red"),
+        (368, "cache = stale"),
+        (406, "authority = read-only"),
+        (444, "budget = 3 calls"),
+        (482, "two jokes about YAML"),
     ]
     for y, label in history:
         body += f'<text class="detail" x="200" y="{y}" text-anchor="middle">{words(label)}</text>'
@@ -303,8 +305,8 @@ def diagram_retrieval_funnel() -> str:
     for y, label in filters:
         body += f'<text class="label" x="735" y="{y}" text-anchor="middle">{label}</text>'
     body += arrow(560, 284, 655, 300, "FILTER") + arrow(845, 340, 930, 300, "TYPE")
-    body += box(930, 220, 220, 145, "EVIDENCE SET", "source + time + claim", "green")
-    body += box(900, 465, 250, 82, "QUARANTINE", "stale / copied / hostile", "danger")
+    body += box(900, 220, 250, 145, "EVIDENCE SET", "source + time + claim", "green")
+    body += box(870, 465, 280, 82, "QUARANTINE", "stale / copied / hostile", "danger")
     body += '<g class="red"><path class="arrow rough" d="M740,465 C770,545 850,560 900,515"/><text class="tiny red" x="800" y="570" text-anchor="middle">DO NOT AVERAGE POISON.</text></g>'
     body += '<text class="tiny" x="600" y="635" text-anchor="middle">A RELEVANT PASSAGE IS A CANDIDATE OBSERVATION, NOT A CERTIFICATE OF TRUTH.</text>'
     return svg_document(
@@ -323,12 +325,12 @@ def diagram_safety_gauntlet() -> str:
     body += box(570, 220, 210, 100, "REVERSIBILITY", "rollback + lease", "amber")
     body += box(850, 220, 210, 100, "KEYED EFFECT", "execute once", "green")
     body += arrow(245, 300, 305, 201, "PARSE") + arrow(245, 300, 305, 326, "CHECK") + arrow(245, 300, 305, 451, "OBSERVE")
-    body += arrow(495, 201, 570, 270, "PASS") + arrow(495, 326, 570, 270, "PASS") + arrow(495, 451, 570, 270, "PASS")
+    body += '<g><path class="connector" d="M495,201 C520,215 525,240 540,270"/><path class="connector" d="M495,326 C520,315 525,290 540,270"/><path class="connector" d="M495,451 C535,400 525,315 540,270"/><path class="arrow" d="M540,270 L570,270"/><text class="tiny" x="528" y="244" text-anchor="end">PASS</text><text class="tiny" x="530" y="318" text-anchor="end">PASS</text><text class="tiny" x="525" y="385" text-anchor="end">PASS</text></g>'
     body += arrow(780, 270, 850, 270, "BOUND")
-    body += box(890, 405, 220, 92, "INDEPENDENT SENSOR", "confirm or timeout", "green")
-    body += arrow(955, 320, 995, 405, "VERIFY")
+    body += box(830, 405, 300, 92, "INDEPENDENT SENSOR", "confirm or timeout", "green")
+    body += arrow(955, 320, 980, 405, "VERIFY")
     body += box(365, 555, 390, 70, "REJECT / REWRITE / ESCALATE", "no effect crosses on silence", "danger")
-    body += '<g class="red"><path class="arrow rough" d="M400,367 C400,505 500,525 520,555"/><path class="arrow rough" d="M400,492 C430,535 470,545 520,555"/></g>'
+    body += '<g class="red"><path class="connector" d="M400,367 C400,475 455,500 500,520"/><path class="connector" d="M400,492 C430,515 465,520 500,520"/><circle cx="500" cy="520" r="6"/><path class="arrow" d="M500,520 C500,535 520,540 540,555"/></g>'
     body += '<text class="tiny" x="600" y="655" text-anchor="middle">THE FILTER STANDS BETWEEN PROPOSAL AND EFFECT, NOT BETWEEN EFFECT AND APOLOGY.</text>'
     return svg_document(
         "Safety authority gauntlet",
@@ -390,6 +392,7 @@ def render_png(svg_path: Path, png_path: Path) -> None:
         "--disable-dev-shm-usage",
         "--hide-scrollbars",
         f"--window-size={WIDTH},{HEIGHT}",
+        f"--force-device-scale-factor={PNG_SCALE}",
         f"--screenshot={png_path}",
         svg_path.resolve().as_uri(),
     ]
@@ -413,7 +416,11 @@ def main() -> None:
         png_path = OUTPUT_DIR / f"{name}.png"
         svg_path.write_text(build(), encoding="utf-8")
         render_png(svg_path, png_path)
-        normalize(png_path, canvas=(WIDTH, HEIGHT), matte=48)
+        normalize(
+            png_path,
+            canvas=(WIDTH * PNG_SCALE, HEIGHT * PNG_SCALE),
+            matte=48 * PNG_SCALE,
+        )
         print(f"Wrote {svg_path.relative_to(ROOT)} and {png_path.relative_to(ROOT)}")
 
 

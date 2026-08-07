@@ -96,7 +96,8 @@ html[data-theme="dark"] .book-nav__topics a { color: #b8c9cf; }
 .content .exercise > :first-child, .content .reader-question > :first-child { margin-top: 0; color: var(--signal); font: 700 0.92rem/1.3 var(--sans); letter-spacing: 0.07em; text-transform: uppercase; }
 .content .exercise > :last-child, .content .reader-question > :last-child { margin-bottom: 0; }
 .content img.cartoon { display: block; width: min(100%, 46rem); margin: 2.4rem auto 0.6rem; padding: 0.35rem; border: 1px solid var(--rule); background: #f4f0e6; }
-.content img.diagram { display: block; margin: 2rem auto; padding: 0.3rem; border: 1px solid var(--rule); background: #f4f0e6; }
+.content .diagram-frame { width: 100%; max-width: 100%; margin: 2rem 0; overflow-x: auto; overflow-y: hidden; overscroll-behavior-inline: contain; border: 1px solid var(--rule); background: #f4f0e6; }
+.content img.diagram { display: block; width: 100%; max-width: none; height: auto; margin: 0 auto; padding: 0.3rem; background: #f4f0e6; }
 .content code { padding: 0.1rem 0.28rem; background: var(--mist); font-size: 0.84em; }
 .content pre { max-width: 100%; padding: 1.15rem 1.3rem; overflow-x: auto; background: var(--code-bg); color: var(--code-text); box-shadow: inset 4px 0 var(--signal); tab-size: 2; }
 .content pre code { padding: 0; background: transparent; color: inherit; }
@@ -104,6 +105,7 @@ html[data-theme="dark"] .book-nav__topics a { color: #b8c9cf; }
 .content th, .content td { min-width: 9rem; padding: 0.55rem 0.7rem; border: 1px solid var(--rule); text-align: left; vertical-align: top; }
 .content th { background: var(--mist); font-family: var(--sans); }
 .content img { max-width: 100%; height: auto; }
+.pdf-content img.cartoon { width: min(100%, 5.12in); }
 .content mjx-container[display="true"] { display: block; width: 100%; max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: 0.35rem 0; }
 
 .reading-nav { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 4.5rem; padding-top: 1.2rem; border-top: 2px solid var(--ink); font-family: var(--sans); }
@@ -129,6 +131,7 @@ html[data-theme="dark"] .book-nav__topics a { color: #b8c9cf; }
   .breadcrumbs { margin-bottom: 1.4rem; }
   .content > h1 { font-size: clamp(2rem, 11vw, 3rem); }
   .content > h2 { margin-top: 2.7rem; }
+  .content .diagram-frame img.diagram { width: 56rem; }
   .reading-nav { grid-template-columns: 1fr; gap: 1.2rem; }
   .reading-nav__up, .reading-nav__next { text-align: left; }
 }

@@ -5,3 +5,8 @@
 \newcommand{\siapreaderquestionend}{\end{quote}}
 \newcommand{\siapepigraphbegin}{\begingroup\itshape\small\centering\noindent\rule{0.42\linewidth}{0.4pt}\par\medskip}
 \newcommand{\siapepigraphend}{\medskip\noindent\rule{0.42\linewidth}{0.4pt}\par\endgroup}
+% Terminal cartoons are 1536px wide.  Capping them at 5.12in preserves a
+% genuine 300 effective PPI instead of asking TeX to invent raster detail.
+\makeatletter
+\newcommand{\siapcartoonwidth}{5.12in}
+\makeatother

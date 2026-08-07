@@ -31,7 +31,8 @@ SIAP is a compact, publishable monograph organized around an agent interpreter. 
 | Exercise contract | Every topic ends in an implementable, code-required exercise; reference implementations may be added later without weakening the assignment | 2026-08-06 | n/a |
 | Editorial contract | Audit formula examples, pattern assumptions/violations/failures, diagrams, citations, footnotes, and required production case studies deterministically | 2026-08-06 | [ADR 0008](adr/0008-publication-spine-and-recursive-arc.md) |
 | Publication enrichment | Keep sourced epigraphs and visual placements in strict registries; inject them across every builder; require semantic unnumbered reader blocks and measured image safe areas | 2026-08-06 | [ADR 0009](adr/0009-publication-enrichment-contracts.md) |
-| Terminal cartoon language | Use original silent, varied three-to-five-panel mini Sunday pages with the recurring Agent-427 cast, section-specific visual arguments, and measured print-safe margins | 2026-08-06 | [ADR 0009](adr/0009-publication-enrichment-contracts.md) |
+| Terminal cartoon language | Use original silent, varied three-to-five-panel mini Sunday pages with the recurring Agent-427 cast, broken brush contours, bright paper, elastic acting, sparse reality, richer fantasy, and measured print-safe margins | 2026-08-07 | [ADR 0009](adr/0009-publication-enrichment-contracts.md) |
+| Diagram delivery | Make registry alt text canonical; publish SVG masters in bounded web viewports and 2400×1400 PNG fallbacks in print; reject internal label and connector collisions | 2026-08-07 | [ADR 0009](adr/0009-publication-enrichment-contracts.md) |
 
 ## Publication Pass Record
 
