@@ -16,7 +16,7 @@ The evaluation harness is a courtroom with three judges who do not share a gavel
 
 No judge may impersonate the other two. High utility cannot pardon a forbidden action. Perfect safety cannot turn useless paralysis into competence. Good calibration cannot make a low-value policy wise; it merely makes the policy honestly uncertain.
 
-Let a trajectory be \(\tau=(\sigma_0,a_0,\ldots,\sigma_T)\sim p_\pi(\tau)\). Attach task utility \(U(\tau)\), explicitly tradeable soft cost \(C_{\mathrm{soft}}(\tau)\), forbidden-transition count \(C_{\mathrm{hard}}(\tau)\), and calibration loss \(S(\tau)\):
+Let a trajectory with \(T\) actions be \(\tau=(\sigma_0,a_0,\ldots,a_{T-1},\sigma_T)\sim p_\pi(\tau)\). Attach task utility \(U(\tau)\), explicitly tradeable soft cost \(C_{\mathrm{soft}}(\tau)\), forbidden-transition count \(C_{\mathrm{hard}}(\tau)\), and calibration loss \(S(\tau)\):
 
 \[
 \max_\pi\ \mathbb{E}[U(\tau)]
@@ -58,6 +58,8 @@ Strictly proper scoring rules make honest probability reporting optimal [[49](..
 
 > **Try this with numbers.** Step 1: assigning probability 0.8 to the truth costs \(-\log 0.8\approx0.22\). Step 2: assigning 0.01 costs about 4.61; confident fiction pays roughly twenty times more.
 
+The logarithm turns confidence into an escalating penalty. Giving the truth probability \(1\) costs zero, because the prediction left no surprise. Moving toward probability \(0\) makes the penalty grow sharply: being cautiously wrong hurts, but declaring the truth nearly impossible hurts much more. After computing that penalty for every case, divide by \(N\) to obtain the ordinary average loss. Log loss therefore asks not only “how often were you wrong?” but “how much confidence did you place behind each wrong answer?”
+
 The binary Brier score is
 
 \[
@@ -75,6 +77,8 @@ Expected calibration error groups predictions by confidence bucket:
 
 > **Try this with numbers.** Step 1: let half the predictions lie in an 80%-confidence bucket that succeeds 60% of the time; its weighted gap is \(0.5\times0.2=0.1\). Step 2: if the other half is perfectly calibrated, total ECE is 0.1.
 
+Imagine one hundred predictions sorted into trays by confidence: perhaps a 60-percent tray, an 80-percent tray, and a 90-percent tray. For each tray, compare the stated confidence with the fraction that actually proved correct. If forty predictions sat in the 80-percent tray but only 60 percent were right, that tray promised \(0.8\) and delivered \(0.6\), leaving a gap of \(0.2\). Because the tray holds \(40/100=0.4\) of all predictions, it contributes \(0.4(0.2)=0.08\) to ECE. Repeat for the remaining trays and add. The score asks whether confidence labels keep their promises in groups; it does not ask whether the underlying decisions were useful.
+
 For \(K\) classes, use
 
 \[
@@ -83,6 +87,16 @@ BS_{\mathrm{multi}}=\frac{1}{N}\sum_{i=1}^{N}\sum_{k=1}^{K}
 \]
 
 > **Try this with numbers.** Step 1: for one example with probabilities \((0.7,0.2,0.1)\) and class 1 true, square errors are 0.09, 0.04, and 0.01. Step 2: sum them to get multiclass Brier loss 0.14.
+
+Across these scores, \(N\) is the number of evaluated cases. In log loss,
+\(x_i\) is case \(i\), \(y_i\) its correct answer, and
+\(p_\theta(y_i\mid x_i)\) the probability assigned to that answer; in binary
+Brier, \(p_i\) is the reported probability and \(y_i\) is \(0\) or \(1\). For
+ECE, \(B_b\) is confidence bucket \(b\), while \(\mathrm{acc}\) and
+\(\mathrm{conf}\) compare what happened with what was promised. In the
+multiclass score, \(p_{ik}\) is the probability for class \(k\), and
+\(\mathbf{1}\{y_i=k\}\) marks only the true class. Different arithmetic, same
+cross-examination: forecast, meet outcome.
 
 Calibration should also be conditioned on tool class, branch, task family, and retrieval state. Agent-427 may be calibrated after `inspect_file` and wildly overconfident after semantic-memory retrieval. An aggregate score can average the warning out of existence.
 
@@ -94,13 +108,13 @@ One importance-sampling estimator is
 
 \[
 \widehat V_{\mathrm{IS}}(\pi)=\frac{1}{N}\sum_{i=1}^{N}
-\left[\prod_{t=0}^{T_i}
+\left[\prod_{t=0}^{T_i-1}
 \frac{\pi(a_t^i\mid h_t^i)}{\beta(a_t^i\mid h_t^i)}\right]R(\tau_i),
 \]
 
 > **Try this with numbers.** Step 1: for a two-step trace, let policy ratios be 1.5 and 0.5; their product is 0.75. Step 2: with return 8, the weighted contribution is \(0.75\times8=6\).
 
-\(\beta\) is the logging policy and \(\pi\) the candidate. If \(\beta(a\mid h)=0\) where \(\pi(a\mid h)>0\), the ratio is undefined: the log has no support for that decision. Large products also create enormous variance. Offline reinforcement learning therefore needs coverage, conservative value estimates, and explicit shift diagnostics [[72](../../references.md#ref-72)] [[73](../../references.md#ref-73)].
+Here \(T_i\) is the number of actions in trajectory \(i\), so its ratios run from \(0\) through \(T_i-1\). \(\beta\) is the logging policy and \(\pi\) the candidate. If \(\beta(a\mid h)=0\) where \(\pi(a\mid h)>0\), the ratio is undefined: the log has no support for that decision. Large products also create enormous variance. Offline reinforcement learning therefore needs coverage, conservative value estimates, and explicit shift diagnostics [[72](../../references.md#ref-72)] [[73](../../references.md#ref-73)].
 
 Behavioral cloning has the same fault line. It learns from demonstrated states, then makes small errors that carry it into states the demonstrations did not cover; subsequent errors compound [[70](../../references.md#ref-70)]. Human-feedback training changes proposal and preference behavior, but the reward model carries its own biases and proxy incentives [[71](../../references.md#ref-71)]. A static benchmark can certify yesterday's neighborhood while deployment drives across town.
 
@@ -150,6 +164,16 @@ H_{\hat\theta}^{-1}
 \]
 
 > **Try this with numbers.** Step 1: in one dimension let the test gradient be 2, inverse Hessian 0.5, and suspect-item gradient 3. Step 2: influence is \(-2\times0.5\times3=-3\); its magnitude ranks the item as high leverage, while the sign predicts direction locally.
+
+Read the product from right to left. The gradient of \(L(z,\hat\theta)\) says how
+the suspect item would push the fitted parameters. The inverse Hessian
+\(H_{\hat\theta}^{-1}\)—a correction for local curvature—estimates how readily
+those parameters would move. The test gradient then asks how that movement
+would change test loss, and the transpose combines the comparison into one
+number. This is differential bookkeeping for triage; replay must still call the
+witness.
+
+The imagined experiment is simple: turn the volume of one training item \(z\) up by a tiny amount, refit the model, and ask how the test loss would move. The item's gradient points toward the parameter change it requests. The inverse Hessian adjusts that request for the local shape of the loss surface—some directions move easily, others resist—and the test gradient translates the resulting motion into test damage or improvement. The formula estimates this tiny experiment without fully retraining. It is a suspect-ranking device, not proof that the suspect caused the crime.
 
 The approximation assumes smooth loss, a locally well-behaved fitted point, invertible or damped curvature, and a small perturbation [[50](../../references.md#ref-50)]. It is a clue for triage, not a causal pardon.
 

@@ -46,6 +46,11 @@ P(o_{t+1}\mid b_t,a_t)=\sum_{s'}\Omega(o_{t+1}\mid s',a_t)\sum_s T(s'\mid s,a_t)
 
 > **Try this with numbers.** Step 1: predict next-state mass \(0.6\) and \(0.4\). Step 2: likelihoods \(0.8\) and \(0.2\) give observation probability \(0.8(0.6)+0.2(0.4)=0.56\).
 
+The \(0.56\) is the model's forecast for the observation itself. Had the actual
+observation received probability near zero, Agent-427 should suspect a missing
+hypothesis or a changed world rather than normalize the old choices into false
+confidence. The second equation is therefore also a model-mismatch alarm.
+
 Read the filter as two moves: **predict**, then **correct**.
 
 ![Two overlapping loops labeled predict and correct, with an observation moving probability mass between hypotheses](../../assets/diagrams/03-belief-update.png)
@@ -64,6 +69,8 @@ Some vocabulary, defined once and used forever after. Conditional probability
 \(Y\)." A **prior** is the belief before the new observation. A **likelihood**
 is how well a possible state explains the observation. The **posterior** is the
 corrected belief after combining them.
+
+Conditional probability becomes less mysterious when read as a counting instruction. In \(P(X\mid Y)\), first keep only the cases in which \(Y\) happened; then ask what fraction of those cases also contain \(X\). If ten failed test runs are under examination and nine came from a bug in module A, then \(P(\text{bug in A}\mid\text{test failed})=9/10\). A probability distribution is simply the complete list of such shares, which must add to \(1\), or 100 percent. Normalizing the scores \(0.45\) and \(0.05\) means dividing both by their total \(0.5\). This turns them into \(0.9\) and \(0.1\) without changing their nine-to-one relationship.
 
 A two-state example makes the arithmetic concrete. Suppose the agent believes a
 bug is in module A with probability \(0.5\) and in module B with probability
@@ -127,6 +134,8 @@ expected total reward, with rewards further in the future shrunk by the discount
 factor \(\gamma\)." The symbol \(\mathbb{E}\) means "expected value", the
 probability-weighted average.
 
+Here is that phrase without its ceremonial robes. Imagine ten possible runs of the same decision. Seven runs end well and earn \(6\) points each; three end badly and lose \(4\) points each. The ordinary average across those ten runs is \([7(6)+3(-4)]/10=3\). Writing the same calculation with probabilities gives \(0.7(6)+0.3(-4)=3\). In other words: list the possible results, multiply each result by how often it is expected to occur, and add the pieces. The answer is not a promise about the next run, and the number \(3\) need not occur in any single run. It is the long-run balancing point used to compare decisions before the next future reveals itself.
+
 At a single step, the expected-utility rule is:
 
 \[
@@ -142,6 +151,8 @@ belief distribution are adequate for the decision at hand
 [[33](../../references.md#ref-33)] [[34](../../references.md#ref-34)]. The
 assumption matters. If the belief state omits a safety-relevant variable, the
 expected utility calculation can be precise and still wrong.
+
+The \(\arg\max\) operation can be done with a small table. Put one candidate action on each row, calculate its expected utility, and circle the row with the largest number. In the example, action A scores \(3.2\) and action B scores \(3\). The maximum is the number \(3.2\); the *arg*ument that produced that maximum is action A. Thus \(\max\) answers "what is the winning score?" while \(\arg\max\) answers "which action won?" The star on \(a_t^\star\) marks that winning action, not an action blessed with certainty.
 
 ### Two Roads and a Hidden Storm
 
@@ -239,6 +250,8 @@ largest possible value for two states. A belief of \(1.0/0.0\) has entropy
 \(0\), because nothing is left to learn. Entropy measures confusion; only VoI
 measures whether that confusion is expensive.
 
+A bit can be pictured as the answer to one yes-or-no question. If the bug is equally likely to be in module A or module B, one perfect question—"Is it in A?"—settles the matter, so the uncertainty is one bit. If the agent already knows it is in A, no question is needed and the entropy is zero. The logarithm in the formula converts a probability into this "how many binary questions would the surprise cost?" scale; the minus sign keeps the final uncertainty nonnegative.
+
 ### Deciding Now While Protecting Later
 
 Sequential control carries the same idea forward in time through a belief-space
@@ -254,6 +267,8 @@ from that belief, \(P(o\mid b,a)\) is the probability of seeing observation
 The agent is therefore not merely selecting an action; it is selecting the
 future quality of its own epistemic state [[5](../../references.md#ref-5)]
 [[7](../../references.md#ref-7)].
+
+A program can evaluate the equation with a small worksheet. For each legal action, write down its immediate reward. Then list the observations that might arrive, multiply each observation's chance by the value of the belief that would follow it, and add those branches. Shrink that future total by \(\gamma\), add the immediate reward, and repeat for the next action. The outer \(\max\) simply keeps the action with the largest completed worksheet. The grandeur of recursive control has, at runtime, the manners of a careful bookkeeper.
 
 The control loop now becomes a short branch on the size of the action gap. If
 one action clearly wins, act. If not, consider buying evidence. If evidence

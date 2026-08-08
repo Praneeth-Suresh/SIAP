@@ -80,6 +80,16 @@ Parameterized policies can adapt from experience. The policy-gradient theorem gi
 
 > **Try this with numbers.** Step 1: let the sampled log-policy gradient be 0.2 and estimated action value be 5. Step 2: their sample contribution to the gradient estimate is \(0.2\times5=1\).
 
+One sampled term says: find the parameter direction that would make the chosen
+action more likely, then scale that direction by the action's estimated
+consequence. Good actions receive stronger encouragement; bad actions can push
+the other way. Averaging those noisy nudges is how experience becomes a policy
+update. The advantage baseline below makes the comparison relative to what was
+expected in that state, so merely visiting a pleasant state does not earn every
+action a medal.
+
+Think of \(\theta\) as a panel of thousands of small knobs controlling which actions the policy prefers. Turning one knob slightly may make `inspect` more likely; turning another may make `edit` less likely. The expression \(\nabla_\theta\log\pi_\theta(a\mid s)\) supplies a tiny arrow for each knob, showing how it could make the sampled action more or less likely. \(Q^{\pi_\theta}(s,a)\) then controls the strength and direction of the nudge according to the action's estimated consequences. The expected value means repeating this across many runs and averaging the nudges, because one lucky trace should not be permitted to seize the entire control panel.
+
 When the assumptions are violated, an off-policy log or misspecified reward makes that same gradient a direction for improving somebody else's policy or the wrong objective. Measure behavior-policy mismatch and true task outcomes before calling the update improvement.
 
 often using the advantage baseline \(A^\pi(s,a)=Q^\pi(s,a)-V^\pi(s)\) to reduce variance without changing the expected gradient [[3](../../references.md#ref-3)] [[40](../../references.md#ref-40)]. Read the advantage as "how much better this action is than the policy's average behavior in this state". If \(Q^\pi(s,a)=8\) and \(V^\pi(s)=7.5\), the advantage is \(0.5\): a mild nudge upward, not a triumph.
@@ -133,6 +143,8 @@ If deployment is too risky, learn from a static log \(D\) produced by behavior p
 
 > **Try this with numbers.** Step 1: for \(H_i=2\) actions, let probability ratios be \(0.8/0.4=2\) and \(0.3/0.6=0.5\). Step 2: their product is \(2\times0.5=1\), so a logged return \(G_i=6\) contributes 6 before averaging.
 
+Each fraction asks a literal question: "How much more or less likely would the new policy be to take this logged action than the old policy was?" A ratio of \(2\) gives that step twice its ordinary vote; a ratio of \(0.5\) gives it half a vote. Multiplying the ratios gives one weight for the whole trajectory, because the candidate must account for every logged decision in sequence. If the old policy assigned an action probability zero, there is no recorded experiment to reweight. The ledger is silent, and division by zero is mathematics refusing to fabricate testimony.
+
 If \(\mu(a\mid s)=0\) where \(\pi(a\mid s)>0\), the ratio is undefined: the log cannot testify about an action it never took. Conservative offline methods respond by penalizing unsupported values rather than hallucinating competence [[73](../../references.md#ref-73)]. For Agent-427, the deployment policy is simpler still: offline data may tune read-only proposal and routing behavior, but it cannot confer write or deployment authority.
 
 ### Meta-Learning: Adaptation Without Pretending Every Task Is New
@@ -144,6 +156,8 @@ Meta-learning trains across a task distribution so a small amount of task-specif
 \]
 
 > **Try this with numbers.** Step 1: let \(\theta=1.0\), inner gradient 2, and \(\alpha=0.1\), giving adapted parameter \(1.0-0.1(2)=0.8\). Step 2: if task loss falls from 4 to 3 at 0.8, the meta-objective records the post-update loss 3.
+
+The parentheses contain the inner loop: begin at \(\theta\), look at one task's slope, and take one learning step of size \(\alpha\). Everything outside the parentheses is the outer loop: grade that adjusted policy on each task and choose a starting \(\theta\) whose one-step adaptations work well across the collection. Ordinary training asks, "How good are these settings now?" Meta-learning asks, "How good are these settings after one small lesson?" It is the difference between memorizing an answer and arriving prepared to learn the local dialect.
 
 The interpreter does not change shape; the lifecycle gains an adaptation operator and an evaluation boundary. Test on held-out task families, because memorizing the training distribution is merely overfitting in a cape.
 

@@ -68,6 +68,14 @@ where \(\varepsilon_R\) and \(\varepsilon_P\) bound reward and transition mismat
 
 Two pieces of notation deserve a plain reading. The norm \(\|\cdot\|_\infty\), called the **supremum norm** or **sup norm**, means "look at the largest absolute error over all states". The symbol \(\lesssim\) means "bounded up to a conventional constant or omitted technical factor". It is a mathematician's compact way of saying that the right-hand side controls the scale of the left-hand side.
 
+The composition \(\bar V^{*}\!\circ\phi\) means “compress first, then value”:
+map the detailed state \(s\) to \(\phi(s)\), then ask the abstract planner for
+\(\bar V^{*}(\phi(s))\). The left side therefore compares the original planner
+with its compressed counterpart and reports their worst disagreement over
+detailed states.
+
+The sup norm is a worst-case check. Suppose compression changes the estimated values of three states by \(+0.1\), \(-0.7\), and \(+0.2\). Ignore the signs, because being \(0.7\) too low is as large an error as being \(0.7\) too high; the absolute errors are \(0.1\), \(0.7\), and \(0.2\). The sup norm reports the largest, \(0.7\). It deliberately lets the most damaged state speak for the whole abstraction, because one badly compressed safety-critical state can matter more than a hundred harmless summaries.
+
 The assumptions behind the bound are doing real work:
 
 - rewards must be bounded by \(R_{\max}\), the largest reward magnitude;
@@ -198,6 +206,8 @@ P(x_1,\dots,x_n\mid \mathrm{do}(X_j=x))=\mathbf{1}[x_j=x]\prod_{i\neq j}P(x_i\mi
 These are **structural causal equations**. Each variable \(X_i\) is produced by a function \(f_i\) of its parents \(\mathrm{Pa}(X_i)\) and background disturbance \(U_i\). Read \(\mathrm{Pa}(X_i)\) as "the parents of \(X_i\)", meaning the variables that directly cause it. The product factorization says the joint probability can be assembled from each variable given its parents.
 
 The notation \(\mathrm{do}(X_j=x)\) means an intervention: set \(X_j\) to \(x\) by action, rather than merely observing that it happened to equal \(x\). The indicator \(\mathbf{1}[x_j=x]\) reads "one when \(x_j\) equals \(x\), zero otherwise", which is how the equation records that the intervened variable no longer listens to its parents. In code-agent language, observing that "tests pass after a cache clear" is not the same as knowing that clearing the cache caused the pass. Perhaps the dependency install was the real mechanism.
+
+Picture two identical sandbox copies. In the first, Agent-427 merely watches a cache clear happen alongside a dependency refresh. In the second, it deliberately clears the cache while holding the dependency state fixed. The ordinary conditional probability describes the first scene: what tends to be seen together. The \(do\) expression describes the second: force one variable to a chosen value, cut the usual causes feeding into it, and watch what changes downstream. Causal claims require the second kind of comparison, or assumptions strong enough to stand in for it.
 
 That distinction matters for agents because they do not merely predict. They edit files, send messages, allocate resources, and call tools. "This change correlated with lower latency" is weaker than "raising worker count lowers queue latency after a delay and raises cost".
 

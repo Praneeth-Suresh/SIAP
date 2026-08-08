@@ -107,15 +107,25 @@ In partial observability the recursion runs over belief, not omniscient state [[
 
 ## Spending Simulations Under a Clock
 
-Monte Carlo tree search allocates rollouts with an optimism bonus:
+After expanding every unvisited action once, Monte Carlo tree search allocates
+further rollouts with an optimism bonus:
 
 \[
-a^\star=\arg\max_a\left(
+a^\star=\arg\max_{a:\,N(s,a)>0}\left(
 Q(s,a)+c\sqrt{\frac{\ln N(s)}{N(s,a)}}
 \right).
 \]
 
 > **Try this with numbers.** Step 1: let \(Q=4\), \(c=1\), parent visits \(N(s)=100\), and action visits \(N(s,a)=4\); the bonus is about \(\sqrt{4.605/4}=1.07\). Step 2: the selection score is about 5.07; after 40 action visits the bonus falls to about 0.34.
+
+Here \(Q(s,a)\) is the average value observed after trying action \(a\) from state
+\(s\); \(N(s)\) counts visits to the state, and \(N(s,a)\) counts trials of that
+action. The constant \(c\) sets the appetite for exploration. The square-root
+term is an uncertainty allowance: it is large for neglected branches and
+shrinks as evidence accumulates. Agent-427 spends some rollouts to remain
+correctable.
+
+A tree-search implementation can keep two columns beside every tried action. The first column, \(Q\), is “how well this branch has done so far.” The second is a curiosity allowance. A branch tried only four times receives a larger allowance than one tried forty times, because little evidence exists about it. Add the columns and inspect the largest total. As visits accumulate, the denominator grows and curiosity fades; the branch must eventually survive on results rather than novelty. Actions with no visits are handled first, before this division is used.
 
 Rollouts trade exploitation of promising branches against exploration of neglected ones [[45](../../references.md#ref-45)]. Under change, timestamps matter: a thousand rollouts through yesterday's model are a beautifully estimated obsolete policy.
 
@@ -133,7 +143,16 @@ Receding-horizon control goes farther: optimize several steps, execute one, obse
 
 > **Try this with numbers.** Step 1: for horizon 2, candidate A has step costs 2 and 3 plus terminal cost 1, totaling 6. Step 2: candidate B totals \(1+2+2=5\); choose B, execute only its first action, then measure again.
 
-subject to \(x_{k+1}=F(x_k,u_k)\) and \(g(x_k,u_k)\le0\). The optimizer reasons over a sequence; the agent executes only the first component before feedback revises the problem [[41](../../references.md#ref-41)].
+subject to \(x_{t+k+1}=F(x_{t+k},u_{t+k})\) and
+\(g(x_{t+k},u_{t+k})\le0\) for \(k=0,\ldots,H-1\). The optimizer reasons
+over a sequence; the agent executes only the first component before feedback
+revises the problem [[41](../../references.md#ref-41)].
+
+Read \(\mathbf{u}_{t:t+H-1}\) as a proposed sequence of \(H\) controls beginning
+now. Each \(\ell\) charges for one step, \(\ell_f\) charges for the state left at
+the horizon, \(F\) predicts the next state, and \(g\le0\) marks the admissible
+region. The star crowns the cheapest legal imagined sequence; only its first
+action inherits a chance to meet reality.
 
 ```text
 function RECEDING_HORIZON_STEP(sigma, horizon, budget):

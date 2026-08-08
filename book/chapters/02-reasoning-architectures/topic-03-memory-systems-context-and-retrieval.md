@@ -78,6 +78,13 @@ Sparse retrieval begins with lexical anchors. BM25 scores a query \(q\) against 
 
 > **Try this with numbers.** Step 1: ignore length normalization, set \(\mathrm{IDF}=2\), \(f=1\), and \(k_1=1\); the term contributes \(2\times2/(1+1)=2\). Step 2: raise frequency to 3; contribution becomes \(2\times6/4=3\), showing saturation rather than triple reward.
 
+Read the fraction as a damped vote for one query term. \(f(t,d)\) counts that
+term in the document; \(\mathrm{IDF}(t)\) lets rare terms vote more strongly;
+and \(|d|/\mathrm{avgdl}\) compares the document's length with the average. The
+constants \(k_1\) and \(b\) tune repetition saturation and length normalization.
+Thus `legacy-v2` may cast a loud vote, but BM25 still knows nothing about whether
+that branch is the current one.
+
 Rare exact strings such as `legacy-v2` and `service.toml` become valuable anchors [[46](../../references.md#ref-46)]. Dense retrieval instead compares embedding directions:
 
 \[
@@ -147,6 +154,14 @@ I(X;\hat{X}).
 > **Try this with numbers.** Step 1: suppose a 100-token trace compresses to 20 tokens and loses 1 of 10 action-critical facts, giving distortion 0.1. Step 2: if the allowed distortion is \(D=0.05\), reject the summary even though it saves 80 tokens.
 
 \(X\) is the original trace, \(\hat X\) its compressed form, \(d\) task-relative loss, and \(I(X;\hat X)\) retained information [[35](../../references.md#ref-35)]. The distortion measure must name the future job. Dropping exact TeX output may be tolerable for a progress note and fatal for debugging.
+
+Read \(R(D)\) as the least information a compressor must preserve to keep
+average task damage at or below \(D\). The minimization ranges over possible
+compression rules \(p(\hat x\mid x)\). This is why the distortion function
+carries the moral burden: if it forgets branch identity, the optimum may be
+wonderfully small and operationally treasonous.
+
+A literal compressor can follow the formula as a contest among summaries. Produce several candidate summaries, reconstruct or answer future task questions from each one, and measure the damage \(d\) caused by what each summary forgot. Reject every candidate whose average damage exceeds \(D\). Among the survivors, choose the one that retains the least information from the original. The bargain is not “make the text short.” It is “make it as short as possible without crossing the declared damage limit.”
 
 Forgetting is mandatory when retention violates consent, crosses tenant boundaries, outlives a purpose, or keeps known poison eligible for retrieval. It is also useful under context pressure. The controller should evict active influence while retaining only the minimum audit artifact policy permits. Privacy deletion and active-context eviction are not synonyms: one destroys or irreversibly anonymizes stored data; the other merely removes it from current attention.
 

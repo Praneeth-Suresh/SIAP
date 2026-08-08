@@ -82,6 +82,8 @@ u_i\!\big(g(\theta'_i,\hat\theta_{-i}),p_i(\theta'_i,\hat\theta_{-i});\theta_i\b
 
 Read the left side as "what agent \(i\) really gets when it tells the truth." Read the right side as "what it really gets from any lie \(\theta'_i\)." The word *dominant* is the strong part: the inequality must hold for every possible behaviour of the other agents, not merely on average.
 
+To test the inequality, freeze every other agent's reports. Run the mechanism once with agent \(i\)'s true report and record its real payoff after allocation and transfer. Then try every lie available to that agent while keeping the frozen reports unchanged. Truthfulness requires the truthful payoff to be at least as large in every comparison. One lie that yields more is enough to break the property; a thousand honest-looking demonstrations cannot vote the counterexample away.
+
 ## Efficient Allocation and the Vickrey-Clarke-Groves Transfer
 
 Efficient allocation seeks
@@ -214,6 +216,13 @@ Trust decays while it remains unverified. One compact model is
 Here \(\rho_i\) is reputation, \(\lambda\) is the interest rate on trust, and
 \(v_i\in[0,1]\) is verified performance and the outer minimum keeps reputation
 inside its probability-like range. Trust borrowed today costs evidence tomorrow.
+
+Here \(\Delta\) is elapsed time, so \(e^{-\lambda\Delta}\) is the fraction of
+unsupported trust that survives the interval; \(\eta\) controls how much a newly
+verified result replenishes the account. The outer minimum prevents repeated
+evidence from minting super-trust. Time debits the old balance, verification
+credits the ledger, and neither rhetoric nor silence counts as a deposit.
+
 High decay is appropriate when the environment shifts quickly or effects are
 dangerous; low decay suits stable, repeatedly verified work. Reputation is not
 forgiveness in decimal form. It is a prior that expires.[^trust-bank]

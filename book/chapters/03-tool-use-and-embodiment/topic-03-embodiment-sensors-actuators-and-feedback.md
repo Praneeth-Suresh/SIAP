@@ -146,6 +146,13 @@ The remaining letters each have one job:
 - The Kalman gain \(K_t\) decides how strongly to trust the new observation
   relative to the prediction.
 
+The gain formula is a trust dial. Its denominator combines uncertainty in the
+model's prediction, viewed through sensor map \(H\), with the sensor's own noise
+\(R\). More model uncertainty or a cleaner measurement tends to enlarge \(K_t\);
+noisier measurement shrinks it. The transpose and inverse are the matrix
+bookkeeping needed when states and sensors have several coordinates. The scalar
+example is the same bargain with the paperwork removed.
+
 ### Delay Requires an Augmented State
 
 With observation delay \(d_o\), the state must be augmented, for example

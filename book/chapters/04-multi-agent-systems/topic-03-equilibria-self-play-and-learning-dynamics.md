@@ -46,6 +46,8 @@ u_i(\sigma_i^{*},\sigma_{-i}^{*}) \ge u_i(\sigma_i,\sigma_{-i}^{*})\quad \forall
 
 Read \(\sigma_i\) as "the strategy of agent i" and \(\sigma_{-i}\) as "the strategies of everyone except agent i". The symbol \(\forall\) reads "for all". So the line says: for every agent, and for every alternative strategy that agent might try, switching alone does not raise its payoff. Nash's fixed-point result gives the central existence theorem for this kind of unilateral stability [[19](../../references.md#ref-19)]. The existence statement here assumes finitely many actions and permits mixed strategies. It does not promise an equilibrium inside an arbitrary neural policy class, nor does it tell an engineer how to find one before lunch.
 
+The mechanical test is: choose one agent, freeze every other agent's strategy, and let the chosen agent try every alternative available to it. If one alternative pays more, the current profile is not a Nash equilibrium. Repeat for every agent. Passing this test means no one can profit by moving alone; it does not mean the outcome is fair, safe, efficient, or pleasant. A prison can be stable. Stability is one question, not a certificate of virtue.
+
 The concept matters for agent systems because a protocol that works only before participants learn its incentives is not stable. Suppose a reviewer can gain influence by exaggerating severity. Suppose a worker can gain routing weight by overclaiming competence. In both cases the first demonstration has not tested the game the system will become.
 
 ### What Stability Looks Like in the Publication Workflow

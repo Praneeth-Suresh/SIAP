@@ -55,6 +55,8 @@ Structural operational semantics defines a language by local execution rules [[4
 
 The numerator contains premises; the denominator contains the transition they authorize. This tiny legal tablet turns “the model hallucinated an argument” into a located language violation. The interpreter refuses the call, records `invalid_tool_argument`, and returns the failure as a new observation. Constrained generation narrows proposals, but validation at the boundary decides legality. The model may imagine any kingdom it likes; the actuator recognizes passports.
 
+Read the horizontal line as the counter at a guarded checkpoint. Above it are the documents the caller must present: the action matches the schema *and* some hard budget remains. Below it is the permission granted when every document passes: this action may move the machine to a next state. If either statement above the line is false, nothing below the line follows. The fraction is not division; it is a machine-checkable “because these conditions hold, this transition is allowed.”
+
 ## The Assumption
 
 The interpreter pattern assumes the machine state contains every distinction needed to decide legality and preserve invariants. It also assumes that `think`, `act`, `observe`, and `reflect` have enforceable side-effect contracts:
@@ -168,6 +170,13 @@ F^\sharp=\alpha\circ F\circ\gamma.
 > **Try this with numbers.** Step 1: map budgets 1 and 100 through \(\alpha\) to the same abstract value `positive`. Step 2: apply the abstract rule: `act` may fire for `positive` and may not fire for `exhausted`; legality is preserved while exact affordability is forgotten.
 
 Here \(\alpha\) forgets detail, \(F\) is the concrete transformer, and \(\gamma\) denotes concretization—not the discount factor reused elsewhere [[43](../../references.md#ref-43)]. For the monotone hard action budget alone:
+
+Because function composition runs from right to left, the checker first expands
+an abstract state into its represented concrete states with \(\gamma\), advances
+those possibilities with \(F\), and compresses the result with \(\alpha\). It asks
+which results might occur, not which exact result did occur. That deliberate
+coarseness is what lets a cheap checker prove that exhausted authority cannot
+masquerade as permission.
 
 \[
 \alpha_B(B)=

@@ -614,6 +614,11 @@ P(o_{t+1}\mid b_t,a_t)=\sum_{s'}\Omega(o_{t+1}\mid s',a_t)\sum_s T(s'\mid s,a_t)
 
 > **Try this with numbers.** Step 1: predict next-state mass \(0.6\) and \(0.4\). Step 2: likelihoods \(0.8\) and \(0.2\) give observation probability \(0.8(0.6)+0.2(0.4)=0.56\).
 
+The \(0.56\) is the model's forecast for the observation itself. Had the actual
+observation received probability near zero, Agent-427 should suspect a missing
+hypothesis or a changed world rather than normalize the old choices into false
+confidence. The second equation is therefore also a model-mismatch alarm.
+
 Read the filter as two moves: **predict**, then **correct**.
 
 ![Predict and correct loops move probability mass among competing hypotheses after an observation.](book/assets/diagrams/03-belief-update.png){.diagram .inline-visual}
@@ -632,6 +637,8 @@ Some vocabulary, defined once and used forever after. Conditional probability
 \(Y\)." A **prior** is the belief before the new observation. A **likelihood**
 is how well a possible state explains the observation. The **posterior** is the
 corrected belief after combining them.
+
+Conditional probability becomes less mysterious when read as a counting instruction. In \(P(X\mid Y)\), first keep only the cases in which \(Y\) happened; then ask what fraction of those cases also contain \(X\). If ten failed test runs are under examination and nine came from a bug in module A, then \(P(\text{bug in A}\mid\text{test failed})=9/10\). A probability distribution is simply the complete list of such shares, which must add to \(1\), or 100 percent. Normalizing the scores \(0.45\) and \(0.05\) means dividing both by their total \(0.5\). This turns them into \(0.9\) and \(0.1\) without changing their nine-to-one relationship.
 
 A two-state example makes the arithmetic concrete. Suppose the agent believes a
 bug is in module A with probability \(0.5\) and in module B with probability
@@ -697,6 +704,8 @@ expected total reward, with rewards further in the future shrunk by the discount
 factor \(\gamma\)." The symbol \(\mathbb{E}\) means "expected value", the
 probability-weighted average.
 
+Here is that phrase without its ceremonial robes. Imagine ten possible runs of the same decision. Seven runs end well and earn \(6\) points each; three end badly and lose \(4\) points each. The ordinary average across those ten runs is \([7(6)+3(-4)]/10=3\). Writing the same calculation with probabilities gives \(0.7(6)+0.3(-4)=3\). In other words: list the possible results, multiply each result by how often it is expected to occur, and add the pieces. The answer is not a promise about the next run, and the number \(3\) need not occur in any single run. It is the long-run balancing point used to compare decisions before the next future reveals itself.
+
 At a single step, the expected-utility rule is:
 
 \[
@@ -712,6 +721,8 @@ belief distribution are adequate for the decision at hand
 [[33](#ref-33)] [[34](#ref-34)]. The
 assumption matters. If the belief state omits a safety-relevant variable, the
 expected utility calculation can be precise and still wrong.
+
+The \(\arg\max\) operation can be done with a small table. Put one candidate action on each row, calculate its expected utility, and circle the row with the largest number. In the example, action A scores \(3.2\) and action B scores \(3\). The maximum is the number \(3.2\); the *arg*ument that produced that maximum is action A. Thus \(\max\) answers "what is the winning score?" while \(\arg\max\) answers "which action won?" The star on \(a_t^\star\) marks that winning action, not an action blessed with certainty.
 
 #### Two Roads and a Hidden Storm
 
@@ -809,6 +820,8 @@ largest possible value for two states. A belief of \(1.0/0.0\) has entropy
 \(0\), because nothing is left to learn. Entropy measures confusion; only VoI
 measures whether that confusion is expensive.
 
+A bit can be pictured as the answer to one yes-or-no question. If the bug is equally likely to be in module A or module B, one perfect question—"Is it in A?"—settles the matter, so the uncertainty is one bit. If the agent already knows it is in A, no question is needed and the entropy is zero. The logarithm in the formula converts a probability into this "how many binary questions would the surprise cost?" scale; the minus sign keeps the final uncertainty nonnegative.
+
 #### Deciding Now While Protecting Later
 
 Sequential control carries the same idea forward in time through a belief-space
@@ -824,6 +837,8 @@ from that belief, \(P(o\mid b,a)\) is the probability of seeing observation
 The agent is therefore not merely selecting an action; it is selecting the
 future quality of its own epistemic state [[5](#ref-5)]
 [[7](#ref-7)].
+
+A program can evaluate the equation with a small worksheet. For each legal action, write down its immediate reward. Then list the observations that might arrive, multiply each observation's chance by the value of the belief that would follow it, and add those branches. Shrink that future total by \(\gamma\), add the immediate reward, and repeat for the next action. The outer \(\max\) simply keeps the action with the largest completed worksheet. The grandeur of recursive control has, at runtime, the manners of a careful bookkeeper.
 
 The control loop now becomes a short branch on the size of the action gap. If
 one action clearly wins, act. If not, consider buying evidence. If evidence
@@ -1018,6 +1033,14 @@ where \(\varepsilon_R\) and \(\varepsilon_P\) bound reward and transition mismat
 
 Two pieces of notation deserve a plain reading. The norm \(\|\cdot\|_\infty\), called the **supremum norm** or **sup norm**, means "look at the largest absolute error over all states". The symbol \(\lesssim\) means "bounded up to a conventional constant or omitted technical factor". It is a mathematician's compact way of saying that the right-hand side controls the scale of the left-hand side.
 
+The composition \(\bar V^{*}\!\circ\phi\) means “compress first, then value”:
+map the detailed state \(s\) to \(\phi(s)\), then ask the abstract planner for
+\(\bar V^{*}(\phi(s))\). The left side therefore compares the original planner
+with its compressed counterpart and reports their worst disagreement over
+detailed states.
+
+The sup norm is a worst-case check. Suppose compression changes the estimated values of three states by \(+0.1\), \(-0.7\), and \(+0.2\). Ignore the signs, because being \(0.7\) too low is as large an error as being \(0.7\) too high; the absolute errors are \(0.1\), \(0.7\), and \(0.2\). The sup norm reports the largest, \(0.7\). It deliberately lets the most damaged state speak for the whole abstraction, because one badly compressed safety-critical state can matter more than a hundred harmless summaries.
+
 The assumptions behind the bound are doing real work:
 
 - rewards must be bounded by \(R_{\max}\), the largest reward magnitude;
@@ -1150,6 +1173,8 @@ P(x_1,\dots,x_n\mid \mathrm{do}(X_j=x))=\mathbf{1}[x_j=x]\prod_{i\neq j}P(x_i\mi
 These are **structural causal equations**. Each variable \(X_i\) is produced by a function \(f_i\) of its parents \(\mathrm{Pa}(X_i)\) and background disturbance \(U_i\). Read \(\mathrm{Pa}(X_i)\) as "the parents of \(X_i\)", meaning the variables that directly cause it. The product factorization says the joint probability can be assembled from each variable given its parents.
 
 The notation \(\mathrm{do}(X_j=x)\) means an intervention: set \(X_j\) to \(x\) by action, rather than merely observing that it happened to equal \(x\). The indicator \(\mathbf{1}[x_j=x]\) reads "one when \(x_j\) equals \(x\), zero otherwise", which is how the equation records that the intervened variable no longer listens to its parents. In code-agent language, observing that "tests pass after a cache clear" is not the same as knowing that clearing the cache caused the pass. Perhaps the dependency install was the real mechanism.
+
+Picture two identical sandbox copies. In the first, Agent-427 merely watches a cache clear happen alongside a dependency refresh. In the second, it deliberately clears the cache while holding the dependency state fixed. The ordinary conditional probability describes the first scene: what tends to be seen together. The \(do\) expression describes the second: force one variable to a chosen value, cut the usual causes feeding into it, and watch what changes downstream. Causal claims require the second kind of comparison, or assumptions strong enough to stand in for it.
 
 That distinction matters for agents because they do not merely predict. They edit files, send messages, allocate resources, and call tools. "This change correlated with lower latency" is weaker than "raising worker count lowers queue latency after a delay and raises cost".
 
@@ -1292,6 +1317,16 @@ Parameterized policies can adapt from experience. The policy-gradient theorem gi
 
 > **Try this with numbers.** Step 1: let the sampled log-policy gradient be 0.2 and estimated action value be 5. Step 2: their sample contribution to the gradient estimate is \(0.2\times5=1\).
 
+One sampled term says: find the parameter direction that would make the chosen
+action more likely, then scale that direction by the action's estimated
+consequence. Good actions receive stronger encouragement; bad actions can push
+the other way. Averaging those noisy nudges is how experience becomes a policy
+update. The advantage baseline below makes the comparison relative to what was
+expected in that state, so merely visiting a pleasant state does not earn every
+action a medal.
+
+Think of \(\theta\) as a panel of thousands of small knobs controlling which actions the policy prefers. Turning one knob slightly may make `inspect` more likely; turning another may make `edit` less likely. The expression \(\nabla_\theta\log\pi_\theta(a\mid s)\) supplies a tiny arrow for each knob, showing how it could make the sampled action more or less likely. \(Q^{\pi_\theta}(s,a)\) then controls the strength and direction of the nudge according to the action's estimated consequences. The expected value means repeating this across many runs and averaging the nudges, because one lucky trace should not be permitted to seize the entire control panel.
+
 When the assumptions are violated, an off-policy log or misspecified reward makes that same gradient a direction for improving somebody else's policy or the wrong objective. Measure behavior-policy mismatch and true task outcomes before calling the update improvement.
 
 often using the advantage baseline \(A^\pi(s,a)=Q^\pi(s,a)-V^\pi(s)\) to reduce variance without changing the expected gradient [[3](#ref-3)] [[40](#ref-40)]. Read the advantage as "how much better this action is than the policy's average behavior in this state". If \(Q^\pi(s,a)=8\) and \(V^\pi(s)=7.5\), the advantage is \(0.5\): a mild nudge upward, not a triumph.
@@ -1345,6 +1380,8 @@ If deployment is too risky, learn from a static log \(D\) produced by behavior p
 
 > **Try this with numbers.** Step 1: for \(H_i=2\) actions, let probability ratios be \(0.8/0.4=2\) and \(0.3/0.6=0.5\). Step 2: their product is \(2\times0.5=1\), so a logged return \(G_i=6\) contributes 6 before averaging.
 
+Each fraction asks a literal question: "How much more or less likely would the new policy be to take this logged action than the old policy was?" A ratio of \(2\) gives that step twice its ordinary vote; a ratio of \(0.5\) gives it half a vote. Multiplying the ratios gives one weight for the whole trajectory, because the candidate must account for every logged decision in sequence. If the old policy assigned an action probability zero, there is no recorded experiment to reweight. The ledger is silent, and division by zero is mathematics refusing to fabricate testimony.
+
 If \(\mu(a\mid s)=0\) where \(\pi(a\mid s)>0\), the ratio is undefined: the log cannot testify about an action it never took. Conservative offline methods respond by penalizing unsupported values rather than hallucinating competence [[73](#ref-73)]. For Agent-427, the deployment policy is simpler still: offline data may tune read-only proposal and routing behavior, but it cannot confer write or deployment authority.
 
 #### Meta-Learning: Adaptation Without Pretending Every Task Is New
@@ -1356,6 +1393,8 @@ Meta-learning trains across a task distribution so a small amount of task-specif
 \]
 
 > **Try this with numbers.** Step 1: let \(\theta=1.0\), inner gradient 2, and \(\alpha=0.1\), giving adapted parameter \(1.0-0.1(2)=0.8\). Step 2: if task loss falls from 4 to 3 at 0.8, the meta-objective records the post-update loss 3.
+
+The parentheses contain the inner loop: begin at \(\theta\), look at one task's slope, and take one learning step of size \(\alpha\). Everything outside the parentheses is the outer loop: grade that adjusted policy on each task and choose a starting \(\theta\) whose one-step adaptations work well across the collection. Ordinary training asks, "How good are these settings now?" Meta-learning asks, "How good are these settings after one small lesson?" It is the difference between memorizing an answer and arriving prepared to learn the local dialect.
 
 The interpreter does not change shape; the lifecycle gains an adaptation operator and an evaluation boundary. Test on held-out task families, because memorizing the training distribution is merely overfitting in a cape.
 
@@ -1624,6 +1663,8 @@ Structural operational semantics defines a language by local execution rules [[4
 
 The numerator contains premises; the denominator contains the transition they authorize. This tiny legal tablet turns “the model hallucinated an argument” into a located language violation. The interpreter refuses the call, records `invalid_tool_argument`, and returns the failure as a new observation. Constrained generation narrows proposals, but validation at the boundary decides legality. The model may imagine any kingdom it likes; the actuator recognizes passports.
 
+Read the horizontal line as the counter at a guarded checkpoint. Above it are the documents the caller must present: the action matches the schema *and* some hard budget remains. Below it is the permission granted when every document passes: this action may move the machine to a next state. If either statement above the line is false, nothing below the line follows. The fraction is not division; it is a machine-checkable “because these conditions hold, this transition is allowed.”
+
 ### The Assumption
 
 The interpreter pattern assumes the machine state contains every distinction needed to decide legality and preserve invariants. It also assumes that `think`, `act`, `observe`, and `reflect` have enforceable side-effect contracts:
@@ -1739,6 +1780,13 @@ F^\sharp=\alpha\circ F\circ\gamma.
 > **Try this with numbers.** Step 1: map budgets 1 and 100 through \(\alpha\) to the same abstract value `positive`. Step 2: apply the abstract rule: `act` may fire for `positive` and may not fire for `exhausted`; legality is preserved while exact affordability is forgotten.
 
 Here \(\alpha\) forgets detail, \(F\) is the concrete transformer, and \(\gamma\) denotes concretization—not the discount factor reused elsewhere [[43](#ref-43)]. For the monotone hard action budget alone:
+
+Because function composition runs from right to left, the checker first expands
+an abstract state into its represented concrete states with \(\gamma\), advances
+those possibilities with \(F\), and compresses the result with \(\alpha\). It asks
+which results might occur, not which exact result did occur. That deliberate
+coarseness is what lets a cheap checker prove that exhausted authority cannot
+masquerade as permission.
 
 \[
 \alpha_B(B)=
@@ -1903,15 +1951,25 @@ In partial observability the recursion runs over belief, not omniscient state [[
 
 ### Spending Simulations Under a Clock
 
-Monte Carlo tree search allocates rollouts with an optimism bonus:
+After expanding every unvisited action once, Monte Carlo tree search allocates
+further rollouts with an optimism bonus:
 
 \[
-a^\star=\arg\max_a\left(
+a^\star=\arg\max_{a:\,N(s,a)>0}\left(
 Q(s,a)+c\sqrt{\frac{\ln N(s)}{N(s,a)}}
 \right).
 \]
 
 > **Try this with numbers.** Step 1: let \(Q=4\), \(c=1\), parent visits \(N(s)=100\), and action visits \(N(s,a)=4\); the bonus is about \(\sqrt{4.605/4}=1.07\). Step 2: the selection score is about 5.07; after 40 action visits the bonus falls to about 0.34.
+
+Here \(Q(s,a)\) is the average value observed after trying action \(a\) from state
+\(s\); \(N(s)\) counts visits to the state, and \(N(s,a)\) counts trials of that
+action. The constant \(c\) sets the appetite for exploration. The square-root
+term is an uncertainty allowance: it is large for neglected branches and
+shrinks as evidence accumulates. Agent-427 spends some rollouts to remain
+correctable.
+
+A tree-search implementation can keep two columns beside every tried action. The first column, \(Q\), is “how well this branch has done so far.” The second is a curiosity allowance. A branch tried only four times receives a larger allowance than one tried forty times, because little evidence exists about it. Add the columns and inspect the largest total. As visits accumulate, the denominator grows and curiosity fades; the branch must eventually survive on results rather than novelty. Actions with no visits are handled first, before this division is used.
 
 Rollouts trade exploitation of promising branches against exploration of neglected ones [[45](#ref-45)]. Under change, timestamps matter: a thousand rollouts through yesterday's model are a beautifully estimated obsolete policy.
 
@@ -1929,7 +1987,16 @@ Receding-horizon control goes farther: optimize several steps, execute one, obse
 
 > **Try this with numbers.** Step 1: for horizon 2, candidate A has step costs 2 and 3 plus terminal cost 1, totaling 6. Step 2: candidate B totals \(1+2+2=5\); choose B, execute only its first action, then measure again.
 
-subject to \(x_{k+1}=F(x_k,u_k)\) and \(g(x_k,u_k)\le0\). The optimizer reasons over a sequence; the agent executes only the first component before feedback revises the problem [[41](#ref-41)].
+subject to \(x_{t+k+1}=F(x_{t+k},u_{t+k})\) and
+\(g(x_{t+k},u_{t+k})\le0\) for \(k=0,\ldots,H-1\). The optimizer reasons
+over a sequence; the agent executes only the first component before feedback
+revises the problem [[41](#ref-41)].
+
+Read \(\mathbf{u}_{t:t+H-1}\) as a proposed sequence of \(H\) controls beginning
+now. Each \(\ell\) charges for one step, \(\ell_f\) charges for the state left at
+the horizon, \(F\) predicts the next state, and \(g\le0\) marks the admissible
+region. The star crowns the cheapest legal imagined sequence; only its first
+action inherits a chance to meet reality.
 
 ```text
 function RECEDING_HORIZON_STEP(sigma, horizon, budget):
@@ -2077,6 +2144,13 @@ Sparse retrieval begins with lexical anchors. BM25 scores a query \(q\) against 
 
 > **Try this with numbers.** Step 1: ignore length normalization, set \(\mathrm{IDF}=2\), \(f=1\), and \(k_1=1\); the term contributes \(2\times2/(1+1)=2\). Step 2: raise frequency to 3; contribution becomes \(2\times6/4=3\), showing saturation rather than triple reward.
 
+Read the fraction as a damped vote for one query term. \(f(t,d)\) counts that
+term in the document; \(\mathrm{IDF}(t)\) lets rare terms vote more strongly;
+and \(|d|/\mathrm{avgdl}\) compares the document's length with the average. The
+constants \(k_1\) and \(b\) tune repetition saturation and length normalization.
+Thus `legacy-v2` may cast a loud vote, but BM25 still knows nothing about whether
+that branch is the current one.
+
 Rare exact strings such as `legacy-v2` and `service.toml` become valuable anchors [[46](#ref-46)]. Dense retrieval instead compares embedding directions:
 
 \[
@@ -2146,6 +2220,14 @@ I(X;\hat{X}).
 > **Try this with numbers.** Step 1: suppose a 100-token trace compresses to 20 tokens and loses 1 of 10 action-critical facts, giving distortion 0.1. Step 2: if the allowed distortion is \(D=0.05\), reject the summary even though it saves 80 tokens.
 
 \(X\) is the original trace, \(\hat X\) its compressed form, \(d\) task-relative loss, and \(I(X;\hat X)\) retained information [[35](#ref-35)]. The distortion measure must name the future job. Dropping exact TeX output may be tolerable for a progress note and fatal for debugging.
+
+Read \(R(D)\) as the least information a compressor must preserve to keep
+average task damage at or below \(D\). The minimization ranges over possible
+compression rules \(p(\hat x\mid x)\). This is why the distortion function
+carries the moral burden: if it forgets branch identity, the optimum may be
+wonderfully small and operationally treasonous.
+
+A literal compressor can follow the formula as a contest among summaries. Produce several candidate summaries, reconstruct or answer future task questions from each one, and measure the damage \(d\) caused by what each summary forgot. Reject every candidate whose average damage exceeds \(D\). Among the survivors, choose the one that retains the least information from the original. The bargain is not “make the text short.” It is “make it as short as possible without crossing the declared damage limit.”
 
 Forgetting is mandatory when retention violates consent, crosses tenant boundaries, outlives a purpose, or keeps known poison eligible for retrieval. It is also useful under context pressure. The controller should evict active influence while retaining only the minimum audit artifact policy permits. Privacy deletion and active-context eviction are not synonyms: one destroys or irreversibly anonymizes stored data; the other merely removes it from current attention.
 
@@ -2250,7 +2332,7 @@ The evaluation harness is a courtroom with three judges who do not share a gavel
 
 No judge may impersonate the other two. High utility cannot pardon a forbidden action. Perfect safety cannot turn useless paralysis into competence. Good calibration cannot make a low-value policy wise; it merely makes the policy honestly uncertain.
 
-Let a trajectory be \(\tau=(\sigma_0,a_0,\ldots,\sigma_T)\sim p_\pi(\tau)\). Attach task utility \(U(\tau)\), explicitly tradeable soft cost \(C_{\mathrm{soft}}(\tau)\), forbidden-transition count \(C_{\mathrm{hard}}(\tau)\), and calibration loss \(S(\tau)\):
+Let a trajectory with \(T\) actions be \(\tau=(\sigma_0,a_0,\ldots,a_{T-1},\sigma_T)\sim p_\pi(\tau)\). Attach task utility \(U(\tau)\), explicitly tradeable soft cost \(C_{\mathrm{soft}}(\tau)\), forbidden-transition count \(C_{\mathrm{hard}}(\tau)\), and calibration loss \(S(\tau)\):
 
 \[
 \max_\pi\ \mathbb{E}[U(\tau)]
@@ -2294,6 +2376,8 @@ Strictly proper scoring rules make honest probability reporting optimal [[49](#r
 
 > **Try this with numbers.** Step 1: assigning probability 0.8 to the truth costs \(-\log 0.8\approx0.22\). Step 2: assigning 0.01 costs about 4.61; confident fiction pays roughly twenty times more.
 
+The logarithm turns confidence into an escalating penalty. Giving the truth probability \(1\) costs zero, because the prediction left no surprise. Moving toward probability \(0\) makes the penalty grow sharply: being cautiously wrong hurts, but declaring the truth nearly impossible hurts much more. After computing that penalty for every case, divide by \(N\) to obtain the ordinary average loss. Log loss therefore asks not only “how often were you wrong?” but “how much confidence did you place behind each wrong answer?”
+
 The binary Brier score is
 
 \[
@@ -2311,6 +2395,8 @@ Expected calibration error groups predictions by confidence bucket:
 
 > **Try this with numbers.** Step 1: let half the predictions lie in an 80%-confidence bucket that succeeds 60% of the time; its weighted gap is \(0.5\times0.2=0.1\). Step 2: if the other half is perfectly calibrated, total ECE is 0.1.
 
+Imagine one hundred predictions sorted into trays by confidence: perhaps a 60-percent tray, an 80-percent tray, and a 90-percent tray. For each tray, compare the stated confidence with the fraction that actually proved correct. If forty predictions sat in the 80-percent tray but only 60 percent were right, that tray promised \(0.8\) and delivered \(0.6\), leaving a gap of \(0.2\). Because the tray holds \(40/100=0.4\) of all predictions, it contributes \(0.4(0.2)=0.08\) to ECE. Repeat for the remaining trays and add. The score asks whether confidence labels keep their promises in groups; it does not ask whether the underlying decisions were useful.
+
 For \(K\) classes, use
 
 \[
@@ -2319,6 +2405,16 @@ BS_{\mathrm{multi}}=\frac{1}{N}\sum_{i=1}^{N}\sum_{k=1}^{K}
 \]
 
 > **Try this with numbers.** Step 1: for one example with probabilities \((0.7,0.2,0.1)\) and class 1 true, square errors are 0.09, 0.04, and 0.01. Step 2: sum them to get multiclass Brier loss 0.14.
+
+Across these scores, \(N\) is the number of evaluated cases. In log loss,
+\(x_i\) is case \(i\), \(y_i\) its correct answer, and
+\(p_\theta(y_i\mid x_i)\) the probability assigned to that answer; in binary
+Brier, \(p_i\) is the reported probability and \(y_i\) is \(0\) or \(1\). For
+ECE, \(B_b\) is confidence bucket \(b\), while \(\mathrm{acc}\) and
+\(\mathrm{conf}\) compare what happened with what was promised. In the
+multiclass score, \(p_{ik}\) is the probability for class \(k\), and
+\(\mathbf{1}\{y_i=k\}\) marks only the true class. Different arithmetic, same
+cross-examination: forecast, meet outcome.
 
 Calibration should also be conditioned on tool class, branch, task family, and retrieval state. Agent-427 may be calibrated after `inspect_file` and wildly overconfident after semantic-memory retrieval. An aggregate score can average the warning out of existence.
 
@@ -2330,13 +2426,13 @@ One importance-sampling estimator is
 
 \[
 \widehat V_{\mathrm{IS}}(\pi)=\frac{1}{N}\sum_{i=1}^{N}
-\left[\prod_{t=0}^{T_i}
+\left[\prod_{t=0}^{T_i-1}
 \frac{\pi(a_t^i\mid h_t^i)}{\beta(a_t^i\mid h_t^i)}\right]R(\tau_i),
 \]
 
 > **Try this with numbers.** Step 1: for a two-step trace, let policy ratios be 1.5 and 0.5; their product is 0.75. Step 2: with return 8, the weighted contribution is \(0.75\times8=6\).
 
-\(\beta\) is the logging policy and \(\pi\) the candidate. If \(\beta(a\mid h)=0\) where \(\pi(a\mid h)>0\), the ratio is undefined: the log has no support for that decision. Large products also create enormous variance. Offline reinforcement learning therefore needs coverage, conservative value estimates, and explicit shift diagnostics [[72](#ref-72)] [[73](#ref-73)].
+Here \(T_i\) is the number of actions in trajectory \(i\), so its ratios run from \(0\) through \(T_i-1\). \(\beta\) is the logging policy and \(\pi\) the candidate. If \(\beta(a\mid h)=0\) where \(\pi(a\mid h)>0\), the ratio is undefined: the log has no support for that decision. Large products also create enormous variance. Offline reinforcement learning therefore needs coverage, conservative value estimates, and explicit shift diagnostics [[72](#ref-72)] [[73](#ref-73)].
 
 Behavioral cloning has the same fault line. It learns from demonstrated states, then makes small errors that carry it into states the demonstrations did not cover; subsequent errors compound [[70](#ref-70)]. Human-feedback training changes proposal and preference behavior, but the reward model carries its own biases and proxy incentives [[71](#ref-71)]. A static benchmark can certify yesterday's neighborhood while deployment drives across town.
 
@@ -2386,6 +2482,16 @@ H_{\hat\theta}^{-1}
 \]
 
 > **Try this with numbers.** Step 1: in one dimension let the test gradient be 2, inverse Hessian 0.5, and suspect-item gradient 3. Step 2: influence is \(-2\times0.5\times3=-3\); its magnitude ranks the item as high leverage, while the sign predicts direction locally.
+
+Read the product from right to left. The gradient of \(L(z,\hat\theta)\) says how
+the suspect item would push the fitted parameters. The inverse Hessian
+\(H_{\hat\theta}^{-1}\)—a correction for local curvature—estimates how readily
+those parameters would move. The test gradient then asks how that movement
+would change test loss, and the transpose combines the comparison into one
+number. This is differential bookkeeping for triage; replay must still call the
+witness.
+
+The imagined experiment is simple: turn the volume of one training item \(z\) up by a tiny amount, refit the model, and ask how the test loss would move. The item's gradient points toward the parameter change it requests. The inverse Hessian adjusts that request for the local shape of the loss surface—some directions move easily, others resist—and the test gradient translates the resulting motion into test damage or improvement. The formula estimates this tiny experiment without fully retraining. It is a suspect-ranking device, not proof that the suspect caused the crime.
 
 The approximation assumes smooth loss, a locally well-behaved fitted point, invertible or damped curvature, and a small perturbation [[50](#ref-50)]. It is a clue for triage, not a causal pardon.
 
@@ -2674,7 +2780,7 @@ world, acquire evidence, and propose again.[^tool-refusal]
 
 The policy then chooses only among legal invocations:
 \[
-u_t^{*} = \arg\max_{u}\ \mathbb{E}[Q(\sigma_t,u)]-\lambda_c C(u)-\lambda_r R(u).
+u_t^{*} = \arg\max_{u:\,\texttt{legal}(u)=1}\ \mathbb{E}[Q(\sigma_t,u)]-\lambda_c C(u)-\lambda_r R(u).
 \]
 
 > **Try this with numbers.** First score a read as \(8-1-1=6\). Then score an
@@ -2692,6 +2798,8 @@ A tiny worked example makes the shape clear. One call has expected value 10,
 cost 2, and risk 1; another has expected value 11, cost 2, and risk 6. With
 \(\lambda_c = 1\) and \(\lambda_r = 1\), the first scores 10 - 2 - 1 = 7 and the
 second scores 11 - 2 - 6 = 3. The less useful call wins because it is safer.
+
+An implementation can read this objective as a three-column shortlist. First discard every row whose `legal` value is zero. For each remaining call, estimate its usefulness by listing possible outcomes, multiplying each outcome's value by its chance, and adding. Then subtract the priced cost and priced risk. The \(\arg\max\) returns the call attached to the largest remaining score. It does not return the score itself, and it never grants an illegal call admission merely because that call looks profitable.
 
 This is a compact way to say something practical: the next call is selected not
 because it is syntactically possible, but because its expected contribution is
@@ -3569,6 +3677,13 @@ The remaining letters each have one job:
 - Matrix \(R\) records observation noise. Control theory reuses the letter \(R\) here; it is not Chapter 1's reward.
 - The Kalman gain \(K_t\) decides how strongly to trust the new observation
   relative to the prediction.
+
+The gain formula is a trust dial. Its denominator combines uncertainty in the
+model's prediction, viewed through sensor map \(H\), with the sensor's own noise
+\(R\). More model uncertainty or a cleaner measurement tends to enlarge \(K_t\);
+noisier measurement shrinks it. The transpose and inverse are the matrix
+bookkeeping needed when states and sensors have several coordinates. The scalar
+example is the same bargain with the paperwork removed.
 
 #### Delay Requires an Augmented State
 
@@ -4851,6 +4966,8 @@ u_i\!\big(g(\theta'_i,\hat\theta_{-i}),p_i(\theta'_i,\hat\theta_{-i});\theta_i\b
 
 Read the left side as "what agent \(i\) really gets when it tells the truth." Read the right side as "what it really gets from any lie \(\theta'_i\)." The word *dominant* is the strong part: the inequality must hold for every possible behaviour of the other agents, not merely on average.
 
+To test the inequality, freeze every other agent's reports. Run the mechanism once with agent \(i\)'s true report and record its real payoff after allocation and transfer. Then try every lie available to that agent while keeping the frozen reports unchanged. Truthfulness requires the truthful payoff to be at least as large in every comparison. One lie that yields more is enough to break the property; a thousand honest-looking demonstrations cannot vote the counterexample away.
+
 ### Efficient Allocation and the Vickrey-Clarke-Groves Transfer
 
 Efficient allocation seeks
@@ -4983,6 +5100,13 @@ Trust decays while it remains unverified. One compact model is
 Here \(\rho_i\) is reputation, \(\lambda\) is the interest rate on trust, and
 \(v_i\in[0,1]\) is verified performance and the outer minimum keeps reputation
 inside its probability-like range. Trust borrowed today costs evidence tomorrow.
+
+Here \(\Delta\) is elapsed time, so \(e^{-\lambda\Delta}\) is the fraction of
+unsupported trust that survives the interval; \(\eta\) controls how much a newly
+verified result replenishes the account. The outer minimum prevents repeated
+evidence from minting super-trust. Time debits the old balance, verification
+credits the ledger, and neither rhetoric nor silence counts as a deposit.
+
 High decay is appropriate when the environment shifts quickly or effects are
 dangerous; low decay suits stable, repeatedly verified work. Reputation is not
 forgiveness in decimal form. It is a prior that expires.[^trust-bank]
@@ -5181,6 +5305,8 @@ u_i(\sigma_i^{*},\sigma_{-i}^{*}) \ge u_i(\sigma_i,\sigma_{-i}^{*})\quad \forall
 > not upset equilibrium; a deviation paying \(4\) would.
 
 Read \(\sigma_i\) as "the strategy of agent i" and \(\sigma_{-i}\) as "the strategies of everyone except agent i". The symbol \(\forall\) reads "for all". So the line says: for every agent, and for every alternative strategy that agent might try, switching alone does not raise its payoff. Nash's fixed-point result gives the central existence theorem for this kind of unilateral stability [[19](#ref-19)]. The existence statement here assumes finitely many actions and permits mixed strategies. It does not promise an equilibrium inside an arbitrary neural policy class, nor does it tell an engineer how to find one before lunch.
+
+The mechanical test is: choose one agent, freeze every other agent's strategy, and let the chosen agent try every alternative available to it. If one alternative pays more, the current profile is not a Nash equilibrium. Repeat for every agent. Passing this test means no one can profit by moving alone; it does not mean the outcome is fair, safe, efficient, or pleasant. A prison can be stable. Stability is one question, not a certificate of virtue.
 
 The concept matters for agent systems because a protocol that works only before participants learn its incentives is not stable. Suppose a reviewer can gain influence by exaggerating severity. Suppose a worker can gain routing weight by overclaiming competence. In both cases the first demonstration has not tested the game the system will become.
 
@@ -5614,6 +5740,8 @@ E(x)=\operatorname{TopK}(g(x),k),
 which selects a small set \(E(x)\) of experts to run.
 
 The softmax temperature \(\tau\) ("tau") controls how sharp the routing distribution is. Small \(\tau\) makes the largest gate score dominate; large \(\tau\) spreads weight more evenly. Top-\(k\) routing means "activate only the \(k\) highest-scoring experts," such as the two best specialists out of sixteen, and give the rest no computation for this input.
+
+Softmax can be read as handing out routing tickets. The exponential operation turns each raw score into a positive ticket count; dividing by the total converts those counts into shares that add to \(1\). In the example, scores \(0\) and \(\ln 3\) become \(1\) ticket and \(3\) tickets, so the experts receive one quarter and three quarters of the traffic. Temperature changes how unequal the ticket piles become: a low temperature magnifies score differences, while a high temperature makes the piles more alike. It is a traffic-allocation rule, not evidence that the busiest expert is correct.
 
 To see whether a router is doing anything interesting, measure its spread. Routing entropy measures how spread out the router's choices are,
 \[

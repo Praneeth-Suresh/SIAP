@@ -141,7 +141,7 @@ world, acquire evidence, and propose again.[^tool-refusal]
 
 The policy then chooses only among legal invocations:
 \[
-u_t^{*} = \arg\max_{u}\ \mathbb{E}[Q(\sigma_t,u)]-\lambda_c C(u)-\lambda_r R(u).
+u_t^{*} = \arg\max_{u:\,\texttt{legal}(u)=1}\ \mathbb{E}[Q(\sigma_t,u)]-\lambda_c C(u)-\lambda_r R(u).
 \]
 
 > **Try this with numbers.** First score a read as \(8-1-1=6\). Then score an
@@ -159,6 +159,8 @@ A tiny worked example makes the shape clear. One call has expected value 10,
 cost 2, and risk 1; another has expected value 11, cost 2, and risk 6. With
 \(\lambda_c = 1\) and \(\lambda_r = 1\), the first scores 10 - 2 - 1 = 7 and the
 second scores 11 - 2 - 6 = 3. The less useful call wins because it is safer.
+
+An implementation can read this objective as a three-column shortlist. First discard every row whose `legal` value is zero. For each remaining call, estimate its usefulness by listing possible outcomes, multiplying each outcome's value by its chance, and adding. Then subtract the priced cost and priced risk. The \(\arg\max\) returns the call attached to the largest remaining score. It does not return the score itself, and it never grants an illegal call admission merely because that call looks profitable.
 
 This is a compact way to say something practical: the next call is selected not
 because it is syntactically possible, but because its expected contribution is

@@ -70,6 +70,8 @@ which selects a small set \(E(x)\) of experts to run.
 
 The softmax temperature \(\tau\) ("tau") controls how sharp the routing distribution is. Small \(\tau\) makes the largest gate score dominate; large \(\tau\) spreads weight more evenly. Top-\(k\) routing means "activate only the \(k\) highest-scoring experts," such as the two best specialists out of sixteen, and give the rest no computation for this input.
 
+Softmax can be read as handing out routing tickets. The exponential operation turns each raw score into a positive ticket count; dividing by the total converts those counts into shares that add to \(1\). In the example, scores \(0\) and \(\ln 3\) become \(1\) ticket and \(3\) tickets, so the experts receive one quarter and three quarters of the traffic. Temperature changes how unequal the ticket piles become: a low temperature magnifies score differences, while a high temperature makes the piles more alike. It is a traffic-allocation rule, not evidence that the busiest expert is correct.
+
 To see whether a router is doing anything interesting, measure its spread. Routing entropy measures how spread out the router's choices are,
 \[
 H(w)=-\sum_k w_k\log w_k,
