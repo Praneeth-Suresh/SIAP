@@ -33,6 +33,7 @@ SIAP is a compact, publishable monograph organized around an agent interpreter. 
 | Publication enrichment | Keep sourced epigraphs and visual placements in strict registries; inject them across every builder; require semantic unnumbered reader blocks and measured image safe areas | 2026-08-06 | [ADR 0009](adr/0009-publication-enrichment-contracts.md) |
 | Terminal cartoon language | Use original silent, varied three-to-five-panel mini Sunday pages with the recurring Agent-427 cast, broken brush contours, bright paper, elastic acting, sparse reality, richer fantasy, and measured print-safe margins | 2026-08-07 | [ADR 0009](adr/0009-publication-enrichment-contracts.md) |
 | Diagram delivery | Make registry alt text canonical; publish SVG masters in bounded web viewports and 2400×1400 PNG fallbacks in print; reject internal label and connector collisions | 2026-08-07 | [ADR 0009](adr/0009-publication-enrichment-contracts.md) |
+| Public contribution surface | Keep contributor, conduct, security, support, license, issue, and pull-request guidance at the repository root; keep it distinct from internal Beryl agent instructions and publication-enrichment registries | 2026-08-10 | n/a |
 
 ## Publication Pass Record
 
