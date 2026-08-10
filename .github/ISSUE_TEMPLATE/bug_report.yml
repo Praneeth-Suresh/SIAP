@@ -1,0 +1,42 @@
+name: Bug report
+description: Report a reproducible problem in the manuscript pipeline, site, or project tooling.
+title: "bug: "
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for helping us make the machine more trustworthy. Do not include secrets or private data.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Describe the actual behavior and why it is a problem.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Include exact commands, inputs, and the smallest useful output excerpt.
+      placeholder: |
+        1. Run ...
+        2. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Operating system, Python version, and relevant tool versions.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I searched existing issues and removed secrets and private data.
+          required: true

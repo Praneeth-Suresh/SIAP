@@ -1,0 +1,16 @@
+name: Question
+description: Ask for help using or contributing to SIAP.
+title: "question: "
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: Tell us what you are trying to do and where you became stuck.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Relevant context
+      description: Include commands and small, redacted output excerpts when useful.

@@ -1,0 +1,29 @@
+name: Feature request
+description: Propose a focused improvement to the manuscript, publication pipeline, or contributor experience.
+title: "feature: "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or reader need
+      description: What would become clearer, safer, or more useful?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: Describe the smallest behavior or artifact change that would solve it.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I searched existing issues and understand that a proposal may need design review before implementation.
+          required: true
