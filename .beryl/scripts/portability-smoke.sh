@@ -11,6 +11,11 @@ fail() {
   exit 1
 }
 
+if [[ ! -f "${REPO_ROOT}/install.sh" ]]; then
+  printf 'portability-smoke: install.sh is not present in this installed target (skipping)\n'
+  exit 0
+fi
+
 install_profile() {
   local profile="$1"
   local target="${TMP_DIR}/${profile}"
