@@ -18,7 +18,9 @@ tm_detect_hash_cmd() {
 tm_hash_only() {
   local file="$1"
   local out
-  out="$("${TM_HASH_CMD[@]}" "$file")"
+  # Git may check text files out with CRLF on Windows. Hash the canonical
+  # line endings so one manifest is valid on every CI runner.
+  out="$(sed 's/\r$//' "$file" | "${TM_HASH_CMD[@]}")"
   printf "%s" "${out%% *}"
 }
 
