@@ -1,14 +1,19 @@
 # Embodiment: Sensors, Actuators, and Feedback
 
-Embodiment means the world answers back. Our subject is agents whose actions
-land somewhere real, and the delay between the acting and the landing. We build
-a small model of that delay, learn to estimate the present from stale readings,
-and see what changes when a tool call must settle before it can be trusted.
+Embodiment means the world answers back—late, noisily, and sometimes with an
+agenda. Agent-427's first embodied task looks easy. The publication build queue
+is backing up. A metrics dashboard says 100 jobs are waiting. A retrieved
+runbook says "queues above 90 require immediate scale-out." Agent-427 has
+permission to *propose* adding workers. Should it?
 
-Agent-427 now has permission to *propose* writes, tests, and deployments. It does
-not yet have permission to confuse a proposal with an effect. That distinction
-becomes urgent when stale queue telemetry and a retrieved legacy runbook agree
-with each other and disagree with the living service.
+The numbers suggest yes, and the numbers are lying in two different ways. The
+dashboard is reporting the queue as it was a while ago, before two workers
+Agent-427 already requested began to take effect. The runbook was written for a
+worker pool that no longer exists. Agent-427 may propose writes, tests, and
+deployments, but it does not yet have permission to confuse a proposal with an
+effect, or a stale reading with the present. This topic builds the small model
+of time it needs: how to estimate the present from late readings, and what to do
+while a command is still landing.
 
 ## The Responsive Environment
 
@@ -109,8 +114,13 @@ answer for each.
 
 ### Predict, Then Correct: The Kalman Update
 
-For linearized delay-free dynamics, Kalman filtering gives recursive belief
-updates:
+Here is the estimation problem in the queue's own terms. The command ledger says
+two workers were added, so the model predicts the queue should now hold about 70
+jobs. A fresh but noisy probe reports 80. Neither number is the truth. The
+agent should land somewhere between them, closer to whichever source it has
+more reason to trust—and it should be able to say exactly how much closer.
+The Kalman filter is the classical machine for that judgment. For linearized
+delay-free dynamics, it gives recursive belief updates:
 \[
 \hat x_{t|t-1}=A\hat x_{t-1|t-1}+Bu_{t-1},\qquad
 K_t=P_{t|t-1}H^\top(HP_{t|t-1}H^\top+R)^{-1},
@@ -186,17 +196,17 @@ raise the price of control effort and the agent pushes more gently.
 
 ### A Worked Queue Estimate You Can Check Mentally
 
-For a scalar queue example, suppose yesterday's delayed sensor says the queue
-was 100 jobs. The model predicts that two added workers should have reduced it to
-70 by now. A noisy current observation reports 80. A cautious Kalman gain of
-\(K_t=0.25\) updates the estimate to
+For a scalar queue example, put the opening scene back together. The delayed
+sensor says the queue was 100 jobs. The model predicts that two added workers
+should have reduced it to 70 by now. A noisy current observation reports 80. A
+cautious Kalman gain of \(K_t=0.25\) updates the estimate to
 \(70+0.25(80-70)=72.5\).
 
 The arithmetic is small on purpose: prediction and observation differ by 10 jobs,
 and a quarter of 10 is 2.5. The agent should scale from 72.5, not blindly from the
 stale 100 or the noisy 80.
 
-Now add the corruption from Agent-427's actual Chapter 3 trace. Retrieval returns
+Now add the corruption from the opening. Retrieval returns
 a legacy summary: “queues above 90 require immediate scale-out.” The summary was
 written for the old worker pool and has no version tag. At the same moment, stale
 telemetry reports 100, the model predicts 70 after two workers were added, and a
@@ -431,7 +441,15 @@ and proposes a second scale-out before the first command settles. The safety
 filter blocks the unsupported effect because the posterior is provisional, the
 actuator ledger shows a pending command, and independent health evidence is
 missing. The filter does not prove the queue healthy; it prevents uncertainty
-from acquiring another actuator. Topic 4 gives that block its formal machinery.
+from acquiring another actuator.
+
+That block was the most important thing that happened in this topic, and so far
+it has been a convenient sentence. Who decided the posterior was "too
+provisional"? How much evidence would have been enough? What if the second
+scale-out had been worth the risk—or the fast deploy had been? Those questions
+need numbers, prices, and a place in the interpreter that the optimizing policy
+cannot talk its way past. Topic 4 (Safety Constraints and Guardrails) gives the
+block its formal machinery.
 
 ::: {.exercise}
 ## Exercise: Build a Hostile Queue Controller {.unnumbered}

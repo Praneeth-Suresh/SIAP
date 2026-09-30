@@ -1,8 +1,8 @@
 # Policies, Value, and Control
 
-Three topics have now handed Agent-427 ingredients and no cook. Topic 1 (Goals, Environments, and Actions) supplied a goal contract, Topic 2 (Belief, Uncertainty, and Decision) supplied a belief state, and Topic 3 (World Models and State Abstractions) supplied a compact world model. What is still missing is the part that actually chooses. A **policy** is the rule that turns those three ingredients into an action. At this stage its authority remains read-only: learning may improve proposals and routing without granting the learner a keyboard to production.
+Agent-427 now has something to aim at, a belief about what is probably true, and a compact description of its situation. It has not yet chosen anything. The first choice it faces is small and already treacherous: two candidate fixes for a failing check, which it may recommend but not apply. One promises a quick green build. The other is slower, narrower, and better supported by evidence. A model asked "which is better?" will happily answer. The question for this topic is what should turn that answer into a decision the system stands behind.
 
-A policy is not merely "what the model says next." It is the decision procedure that decides which proposal is allowed to become an event in the world.
+A **policy** is the rule that turns goal, belief, and state into an action. It is not merely "what the model says next." It is the decision procedure that decides which proposal is allowed to become an event in the world. At this stage its authority remains read-only: learning may improve proposals and routing without granting the learner a keyboard to production.
 
 ## Value as Consequence Accounting
 
@@ -33,9 +33,9 @@ V^{*}(s)=\max_{a\in\mathcal{A}}\left\{R(s,a)+\gamma\sum_{s'\in\mathcal{S}}T(s'\m
 
 > **Try this with numbers.** Step 1: action A earns 2 then reaches values 6 and 4 equally, so at \(\gamma=0.5\) it scores \(2+0.5[0.5(6)+0.5(4)]=4.5\). Step 2: action B scores 4 now and 0 later, so Bellman selects A by 0.5.
 
-When the assumptions are violated, this is what the recursion looks like in production: a hidden state variable or a mid-plan API change makes the continuation values stale, so the apparent maximizer can be the wrong action. The interpreter must invalidate the value estimate and observe again; Bellman's theorem does not offer warranty service for an unmodeled world.
+Read this as "the best value of state \(s\) is the best available immediate reward \(R(s,a)\) plus the discounted average value of wherever you land". The set \(\mathcal{A}\) holds available actions, \(\mathcal{S}\) holds possible states, and \(T(s'\mid s,a)\) is the chance of moving to \(s'\) after doing \(a\) in \(s\). In the numbers, action B wins the first step and loses the comparison, because it leads nowhere worth going.
 
-Read this as "the best value of state \(s\) is the best available immediate reward \(R(s,a)\) plus the discounted average value of wherever you land". The set \(\mathcal{A}\) holds available actions, \(\mathcal{S}\) holds possible states, and \(T(s'\mid s,a)\) is the chance of moving to \(s'\) after doing \(a\) in \(s\).
+When the assumptions are violated, this is what the recursion looks like in production: a hidden state variable or a mid-plan API change makes the continuation values stale, so the apparent maximizer can be the wrong action. The interpreter must invalidate the value estimate and observe again; Bellman's theorem does not offer warranty service for an unmodeled world.
 
 The one-step decision-theoretic rule remains expected utility [[33](../../references.md#ref-33)] [[34](../../references.md#ref-34)]:
 
@@ -90,9 +90,9 @@ action a medal.
 
 Think of \(\theta\) as a panel of thousands of small knobs controlling which actions the policy prefers. Turning one knob slightly may make `inspect` more likely; turning another may make `edit` less likely. The expression \(\nabla_\theta\log\pi_\theta(a\mid s)\) supplies a tiny arrow for each knob, showing how it could make the sampled action more or less likely. \(Q^{\pi_\theta}(s,a)\) then controls the strength and direction of the nudge according to the action's estimated consequences. The expected value means repeating this across many runs and averaging the nudges, because one lucky trace should not be permitted to seize the entire control panel.
 
-When the assumptions are violated, an off-policy log or misspecified reward makes that same gradient a direction for improving somebody else's policy or the wrong objective. Measure behavior-policy mismatch and true task outcomes before calling the update improvement.
+In practice the update is often made with the advantage baseline \(A^\pi(s,a)=Q^\pi(s,a)-V^\pi(s)\) in place of \(Q\), which reduces variance without changing the expected gradient [[3](../../references.md#ref-3)] [[40](../../references.md#ref-40)]. Read the advantage as "how much better this action is than the policy's average behavior in this state". If \(Q^\pi(s,a)=8\) and \(V^\pi(s)=7.5\), the advantage is \(0.5\): a mild nudge upward, not a triumph.
 
-often using the advantage baseline \(A^\pi(s,a)=Q^\pi(s,a)-V^\pi(s)\) to reduce variance without changing the expected gradient [[3](../../references.md#ref-3)] [[40](../../references.md#ref-40)]. Read the advantage as "how much better this action is than the policy's average behavior in this state". If \(Q^\pi(s,a)=8\) and \(V^\pi(s)=7.5\), the advantage is \(0.5\): a mild nudge upward, not a triumph.
+When the assumptions are violated, an off-policy log or misspecified reward makes that same gradient a direction for improving somebody else's policy or the wrong objective. Measure behavior-policy mismatch and true task outcomes before calling the update improvement.
 
 For agentic systems, the lesson outlives any one learning algorithm. Judge policy improvement by four measurable things:
 
@@ -165,7 +165,7 @@ The interpreter does not change shape; the lifecycle gains an adaptation operato
 
 ### A Patch That Looks Attractive and Is Not
 
-Consider a coding agent choosing between **FastPatch** and **SafePatch** before a production freeze. Its proposer estimates:
+Return to the two candidate fixes from the opening of this topic and give them names: **FastPatch** and **SafePatch**, weighed before a production freeze. The proposer estimates:
 
 \[
 \hat Q(s,\text{FastPatch})=9.2,\qquad \hat Q(s,\text{SafePatch})=7.4.
@@ -287,9 +287,9 @@ while not terminated:
     history <- append(history, o_t, a_t, outcome)
 ```
 
-That loop is the chapter's foundation. Goals define what matters. Belief manages uncertainty. State abstraction chooses what the policy can reason over. Control closes the loop after reality answers back.
+That loop is the chapter's foundation, and it is enough to keep a read-only agent honest on a quiet afternoon. It is not enough for what comes next. Look at the line `a_t <- governed_policy(...)`. Everything interesting happens inside it, and so far it has been a single step: score some candidates, check constraints, pick one. Real problems demand intermediate work before any action is safe—inspecting a file to test a hypothesis, simulating a plan, recalling what happened last time, checking whether the evidence is still current. Each of those internal steps can go wrong in its own way, and each needs its own rules.
 
-From here, later chapters can study reasoning architectures, tools, memory, and multi-agent systems as refinements of this basic interpreter rather than as disconnected tricks.
+Chapter 2 opens that line up. It begins at 3:47 AM, when Agent-427 is handed its first tool and a failing CI pipeline, and discovers within eleven seconds that a fluent explanation is not the same thing as a reasoned one.
 
 ::: {.exercise}
 ## Exercise: Train, Shift, and Catch the Cheat {.unnumbered}

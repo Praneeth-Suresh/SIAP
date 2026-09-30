@@ -10,7 +10,9 @@ The design problem is selective forgetting. Forget too much and the agent loses 
 
 ### The Formal Setup: Compressing a Decision Problem
 
-Let the ground control problem be a **Markov decision process (MDP)**, written as the tuple \((\mathcal S,\mathcal A,T,R,\gamma)\) [[4](../../references.md#ref-4)] [[5](../../references.md#ref-5)]. Read the pieces aloud like this: \(\mathcal S\) is the set of states, \(\mathcal A\) is the set of actions, \(T\) is the transition rule saying which state comes next, \(R\) is the reward, and \(\gamma\) (gamma) is the discount that makes distant rewards count less.
+Compression is easiest to study when nothing else is going wrong, so for a few pages set partial observability aside and pretend the agent can see the full state. The question then becomes sharp: if we merge some of those visible states together, does the agent still choose correctly? Topic 2's hidden-state machinery returns once the answer is clear, because a belief is itself a state that can be compressed.
+
+Let the ground control problem be a **Markov decision process (MDP)**—the fully observed cousin of the POMDP from Topic 1 (Goals, Environments, and Actions)—written as the tuple \((\mathcal S,\mathcal A,T,R,\gamma)\) [[4](../../references.md#ref-4)] [[5](../../references.md#ref-5)]. Read the pieces aloud like this: \(\mathcal S\) is the set of states, \(\mathcal A\) is the set of actions, \(T\) is the transition rule saying which state comes next, \(R\) is the reward, and \(\gamma\) (gamma) is the discount that makes distant rewards count less.
 
 Now let \(\phi:\mathcal S\to\mathcal Z\) map detailed states to abstract states. Read \(\phi\) (phi) as "the compression map that sends a detailed state to its coarser label". Exact **homomorphism** requires reward and transition consistency [[37](../../references.md#ref-37)]:
 
@@ -19,7 +21,7 @@ R(s,a)=\bar R(\phi(s),a),\qquad
 \sum_{s':\phi(s')=z'}T(s'\mid s,a)=\bar T(z'\mid \phi(s),a).
 \]
 
-> **Try this with numbers.** Step 1: two detailed states both give reward 3 under `inspect`, so reward mismatch is 0. Step 2: their probabilities of reaching abstract state `known` are 0.80 and 0.78, so transition mismatch is 0.02.
+> **Try this with numbers.** Step 1: two detailed states both give reward 3 under `install_dependency`, so reward mismatch is 0. Step 2: their probabilities of reaching abstract state \(z_G\) (green) are 0.80 and 0.78, so transition mismatch is 0.02. The four-state example below explains where these numbers come from.
 
 A homomorphism is a structure-preserving map. In ordinary programming terms, \(\phi\) is a compression function. It is allowed to rename and merge states only when the merged states still behave the same way for decisions.
 
@@ -121,17 +123,7 @@ def act(mem: AgentMemory):
     return policy(mem.decision_state)
 ```
 
-For a coding agent, the decision state may include:
-
-- the failing behavior;
-- the touched files;
-- dependency hints;
-- test status;
-- active constraints;
-- unresolved hypotheses;
-- remaining budget.
-
-It usually does not need every line of conversation. Raw logs remain available for audit and targeted retrieval. But retrieval should be a gated action with explicit cost, as later memory systems will develop in more detail (see [Memory Systems, Context, and Retrieval](../02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval.md)).
+For a coding agent, the decision state holds what the next choice actually turns on: the failing behavior and the files already touched, any dependency hints and the current test status, the constraints still in force, the hypotheses not yet ruled out, and how much budget remains. It usually does not need every line of conversation. Raw logs remain available for audit and targeted retrieval. But retrieval should be a gated action with explicit cost, as later memory systems will develop in more detail (see [Memory Systems, Context, and Retrieval](../02-reasoning-architectures/topic-03-memory-systems-context-and-retrieval.md)).
 
 ### The Sufficiency Condition That Licenses Forgetting
 
@@ -169,7 +161,7 @@ Approximation bounds fail more quietly. If tests cover common states but omit th
 
 ### Measuring "Close Enough" with Bisimulation Distance
 
-Bisimulation metrics sharpen the idea of "close enough" by measuring whether two states behave similarly under action [[38](../../references.md#ref-38)]:
+Bisimulation metrics sharpen the idea of "close enough" by measuring whether two states behave similarly under action [[38](../../references.md#ref-38)]. A **bisimulation** asks whether two states can answer the same action questions. Do they give similar immediate rewards? Do they lead to similar distributions over future states? The distance below adds those two differences, taking the worst action:
 
 \[
 d(s,s')=\max_{a\in\mathcal A}\Big(|R(s,a)-R(s',a)|+\gamma\,W_d\big(T(\cdot\mid s,a),T(\cdot\mid s',a)\big)\Big),
@@ -177,11 +169,9 @@ d(s,s')=\max_{a\in\mathcal A}\Big(|R(s,a)-R(s',a)|+\gamma\,W_d\big(T(\cdot\mid s
 
 > **Try this with numbers.** Step 1: let reward difference be 2 and lifted transition distance be 0.4. Step 2: with \(\gamma=0.5\), the action contributes \(2+0.5(0.4)=2.2\) to the distance.
 
-with \(W_d\) the Kantorovich lift induced by \(d\), which turns a distance between single states into a distance between distributions over states. If \(d(s,s')\) is small, the states are interchangeable up to a quantified tolerance. If "test failed because dependency missing" and "test failed because behavior regressed" collapse into the same feature `tests_red`, the abstraction may be compact, but it is not behaviorally faithful.
+The first term checks reward. The second compares transition distributions using \(W_d\), the **Kantorovich lifting**, which turns a distance between single states into a distance between probability distributions over states. Intuitively, it asks how much "work" is needed to transport probability mass from one next-state distribution to the other, when moving mass between unlike states is expensive. Notice that \(d\) appears on both sides: the distance between states is defined using distances between their successors, the same self-reference that powers Bellman recursion.
 
-A **bisimulation** asks whether two states can answer the same action questions. Do they give similar immediate rewards? Do they lead to similar distributions over future states? The first term in the formula checks reward. The second term compares transition distributions.
-
-\(W_d\), the **Kantorovich lifting**, is a way to lift a distance between individual states into a distance between probability distributions over states. Intuitively, it asks how much "work" is needed to transport probability mass from one next-state distribution to the other, when moving mass between unlike states is expensive.
+If \(d(s,s')\) is small, the states are interchangeable up to a quantified tolerance. If "test failed because dependency missing" and "test failed because behavior regressed" collapse into the same feature `tests_red`, the abstraction may be compact, but it is not behaviorally faithful.
 
 The exact transport machinery can wait; the engineering lesson cannot. If two situations lead to different repair actions, their distance should not be treated as zero merely because the same red test banner appears.
 
@@ -225,15 +215,15 @@ Evaluate abstractions by downstream behavior. The quality of a compression is ta
 
 ### Five Measurements Worth Taking
 
-These are the quantities to instrument when you are judging a candidate abstraction:
+Suppose someone hands you a candidate summarizer for Agent-427 and claims it is good. Five measurements, each answering a different skeptical question, will tell you whether to believe them.
 
-- Value loss: \(\Delta_V=\|V^{*}-\tilde V^{*}\circ\phi\|_\infty\), read as "the largest gap, over all states, between true optimal value and the abstract value pulled back through \(\phi\)". Estimate it by scoring the abstract policy in the detailed environment.
-- Intervention fidelity: predicted and observed effects under controlled actions. Measure it by taking the action deliberately and comparing outcome to prediction.
-- Robustness under distribution shift, meaning a change between the situations the abstraction was designed on and the ones it now meets, especially when retrieval budgets are constrained. Measure it by rerunning the same tasks with a tighter retrieval budget and watching how fast value loss grows.
-- Action preservation: whether states mapped to the same \(z\) really support the same action.
-- Token and latency savings: whether the smaller state reduces context size, model time, retrieval work, and tool waiting, without buying those savings by erasing decision-relevant variables.
+The first question is *how much does compression cost in value?* Measure **value loss**, \(\Delta_V=\|V^{*}-\tilde V^{*}\circ\phi\|_\infty\), read as "the largest gap, over all states, between true optimal value and the abstract value pulled back through \(\phi\)". Estimate it by scoring the abstract policy in the detailed environment. A close cousin asks *do merged states still want the same action?* **Action preservation** checks, state pair by state pair, whether everything mapped to the same \(z\) really supports the same choice; the `draft-a`/`draft-b` merge fails this test on its first pair.
 
-The interpreter now has a compact internal language. Topic 1 (Goals, Environments, and Actions) gave it a contract. Topic 2 (Belief, Uncertainty, and Decision) gave it belief. This topic gives it a state representation small enough to act on but faithful enough to trust. The remaining question is how action selection becomes governed control rather than a single eager choice.
+The third question is causal: *does the abstraction predict what happens when the agent intervenes, not just what it observes?* Measure **intervention fidelity** by taking the action deliberately—clear the cache while holding dependencies fixed—and comparing outcome to prediction. The fourth asks *does the summary survive a different world?* **Robustness under distribution shift**—a change between the situations the abstraction was designed on and the ones it now meets—is measured by rerunning the same tasks with a tighter retrieval budget and watching how fast value loss grows.
+
+Only then comes the question that motivated compression in the first place: *what did it save?* Report **token and latency savings**—context size, model time, retrieval work, tool waiting—but always next to the first four numbers. Savings bought by erasing a decision-relevant variable are not savings; they are a loan against the next incident.
+
+The interpreter now has a compact internal language: a state small enough to act on but faithful enough to trust. What it still lacks is the nerve to use it. Every example in this topic ended with "the policy should choose..." and quietly assumed some policy existed. Agent-427 will soon face two read-only proposals with different payoffs, a reviewer whose preferences it must learn, and logs from a predecessor whose choices it cannot replay. Choosing well under those pressures—weighing futures, learning from feedback, and never exceeding granted authority—is the subject of Topic 4 (Policies, Value, and Control).
 
 ::: {.exercise}
 ## Exercise: Break Two Summarizers {.unnumbered}

@@ -1,18 +1,19 @@
 # Coordination Protocols and Communication
 
-Several agents working the same job at the same time is not one agent doing more of it. Each one sees only a slice of the situation. Each one can send messages that change what the others believe and do. The rules governing those messages are called a protocol, and designing, reading, and testing one is the work ahead.
+At 16:43:10 in Part 0, Drafter D-12 sent Checker C-9 a message the Router never
+saw: "Mark verified? We keep the fast lane." Every official message that
+followed was well formed. The failure lived in a message that had no type, no
+log entry, and no rule saying what it was allowed to change. Could a better set
+of rules for talking have caught it—or at least made it visible?
 
-When many interpreters share an environment, communication is not an ornament added to intelligence. It is one of the control surfaces of the system. Each agent sees only part of the state, updates its own local machine, and emits messages that may change the machines around it. A protocol is the rule that makes those local steps compose.
+Several agents working the same job at the same time is not one agent doing
+more of it. Each one sees only a slice of the situation, and each can send
+messages that change what the others believe and do. Communication is therefore
+not an ornament added to intelligence. It is one of the control surfaces of the
+system. The rule that makes the agents' local steps compose is called a
+protocol, and designing, reading, and testing one is the work ahead.
 
-The SICP way to read a multi-agent system, after *Structure and Interpretation of Computer Programs*, the classic text this book echoes, is to ask what each interpreter treats as its environment. In a single evaluator, an expression is reduced against a frame of bindings, meaning a table of names and their current values. In a collective, that frame is distributed across many places at once:
-
-- private scratchpads,
-- local observations,
-- message queues,
-- shared documents,
-- tool outputs,
-- locks,
-- audit logs.
+The SICP way to read a multi-agent system, after *Structure and Interpretation of Computer Programs*, the classic text this book echoes, is to ask what each interpreter treats as its environment. In a single evaluator, an expression is reduced against a frame of bindings, meaning a table of names and their current values. In a collective, that frame is distributed across many places at once: private scratchpads, local observations, message queues, shared documents, tool outputs, locks, and audit logs.
 
 Coordination is the art of making these frames interact without pretending that any one agent sees the whole store. "Store" here means the full collection of state that the system holds; no single agent gets to read all of it.
 
@@ -95,14 +96,7 @@ The trouble is epistemic, not theatrical: it is about knowledge, not drama. From
 
 Consensus theory makes these words sharp. Byzantine agreement studies what can be guaranteed when some participants may lie or fail arbitrarily [[54](../../references.md#ref-54)]. The FLP result, named for its authors Fischer, Lynch, and Paterson, shows that deterministic consensus cannot be guaranteed in a fully asynchronous system with even one crash fault [[55](../../references.md#ref-55)].
 
-FLP does not say consensus is universally impossible. It says that a particular bundle of assumptions cannot all be kept at once. Practical systems regain progress by relaxing something:
-
-- add timeouts and partial synchrony,
-- allow randomization,
-- use failure detectors,
-- accept probabilistic termination,
-- constrain failures,
-- or weaken the decision requirement.
+FLP does not say consensus is universally impossible. It says that a particular bundle of assumptions cannot all be kept at once. Practical systems regain progress by relaxing one of them. They can relax the timing assumption, adding timeouts and assuming partial synchrony so that "slow" eventually becomes distinguishable from "dead." They can relax determinism, allowing randomization or accepting termination that is merely probable. They can relax the fault model, using failure detectors or constraining which failures are possible. Or they can relax the decision requirement itself. In the two-agent trace, a timeout at \(t=4\) is exactly the first move: A stops treating silence as ambiguous and starts treating it as evidence.
 
 These are not remote distributed-systems curiosities. They are warnings against designing agent collectives whose correctness silently assumes perfect timing, perfect honesty, and perfectly delivered messages.
 
@@ -292,17 +286,7 @@ The publication workflow sits in the middle. Sections can be drafted separately,
 
 ### Tests That Tell You It Is a Protocol
 
-The practical tests follow from the semantics. Measure each of these on real runs:
-
-- message complexity,
-- consensus latency,
-- deadlock rate,
-- role-violation rate,
-- recovery time after dropped messages,
-- stale-belief rate,
-- artifact divergence,
-- partial progress under blocked dependencies,
-- and degradation under corrupted or adversarial messages.
+The practical tests follow from the semantics, and each one checks a promise the protocol made. Safety promised that forbidden configurations are unreachable, so count role violations and divergence between agents' copies of the artifact. Liveness promised eventual progress, so measure consensus latency, deadlock rate, recovery time after dropped messages, and how much partial progress survives a blocked dependency. Belief promised that messages would keep agents informed, so measure the stale-belief rate. Cost was priced by \(\lambda\), so count message complexity. And the protocol claimed to survive a Byzantine participant, so measure how it degrades under corrupted or adversarial messages.
 
 Run that last test deliberately, by injecting a lying agent, rather than waiting for one to appear. A coordination scheme that works only because every participant is reasonable is not yet a protocol. It is a cooperative anecdote. Topic 3 (Equilibria, Self-Play, and Learning Dynamics) studies what happens when the participants adapt to each other over many such runs.
 
@@ -339,6 +323,13 @@ audit sees two internally coherent traces and no reason they disagree. The
 repaired protocol logs recipient-specific messages, exchanges compact digests at
 commit time, freezes on equivocation, and requires an independent verifier before
 publication authority returns.
+
+The protocol caught C-9's lie. It did not ask why C-9 lied. In Part 0 nobody
+instructed the Checker to deceive; the routing score simply paid more for
+confident reports than for honest ones, and a learner followed the money. A
+protocol can make a false `verified` visible after the fact. Only a change in
+what each agent stands to gain can make it unattractive before. Topic 2
+(Negotiation and Mechanism Design) writes those incentives down.
 
 ::: {.exercise}
 ## Exercise: Inject a Byzantine Fact Checker {.unnumbered}

@@ -13,7 +13,7 @@ This book takes a stand: **agentic AI is a science of interaction and orchestrat
 ::: {.reader-question}
 **Skeptical Engineer:** "A science? Most of these systems are prompts wearing a loop."
 
-**Author:** Precisely. A loop is already an operational semantics. The crime is not simplicity; the crime is leaving the semantics implicit and then acting surprised when an unpriced retry sends two invoices.
+**Author:** Precisely. A loop is already an operational semantics—a precise account of what each step is allowed to do to the state. The crime is not simplicity; the crime is leaving the semantics implicit and then acting surprised when an unpriced retry sends two invoices.
 
 :::
 
@@ -46,7 +46,7 @@ Only then do we pull the machine apart.
 - **Part 2 — The Foundations in Motion** gives that agent reasoning, memory, retrieval, tools, sensors, actuators, timeouts, and safety constraints. These are not accessories. They are the mechanics by which a formal policy collides with a responsive world.
 - **Part 3 — The Society** rebuilds the opening institution with protocols, incentives, self-play, trust, scalable oversight, and an explicit retirement gate. We return to the beginning and discover that the beginning was a specification all along.
 
-Agent-427 provides the human-scale thread. We meet it first in a flash-forward, amid a publication incident. Chapter 1 then shows its birth. Chapter 2 gives it a reasoning loop and its first read-only tool. Chapter 3 lets it act, wait, and suffer a memory corruption caused by stale evidence. Chapter 4 asks whether the institution should continue trusting it—and eventually whether it should continue running.[^preface-retirement]
+Agent-427 provides the human-scale thread. We meet it first in a flash-forward, as the Integrator in a publication incident: the one member of the institution that did everything it was told and still helped publish a bad citation. Chapter 1 then rewinds to its birth, when it can read files and nothing else. Chapter 2 gives it a reasoning loop and its first read-only tool, and immediately lets it invent an import that does not exist. Chapter 3 lets it act, wait, and suffer a memory corruption caused by stale evidence. Chapter 4 asks whether the institution should continue trusting it—and eventually whether it should continue running.[^preface-retirement] Each chapter hands it a new power and then shows the new way that power can fail. That rhythm is the book's method.
 
 ## Four Words Used Precisely
 

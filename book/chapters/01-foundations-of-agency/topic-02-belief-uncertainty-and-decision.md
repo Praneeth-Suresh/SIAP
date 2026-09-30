@@ -16,10 +16,8 @@ part of what is going on).
 ## Belief as Runtime State, Not a Feeling
 
 Belief is a variable the program carries between steps, like a counter or a
-cache. Three symbols do the work.
-
-The table below names the three quantities that appear in every belief equation
-in this section, together with how to read each one aloud.
+cache. The table below names the three quantities that appear in every belief
+equation in this topic, together with how to read each one aloud.
 
 | Symbol | Read it as | Meaning |
 |---|---|---|
@@ -27,8 +25,28 @@ in this section, together with how to read each one aloud.
 | \(h_t=(o_{0:t},a_{0:t-1})\) | "the history at step t" | Everything observed so far, plus every action taken so far |
 | \(b_t(s)=P(s_t=s\mid h_t)\) | "the belief at step t assigns to state s" | How likely the agent thinks state \(s\) is, given that history |
 
-Under a POMDP (partially observable Markov decision process) interpretation,
-belief evolves by Bayesian filtering [[7](../../references.md#ref-7)]
+Some vocabulary, defined once and used forever after. Conditional probability
+\(P(X\mid Y)\) means "the probability of \(X\) after assuming or observing
+\(Y\)." A **prior** is the belief before the new observation. A **likelihood**
+is how well a possible state explains the observation. The **posterior** is the
+corrected belief after combining them.
+
+Conditional probability becomes less mysterious when read as a counting instruction. In \(P(X\mid Y)\), first keep only the cases in which \(Y\) happened; then ask what fraction of those cases also contain \(X\). If ten failed test runs are under examination and nine came from a bug in module A, then \(P(\text{bug in A}\mid\text{test failed})=9/10\). A probability distribution is simply the complete list of such shares, which must add to \(1\), or 100 percent.
+
+Here is the whole idea in the smallest case Agent-427 could meet on its first
+morning. It believes a bug is in module A with probability \(0.5\) and in module
+B with probability \(0.5\). A test fails. If that failure has likelihood \(0.9\)
+under "bug in A" and \(0.1\) under "bug in B", multiply each prior by its
+likelihood to get unnormalized scores \(0.45\) and \(0.05\). These are no longer
+probabilities, because they sum to \(0.5\) rather than \(1\); normalizing means
+dividing both by that total. Belief becomes \(0.9\) for A and \(0.1\) for B, with
+the nine-to-one relationship intact. One failing test has turned a coin flip
+into a strong lead—and told the agent which file to read next.
+
+The general version adds one wrinkle: the world may move between observations,
+so the prior must first be pushed forward through the transition model. Under a
+POMDP (partially observable Markov decision process) interpretation, belief
+evolves by Bayesian filtering [[7](../../references.md#ref-7)]
 [[4](../../references.md#ref-4)]:
 
 \[
@@ -62,22 +80,8 @@ Read the filter as two moves: **predict**, then **correct**.
 2. The likelihood \(\Omega(o_{t+1}\mid s',a_t)\) then corrects that prediction.
    It asks how plausible the observed evidence would be if \(s'\) were true.
 3. The constant \(\eta\), the Greek letter eta, is just the normalizer that
-   makes all the updated probabilities add to \(1\).
-
-Some vocabulary, defined once and used forever after. Conditional probability
-\(P(X\mid Y)\) means "the probability of \(X\) after assuming or observing
-\(Y\)." A **prior** is the belief before the new observation. A **likelihood**
-is how well a possible state explains the observation. The **posterior** is the
-corrected belief after combining them.
-
-Conditional probability becomes less mysterious when read as a counting instruction. In \(P(X\mid Y)\), first keep only the cases in which \(Y\) happened; then ask what fraction of those cases also contain \(X\). If ten failed test runs are under examination and nine came from a bug in module A, then \(P(\text{bug in A}\mid\text{test failed})=9/10\). A probability distribution is simply the complete list of such shares, which must add to \(1\), or 100 percent. Normalizing the scores \(0.45\) and \(0.05\) means dividing both by their total \(0.5\). This turns them into \(0.9\) and \(0.1\) without changing their nine-to-one relationship.
-
-A two-state example makes the arithmetic concrete. Suppose the agent believes a
-bug is in module A with probability \(0.5\) and in module B with probability
-\(0.5\). A test fails. If that failure has likelihood \(0.9\) under "bug in A"
-and \(0.1\) under "bug in B", the unnormalized scores are \(0.45\) and \(0.05\).
-Divide by their sum, \(0.5\), and belief becomes \(0.9\) for A and \(0.1\) for
-B. That division by \(0.5\) is \(\eta\) doing its only job.
+   makes all the updated probabilities add to \(1\). In the module example it
+   was the division by \(0.5\).
 
 ### Why Approximate Belief Still Counts as Belief
 
@@ -165,24 +169,33 @@ forecast is 90 percent accurate and predicts clear weather, then \(A\)'s
 expected utility becomes \(0.9(10)+0.1(-20)=7\), so \(A\) is better. The world
 did not change; the action ranking changed because the belief did.
 
+Roads and weather keep the arithmetic clean, but the structure is Agent-427's
+daily life. Replace the shortcut with "recommend the obvious fix now," the
+detour with "read one more file first," and the storm with "the error message
+came from a stale cache." A cheap, trustworthy forecast is exactly the kind of
+observation a read-only agent is allowed to buy.
+
 The arithmetic is small enough to leave on the page. Before querying,
 \[
 \mathbb{E}[U(A)]=0.5(10)+0.5(-20)=-5.
 \]
 
 > **Try this with numbers.** Step 1: the clear branch contributes \(0.5(10)=5\). Step 2: the storm branch contributes \(0.5(-20)=-10\), for \(5-10=-5\).
+
 After a forecast \(q=\text{clear}\) with 90 percent accuracy,
 \[
 \mathbb{E}[U(A)\mid q=\text{clear}]=0.9(10)+0.1(-20)=7>4=\mathbb{E}[U(B)\mid q=\text{clear}],
 \]
 
 > **Try this with numbers.** Step 1: the two branches contribute \(9\) and \(-2\). Step 2: \(9-2=7\), which beats the detour's \(4\) by \(3\).
+
 so the shortcut becomes rational. If instead \(q=\text{storm}\), then
 \[
 \mathbb{E}[U(A)\mid q=\text{storm}]=0.1(10)+0.9(-20)=-17<4,
 \]
 
 > **Try this with numbers.** Step 1: the branches contribute \(1\) and \(-18\). Step 2: \(1-18=-17\), so the detour wins by \(21\).
+
 so the detour remains rational. The same pair of roads supports different
 actions because belief, not bravado, mediates between observation and control.
 
@@ -219,6 +232,7 @@ to \(5.5\):
 \]
 
 > **Try this with numbers.** Step 1: the clear answer contributes \(0.5\times7=3.5\). Step 2: the storm answer contributes \(0.5\times4=2\), and \(3.5+2=5.5\).
+
 so the value of information is \(1.5\). The two halves of that sum are the two
 possible forecasts: clear, worth \(7\), and storm, worth \(4\). If the query
 costs \(0.8\), ask first. If it costs \(2\), act without it.
@@ -232,6 +246,7 @@ H(S\mid h)=-\sum_s b(s)\log b(s).
 \]
 
 > **Try this with numbers.** Step 1: use base-2 logs for a 0.5/0.5 belief. Step 2: \(-2[0.5\log_2(0.5)]=1\) bit.
+
 Mutual information measures how much a query \(Q\) is expected to reduce that
 uncertainty:
 \[
@@ -239,6 +254,7 @@ I(S;Q\mid h)=H(S\mid h)-H(S\mid h,Q).
 \]
 
 > **Try this with numbers.** Step 1: begin with 1 bit of entropy and expect 0.3 bit after the query. Step 2: the mutual information is \(1-0.3=0.7\) bit.
+
 These symbols are not rival decision rules. \(H(S\mid h)\) says how much
 uncertainty about state \(S\) remains after history \(h\). \(I(S;Q\mid h)\) says
 how much of that uncertainty the query may retire. The value-of-information
@@ -261,6 +277,7 @@ V^\star(b)=\max_a\{r(b,a)+\gamma\sum_o P(o\mid b,a)V^\star(\tau(b,a,o))\}.
 \]
 
 > **Try this with numbers.** Step 1: an action earns 2 now and leads to future values 6 and 2, each with probability 0.5. Step 2: at \(\gamma=0.5\), its value is \(2+0.5[0.5(6)+0.5(2)]=4\).
+
 Here \(b\) is the current belief, \(r(b,a)\) is the immediate reward of acting
 from that belief, \(P(o\mid b,a)\) is the probability of seeing observation
 \(o\), and \(\tau(b,a,o)\) is the updated belief after action and observation.
@@ -358,9 +375,16 @@ modules remain plausible, so editing now is premature."
 
 The interpreter has therefore gained its second component. Goals and actions
 define what the agent is trying to do; belief defines what the agent thinks is
-true enough to justify the next move. Topic 3 (World Models and State
-Abstractions) takes up the next question: which parts of the world deserve to be
-in the state at all.
+true enough to justify the next move.
+
+The module example had two hypotheses and one observation. An hour into a real
+task, Agent-427 has read forty files, seen a dozen test runs, and collected
+hundreds of log lines, and the hypotheses worth tracking depend on details
+buried somewhere in that pile. Filtering over the full history is correct in
+principle and ruinous in practice. The agent needs a smaller description of its
+situation that still supports the same decisions—and a way to know when the
+shrinking has thrown away the one line that mattered. Topic 3 (World Models and
+State Abstractions) builds that description.
 
 ::: {.exercise}
 ## Exercise: Build a Filter That Distrusts Repetition {.unnumbered}

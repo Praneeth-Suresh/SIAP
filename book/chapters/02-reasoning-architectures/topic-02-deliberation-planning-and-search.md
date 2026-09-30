@@ -6,6 +6,8 @@ Deliberation is the wager that simulated futures will save more than they cost. 
 
 ## Plans as Paths, Not Prophecies
 
+Sketch Agent-427's options at 3:47:25 on a whiteboard and they form a small tree. It could inspect the verifier, inspect the clock-configuration file, or search for the moved runbook. Each inspection leads to new options, and some branches end in a localized root cause while others end in an expensive shrug. A plan is one path through that tree, chosen before walking it. To compare paths, price them.
+
 Let \(G=(V,E)\) be a search graph. Vertices are decision states and edges are legal transitions. A deterministic plan \(p=(v_0,\ldots,v_T)\) is a path whose cost is
 
 \[
@@ -16,7 +18,7 @@ J(p)=\sum_{t=0}^{T-1}c(v_t,v_{t+1})+\Phi(v_T).
 
 The step cost \(c\) may combine tokens, latency, money, and risk. The terminal penalty \(\Phi\) prices the state in which the plan abandons the agent. “Tests still red but root cause localized” deserves a different penalty from “repository edited and no tests run.”
 
-A* ranks candidate nodes by
+Pricing every complete path is hopeless once the tree grows, so the search must decide which partial path to extend next. A* ranks candidate nodes by
 
 \[
 f(n)=g(n)+h(n).
@@ -107,8 +109,7 @@ In partial observability the recursion runs over belief, not omniscient state [[
 
 ## Spending Simulations Under a Clock
 
-After expanding every unvisited action once, Monte Carlo tree search allocates
-further rollouts with an optimism bonus:
+A* needs a trustworthy heuristic. When outcomes are noisy and no good heuristic exists, a planner can instead *sample* futures: play a branch forward to the end many times, average what happens, and spend more samples on branches that look promising. The danger is committing too early to a branch that got lucky on its first few tries. After expanding every unvisited action once, Monte Carlo tree search guards against that by adding an optimism bonus:
 
 \[
 a^\star=\arg\max_{a:\,N(s,a)>0}\left(
@@ -118,18 +119,11 @@ Q(s,a)+c\sqrt{\frac{\ln N(s)}{N(s,a)}}
 
 > **Try this with numbers.** Step 1: let \(Q=4\), \(c=1\), parent visits \(N(s)=100\), and action visits \(N(s,a)=4\); the bonus is about \(\sqrt{4.605/4}=1.07\). Step 2: the selection score is about 5.07; after 40 action visits the bonus falls to about 0.34.
 
-Here \(Q(s,a)\) is the average value observed after trying action \(a\) from state
-\(s\); \(N(s)\) counts visits to the state, and \(N(s,a)\) counts trials of that
-action. The constant \(c\) sets the appetite for exploration. The square-root
-term is an uncertainty allowance: it is large for neglected branches and
-shrinks as evidence accumulates. Agent-427 spends some rollouts to remain
-correctable.
-
-A tree-search implementation can keep two columns beside every tried action. The first column, \(Q\), is “how well this branch has done so far.” The second is a curiosity allowance. A branch tried only four times receives a larger allowance than one tried forty times, because little evidence exists about it. Add the columns and inspect the largest total. As visits accumulate, the denominator grows and curiosity fades; the branch must eventually survive on results rather than novelty. Actions with no visits are handled first, before this division is used.
+Here \(Q(s,a)\) is the average value observed after trying action \(a\) from state \(s\); \(N(s)\) counts visits to the state, and \(N(s,a)\) counts trials of that action. The constant \(c\) sets the appetite for exploration. Picture two columns beside every tried action. The first, \(Q\), is "how well this branch has done so far." The second is a curiosity allowance, large for neglected branches and shrinking as evidence accumulates: a branch tried four times gets more benefit of the doubt than one tried forty times. Add the columns and expand the largest total. As visits accumulate, curiosity fades and a branch must eventually survive on results rather than novelty. Actions with no visits are handled first, before this division is used.
 
 Rollouts trade exploitation of promising branches against exploration of neglected ones [[45](../../references.md#ref-45)]. Under change, timestamps matter: a thousand rollouts through yesterday's model are a beautifully estimated obsolete policy.
 
-Anytime planning returns its best available candidate when interrupted [[44](../../references.md#ref-44)].
+Because the clock at 3:47 is real, the search must also be interruptible. Anytime planning returns its best available candidate when interrupted [[44](../../references.md#ref-44)], so a budget cut produces a usable answer rather than nothing.
 
 ![A search tree grows scored frontier nodes until a budget line interrupts it, returning the best surviving plan for one action before observation and replanning.](../../assets/diagrams/12-budgeted-search-frontier.png)
 
@@ -180,6 +174,8 @@ Reflection can repair a hard plan after contradictory evidence, but it can also 
 [^planner-opera]: The overture alone consumed 1,800 tokens and the variable is still misspelled.
 
 Every candidate trajectory should record state estimate, state/version age, action, expected observation, cost, risk, and contingency. Log pruning decisions when they affect safety. Put symbolic preconditions around irreversible actions. Trigger replanning on new evidence, failed preconditions, budget drift, tool errors, observation expiry, or a value change that reorders the frontier.
+
+Look again at why the 3:47 plan oscillated. The search itself was fine; what failed was the planner's picture of the world, which had one "auth service" where production had two replicas and two epochs. The epoch guard catches that only if someone remembered the epoch. Over the next twenty minutes Agent-427 accumulates a great deal worth remembering—versions, branches, failed hypotheses, which documents were stale—and starts relying on what it remembers. That is where Topic 3 (Memory Systems, Context, and Retrieval) picks up, at 4:06, with a memory that is relevant, recent, and wrong.
 
 ::: {.exercise}
 ## Exercise: Make the World Betray Your Planner {.unnumbered}

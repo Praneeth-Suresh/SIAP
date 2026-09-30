@@ -10,9 +10,9 @@ The clean three-store diagram—working, episodic, semantic—remains useful. Pr
 
 The context window is not memory. It is the small working surface onto which memory is projected. Retrieval decides which outside items enter that surface; attention decides how strongly tokens already on the surface interact. Both ration influence, so retrieval can be understood as sparse attention over an external corpus. But it is more than attention: retrieval incurs I/O and latency, crosses permission boundaries, chooses provenance, and can import adversarial text before the transformer's internal attention mechanism begins [[76](../../references.md#ref-76)].
 
-Let memory state be \(m_t=(w_t,e_t,s_t)\): working state \(w_t\), episodic traces \(e_t\), and semantic summaries \(s_t\), a useful engineering analogue of cognitive multi-store theory [[48](../../references.md#ref-48)]. These are roles, not immaculate databases. One object may migrate among them, and every migration can lose scope.
+Let memory state be \(m_t=(w_t,e_t,s_t)\): working state \(w_t\), episodic traces \(e_t\), and semantic summaries \(s_t\), a useful engineering analogue of cognitive multi-store theory [[48](../../references.md#ref-48)]. Working state is what is on the desk right now; episodic traces are the record of particular events, such as "at 04:06:02 the branch was `legacy-v2`"; semantic summaries are general lessons distilled from many events, such as "this service configures timeouts in TOML." These are roles, not immaculate databases. One object may migrate among them, and every migration can lose scope.
 
-The controller chooses
+At 4:06:04 nobody *decided* to let a `main`-branch file speak on `legacy-v2`. The retrieval simply happened, because the system had no explicit memory controller whose choices could be priced, logged, or refused. Making that controller explicit is the first repair. It chooses among four operations:
 
 \[
 u_t\in\{\texttt{write},\texttt{compress},\texttt{retrieve},\texttt{evict}\}.
@@ -133,7 +133,7 @@ Interference is the phenomenon: one memory changes the interpretation or retriev
 
 Consolidation turns many episodic steps into a smaller semantic memory. The challenge is not producing a fluent summary. The challenge is preserving the edge case that changes later action. Human-feedback-trained summarization can improve preference fit, but feedback itself may reward readability over branch-qualified truth [[75](../../references.md#ref-75)].
 
-Consolidate a 100-step trace in two layers:
+Consolidate a 100-step trace in two layers—immutable evidence underneath, scoped claims on top—and then test the top layer before trusting it:
 
 1. Keep raw evidence immutable and addressable by stable handles.
 2. Write a summary whose every action-relevant claim links back to those handles and carries scope.
@@ -157,11 +157,7 @@ I(X;\hat{X}).
 
 Read \(R(D)\) as the least information a compressor must preserve to keep
 average task damage at or below \(D\). The minimization ranges over possible
-compression rules \(p(\hat x\mid x)\). This is why the distortion function
-carries the moral burden: if it forgets branch identity, the optimum may be
-wonderfully small and operationally treasonous.
-
-A literal compressor can follow the formula as a contest among summaries. Produce several candidate summaries, reconstruct or answer future task questions from each one, and measure the damage \(d\) caused by what each summary forgot. Reject every candidate whose average damage exceeds \(D\). Among the survivors, choose the one that retains the least information from the original. The bargain is not “make the text short.” It is “make it as short as possible without crossing the declared damage limit.”
+compression rules \(p(\hat x\mid x)\). A literal compressor can follow the formula as a contest among summaries: produce several candidates, answer future task questions from each, measure the damage \(d\) each one's forgetting causes, discard every candidate whose average damage exceeds \(D\), and keep the smallest survivor. The bargain is not “make the text short.” It is “make it as short as possible without crossing the declared damage limit.” That is why the distortion function carries the moral burden: if it forgets branch identity, the optimum may be wonderfully small and operationally treasonous. The 4:06 summary "timeouts use `request_timeout_ms`" is exactly such an optimum under a distortion measure that never asked about branches.
 
 Forgetting is mandatory when retention violates consent, crosses tenant boundaries, outlives a purpose, or keeps known poison eligible for retrieval. It is also useful under context pressure. The controller should evict active influence while retaining only the minimum audit artifact policy permits. Privacy deletion and active-context eviction are not synonyms: one destroys or irreversibly anonymizes stored data; the other merely removes it from current attention.
 
@@ -210,6 +206,8 @@ function MEMORY_STEP(sigma, uncertainty, phase):
 ```
 
 Evaluate memory at the decision boundary. Under a fixed model, budget, and task distribution, ablate no memory, working state only, and retrieval-backed memory. Measure task success, task-specific progress, precision@\(k\), grounded faithfulness, latency, contamination rate, and eviction regret. Three relevant hits among five give precision@5 of 0.6; the other two may still be enough to sink the edit.
+
+By 4:30 the war room is in order: YAML quarantined, TOML bound to its branch, provenance graph collapsed to its sources. Agent-427 localizes the real failure and proposes a narrow repair. Suppose a maintainer applies it and the focused test goes green. It would be pleasant to stop here. But the last forty minutes contained an invented import, an oscillating plan, and a self-citing memory, each caught by a guard rather than by good judgment. A passing test says the final state looks right. It says nothing about whether the path there was safe, or whether the agent's confidence along the way deserved belief. Deciding what the run actually proved is the work of Topic 4 (Evaluating and Debugging Reasoners).
 
 ::: {.exercise}
 ## Exercise: Build and Poison the War Room {.unnumbered}

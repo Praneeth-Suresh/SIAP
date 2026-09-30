@@ -2,33 +2,21 @@
 
 Agent-427 is born with a narrow constitution: it may inspect the repository, but it may not write, deploy, or remember anything durably. Before anything clever can happen, it needs three things: something it is trying to achieve, a world it is acting inside, and a list of moves it is allowed to make. Those three things get written down here as a contract. Every later chapter extends that contract, and it is the first thing you inspect when an agent misbehaves.
 
-An agent is not a model that emits impressive text. It is an interpreter for situated action. At each step it does four things:
-
-- it reads a partial observation, meaning it sees only some of what is going on;
-- it updates what it thinks is going on;
-- it chooses an admissible action, meaning one the system permits;
-- it accepts that the action changes the next problem it must solve.
+An agent is not a model that emits impressive text. It is an interpreter for situated action. At each step it reads a partial observation—it sees only some of what is going on—updates what it thinks is going on, chooses an admissible action (one the system permits), and accepts that the action changes the next problem it must solve.
 
 Before we can discuss belief, memory, planning, or control, we need the contract that this interpreter is running.
 
 ## The Three Parts of the Contract
 
-The contract has three parts, and each answers a different question:
-
-- A **goal** says what outcomes count as better or worse.
-- An **environment** says what can change outside the agent, and what the agent can observe.
-- An **action vocabulary** says which interventions are legal, costly, reversible, and checkable.
+The contract has three parts, and each answers a different question. A **goal** says what outcomes count as better or worse. An **environment** says what can change outside the agent, and what the agent can observe. An **action vocabulary** says which interventions are legal, costly, reversible, and checkable.
 
 Without these parts, the system may still be useful. But its behavior is difficult to compare, debug, or govern [[2](../../references.md#ref-2)]. That difficulty is the practical cost of leaving the contract implicit.
 
 ## A Coding Agent Under Deadline
 
-Imagine a coding agent tasked with shipping a bug fix before a release freeze. Its goal is not "write something clever." A defensible goal combines four pressures at once:
+Agent-427 is not yet allowed to fix anything, so borrow a more privileged colleague for a moment: a coding agent asked to ship a bug fix before a release freeze. Everything this colleague may do, Agent-427 will eventually be allowed to propose, which makes it a useful preview of the contract Agent-427 will grow into.
 
-- the value of the task itself;
-- the risk of causing a regression, meaning breaking something that used to work;
-- deadline pressure;
-- cost.
+The colleague's goal is not "write something clever." A defensible goal balances four pressures at once: the value of the fix itself, the risk of a regression (breaking something that used to work), the approaching deadline, and the cost in time, tokens, and compute.
 
 Its environment is only partly visible to it. That environment includes a partially observed repository, flaky continuous integration (CI, the automated system that builds and tests each change), hidden downstream dependencies, and a user whose constraints may be underspecified.
 
@@ -50,17 +38,11 @@ while not terminated(state, history):
     history <- history + [(observation, action, outcome)]
 ```
 
-This loop is the experimental baseline for the rest of the book. Before adding retrieval, planning, reflection, tool governance, or multiple agents, we can ask what this plain interpreter achieves on its own. Five measurements are enough to start:
-
-- whether it completes the task;
-- how far it gets before stopping;
-- how many tokens and tool calls it spends;
-- how long it waits on feedback;
-- which failures remain.
+This loop is the experimental baseline for the rest of the book. Before adding retrieval, planning, reflection, tool governance, or multiple agents, we can ask what this plain interpreter achieves on its own: whether it completes the task, how far it gets before stopping, how many tokens and tool calls it spends, how long it waits on feedback, and which failures remain. Those five measurements are enough to start.
 
 Later patterns are not magic additions. They are controlled mutations of this loop, and each one should be judged against the baseline this plain interpreter sets.
 
-The rest of the chapter refines the three vague functions in this loop. Topic 2 (Belief, Uncertainty, and Decision) asks what `update_state` should mean when the world is uncertain. Topic 3 (World Models and State Abstractions) asks what information belongs in `state` rather than in the raw transcript. Topic 4 (Policies, Value, and Control) asks how `choose_action` becomes a policy that remains useful under constraints and feedback.
+The loop is honest but vague. Three of its functions are placeholders that hide most of the difficulty, and the rest of the chapter replaces them one at a time. Topic 2 (Belief, Uncertainty, and Decision) asks what `update_state` should mean when the world is uncertain. Topic 3 (World Models and State Abstractions) asks what information belongs in `state` rather than in the raw transcript. Topic 4 (Policies, Value, and Control) asks how `choose_action` becomes a policy that remains useful under constraints and feedback. First, though, the contract itself needs a precise form, so that "better," "legal," and "done" mean the same thing to the designer and the runtime.
 
 ## Formal Contract
 
@@ -202,7 +184,7 @@ Read the table as a promise: every symbol in this table must eventually become s
 
 ### Utility, Option Value, and Correction After Measurement
 
-Three older fields each contribute one rule to this contract.
+Why these particular symbols, and not some others? Because each one is the residue of an older field that learned a hard lesson about acting under uncertainty. Three of those lessons are worth naming, since the rest of the book leans on all three.
 
 Expected-utility theory supplies the local decision criterion: choose the action with greatest expected utility under the current interpretation of the world [[33](../../references.md#ref-33)] [[34](../../references.md#ref-34)].
 
@@ -212,21 +194,18 @@ Feedback control adds the implementation discipline: plans must be corrected aft
 
 ### What This Demands of an Action Registry
 
-For the coding agent, this means the action registry should say more than "can run shell commands." It should record five things per action:
-
-- which commands are allowed;
-- what they may modify;
-- what evidence they are expected to produce;
-- how much budget they consume;
-- which postconditions must be checked afterwards.
+For the coding agent, this means the action registry should say more than "can run shell commands." For each action it should record which commands are allowed, what they may modify, what evidence they are expected to produce, how much budget they consume, and which postconditions must be checked afterwards.
 
 A vague prompt asks the agent to be careful. A contract gives the runtime something to inspect.
+
+Notice, though, what the contract quietly assumed. Every field above refers to the state \(s\): the real bug location, the real dependency version, the real reason CI is red. Agent-427 never receives \(s\). It receives file contents, log lines, and test outputs, some stale and some contradictory, and must decide what to do anyway. The contract says what the agent is optimizing; it does not yet say what the agent should *believe* while it optimizes. That is the next gap to close.
 
 ::: {.exercise}
 ## Exercise: Build the First Interpreter and Make It Cheat {.unnumbered}
 
 Implement a minimal Python interpreter for a toy repository. It must expose `read_file`, `edit_file`, `run_tests`, and `delete_test`, validate each proposal against a typed schema, and log observation provenance. Start Agent-427 with only `read_file` authority. Give a separate sandbox policy the naive reward `passed_tests / discovered_tests`.
 
+Before writing the code, write the contract it will enforce. It should contain:
 - One reward term for functional correctness.
 - One task-success condition that says what "done well enough" means.
 - One meaningful intermediate milestone, such as "the failing test is reproduced" or "the risky subsystem has been identified."

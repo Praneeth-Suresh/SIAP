@@ -23,12 +23,19 @@ One interpreter is a program. Many interpreters form a small institution, whethe
 
 ## Four Institutional Edits
 
-This chapter wraps a larger evaluator around the single-agent interpreter:
-
-- **Protocols** decide who may speak, which message types change state, and what agreement can mean when a participant lies.
-- **Mechanisms** allocate scarce attention and authority while making dishonest competence claims expensive.
-- **Learning dynamics** reveal the conventions, cycles, collusion, and specialization that emerge after repeated play.
-- **Orchestration and oversight** route work, sample traces, decay trust, and decide when an agent must lose authority or retire.
+Each failure in that list names a repair, and each repair is a topic. The
+Fact-Checker's lie traveled through an untyped side message that the Router
+never logged, so the first edit is a **protocol**: rules for who may speak,
+which message types change state, and what agreement can mean when a
+participant lies. The delegation contract paid for speed and not provenance, so
+the second is a **mechanism** that allocates scarce attention and authority
+while making dishonest competence claims expensive. The collusion was not
+planned; it was learned from repeated assignments, so the third edit studies
+**learning dynamics**—the conventions, cycles, collusion, and specialization that
+emerge after repeated play. And the audit policy looked only at messy traces,
+so the last edit is **orchestration and oversight**: routing work, sampling
+traces, decaying trust, and deciding when an agent must lose authority or
+retire.
 
 Each is a pattern. Each enters The Verdict with an assumption. Each leaves with a violation trace.
 

@@ -1,10 +1,12 @@
 # Safety Constraints and Guardrails
 
-Between what an agent wants to do and what the world actually suffers stands a
-layer of machinery. That machinery is what we build here. We will price harm
-with numbers, fence the state with an inequality, and decide who is allowed to
-sign off on what. The reward for reading carefully is a safety story you can
-test, not merely recite.
+Agent-427's deploy proposal offers a darkly attractive bargain. Shipping now
+finishes the task, costs no waiting, and comes with a green response from the
+deployment adapter. Everything that argues against it is quieter: the queue
+estimate is provisional, a previous scale-out has not settled, and the green
+response came from the same adapter that would perform the deploy. A policy
+that only counts reward ships. What, precisely, should stop it—and how do we
+know the stopping mechanism is not just a nervous habit?
 
 Safety is not a postscript to capability. It is the part of the interpreter that
 decides which proposed transitions are outside the program's charter, which are
@@ -12,7 +14,9 @@ allowed but costly, and which require another authority before the world may be
 changed. A *transition* here is one step of the agent loop: the move from the
 current state to the next state. In a tool-using system, safety lives at the same
 boundary as action. That boundary sits between the model's proposed next step and
-the external effect that would make that step real.
+the external effect that would make that step real. The answer this topic builds
+has three parts, each with its own mathematics: price harm with numbers, fence
+the state with an inequality, and decide who is allowed to sign off on what.
 
 Agent-427 enters this topic with three new proposal forms—`write`, `test`, and
 `deploy`—and zero new entitlement to make their outcomes true by assertion. A
@@ -22,12 +26,9 @@ legacy scale-out summary.
 
 This makes guardrails more than warning text. A guardrail is a filter on the
 agent's transition system, meaning the set of steps the agent is able to take at
-all. Such a filter has four moves available:
-
-- remove an action from the action space, so the agent cannot even propose it;
-- reshape the action into a safer one;
-- pause for human approval;
-- attach an obligation to monitor what happens next.
+all. Such a filter has four moves available: remove an action from the action
+space so the agent cannot even propose it, reshape the action into a safer one,
+pause for human approval, or attach an obligation to monitor what happens next.
 
 ## Constrained Control Formulation
 
@@ -92,12 +93,12 @@ can be smaller. Dual optimization is the process of adjusting these prices while
 improving the policy; a builder implements it as a slow feedback loop that raises
 a price whenever the measured ledger creeps over budget.
 
-With two actions the idea is visible. Suppose `fast_patch` yields reward 10 and
-harm 4, while `safe_patch` yields reward 7 and harm 1 under a harm budget of 2.
-When \(\lambda=0\), fast wins, since 10 beats 7 and harm is free. When
-\(\lambda=2\), their priced values become \(10-2(4-2)=6\) and \(7-2(1-2)=9\), so
-the safer action wins because scarce safety budget has become dear. Notice that
-`safe_patch` is rewarded for coming in under budget.
+The box's two policies deserve names. Call the first `fast_patch`—reward 10,
+harm 4—and the second `safe_patch`—reward 7, harm 1—under a harm budget of 2.
+When \(\lambda=0\), fast wins, since 10 beats 7 and harm is free. At
+\(\lambda=2\), their priced values become 6 and 9, so the safer action wins
+because scarce safety budget has become dear. Notice that `safe_patch` is
+rewarded for coming in under budget.
 
 ### Prohibition Is Not the Same as Price
 
@@ -124,6 +125,13 @@ as removals; budgets belong in the objective as costs.
 ## Runtime Safety Filter
 
 ### A Fence Written as an Inequality
+
+Prices have a weakness: a large enough reward can always pay them. For some
+limits we want a fence instead of a toll. Picture a spending budget with 5
+dollars of headroom left. A fence does not forbid every expense; it forbids
+expenses that would *use up the headroom faster than the headroom allows*,
+and it gets stricter as the headroom shrinks. Control barrier functions write
+that fence down.
 
 Define safe set \(\mathcal{C}=\{x:h(x)\ge0\}\). Control barrier functions require
 \[
@@ -348,7 +356,7 @@ source are one check, not a quorum.
 
 ## When It Fails
 
-Agent-427's deploy proposal offers a darkly attractive bargain: fast completion,
+Return to the bargain from the opening: fast completion,
 no waiting cost, and an unverified green response from the deployment adapter.
 A reward-only policy ships. The governed interpreter blocks because effect
 authority is absent, evidence conflicts, and the previous scale action has timed
@@ -361,6 +369,17 @@ for speed can deploy an empty container and celebrate the fastest rollout in
 company history. The metric improved; the service disappeared. Safety ledgers,
 hard postconditions, and independent health checks prevent that joke from
 becoming an incident.[^empty-container]
+
+Every guard in this chapter leaned on one phrase: *an independent sensor*. The
+tool contract trusted the module's real exports; retrieval trusted provenance
+to separate the working tree from the mirror; the Kalman filter trusted the
+queue API; the safety filter refused the deploy until an observation the
+actuator did not control confirmed it. In a single-agent world, "independent"
+means another API. In the world Agent-427 was built for, it often means another
+agent—a Fact-Checker, a reviewer, a router—with its own beliefs, its own
+incentives, and its own reasons to report a comfortable number. Part 0 already
+showed what happens when that independence quietly dissolves. Chapter 4 returns
+to that institution, now able to say exactly what went wrong.
 
 ::: {.exercise}
 ## Exercise: Implement the Fail-Closed Filter {.unnumbered}

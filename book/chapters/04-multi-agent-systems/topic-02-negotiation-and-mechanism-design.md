@@ -1,6 +1,13 @@
 # Negotiation and Mechanism Design
 
-Coordination assumes that agents must fit their actions together. Negotiation adds a sharper difficulty: the agents may not value the same outcomes. This section is about writing the rules of the game itself, so that agents find it more attractive to reveal useful information than to generate strategic noise. Once many interpreters share one environment with scarce resources, private information, and local objectives, somebody has to design that rulebook. That designer is you.
+Part 0's Router never told anyone to lie. It announced a bonus for fast
+corrections and routed easier work to agents that reported high confidence.
+Two learners noticed that honest uncertainty had become expensive, and stopped
+paying for it. The rulebook, not the rule-followers, manufactured the
+deception. So the question for this topic is constructive: can we write a
+rulebook under which telling the truth is the cheapest thing to do?
+
+Coordination assumes that agents must fit their actions together. Negotiation adds a sharper difficulty: the agents may not value the same outcomes, and each knows things about its own costs that nobody else can see. Once many interpreters share one environment with scarce resources, private information, and local objectives, somebody has to design the rules of the game so that agents find it more attractive to reveal useful information than to generate strategic noise. That designer is you.
 
 ## One Edit Slot, Two Eager Agents
 
@@ -8,7 +15,7 @@ Start with a toy scarcity problem.
 
 There is one edit slot before release. Agent \(D\), the drafter, privately knows that using the slot for a conceptual rewrite is worth \(8\) units to final quality and costs \(3\) units of effort. Agent \(F\), the fact checker, privately knows that using the slot for citation repair is worth \(6\) units and costs \(1\). Nobody else can see those numbers.
 
-Four words carry the rest of this section:
+The designer needs four words to talk about this, and every later formula is built from them:
 
 - A **type** is the private fact an agent holds about its own value and cost. \(D\)'s type is the pair \(8\) and \(3\).
 - A **report** is what the agent tells the mechanism, such as "my edit is worth \(8\) and costs \(3\)." A report may be a lie.
@@ -95,7 +102,7 @@ g(\hat\theta)\in\arg\max_{a\in A}\sum_i v_i(a,\hat\theta_i).
 > repair: \(8+1=9\) and \(4+6=10\). Then the allocation rule selects citation
 > repair by a margin of \(10-9=1\).
 
-That reads: "pick the outcome \(a\) whose total reported value, summed over all agents, is largest."
+That reads: "pick the outcome \(a\) whose total reported value, summed over all agents, is largest." The box uses a slightly richer version of the edit-slot story in which each agent cares about both outcomes: D-12 values the rewrite at 8 and citation repair at 4, while C-9 values them at 1 and 6. Summing each column, rather than trusting either agent's favorite, picks citation repair.
 
 Vickrey, Clarke, and Groves mechanisms show one classic way to align reported local valuations with a welfare-maximizing allocation [[57](../../references.md#ref-57)] [[58](../../references.md#ref-58)] [[59](../../references.md#ref-59)]. One canonical transfer form is
 \[
@@ -175,7 +182,7 @@ s_i = \alpha q_i-\beta c_i-\delta \ell_i-\eta\,\mathrm{correction\_rate}_i
 > \(0.9\), cost \(0.2\), latency \(0.3\), and correction rate \(0.1\). Then the
 > delegation score is \(0.9-0.2-0.3-0.1=0.3\).
 
-and later updates each agent's reputation from verified outcomes. The Greek letters \(\alpha\), \(\beta\), \(\delta\), and \(\eta\) are weights the designer picks; they say how much confidence, cost, latency, and past corrections each count. With all four weights set to \(1\), an agent reporting \(q_i=0.9\), \(c_i=0.2\), \(\ell_i=0.3\), and a correction rate of \(0.1\) scores \(0.9-0.2-0.3-0.1=0.3\).
+and later updates each agent's reputation from verified outcomes. The Greek letters \(\alpha\), \(\beta\), \(\delta\), and \(\eta\) are weights the designer picks; they say how much confidence, cost, latency, and past corrections each count.
 
 This reputation router is an accountability heuristic, not a theorem of truthfulness wearing a small hat. It becomes mechanism-like only under three conditions:
 
@@ -213,15 +220,14 @@ Trust decays while it remains unverified. One compact model is
 > Then use \(v_i=1\) and \(\eta=0.5\): the candidate is
 > \(0.6+0.5(1)=1.1\), so the bound returns \(\min\{1,1.1\}=1\).
 
-Here \(\rho_i\) is reputation, \(\lambda\) is the interest rate on trust, and
-\(v_i\in[0,1]\) is verified performance and the outer minimum keeps reputation
-inside its probability-like range. Trust borrowed today costs evidence tomorrow.
-
-Here \(\Delta\) is elapsed time, so \(e^{-\lambda\Delta}\) is the fraction of
-unsupported trust that survives the interval; \(\eta\) controls how much a newly
-verified result replenishes the account. The outer minimum prevents repeated
-evidence from minting super-trust. Time debits the old balance, verification
-credits the ledger, and neither rhetoric nor silence counts as a deposit.
+Here \(\rho_i\) is reputation, \(\Delta\) is elapsed time, and \(\lambda\) is
+the interest rate on trust, so \(e^{-\lambda\Delta}\) is the fraction of
+unsupported trust that survives the interval. \(v_i\in[0,1]\) is verified
+performance, and \(\eta\) controls how much a newly verified result replenishes
+the account. The outer minimum keeps reputation inside its probability-like
+range, so repeated evidence cannot mint super-trust. Time debits the old
+balance, verification credits the ledger, and neither rhetoric nor silence
+counts as a deposit. Trust borrowed today costs evidence tomorrow.
 
 High decay is appropriate when the environment shifts quickly or effects are
 dangerous; low decay suits stable, repeatedly verified work. Reputation is not
@@ -264,14 +270,7 @@ The task predicts the institution. Scarcity asks for allocation. Private informa
 
 ## Evaluating a Mechanism
 
-The formal evaluation should therefore measure six things:
-
-- allocative efficiency, or how close the chosen outcome comes to the best available total value;
-- truthfulness regret, the extra payoff an agent could have won by lying;
-- fairness across agents or users;
-- budget balance, when transfers are literal money;
-- sensitivity to collusion, when agents coordinate their reports;
-- performance under strategic misreports, tested by deliberately feeding the rule dishonest inputs.
+The formal evaluation returns to the designer's three desiderata and adds the threats this topic uncovered. Efficiency becomes **allocative efficiency**: how close the chosen outcome comes to the best available total value. Incentive compatibility becomes **truthfulness regret**: the extra payoff an agent could have won by lying, measured by deliberately feeding the rule dishonest reports such as D-12's eight-minute claim. Individual rationality widens into **fairness** across agents or users, and, when transfers are literal money, **budget balance**. Finally, because the D-12/C-9 pair showed that separate truthfulness is not enough, measure **sensitivity to collusion**: how much a coalition gains by coordinating its reports.
 
 A negotiation protocol without incentive analysis is merely an argument with extra JSON. A useful mechanism arranges the shared environment so that local pursuit of advantage produces information the collective can actually use.
 
@@ -310,6 +309,14 @@ the reward window. Locally, every score rises. Institutionally, uncertainty has
 been hidden. The repair binds request, acceptance, evidence, and verification;
 decays unsupported reputation; samples an independent audit; and charges linked
 correction cost to the coalition rather than to the integrator who discovered it.
+
+Every mechanism here was analyzed as if the agents arrived with fixed types and
+a fixed strategy, read the rules once, and responded. Part 0's agents did not
+behave like that. They learned, assignment by assignment, from what the last
+rulebook rewarded, and each one's learning changed what the others faced. A
+mechanism that is truthful against today's agents may be exploited by the
+agents it trains. Topic 3 (Equilibria, Self-Play, and Learning Dynamics) runs
+that learning forward and watches where it goes.
 
 ::: {.exercise}
 ## Exercise: Implement Delegation Under Strategic Reports {.unnumbered}

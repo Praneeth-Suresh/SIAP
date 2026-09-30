@@ -49,7 +49,9 @@ Unit tests verify local contracts. Scenario tests verify traces under controlled
 
 ## Calibration Cross-Examines Confidence
 
-Strictly proper scoring rules make honest probability reporting optimal [[49](../../references.md#ref-49)]. The log loss is
+The opening worry included an agent that reports 99% confidence after evidence worth 60%. Is such a number a lie, bad luck, or a symptom? One run cannot say. Calibration asks the question over many runs: when the agent says 90%, is it right about 90% of the time? The scores below all compare forecasts with outcomes, in slightly different arithmetic. Throughout, \(N\) is the number of evaluated cases, case \(i\) has input \(x_i\) and correct answer \(y_i\), and a probability \(p\) is whatever the agent reported before learning the answer.
+
+Strictly proper scoring rules make honest probability reporting optimal [[49](../../references.md#ref-49)]: no strategy of shading reports up or down can beat telling the truth about one's own uncertainty. The log loss is
 
 \[
 \mathcal{L}_{\log}=-\frac{1}{N}\sum_{i=1}^{N}
@@ -88,15 +90,13 @@ BS_{\mathrm{multi}}=\frac{1}{N}\sum_{i=1}^{N}\sum_{k=1}^{K}
 
 > **Try this with numbers.** Step 1: for one example with probabilities \((0.7,0.2,0.1)\) and class 1 true, square errors are 0.09, 0.04, and 0.01. Step 2: sum them to get multiclass Brier loss 0.14.
 
-Across these scores, \(N\) is the number of evaluated cases. In log loss,
-\(x_i\) is case \(i\), \(y_i\) its correct answer, and
-\(p_\theta(y_i\mid x_i)\) the probability assigned to that answer; in binary
-Brier, \(p_i\) is the reported probability and \(y_i\) is \(0\) or \(1\). For
-ECE, \(B_b\) is confidence bucket \(b\), while \(\mathrm{acc}\) and
-\(\mathrm{conf}\) compare what happened with what was promised. In the
-multiclass score, \(p_{ik}\) is the probability for class \(k\), and
-\(\mathbf{1}\{y_i=k\}\) marks only the true class. Different arithmetic, same
-cross-examination: forecast, meet outcome.
+In log loss, \(p_\theta(y_i\mid x_i)\) is the probability assigned to the
+correct answer; in binary Brier, \(p_i\) is the reported probability and
+\(y_i\) is \(0\) or \(1\). For ECE, \(B_b\) is confidence bucket \(b\), while
+\(\mathrm{acc}\) and \(\mathrm{conf}\) compare what happened with what was
+promised. In the multiclass score, \(p_{ik}\) is the probability for class
+\(k\), and \(\mathbf{1}\{y_i=k\}\) marks only the true class. Different
+arithmetic, same cross-examination: forecast, meet outcome.
 
 Calibration should also be conditioned on tool class, branch, task family, and retrieval state. Agent-427 may be calibrated after `inspect_file` and wildly overconfident after semantic-memory retrieval. An aggregate score can average the warning out of existence.
 
@@ -154,7 +154,7 @@ A controlled intervention changes one suspected cause while preserving the rest.
 
 The \(do(\cdot)\) notation means set, not merely observe. Identification requires randomized interventions or explicit causal assumptions; a replay that changes prompt length, retrieval, and budget at once has called three witnesses into one trench coat [[6](../../references.md#ref-6)].
 
-Influence approximations can triage which datum most perturbs loss:
+Replay tells us that stale retrieval caused *this* failure. It does not tell us which stored item taught the retriever to prefer YAML in the first place. For that, influence approximations can triage which training datum most perturbs loss. The imagined experiment is simple: turn the volume of one training item \(z\) up by a tiny amount, refit the model, and ask how the test loss would move. The formula estimates the answer without retraining:
 
 \[
 I_{up,loss}(z,z_{\mathrm{test}})\approx
@@ -167,13 +167,12 @@ H_{\hat\theta}^{-1}
 
 Read the product from right to left. The gradient of \(L(z,\hat\theta)\) says how
 the suspect item would push the fitted parameters. The inverse Hessian
-\(H_{\hat\theta}^{-1}\)—a correction for local curvature—estimates how readily
-those parameters would move. The test gradient then asks how that movement
-would change test loss, and the transpose combines the comparison into one
-number. This is differential bookkeeping for triage; replay must still call the
-witness.
-
-The imagined experiment is simple: turn the volume of one training item \(z\) up by a tiny amount, refit the model, and ask how the test loss would move. The item's gradient points toward the parameter change it requests. The inverse Hessian adjusts that request for the local shape of the loss surface—some directions move easily, others resist—and the test gradient translates the resulting motion into test damage or improvement. The formula estimates this tiny experiment without fully retraining. It is a suspect-ranking device, not proof that the suspect caused the crime.
+\(H_{\hat\theta}^{-1}\)—a correction for local curvature, since some parameter
+directions move easily and others resist—estimates how far those parameters
+would actually move. The test gradient then translates that movement into test
+damage or improvement, and the transpose combines the comparison into one
+number. It is a suspect-ranking device, not proof that the suspect caused the
+crime.
 
 The approximation assumes smooth loss, a locally well-behaved fitted point, invertible or damped curvature, and a small perturbation [[50](../../references.md#ref-50)]. It is a clue for triage, not a causal pardon.
 
@@ -206,6 +205,8 @@ Scoring can also change behavior. Agents learn benchmark quirks, evaluators rewa
 - unsafe reflection.
 
 Evaluation earns its place only when it changes the engineering agenda. Retrieval-linked hallucinations send us to the retriever and provenance formatter. Shallow-plan failures send us to state, preconditions, and value scoring. Confidence spikes after tool use demand conditional calibration. Each proposed repair returns to the same courtroom.
+
+Notice who kept Agent-427 out of real trouble all chapter: not its reasoning, but a single sentence of authority—`inspect_file` is the only executable tool. Every bad edit was a *proposal* the guard could reject for free. That arrangement cannot last. An agent that can only look will never fix anything, and the institution of Part 0 needs an Integrator that writes, tests, and deploys. Chapter 3 grants those powers, and the Verdict's Safety judge stops being hypothetical.
 
 ::: {.exercise}
 ## Exercise: Convene the Verdict {.unnumbered}

@@ -1,6 +1,14 @@
 # Neural Ensembles and Orchestration
 
-Sometimes several flawed workers, combined, beat the best worker alone. Sometimes they simply repeat one mistake in unison, only louder. This section is about telling those two cases apart, and about the machinery that sends each task to the right specialist. Two words will do most of the work: an *ensemble* is a group of predictors whose separate answers are combined into one, and *orchestration* narrows here to the routing part of the discipline the preface defined, namely the logic that decides who is consulted at all.
+Part 0's Router trusted two agreeing reports because two sounded better than
+one. Sometimes that instinct is right: several flawed workers, combined, beat
+the best worker alone. Sometimes they simply repeat one mistake in unison, only
+louder. How can the institution tell the difference before it publishes—and how
+should it decide which specialist receives which task in the first place? Two
+words will do most of the work: an *ensemble* is a group of predictors whose
+separate answers are combined into one, and *orchestration* narrows here to the
+routing part of the discipline the preface defined, namely the logic that
+decides who is consulted at all.
 
 An ensemble is useful when several imperfect interpreters make different errors. The central question is not how many voices the system can summon. It is whether their diversity reduces the error that matters, under the budget that actually exists.
 
@@ -68,9 +76,7 @@ E(x)=\operatorname{TopK}(g(x),k),
 
 which selects a small set \(E(x)\) of experts to run.
 
-The softmax temperature \(\tau\) ("tau") controls how sharp the routing distribution is. Small \(\tau\) makes the largest gate score dominate; large \(\tau\) spreads weight more evenly. Top-\(k\) routing means "activate only the \(k\) highest-scoring experts," such as the two best specialists out of sixteen, and give the rest no computation for this input.
-
-Softmax can be read as handing out routing tickets. The exponential operation turns each raw score into a positive ticket count; dividing by the total converts those counts into shares that add to \(1\). In the example, scores \(0\) and \(\ln 3\) become \(1\) ticket and \(3\) tickets, so the experts receive one quarter and three quarters of the traffic. Temperature changes how unequal the ticket piles become: a low temperature magnifies score differences, while a high temperature makes the piles more alike. It is a traffic-allocation rule, not evidence that the busiest expert is correct.
+Softmax can be read as handing out routing tickets. The exponential operation turns each raw score into a positive ticket count; dividing by the total converts those counts into shares that add to \(1\). In the example, scores \(0\) and \(\ln 3\) become \(1\) ticket and \(3\) tickets, so the experts receive one quarter and three quarters of the traffic. The temperature \(\tau\) ("tau") sets how unequal the ticket piles become: a small \(\tau\) magnifies score differences until the top expert dominates, while a large \(\tau\) makes the piles more alike. Top-\(k\) routing is the blunter alternative—activate only the \(k\) highest-scoring experts, such as the two best specialists out of sixteen, and give the rest no computation for this input. Either way it is a traffic-allocation rule, not evidence that the busiest expert is correct.
 
 To see whether a router is doing anything interesting, measure its spread. Routing entropy measures how spread out the router's choices are,
 \[
@@ -171,7 +177,7 @@ where \(a\) chooses which experts or agents to consult, \(C\) is monetary or com
 | \(\lambda_c,\lambda_l\) | prices that convert cost and delay into the same units as benefit |
 | \(\gamma\,\mathbb{E}[V^\star(s')]\) | the discounted expected value of the state \(s'\) you land in next |
 
-A tiny instance: if consulting a second reviewer adds \(R=0.05\) of expected accuracy but costs \(\lambda_c C=0.03\) and \(\lambda_l L=0.04\) in priced delay, the call is worth \(-0.02\) and should not happen. Expected utility and dynamic programming give the formal discipline behind the obvious engineering rule: "call everyone" is not sophistication when the marginal expert mostly adds delay, contradiction, or correlated noise [[33](../../references.md#ref-33)] [[34](../../references.md#ref-34)] [[5](../../references.md#ref-5)].
+The box is the second-reviewer question in miniature: a consultation that adds \(0.05\) of expected accuracy but costs \(0.07\) in priced compute and delay should not happen. Expected utility and dynamic programming give the formal discipline behind the obvious engineering rule: "call everyone" is not sophistication when the marginal expert mostly adds delay, contradiction, or correlated noise [[33](../../references.md#ref-33)] [[34](../../references.md#ref-34)] [[5](../../references.md#ref-5)].
 
 ### A Four-Step Orchestration Loop
 
@@ -199,15 +205,7 @@ Reasoning about decentralized partially observable Markov decision processes (De
 
 ### What to Report in an Evaluation
 
-Evaluation should report a wide panel rather than a single score:
-
-- ensemble lift over the best single expert;
-- calibration under distribution shift;
-- routing entropy and expert utilization balance;
-- disagreement quality and stale-artifact rate;
-- provenance diversity and correlated-error interactions;
-- permission denials and stopping accuracy;
-- cost-latency-normalized utility.
+Evaluation should report a panel rather than a single score, and the panel is organized by the doubts this topic raised. *Did the group beat the individual?* Report ensemble lift over the best single expert. *Were the members really independent?* Report provenance diversity and how often errors co-occur; three reviewers citing one mirror should show up here before it shows up in an incident. *Is the router doing real work?* Report routing entropy and expert utilization balance. *Do disagreements carry information?* Report how often a disagreement led to a correction, and how often agents acted on stale artifacts. *Did anyone overstep?* Report permission denials and whether the system stopped consulting when it should have. And *was it worth it?* Report utility normalized by cost and latency, plus calibration under distribution shift.
 
 Distribution shift means the future inputs no longer come from the same pattern as the examples used to train, tune, or score the router. Yesterday's fact checks were biomedical citations, today's are legal claims, and the old confidence calibration may now be a charming historical artifact.
 
@@ -230,10 +228,16 @@ Verdict reports the frontier and names the transition that failed.
 
 ### Retirement Is a Governed Transition
 
-Across three consecutive evaluation windows, Agent-427's calibration and
-provenance performance remain below the configured thresholds. The institution
-does not delete a process in a fit of symbolism. It retires effect authority by
-an exact checklist:
+The Verdict applies to every member of the society, including the one we have
+followed since its first read-only morning. Agent-427 has repaired real faults,
+learned to treat its own invented imports as observations rather than facts, and
+refused a deploy it could not justify. It
+has also, window after window, stated confidence about provenance that the
+evidence did not support—the same gap that let it build `patch-779` in Part 0
+without objecting. Across three consecutive evaluation windows, Agent-427's
+calibration and provenance performance remain below the configured thresholds.
+The institution does not delete a process in a fit of symbolism. It retires
+effect authority by an exact checklist:
 
 1. Freeze new effectful assignments to Agent-427.
 2. Retain raw logs and signed artifacts for audit and replay.
@@ -254,13 +258,7 @@ set is being responsibly made smaller.[^retirement-party]
 
 The book's arc now folds back to the single interpreter. Chapter 1, Topic 4 (Policies, Value, and Control) gave us a loop that observes, updates, chooses, and acts. Chapter 4 has not replaced that loop with a parliament of mist. It has shown how to place many such loops in one environment and make their interaction explicit: protocols for messages, mechanisms for incentives, dynamics for adaptation, and ensembles for error reduction.
 
-The institution is still an interpreter, but its registers are distributed across agents, artifacts, and logs. To build it well is to do five things at once:
-
-- route by the task's real features;
-- buy ensemble lift only when independence exists;
-- watch for correlated errors and altered incentives;
-- account for cost, latency, and permission;
-- stop when another call would add ceremony rather than control.
+The institution is still an interpreter, but its registers are distributed across agents, artifacts, and logs. Building it well means holding several disciplines at once. Route by the task's real features rather than by who volunteers. Buy ensemble lift only where independence actually exists, and keep watching for the correlated errors and shifted incentives that quietly remove it. Account for cost, latency, and permission as carefully as for accuracy. And stop when the next call would add ceremony rather than control—which is, in the end, the same halt predicate Agent-427 was given on its first morning, applied to an entire society.
 
 The smallest sufficient institution for the task is the one whose collective computation remains legible enough that wisdom, when it appears, is not mistaken for accident.
 

@@ -1,15 +1,12 @@
 # Tool Interfaces and Function Calling
 
 There is a moment when an agent stops talking and starts doing. A tool call is
-that moment. What follows examines the contract that decides which requests may
-touch the outside world, and what happens when a call is slow, refused, or sent
-twice.
-
-Agent-427 first met that boundary during Chapter 2's 03:47 failure, when its
-proposed import was rejected. Chapter 3 gives it explicit `write`, `test`, and
-`deploy` proposal forms, then reenacts the mistake at the stronger boundary. A
-plausible Python import and a legal filesystem edit remain different species of
-thing.
+that moment, and for Agent-427 it arrives with a promotion. Chapter 2's guard
+rejected its invented import for free, because nothing but `inspect_file` could
+execute. Chapter 3 gives it explicit `write`, `test`, and `deploy` proposal
+forms, and the first thing it does with them is repeat the mistake at the
+stronger boundary. A plausible Python import and a legal filesystem edit remain
+different species of thing. Which of the two is allowed to touch the disk?
 
 Tool use is where an interpreter stops describing a computation and begins to
 change a world outside its own text stream. The decisive artifact is therefore
@@ -22,15 +19,9 @@ is delayed, denied, or repeated.
 
 In a Lisp evaluator, primitive procedures are trusted bridges from symbolic
 expressions to machine operations. In an agentic interpreter, tool calls play
-the same role. They are primitive operations, but now the machine operation may
-do any of the following:
-
-- send mail;
-- alter a database;
-- query a search index;
-- move a cursor;
-- deploy a service;
-- charge a card.
+the same role—except that the machine operation may now send mail, alter a
+database, query a search index, move a cursor, deploy a service, or charge a
+card.
 
 A good tool interface makes this bridge narrow, typed, inspectable, and
 recoverable: few allowed requests, request shapes declared in advance, a record
@@ -155,10 +146,10 @@ state \(\sigma_t\); \(C(u)\) is its cost; \(R(u)\) is its risk, which reuses the
 \(\lambda_c\) and \(\lambda_r\) are weights that say how much you care about
 each.
 
-A tiny worked example makes the shape clear. One call has expected value 10,
-cost 2, and risk 1; another has expected value 11, cost 2, and risk 6. With
-\(\lambda_c = 1\) and \(\lambda_r = 1\), the first scores 10 - 2 - 1 = 7 and the
-second scores 11 - 2 - 6 = 3. The less useful call wins because it is safer.
+The numbers box already shows the shape. With \(\lambda_c = 1\) and
+\(\lambda_r = 1\), a read with expected value 8, cost 1, and risk 1 scores
+8 - 1 - 1 = 6, while an eager edit with expected value 11, cost 2, and risk 6
+scores 11 - 2 - 6 = 3. The less useful call wins because it is safer.
 
 An implementation can read this objective as a three-column shortlist. First discard every row whose `legal` value is zero. For each remaining call, estimate its usefulness by listing possible outcomes, multiplying each outcome's value by its chance, and adding. Then subtract the priced cost and priced risk. The \(\arg\max\) returns the call attached to the largest remaining score. It does not return the score itself, and it never grants an illegal call admission merely because that call looks profitable.
 
@@ -276,7 +267,7 @@ t4  billing service creates INV-10 for the same order
 
 The repair is to make the ledger write and invoice creation atomic, or to make
 the billing system itself recognize the key and return `INV-9` on retry. The
-The ledger rule is therefore a protection against a very ordinary mistake:
+ledger rule is therefore a protection against a very ordinary mistake:
 confusing "I did not receive the answer" with "the world did not change."
 
 The interpreter should treat idempotency as part of the action, not a transport
@@ -400,21 +391,30 @@ contract strong enough to improve the interpreter's next state.
 
 ### What to Measure
 
-This gives tool evaluation a concrete shape. Track the following, all countable
-from ordinary logs:
-
-- schema and precondition violation rates;
-- postcondition success;
-- duplicate-side-effect rate;
-- rollback frequency;
-- partial progress after failed calls;
-- utility gain per call under fixed latency and token budgets.
+This gives tool evaluation a concrete shape, and every number it needs is
+countable from ordinary logs. Before a call crosses the boundary, count how
+often it fails schema or precondition checks. After it crosses, count how often
+its postcondition actually held, how often a retry produced a duplicate side
+effect, and how often an effect had to be rolled back. Then ask what the calls
+bought: how much partial progress survived a failed call, and how much utility
+each call added under fixed latency and token budgets. The first group says
+whether the contract is being respected, the second whether the world did what
+the contract promised, and the third whether the whole arrangement was worth
+its price.
 
 If 200 calls produce 6 schema violations, that is a 3 percent rate; a climbing
 rate usually means the schema and the model's habits have drifted apart. A tool
 interface is publishable engineering when its failures are
 explained by the contract itself. Then language can touch the world without
 pretending the world is just more language.
+
+One failure the contract cannot explain away is the one that opened this topic.
+The validator rejected `load_manifest` because the module did not export it,
+but it knew that only because someone had given it the module's real exports.
+A contract can demand that an argument name a real symbol; it cannot supply the
+symbol. For that the agent must go and look—and looking has its own price, its
+own ranking problems, and its own ways of returning confident nonsense. Topic 2
+(Retrieval-Augmented Tooling) prices the look.
 
 ::: {.exercise}
 ## Exercise: Build the Boundary {.unnumbered}

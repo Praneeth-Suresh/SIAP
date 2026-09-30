@@ -19,14 +19,9 @@ That distinction is not decorative. Internal steps consume time and tokens. Retr
 
 ## Agent-427 Enters the War Room
 
-Across this chapter, the same failure grows more instructive. Agent-427 will:
+The 3:47 failure does not end when the guard rejects the invented import. It grows more instructive with every topic, because each repair hands Agent-427 a new internal power and each power arrives with its own way to fail.
 
-- interpret reasoning as labeled state transitions with executable invariants;
-- search over futures while the world changes under the search;
-- manage memory as a war room in which evidence competes for scarce attention;
-- submit every trajectory to **The Verdict**, where Utility, Safety, and Calibration judge separately.
-
-The chapter's diagrams are maps, not ornaments. The interpreter loop shows feedback returning to governed state. The memory war room shows provenance, interference, consolidation, and eviction. The Verdict shows why a correct final answer cannot pardon an unsafe trajectory.
+First the reasoning loop becomes an interpreter with labeled steps and executable invariants, so that the imaginary import can be caught as a language error rather than discovered as an outage. Then the agent learns to search over futures—and to notice that the world has changed while it was searching. By 4:06 it has memory, and memory turns out to be a war room in which evidence competes for scarce attention and a confident file from the wrong branch can win. Finally every trajectory goes before **The Verdict**, where Utility, Safety, and Calibration judge separately, because a correct final answer cannot pardon an unsafe path to it. The chapter's diagrams follow the same route: the interpreter loop, the memory war room, and the Verdict's three benches.
 
 These mechanisms are options, not a royal procession. A one-line rename rarely deserves Monte Carlo tree search. A production migration usually deserves more than vibes and a hopeful `git push`.[^chapter2-ceremony] The recurring question is whether a pattern improves success, partial progress, efficiency, safety, or governability enough to pay its own rent.
 

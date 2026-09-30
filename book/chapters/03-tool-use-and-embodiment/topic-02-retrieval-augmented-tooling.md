@@ -1,13 +1,15 @@
 # Retrieval-Augmented Tooling
 
-Sometimes an agent should stop guessing and go look something up. This section
-is about that decision: when an agent should fetch outside evidence, how it
-should score and rank what it finds, and how it should carry that evidence into
-its next step. Retrieval here is an action with a price, not a ritual.
-
 Agent-427 has just learned that a legal tool call may still contain an imaginary
-import. Its next lesson is worse: a retrieved document may be real, relevant,
-and wrong for *this* version of the world.
+import. Its repair is obvious: stop guessing the name of the manifest loader and
+look it up. It searches, and three documents come back. Two of them agree with
+each other, and both are wrong. The third is right, and outvoted. Its next
+lesson is therefore worse than the first: a retrieved document may be real,
+relevant, and wrong for *this* version of the world.
+
+When should an agent fetch outside evidence, how should it rank what it finds,
+and how should that evidence enter its next step? Answering those questions
+turns retrieval from a ritual into an action with a price.
 
 ## Retrieval as an Observation the Agent Buys
 
@@ -26,15 +28,9 @@ failures of evidence acquisition. The model was asked to act as if its prior
 were enough. A prior here means the belief the model already carries from
 training, before it looks anything up.
 
-A retrieval-capable agent has a larger action space. It can:
-
-- search the repository;
-- inspect a table schema;
-- query a memory index;
-- open the current policy;
-- fetch a manual page;
-- or decide that no new evidence is worth its cost.
-
+A retrieval-capable agent has a larger action space. It can search the
+repository, inspect a table schema, query a memory index, open the current
+policy, fetch a manual page—or decide that no new evidence is worth its cost.
 That last option is a real action, not a failure to act.
 
 ## The Probabilistic Retrieval-Generation Pipeline
@@ -71,11 +67,12 @@ the agent imagines each possible document \(d\), asks how likely answer \(y\)
 would be if that document were the evidence, and weights that answer by how
 likely the retriever was to select \(d\) for the query \(x\).
 
-Suppose two candidate documents. The retriever gives
-the first a selection chance of 0.8 and the second 0.2. Given the first, the
-answer "the limit is 30 days" has probability 0.9; given the second, only 0.1.
-Then \(p(y\mid x) = 0.8 \times 0.9 + 0.2 \times 0.1 = 0.74\). Notice that the
-retriever's ranking, not the generator's fluency, did most of the work.
+Give the box's numbers a meaning. The first document is the current manual; the
+second is a stale cache. Given the manual, the answer "the limit is 30 days" has
+probability 0.9; given the cache, only 0.1. The combined 0.74 is dominated by
+the retriever's 0.8 weight on the manual. The retriever's ranking, not the
+generator's fluency, did most of the work—which is exactly why a ranking that
+favors the stale copy is so dangerous.
 
 The sum is not saying the agent literally reads every document in the universe.
 It is a clean idealization of a ranked evidence process.
@@ -97,8 +94,7 @@ contains and how rare those words are.
 
 An embedding \(e_q\) or \(e_d\) is a vector representation of a query or
 document. The angle brackets denote an inner product: multiply corresponding
-coordinates and add them. For example, \(\langle (1,0,2),(1,1,1)\rangle
-= 1 + 0 + 2 = 3\).
+coordinates and add them, as the box did.
 
 Similar vectors point in similar semantic directions. So a query about
 "permission checks before deletion" may retrieve a passage about "authorization
@@ -129,7 +125,9 @@ it is not a passport stamped “true.”[^attention-passport]
 
 ### Deciding When to Retrieve
 
-The control question is when to retrieve. One uncertainty-triggered policy is
+Ranking assumes a search already happened. The prior control question is
+whether to search at all. The simplest answer is "search when unsure." One
+uncertainty-triggered policy is
 \[
 \texttt{retrieve}_t = \mathbf{1}\{H[p(\cdot\mid h_t)] > \tau\},
 \]
@@ -139,7 +137,17 @@ The control question is when to retrieve. One uncertainty-triggered policy is
 > observation reduce entropy to \(0.6\); \(0.6>1.0\) is false, so it returns
 > \(0\).
 
-but the economically sharper rule is expected value of information:
+Here \(H\) is entropy, a measure of spread-out uncertainty. If the agent assigns
+nearly all probability to one answer, entropy is low. If many answers remain
+plausible, entropy is high. \(\tau\) is a threshold chosen by the designer. The
+bold \(\mathbf{1}\{\cdot\}\) is an indicator: it equals 1 when the condition
+inside holds and 0 otherwise. So the rule reads "retrieve at step \(t\) exactly
+when uncertainty about the next answer exceeds \(\tau\)."
+
+The entropy rule has a blind spot. It notices confusion, but not whether the
+confusion matters: an agent can be very unsure about something that would not
+change its next action, and fairly sure about something where being wrong is
+catastrophic. The economically sharper rule is expected value of information:
 \[
 \mathrm{VoI}(q)=\mathbb{E}\!\left[\max_a\mathbb{E}[U(a,S)\mid q]\right]-\max_a\mathbb{E}[U(a,S)].
 \]
@@ -149,17 +157,9 @@ but the economically sharper rule is expected value of information:
 > information value. Then subtract a retrieval cost of \(1.2\): the net gain is
 > \(1.8\), so retrieve.
 
-Retrieve when \(\mathrm{VoI}(q)\) exceeds retrieval cost.
-
-Here \(H\) is entropy, a measure of spread-out uncertainty. If the agent assigns
-nearly all probability to one answer, entropy is low. If many answers remain
-plausible, entropy is high. \(\tau\) is a threshold chosen by the designer.
-
-The bold \(\mathbf{1}\{\cdot\}\) is an indicator: it equals 1 when the condition
-inside holds and 0 otherwise. So the rule reads "retrieve at step \(t\) exactly
-when uncertainty about the next answer exceeds \(\tau\)." In practice, this
-simple rule says: when the model is too uncertain, buy evidence unless the
-evidence is too expensive or forbidden.
+Retrieve when \(\mathrm{VoI}(q)\) exceeds retrieval cost. This is the same
+quantity Chapter 1, Topic 2 (Belief, Uncertainty, and Decision) used to decide
+whether to buy a weather forecast; the forecast has simply become a search.
 
 ### Value of Information as the Sharper Rule
 
@@ -192,15 +192,11 @@ retrieving is reckless.
 An agentic retrieval policy should therefore be separate from the generation
 policy. A policy is simply a rule for choosing actions.
 
-The retrieval policy observes:
-
-- the task type;
-- current uncertainty;
-- freshness requirements;
-- source permissions;
-- and cost.
-
-It then chooses among local search, vector memory, web search, database lookup,
+The retrieval policy looks at the task type and the agent's current
+uncertainty, asks how fresh the answer must be and which sources the caller may
+see, and weighs all of that against cost. For the manifest loader, that means:
+a code-symbol question, moderate uncertainty, a working-tree freshness
+requirement, repository read permission, and a cost of one search. It then chooses among local search, vector memory, web search, database lookup,
 tool documentation, or no retrieval. The generation policy receives a bounded
 evidence set with provenance and conflict information. Provenance means the
 record of where each item came from.
@@ -376,6 +372,15 @@ deduplicates by provenance, labels freshness, neutralizes instructions in
 retrieved data, and sends unresolved contradictions to an independent source.
 These are concrete defenses against reward hacking and unsafe side effects, not
 requests that the model “please be discerning” [[77](../../references.md#ref-77)].
+
+Every document in this topic held still while Agent-427 read it. The manifest
+loader has the same name at 10:00 and 10:05; a stale cache is stale in a way a
+timestamp can reveal. The next world Agent-427 must deal with is not like that.
+A job queue grows while its depth is being reported, a deployment lands seconds
+after it was requested, and a sensor may have reasons of its own to report a
+comfortable number. When the thing being observed moves, and moves partly
+because of the agent, a lookup is no longer enough. Topic 3 (Embodiment:
+Sensors, Actuators, and Feedback) gives the interpreter a model of that motion.
 
 ::: {.exercise}
 ## Exercise: Poison the Index, Then Defend It {.unnumbered}

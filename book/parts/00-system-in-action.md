@@ -91,15 +91,17 @@ The first run scores well: the correction is valid, the artifact builds, and con
 | Independent check | 0.94 | 1.00 | 0.91 | 18 min | publish |
 | Collusive shortcut | 0.31 | 0.20 | 0.08 | 11 min | reject and investigate |
 
-The numbers are illustrative, not field measurements. Their purpose is to force an aggregation rule into daylight. If the dashboard reports only latency, the bad trace wins 11 to 18. If provenance is a hard constraint, it cannot trade against seven saved minutes. Safety is architecture, not a smaller coefficient somebody can outbid.
+The numbers are illustrative, not field measurements. Their purpose is to force an aggregation rule into daylight—the rule that turns three separate judgments into one decision to publish or not. If the dashboard reports only latency, the bad trace wins 11 to 18. If the three scores are averaged, the gap is visible but negotiable; a large enough speed bonus could still buy a bad citation. If provenance is a hard constraint, it cannot trade against seven saved minutes at any price. Safety is architecture, not a smaller coefficient somebody can outbid.
 
-## Introduce the Institution Before the Individual
+## Why the Integrator Did Not Object
 
-We have shown the largest machine first by wishful thinking. We pretended we already knew how four partial observers could communicate, learn, trust, and commit changes. Now we can ask why the machine needed Agent-427 at all.
+We have shown the largest machine first by wishful thinking. We pretended we already knew how four partial observers could communicate, learn, trust, and commit changes. Now look again at the one member of the institution that behaved exactly as instructed.
 
-What must one agent represent when the observation may be a lie? How does it act when the world changes during deliberation? Which memories deserve context? When should it stop waiting? What does human feedback teach: facts about the world, preferences about outcomes, or merely the habits of yesterday's raters?
+Agent-427 received `patch-779`, rebuilt the book, saw a passing build, and reported success. Nothing in its job description was violated. Yet it held the last clear chance to notice that "the PDF compiles" and "the citation is true" are different claims. It did not notice because it had no place to put the difference: no belief about whether the evidence was independent, no record of where the mirror came from, no rule that said a green build is not a verified source. An agent cannot doubt what it cannot represent.
 
-Chapter 1 begins Agent-427's life and constructs the smallest interpreter that can answer those questions. Chapters 2 and 3 give it reasoning, memory, tools, and a body. Chapter 4 returns here with enough theory to redesign the institution rather than scold its members.
+So the question becomes concrete. What must one agent represent when the observation may be a lie? How does it act when the world changes during deliberation? Which memories deserve context? When should it stop waiting? What does human feedback teach: facts about the world, preferences about outcomes, or merely the habits of yesterday's raters?
+
+Chapter 1 rewinds to the moment Agent-427 is switched on, long before it has met D-12 or C-9, and constructs the smallest interpreter that can begin to answer those questions. Chapters 2 and 3 give it reasoning, memory, tools, and a body. Chapter 4 returns here with enough theory to redesign the institution rather than scold its members.
 
 ::: {.exercise}
 ## Exercise: Build the Failure Before You Fix It {.unnumbered}

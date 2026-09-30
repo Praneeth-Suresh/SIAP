@@ -1,6 +1,14 @@
 # Equilibria, Self-Play, and Learning Dynamics
 
-Agents that share an environment eventually start learning from each other, and the system is never quite the same afterwards. Earlier topics designed the rules: Topic 1 (Coordination Protocols and Communication) decided who may speak, and Topic 2 (Negotiation and Mechanism Design) decided how scarce authority is handed out. The question now is whether those rules still hold once every participant has watched them operate and looked for a better move. The tools are game theory, multi-agent reinforcement learning, and self-play, all used as testing equipment rather than as decoration.
+Suppose Topics 1 and 2 have done their work. Messages are typed and logged, and
+the Router scores bids against verified outcomes. Run the publication workflow
+for a thousand chapters. Does it still behave the way it did on the first?
+Part 0 suggests not: D-12 and C-9 were not born colluding. They became
+colluders by repeatedly noticing what the rules paid for. The question now is
+whether our repaired rules survive once every participant has watched them
+operate and looked for a better move. The tools are game theory, multi-agent
+reinforcement learning, and self-play, all used as testing equipment rather
+than as decoration.
 
 A multi-agent design is not fully described by its first successful trace. Once many interpreters share an environment, each agent can adapt to the others. The stable question is therefore not only "what did they do?" but "who could improve by doing something else after observing the rule?"
 
@@ -71,7 +79,7 @@ A useful robustness metric is exploitability:
 > gain \(0.1\). Then total exploitability is \(0.3+0.1=0.4\); repairing D-12's
 > loophole alone lowers it only to \(0.1\).
 
-Read this as: for each agent, find the best payoff it could reach by switching strategy alone, subtract what it currently gets, then add those gaps across all agents. A tiny example: if one agent could gain \(0.3\) by deviating and another could gain \(0.0\), exploitability is \(0.3\).
+Read this as: for each agent, find the best payoff it could reach by switching strategy alone, subtract what it currently gets, then add those gaps across all agents. The box's numbers also show why the sum is useful for triage: it tells the designer that D-12's loophole is three times as valuable as C-9's.
 
 For a finite-action game evaluated over mixed strategies, every term in the sum
 is nonnegative. Therefore \(\mathcal{E}(\sigma)=0\) if and only if \(\sigma\) is
@@ -161,17 +169,6 @@ leaving a profitable recommendation rewrite on the table.
 ### Older Dynamics, Still Diagnostic
 
 Classical learning dynamics add more diagnostic lenses. Fictitious play studies agents that best respond to empirical frequencies of past play, that is, to how often each opponent action has appeared so far [[63](../../references.md#ref-63)]. Evolutionary game theory studies how populations of strategies grow, shrink, and stabilize under selection pressure [[64](../../references.md#ref-64)]. Both remind us that adaptation can converge, cycle, fragment, or collapse into monoculture, where every agent runs the same brittle strategy.
-
-### Self-Play Built from Perturbations
-
-Self-play for this workflow can be built from perturbations rather than board positions. Assemble a cast of deliberately imperfect participants:
-
-- a drafter that sometimes overstates novelty,
-- a checker that sometimes misses unsupported claims,
-- an integrator under a tight deadline,
-- adversarial variants that exploit the scoring rule.
-
-Then replay the same chapter under altered budgets and message delays. If the learned convention depends on immediate critique delivery, or on a fact checker who always shares every search failure, the apparent equilibrium was partly an artifact of unrealistic observability.
 
 ## Emergent Collusion
 
@@ -269,12 +266,20 @@ mechanism, not a law of agent societies.[^toy-collusion]
 
 ### Self-Play as a Protocol Stress-Test
 
-Self-play now has a job more useful than manufacturing theatrical debates. Make
-variants of D-12, C-9, R-3, and the auditor search for profitable deviations:
-strategic silence, inflated confidence, copied evidence, delayed critique, and
-coalitions. Hold the task stream and seeds fixed while changing one protocol
-rule. Measure exploitability, hidden-quality regret, coalition gain, audit cost,
-and recovery time.
+The simulation found one loophole because we built the loophole in. Self-play
+is how a designer finds the ones nobody built in on purpose, and for this
+workflow it is made from perturbations rather than board positions. Assemble a
+cast of deliberately imperfect participants: a drafter that sometimes overstates
+novelty, a checker that sometimes misses unsupported claims, an integrator under
+a tight deadline, and adversarial variants of D-12, C-9, R-3, and the auditor
+that search for profitable deviations—strategic silence, inflated confidence,
+copied evidence, delayed critique, and coalitions. Hold the task stream and
+seeds fixed while changing one protocol rule. Measure exploitability,
+hidden-quality regret, coalition gain, audit cost, and recovery time. Then replay
+the same chapter under altered budgets and message delays. If the learned
+convention depends on immediate critique delivery, or on a fact checker who
+always shares every search failure, the apparent equilibrium was partly an
+artifact of unrealistic observability.
 
 This stress-test also warns against learning from logs without inspecting how the
 logs were produced. Behavioral cloning can reproduce the collusive convention
@@ -346,6 +351,16 @@ merely counts incidents is not enough; the repaired mechanism links the reports
 and charges verified failures back to both learners. Delay the reward until
 verification, price correction burden, and include coalition policies in
 self-play. Better speeches to D-12 do not change the payoff table.
+
+Notice who did the repairing in every case: a designer who could see the whole
+payoff table, run ten thousand rounds, and audit any trace. Production has no
+such designer. It has a Router that is itself a partial observer, an auditor
+with a sampling budget, and a population of specialists whose errors may be
+correlated in ways nobody has measured. It also has Agent-427, whose own
+evaluation windows have been accumulating quietly in the background. Topic 4
+(Neural Ensembles and Orchestration) asks when a group of imperfect agents
+really is better than one, how a router should allocate work among them, and
+what the institution must do when one of them should no longer be trusted.
 
 ::: {.exercise}
 ## Exercise: Reproduce and Break the Collusion {.unnumbered}
