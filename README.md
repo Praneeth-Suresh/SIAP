@@ -5,7 +5,11 @@
 ![Deploy](https://img.shields.io/badge/deploy-GitHub%20Pages-24292f?logo=github)
 ![Citations](https://img.shields.io/badge/citations-clickable%20%5Bn%5D-c97a00)
 
-This repository is a scratchpad for a somewhat audacious goal: to do for agentic systems what classic CS texts did for programming itself. We are not collecting clever prompts; we are constructing a theory-backed craft of orchestration.
+A work-in-progress book about building agentic systems. It teaches the ideas by constructing interpreters for reasoning, planning, and tool use in Python.
+
+**[Read online](https://praneeth-suresh.github.io/SIAP/)** (start with *Part 0: The System in Action*) · **[Open the PDF](dist/book-latex.pdf)** · **[Build locally](#build-and-publish)**
+
+The online reader is a published snapshot; it may lag the manuscript in this repository. If you spot a confusing example or a gap, [open an issue](https://github.com/Praneeth-Suresh/SIAP/issues).
 
 ## Project goals
 
@@ -48,6 +52,8 @@ uv run python scripts/build_site.py
 uv run python scripts/build_pdf.py
 uv run python scripts/build_latex_pdf.py
 ```
+
+To preview the generated reader, run `python3 -m http.server 8000 --bind 127.0.0.1 --directory site` and open `http://127.0.0.1:8000/`. The **Deploy Book Site** workflow is manually dispatched; merging a README change does not update the live reader.
 
 The site output in `site/` is GitHub Pages-compatible. It publishes the complete reader-facing book with hierarchical chapter/topic navigation and MathJax-rendered equations; companion `*-notes.md` files stay out of the public site. Print outputs are emitted to `dist/`:
 - `book.pdf` (WeasyPrint from HTML/CSS)
